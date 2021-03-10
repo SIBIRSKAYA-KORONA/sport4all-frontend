@@ -1,0 +1,13 @@
+.contribute {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+
+  &__ways {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+}

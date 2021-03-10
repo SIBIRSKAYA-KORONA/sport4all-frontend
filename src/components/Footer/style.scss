@@ -1,0 +1,33 @@
+@import "../../utils/variables";
+
+.footer {
+  display: flex;
+  align-items: center;
+  margin: 25px 0;
+
+  &__link {
+    margin: 0 10px;
+    color: $middle-gray;
+    text-decoration: none;
+    font-size: 10px;
+    @include transition(0.2s, ease-in-out);
+
+    &:hover {
+      color: $dark-gray;
+    }
+
+    &:active {
+      color: $dark-gray;
+    }
+  }
+
+  &__avatar {
+    height: 35px;
+    margin: 0 35px;
+
+    & img {
+      width: 35px;
+      border-radius: 50%;
+    }
+  }
+}
