@@ -2,6 +2,7 @@ let http = require('http'),
     fs = require('fs');
 
 http.createServer(function(req, res) {
+    console.log(req.url);
     let path, type;
     switch (req.url) {
     case '/bundle.js':
