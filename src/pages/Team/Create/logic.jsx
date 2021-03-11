@@ -1,7 +1,6 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { useHistory } from 'react-router-dom';
 
 import TeamCreatePageRender from './render';
 import { createTeam } from 'Actions/Team/TeamActions';
@@ -35,7 +34,7 @@ class TeamCreatePage extends React.Component {
                 description: '',
                 sport: '',
             });
-            // history.push('/team/list');
+            this.props.history.push('/team/list');
         });
     }
 
@@ -45,7 +44,6 @@ class TeamCreatePage extends React.Component {
             ...prevState,
             [name]: value
         }));
-        console.log(this.state);
     }
 
     render() {
@@ -63,6 +61,7 @@ class TeamCreatePage extends React.Component {
 
 TeamCreatePage.propTypes = {
     createTeam: propTypes.func.isRequired,
+    history: propTypes.object.isRequired,
 };
 
 export default connect(null, { createTeam })(TeamCreatePage);

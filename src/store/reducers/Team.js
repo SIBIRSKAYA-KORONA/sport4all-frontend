@@ -9,6 +9,9 @@ function teamsReducer(state = initialState, action) {
     case types.CREATE_TEAM:
         newState.push(action.team);
         break;
+    case types.LOAD_TEAMS:
+        newState = action.teams;
+        break;
     }
 
     return newState;

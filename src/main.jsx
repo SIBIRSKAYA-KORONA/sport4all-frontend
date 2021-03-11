@@ -10,6 +10,7 @@ import DemoPage from 'Pages/Demo/render';
 import ContributionsPage from 'Pages/Contribute/render';
 import {CONST} from 'Constants';
 import TeamCreatePage from 'Pages/Team/Create/logic';
+import TeamListPage from 'Pages/Team/List/logic';
 
 render(
     <Provider store={store}>
@@ -18,6 +19,7 @@ render(
                 <Route exact path='/' component={HomePage}/>
                 <Route path='/demo' component={DemoPage}/>
                 <Route path='/team/create' component={TeamCreatePage}/>
+                <Route path='/team/list' component={TeamListPage}/>
                 <Route path='/contribute' component={ContributionsPage}/>
             </Switch>
         </BrowserRouter>

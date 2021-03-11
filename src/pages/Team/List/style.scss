@@ -1,0 +1,33 @@
+.team-list {
+    flex: 1;
+    width: 80%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+
+    &__table {
+        width: 80%;
+        border-collapse: collapse;
+
+        &, & td, & th {
+            text-align: left;
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+
+        & th {
+            &:first-child {
+                width: 35%;
+            }
+
+            &:nth-child(2) {
+                width: 55%;
+            }
+
+            &:last-child {
+                width: 10%;
+            }
+        }
+    }
+}
+
