@@ -16,7 +16,7 @@ export default class Network {
         // const token = getCookie('csrf');
         return fetch(this.url + path, {
             method: 'GET',
-            mode: 'no-cors',
+            mode: 'cors',
             credentials: 'include',
             headers: {
                 // 'X-CSRF-Token': token

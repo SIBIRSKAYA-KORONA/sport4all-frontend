@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import PersonTableButton from './render';
-import { clearPersons } from 'Actions/Person';
+import { clearPersons } from 'Actions/Person/PersonActions';
 import PersonModel from 'Models/PersonModel';
 
 class PersonTableItem extends React.Component {

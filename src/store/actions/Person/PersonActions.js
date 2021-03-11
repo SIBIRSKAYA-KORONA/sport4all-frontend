@@ -1,4 +1,4 @@
-import * as types from './ActionTypes';
+import * as types from 'Actions/Person/PersonActionTypes';
 
 export const addPerson = (person) => ({ type: types.ADD_PERSON, person });
 export const removePerson = (person) => ({ type: types.REMOVE_PERSON, person });

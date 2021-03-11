@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import PersonInputRender from './render';
-import { addPerson } from 'Actions/Person';
+import { addPerson } from 'Actions/Person/PersonActions';
 import PersonModel from 'Models/PersonModel';
 
 class PersonInput extends React.Component {

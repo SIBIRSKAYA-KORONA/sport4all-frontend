@@ -1,4 +1,4 @@
-import * as types from 'Actions/ActionTypes';
+import * as types from 'Actions/Person/PersonActionTypes';
 
 const initialState = [];
 
