@@ -16,6 +16,7 @@ function Footer() {
             <div className='footer__list'>
                 <Link to='/demo' className='footer__link'>Demo</Link>
                 <Link to='/contribute' className='footer__link'>Contribute</Link>
+                <Link to='/test-grid' className='footer__link'>Test grid</Link>
             </div>
         </div>
     );
