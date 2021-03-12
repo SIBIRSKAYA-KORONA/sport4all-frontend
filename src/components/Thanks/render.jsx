@@ -7,22 +7,30 @@ function Thanks() {
         <div className='thanks'>
             <div className="thanks__message">
                 <div className='thanks__message_first' onClick={
-                    () => Network.fetchPost(Network.paths.settings, {
-                        'age': 225,
-                        'email': 'mai54',
-                        'nickname': 'f2c1a76b41324545',
-                        'name': 'name54',
-                        'surname': 'surname54'
+                    () => Network.fetchPost(Network.paths.teams, {
+                        'name': 'Спартак',
+                        'location': 'Moscow',
+                        'link_on_avatar': 'image.png',
+                        'about': 'Кто Спартак? Я Спартак!'
                     })
                         .then(response => { console.log(response); })
                         .catch(error => { console.log(error); })
-                }>Thanks for using</div>
+                }>Создать команду</div>
                 <div className='thanks__message_second' onClick={
                     () => Network.fetchGet(Network.paths.settings)
                         .then(response => { console.log(response); })
                         .catch(error => { console.log(error); })
-                }>FrontEnd Starter 2020</div>
-                <div className='thanks__message_third'>by Egor Bedov</div>
+                }>Получить настройки 2020</div>
+                <div className='thanks__message_third' onClick={
+                    () => Network.fetchPost(Network.paths.settings, {
+                        'email': 'newpochta@mail.ru',
+                        'nickname': 'zarabotaj_plz',
+                        'name': 'Egor',
+                        'surname': 'Bedov'
+                    })
+                        .then(response => { console.log(response); })
+                        .catch(error => { console.log(error); })
+                }>Отправить пользователя</div>
             </div>
         </div>
     );

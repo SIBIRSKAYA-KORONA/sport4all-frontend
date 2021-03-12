@@ -1,11 +1,12 @@
 'use strict';
 
-// import getCookie from 'Utils/csrf';
+import getCookie from 'Utils/csrf';
 
 export default class Network {
     static url = 'https://sport4all.tech/api';
     static paths = {
-        settings: '/settings'
+        settings: '/settings',
+        teams: '/teams'
     };
 
     /**
@@ -13,13 +14,13 @@ export default class Network {
      * @return {Promise} Promise for the HTTP request
      */
     static async fetchGet(path) {
-        // const token = getCookie('csrf');
+        const token = getCookie('csrf');
         return fetch(this.url + path, {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
             headers: {
-                // 'X-CSRF-Token': token
+                'X-CSRF-Token': token
             },
         });
     }

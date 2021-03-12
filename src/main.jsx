@@ -9,8 +9,9 @@ import HomePage from 'Pages/Home/render';
 import DemoPage from 'Pages/Demo/render';
 import ContributionsPage from 'Pages/Contribute/render';
 import {CONST} from 'Constants';
-import TeamCreatePage from 'Pages/Team/Create/logic';
-import TeamListPage from 'Pages/Team/List/logic';
+import TeamCreatePage from 'Pages/Teams/Create/logic';
+import TeamListPage from 'Pages/Teams/List/logic';
+import TeamsPage from 'Pages/Teams/Teams/render';
 
 render(
     <Provider store={store}>
@@ -18,8 +19,13 @@ render(
             <Switch>
                 <Route exact path='/' component={HomePage}/>
                 <Route path='/demo' component={DemoPage}/>
-                <Route path='/team/create' component={TeamCreatePage}/>
-                <Route path='/team/list' component={TeamListPage}/>
+
+                {/* Teams */}
+                <Route path='/teams' component={TeamsPage}/>
+                <Route path='/teams/create' component={TeamCreatePage}/>
+                <Route path='/teams/list' component={TeamListPage}/>
+                {/*<Route path='/teams/search' component={TeamListPage}/>*/}
+
                 <Route path='/contribute' component={ContributionsPage}/>
             </Switch>
         </BrowserRouter>
