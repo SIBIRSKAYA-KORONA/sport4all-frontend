@@ -1,6 +1,7 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
 import './style.scss';
+import { Form, Input, Button } from 'antd';
 
 import Footer from 'Components/Footer/render';
 import Header from 'Components/Header/render';
@@ -11,23 +12,23 @@ function LoginPageRender(props) {
             <Header/>
             <div className='login'>
                 <h1 className='login__header'>Вход</h1>
-                <form onSubmit={props.onSubmit}>
-                    <input
+                <Form name='login' onFinish={props.onSubmit}>
+                    <Form.Item
+                        label='Никнейм'
                         name='nickname'
-                        value={props.nickname}
-                        type='text'
-                        placeholder='Name'
-                        onChange={props.onChange}
-                    />
-                    <input
+                        rules={[{ message: 'Введите ваш никнейм' }]}>
+                        <Input/>
+                    </Form.Item>
+                    <Form.Item
+                        label='Пароль'
                         name='password'
-                        value={props.password}
-                        type='password'
-                        placeholder='Password'
-                        onChange={props.onChange}
-                    />
-                    <input type='submit' value='Login'/>
-                </form>
+                        rules={[{ message: 'Введите пароль' }]}>
+                        <Input.Password/>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">Войти</Button>
+                    </Form.Item>
+                </Form>
             </div>
             <Footer />
         </div>
@@ -35,10 +36,7 @@ function LoginPageRender(props) {
 }
 
 LoginPageRender.propTypes = {
-    onChange: propTypes.func.isRequired,
     onSubmit: propTypes.func.isRequired,
-    nickname: propTypes.string.isRequired,
-    password: propTypes.string.isRequired,
 };
 
 export default LoginPageRender;

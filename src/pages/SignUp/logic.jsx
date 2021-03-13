@@ -17,9 +17,10 @@ class SignUpPage extends React.Component {
 
     handleSubmit(values) {
         const user = values;
+        const t = this;
         if (!user.password || !user.nickname) return;
         UserModel.instance.signUp(user)
-            .then(() => { history.push('/profile') })
+            .then(() => { t.props.history.push('/teams/list'); })
             .catch(error => { this.setState({ error: error }) });
     }
 

@@ -40,7 +40,7 @@ class UserModel {
             response => {
                 switch (response.status) {
                 case 200: // успешная регистрация
-                    return response.json();
+                    return;
                 case 404: // юзера не существует
                     return new Error('User not exists');
                 case 500:

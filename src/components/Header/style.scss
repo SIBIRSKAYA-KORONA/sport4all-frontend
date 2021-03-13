@@ -5,22 +5,22 @@
   height: 45px;
   display: flex;
   align-items: center;
-  margin: 25px 0;
+  padding: 25px;
   background-color: $light-gray;
 
   &__link {
     margin: 0 10px;
-    color: $middle-gray;
+    color: $dark-gray;
     text-decoration: none;
-    font-size: 10px;
+    font-size: 15px;
     @include transition(0.2s, ease-in-out);
 
     &:hover {
-      color: $dark-gray;
+      color: $black;
     }
 
     &:active {
-      color: $dark-gray;
+      color: $black;
     }
   }
 
