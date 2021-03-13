@@ -9,6 +9,7 @@ function Footer() {
             <div className='footer__list'>
                 <Link to='/' className='footer__link'>Home</Link>
                 <Link to='/teams' className='footer__link'>Teams</Link>
+                <Link to='/profile' className='footer__link'>Profile</Link>
             </div>
             <a className='footer__avatar' href='https://github.com/EgorBedov' target='_blank' rel='noopener noreferrer'>
                 <img src='https://avatars1.githubusercontent.com/u/55828280?s=60&u=cf6facefae0859de29544bea5db2be3a19d46bbc&v=4' alt='Author'/>

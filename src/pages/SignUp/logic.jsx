@@ -25,12 +25,13 @@ class SignUpPage extends React.Component {
             password: this.state.password
         };
         // this.props.createTeam(team);
-        UserModel.instance.createUser(user).then((response) => {
+        UserModel.instance.signUp(user).then((response) => {
             console.log(response);
             this.setState({
                 nickname: '',
                 password: '',
             });
+            history.push('/profile');
         });
     }
 

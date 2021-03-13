@@ -31,6 +31,7 @@ class LoginPage extends React.Component {
                 nickname: '',
                 password: '',
             });
+            history.push('/profile');
         });
     }
 

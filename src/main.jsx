@@ -13,6 +13,7 @@ import TeamCreatePage from 'Pages/Teams/Create/logic';
 import TeamListPage from 'Pages/Teams/List/logic';
 import TeamsPage from 'Pages/Teams/Teams/render';
 import LoginPage from 'Pages/Login/logic';
+import ProfilePage from 'Pages/Profile/logic';
 
 render(
     <Provider store={store}>
@@ -22,10 +23,12 @@ render(
                 <Route path='/demo' component={DemoPage}/>
 
                 {/* Teams */}
-                <Route path='/teams' component={TeamsPage}/>
                 <Route path='/teams/create' component={TeamCreatePage}/>
                 <Route path='/teams/list' component={TeamListPage}/>
                 {/*<Route path='/teams/search' component={TeamListPage}/>*/}
+                <Route path='/teams' component={TeamsPage}/>
+
+                <Route path='/profile' component={ProfilePage}/>
 
                 {/* Auth */}
                 <Route path='/signup' component={SignUpPage}/>

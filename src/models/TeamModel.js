@@ -1,5 +1,6 @@
 import { CONST } from 'Constants';
 import store from '../store/store';
+import Network from '../core/network';
 
 // SINGLETON
 const teamModelSymbol = Symbol('Model for team');
@@ -32,11 +33,15 @@ class TeamModel {
     }
 
     async loadTeams() {
-        try {
-            const teams = JSON.parse(localStorage.getItem(CONST.LOCAL_STORAGE.TEAMS));
-            return teams ? teams : [];
-        }
-        catch (e) { return []; }
+        return Network.fetchGet(Network.paths.teams)
+            .then(response => {
+                console.log(response);
+                return response.json()
+            })
+            .catch(error => {
+                console.error(error);
+                return [];
+            })
     }
 }
 

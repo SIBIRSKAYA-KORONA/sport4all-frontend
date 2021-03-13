@@ -3,10 +3,12 @@ import propTypes from 'prop-types';
 import './style.scss';
 
 import Footer from 'Components/Footer/render';
+import Header from 'Components/Header/render';
 
 function SignUpPageRender(props) {
     return (
         <div className='page'>
+            <Header/>
             <div className='signup'>
                 <h1 className='signup__header'>Регистрация</h1>
                 <form onSubmit={props.onSubmit}>
