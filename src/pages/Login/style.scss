@@ -1,0 +1,11 @@
+.login {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+
+  &__header {
+    margin: 50px;
+  }
+}

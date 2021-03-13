@@ -7,11 +7,12 @@ import './main.scss';
 import store from './store/store';
 import HomePage from 'Pages/Home/render';
 import DemoPage from 'Pages/Demo/render';
-import ContributionsPage from 'Pages/Contribute/render';
+import SignUpPage from 'Pages/SignUp/logic';
 import {CONST} from 'Constants';
 import TeamCreatePage from 'Pages/Teams/Create/logic';
 import TeamListPage from 'Pages/Teams/List/logic';
 import TeamsPage from 'Pages/Teams/Teams/render';
+import LoginPage from 'Pages/Login/logic';
 
 render(
     <Provider store={store}>
@@ -26,7 +27,9 @@ render(
                 <Route path='/teams/list' component={TeamListPage}/>
                 {/*<Route path='/teams/search' component={TeamListPage}/>*/}
 
-                <Route path='/contribute' component={ContributionsPage}/>
+                {/* Auth */}
+                <Route path='/signup' component={SignUpPage}/>
+                <Route path='/login' component={LoginPage}/>
             </Switch>
         </BrowserRouter>
     </Provider>,

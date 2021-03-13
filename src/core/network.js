@@ -6,7 +6,8 @@ export default class Network {
     static url = 'https://sport4all.tech/api';
     static paths = {
         settings: '/settings',
-        teams: '/teams'
+        teams: '/teams',
+        sessions: '/sessions'
     };
 
     /**
