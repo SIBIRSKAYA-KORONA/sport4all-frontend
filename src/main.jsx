@@ -34,7 +34,7 @@ render(
                 <Route path='/tournaments/create' component={TournamentCreatePage}/>
                 <Route path='/tournaments/list' component={TournamentsListPage}/>
                 {/* TODO: fix tournament routing*/}
-                <Route path='/tournaments/1' component={TournamentsPage}/>
+                <Route path='/tournaments/:tournamentId' component={TournamentsPage}/>
 
                 <Route path='/profile' component={ProfilePage}/>
 

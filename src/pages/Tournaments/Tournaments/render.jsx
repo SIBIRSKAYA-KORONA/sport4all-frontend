@@ -1,18 +1,19 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import BasePage from 'Components/BasePage/render';
 import {Avatar, Row, Space, Tabs, Typography} from 'antd'
 import TournamentGridRender from 'Pages/Tournaments/Tournaments/sections/Grid/render';
 import TournamentTableRender from 'Pages/Tournaments/Tournaments/sections/Table/render';
 import TournamentHistoryRender from 'Pages/Tournaments/Tournaments/sections/History/render';
 import TournamentSettingsRender from 'Pages/Tournaments/Tournaments/sections/Settings/render';
-import {useEffect, useState} from 'react';
 import TournamentModel from 'Models/TournamentModel';
+import PropTypes from 'prop-types'
 
 const {Title, Paragraph} = Typography;
 
-function TournamentPageRender() {
+function TournamentPageRender(props) {
     const [tournamentData, setTournamentData] = useState({});
-    const tournamentId = 1;
+    const tournamentId = props.tournamentId;
     useEffect(async () => {
         const gotTournamentData = await TournamentModel.instance.getTournament(tournamentId);
         const gotTeams = await TournamentModel.instance.getTeams(tournamentId);
@@ -50,13 +51,17 @@ function TournamentPageRender() {
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Настройки" key="4">
                     <TournamentSettingsRender
-                        tournamentId={tournamentData.id || 0}
+                        tournamentId={tournamentId}
                         teams={tournamentData.teams || []}/>
                 </Tabs.TabPane>
             </Tabs>
 
         </BasePage>
     )
+}
+
+TournamentPageRender.propTypes = {
+    tournamentId: PropTypes.number.isRequired
 }
 
 export default TournamentPageRender;

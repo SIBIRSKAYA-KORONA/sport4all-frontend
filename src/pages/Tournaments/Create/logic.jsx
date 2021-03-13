@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types'
 
 import TournamentCreatePageRender from './render';
 import TournamentModel from 'Models/TournamentModel';
@@ -24,7 +25,10 @@ class TournamentCreatePage extends React.Component {
         }
 
         TournamentModel.instance.createTournament(payload)
-            .then(response => { console.log(response); })
+            .then(response => {
+                console.log(response);
+                this.props.history.push(`/tournaments/${response.id}`);
+            })
             .catch(error => { console.error(error); })
     }
 
@@ -37,5 +41,10 @@ class TournamentCreatePage extends React.Component {
     }
 }
 
+TournamentCreatePage.propTypes = {
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired
+    }).isRequired
+}
 
 export default TournamentCreatePage;
