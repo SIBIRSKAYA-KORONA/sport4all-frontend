@@ -11,6 +11,8 @@ class TeamListPage extends React.Component {
         super(props);
         this.state = {};
         this.load();
+
+        this.onTeamClick = this.onTeamClick.bind(this);
     }
 
     load() {
@@ -19,9 +21,15 @@ class TeamListPage extends React.Component {
         });
     }
 
+    onTeamClick(e) {
+        const id = e.currentTarget.getAttribute('data-id');
+        if (!id) return;
+        this.props.history.push(`/teams/${id}`);
+    }
+
     render() {
         return (
-            <TeamListPageRender teams={this.props.teams}/>
+            <TeamListPageRender teams={this.props.teams} onTeamClick={this.onTeamClick}/>
         )
     }
 }
@@ -30,6 +38,7 @@ TeamListPage.propTypes = {
     teams: propTypes.array.isRequired,
     createTeam: propTypes.func.isRequired,
     loadTeams: propTypes.func.isRequired,
+    history: propTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({

@@ -1,54 +1,44 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
 import './style.scss';
+import {Form, Input, Button} from 'antd';
 
 import Footer from 'Components/Footer/render';
 import Header from 'Components/Header/render';
+import BasePage from 'Components/BasePage/render';
 
 function TeamCreatePageRender(props) {
-    return (
-        <div className='page'>
-            <Header/>
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 },
+    };
+    return (<>
+        <Header/>
+        <BasePage>
             <div className='create-team'>
                 <h1>Создайте свою команду</h1>
-                <form onSubmit={props.onSubmit}>
-                    <input
-                        name='name'
-                        type='text'
-                        placeholder='name'
-                        value={props.name}
-                        onChange={props.onChange}
-                    />
-                    <textarea
-                        name='about'
-                        placeholder='about'
-                        value={props.about}
-                        onChange={props.onChange}
-                    />
-                    <input
-                        name='location'
-                        type='text'
-                        placeholder='location'
-                        value={props.location}
-                        onChange={props.onChange}
-                    />
-                    {/*<select name='sport' value={props.sport} onChange={props.onChange}>*/}
-                    {/*    {Data.Sports.map(sport => <option key={sport} value={sport}>{sport}</option>)}*/}
-                    {/*</select>*/}
-                    <input type='submit' value='Создать'/>
-                </form>
+                <Form {...layout} onFinish={props.onSubmit}>
+                    <Form.Item name='name' label='Название' rules={[{ required: true, }]}>
+                        <Input/>
+                    </Form.Item>
+                    <Form.Item name='about' label='Описание'>
+                        <Input.TextArea/>
+                    </Form.Item>
+                    <Form.Item name='location' label='Место'>
+                        <Input/>
+                    </Form.Item>
+                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+                        <Button type="primary" htmlType="submit">Создать</Button>
+                    </Form.Item>
+                </Form>
             </div>
-            <Footer />
-        </div>
-    );
+        </BasePage>
+        <Footer />
+    </>);
 }
 
 TeamCreatePageRender.propTypes = {
-    name: propTypes.string.isRequired,
-    about: propTypes.string.isRequired,
-    location: propTypes.string.isRequired,
     onSubmit: propTypes.func.isRequired,
-    onChange: propTypes.func.isRequired,
 };
 
 export default TeamCreatePageRender;
