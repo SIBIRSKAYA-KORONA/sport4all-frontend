@@ -13,7 +13,7 @@ module.exports = {
     devtool: 'source-map',
 
     resolve: {
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
         alias: {
             Components: path.resolve(__dirname, 'src/components/'),
             Pages: path.resolve(__dirname, 'src/pages/'),
@@ -29,6 +29,11 @@ module.exports = {
 
     module: {
         rules: [
+            {
+                test: /\.(ts|tsx)$/,
+                exclude: /node_modules/,
+                use: 'ts-loader'
+            },
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,

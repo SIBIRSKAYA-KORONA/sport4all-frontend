@@ -7,6 +7,7 @@ import './main.scss';
 import store from './store/store';
 import HomePage from 'Pages/Home/render';
 import SignUpPage from 'Pages/SignUp/logic';
+import TestGrid from 'Pages/TestGrid/render';
 import {CONST} from 'Constants';
 import TeamCreatePage from 'Pages/Teams/Create/logic';
 import TeamListPage from 'Pages/Teams/List/logic';
@@ -31,6 +32,9 @@ render(
                 {/* Auth */}
                 <Route path='/signup' component={SignUpPage}/>
                 <Route path='/login' component={LoginPage}/>
+  
+                {/* Test */}
+                <Route path='/test-grid' component={TestGrid}/>
             </Switch>
         </BrowserRouter>
     </Provider>,
