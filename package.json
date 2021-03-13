@@ -19,6 +19,7 @@
     "url": "https://github.com/SIBIRSKAYA-KORONA/sport4all-frontend/issues"
   },
   "dependencies": {
+    "antd": "^4.13.1",
     "i18next": "^19.9.2",
     "i18next-browser-languagedetector": "^6.0.1",
     "node-static": "^0.7.11",
