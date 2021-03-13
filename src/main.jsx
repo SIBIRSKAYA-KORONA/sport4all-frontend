@@ -6,7 +6,6 @@ import './main.scss';
 
 import store from './store/store';
 import HomePage from 'Pages/Home/render';
-import DemoPage from 'Pages/Demo/render';
 import SignUpPage from 'Pages/SignUp/logic';
 import {CONST} from 'Constants';
 import TeamCreatePage from 'Pages/Teams/Create/logic';
@@ -20,7 +19,6 @@ render(
         <BrowserRouter>
             <Switch>
                 <Route exact path='/' component={HomePage}/>
-                <Route path='/demo' component={DemoPage}/>
 
                 {/* Teams */}
                 <Route path='/teams/create' component={TeamCreatePage}/>

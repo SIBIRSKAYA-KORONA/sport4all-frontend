@@ -14,7 +14,7 @@ class TeamListPage extends React.Component {
     }
 
     load() {
-        TeamModel.instance.loadTeams().then(teams => {
+        TeamModel.instance.loadTeams('owner').then(teams => {
             this.props.loadTeams(teams);
         });
     }

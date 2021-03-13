@@ -10,9 +10,9 @@ class TeamCreatePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            description: '',
-            sport: '',
+            name: '',
+            about: '',
+            location: '',
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,21 +21,22 @@ class TeamCreatePage extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        if (!this.state.title || !this.state.sport) return;
+        if (!this.state.name || !this.state.about) return;
         const team = {
-            title: this.state.title,
-            description: this.state.description,
-            sport: this.state.sport
+            name: this.state.name,
+            about: this.state.about,
+            location: this.state.location
         };
-        this.props.createTeam(team);
-        TeamModel.instance.saveTeams().then(() => {
-            this.setState({
-                title: '',
-                description: '',
-                sport: '',
-            });
-            this.props.history.push('/team/list');
-        });
+        TeamModel.instance.createTeam(team)
+            .then(response => { console.log(response); })
+            .catch(error => { console.error(error); })
+            .finally(() => {
+                this.setState({
+                    name: '',
+                    about: '',
+                    location: '',
+                })
+            })
     }
 
     handleInputChange(event) {
@@ -51,9 +52,9 @@ class TeamCreatePage extends React.Component {
             <TeamCreatePageRender
                 onChange={this.handleInputChange}
                 onSubmit={this.handleSubmit}
-                title={this.state.title}
-                description={this.state.description}
-                sport={this.state.sport}
+                name={this.state.name}
+                about={this.state.about}
+                location={this.state.location}
             />
         )
     }

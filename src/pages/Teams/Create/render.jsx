@@ -3,28 +3,38 @@ import propTypes from 'prop-types';
 import './style.scss';
 
 import Footer from 'Components/Footer/render';
-import Data from 'Static/data';
+import Header from 'Components/Header/render';
 
 function TeamCreatePageRender(props) {
     return (
         <div className='page'>
+            <Header/>
             <div className='create-team'>
                 <h1>Создайте свою команду</h1>
                 <form onSubmit={props.onSubmit}>
                     <input
-                        name='title'
+                        name='name'
                         type='text'
-                        value={props.title}
+                        placeholder='name'
+                        value={props.name}
                         onChange={props.onChange}
                     />
                     <textarea
-                        name='description'
-                        value={props.description}
+                        name='about'
+                        placeholder='about'
+                        value={props.about}
                         onChange={props.onChange}
                     />
-                    <select name='sport' value={props.sport} onChange={props.onChange}>
-                        {Data.Sports.map(sport => <option key={sport} value={sport}>{sport}</option>)}
-                    </select>
+                    <input
+                        name='location'
+                        type='text'
+                        placeholder='location'
+                        value={props.location}
+                        onChange={props.onChange}
+                    />
+                    {/*<select name='sport' value={props.sport} onChange={props.onChange}>*/}
+                    {/*    {Data.Sports.map(sport => <option key={sport} value={sport}>{sport}</option>)}*/}
+                    {/*</select>*/}
                     <input type='submit' value='Создать'/>
                 </form>
             </div>
@@ -34,9 +44,9 @@ function TeamCreatePageRender(props) {
 }
 
 TeamCreatePageRender.propTypes = {
-    title: propTypes.string.isRequired,
-    description: propTypes.string.isRequired,
-    sport: propTypes.string.isRequired,
+    name: propTypes.string.isRequired,
+    about: propTypes.string.isRequired,
+    location: propTypes.string.isRequired,
     onSubmit: propTypes.func.isRequired,
     onChange: propTypes.func.isRequired,
 };

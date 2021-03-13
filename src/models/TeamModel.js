@@ -1,5 +1,3 @@
-import { CONST } from 'Constants';
-import store from '../store/store';
 import Network from '../core/network';
 
 // SINGLETON
@@ -26,14 +24,17 @@ class TeamModel {
                     Team
      *************************************/
 
-    async saveTeams() {
-        localStorage.setItem(
-            CONST.LOCAL_STORAGE.TEAMS,
-            JSON.stringify(store.getState().teams));
+    async createTeam(team) {
+        return Network.fetchPost(Network.paths.teams, team)
+            .then(response => {
+                if (response.status > 499) throw new Error('server error');
+                else return response.json();
+            })
+            .catch(error => { throw new Error(error); });
     }
 
-    async loadTeams() {
-        return Network.fetchGet(Network.paths.teams)
+    async loadTeams(role) {
+        return Network.fetchGet(Network.paths.teams + `?role=${role}`)
             .then(response => {
                 console.log(response);
                 return response.json()
