@@ -33,6 +33,18 @@ class TeamModel {
             .catch(error => { throw new Error(error); });
     }
 
+    async loadTeam(tid) {
+        return Network.fetchGet(Network.paths.teams + `/${tid}`)
+            .then(response => {
+                console.log(response);
+                return response.json()
+            })
+            .catch(error => {
+                console.error(error);
+                return null;
+            })
+    }
+
     async loadTeams(role) {
         return Network.fetchGet(Network.paths.teams + `?role=${role}`)
             .then(response => {
@@ -42,6 +54,30 @@ class TeamModel {
             .catch(error => {
                 console.error(error);
                 return [];
+            })
+    }
+
+    async loadPlayersToAdd(tid, nicknamePart, limit) {
+        return Network.fetchGet(Network.paths.teams + `/${tid}/members/search?nickname=${nicknamePart}&limit=${limit}`)
+            .then(response => {
+                if (response.status === 404) return [];
+                return response.json();
+            })
+            .catch(error => {
+                console.error(error);
+                return [];
+            })
+    }
+
+    async addPlayerToTheTeam(tid, uid) {
+        return Network.fetchPost(Network.paths.teams + `/${tid}/members/${uid}?role=player`, { body: 'hello there' })
+            .then(response => {
+                if (response.status > 499) throw new Error('Error!');
+                return response;
+            })
+            .catch(error => {
+                console.error(error);
+                throw error;
             })
     }
 }

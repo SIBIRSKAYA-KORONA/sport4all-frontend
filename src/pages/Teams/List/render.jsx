@@ -21,7 +21,7 @@ function TeamListPageRender(props) {
                     </tr></thead>
                     <tbody>
                         {props.teams.map(team =>
-                            <tr key={team.name + team.description}>
+                            <tr key={team.id} data-id={team.id} onClick={props.onTeamClick}>
                                 <td>{team.name}</td>
                                 <td>{team.about}</td>
                                 <td>{team.location}</td>
@@ -39,6 +39,7 @@ function TeamListPageRender(props) {
 
 TeamListPageRender.propTypes = {
     teams: propTypes.array.isRequired,
+    onTeamClick: propTypes.func.isRequired
 };
 
 export default TeamListPageRender;

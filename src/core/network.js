@@ -11,7 +11,7 @@ export default class Network {
     };
 
     /**
-     * @param path {Network.paths} Path to send the query to
+     * @param path {Network.paths | string} Path to send the query to
      * @return {Promise} Promise for the HTTP request
      */
     static async fetchGet(path) {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
 import './style.scss';
-import { Form, Input, Button } from 'antd';
+import {Form, Input, Button} from 'antd';
 
 import Footer from 'Components/Footer/render';
 import Header from 'Components/Header/render';

@@ -20,7 +20,12 @@ class TeamCreatePage extends React.Component {
             .catch(error => { console.error(error); })
     }
 
-    render = () => (<TeamCreatePageRender onSubmit={this.handleSubmit}/>);
+    render = () => (
+        <TeamCreatePageRender
+            onSubmit={this.handleSubmit}
+            players={this.state.players}
+        />
+    );
 }
 
 TeamCreatePage.propTypes = {
