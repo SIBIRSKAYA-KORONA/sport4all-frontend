@@ -24,7 +24,6 @@ class SignUpPage extends React.Component {
             nickname: this.state.nickname,
             password: this.state.password
         };
-        // this.props.createTeam(team);
         UserModel.instance.signUp(user).then((response) => {
             console.log(response);
             this.setState({

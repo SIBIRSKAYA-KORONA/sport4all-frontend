@@ -15,6 +15,7 @@ class ProfilePage extends React.Component {
 
         UserModel.instance.getLogin()
             .then(response => {
+                console.log(response);
                 if (response) {
                     this.setState({
                         loggedIn: true,
