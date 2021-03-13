@@ -13,7 +13,7 @@ import TeamCreatePage from 'Pages/Teams/Create/logic';
 import TeamListPage from 'Pages/Teams/List/logic';
 import TeamsPage from 'Pages/Teams/Teams/render';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
-import TournamentsPage from 'Pages/Tournaments/Tournaments/render';
+import TournamentsPage from 'Pages/Tournaments/Tournaments/logic';
 import TournamentsListPage from 'Pages/Tournaments/List/render';
 import LoginPage from 'Pages/Login/logic';
 import ProfilePage from 'Pages/Profile/logic';
@@ -33,7 +33,8 @@ render(
                 {/* Tournaments */}
                 <Route path='/tournaments/create' component={TournamentCreatePage}/>
                 <Route path='/tournaments/list' component={TournamentsListPage}/>
-                <Route path='/tournaments' component={TournamentsPage}/>
+                {/* TODO: fix tournament routing*/}
+                <Route path='/tournaments/1' component={TournamentsPage}/>
 
                 <Route path='/profile' component={ProfilePage}/>
 

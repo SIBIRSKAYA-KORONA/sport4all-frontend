@@ -7,6 +7,7 @@ export default class Network {
     static paths = {
         settings: '/settings',
         teams: '/teams',
+        tournaments: '/tournaments',
         sessions: '/sessions'
     };
 

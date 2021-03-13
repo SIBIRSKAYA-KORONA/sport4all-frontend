@@ -1,20 +1,62 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import BasePage from 'Components/BasePage/render';
+import {Avatar, Row, Space, Tabs, Typography} from 'antd'
+import TournamentGridRender from 'Pages/Tournaments/Tournaments/sections/Grid/render';
+import TournamentTableRender from 'Pages/Tournaments/Tournaments/sections/Table/render';
+import TournamentHistoryRender from 'Pages/Tournaments/Tournaments/sections/History/render';
+import TournamentSettingsRender from 'Pages/Tournaments/Tournaments/sections/Settings/render';
+import {useEffect, useState} from 'react';
+import TournamentModel from 'Models/TournamentModel';
 
-import Footer from 'Components/Footer/render';
-import Header from 'Components/Header/render';
+const {Title, Paragraph} = Typography;
 
-function TournamentsPage() {
+function TournamentPageRender() {
+    const [tournamentData, setTournamentData] = useState({});
+    const tournamentId = 1;
+    useEffect(async () => {
+        const gotTournamentData = await TournamentModel.instance.getTournament(tournamentId);
+        const gotTeams = await TournamentModel.instance.getTeams(tournamentId);
+        console.log(gotTournamentData);
+        console.log(gotTeams);
+        setTournamentData({...gotTournamentData, teams: gotTeams});
+    }, [])
+
     return (
-        <div className='page'>
-            <Header/>
-            <div>
-                <Link to='/tournaments/list' className='footer__link'>All Tournaments</Link>
-                <Link to='/tournaments/create' className='footer__link'>Create Tournament</Link>
-            </div>
-            <Footer/>
-        </div>
+        <BasePage>
+            <Row style={{marginBottom: 8}}>
+                <Space size="large" align="center">
+                    <Avatar size={64}/>
+                    <Title style={{marginBottom: 0}}>{tournamentData.name || ''}</Title>
+                </Space>
+            </Row>
+
+            <Row>
+                <Paragraph>
+                    In the process of internal desktop applications development, many different design specs and
+                    implementations would be involved, which might cause designers and developers difficulties and
+                    duplication and reduce the efficiency of development.
+                </Paragraph>
+            </Row>
+
+            <Tabs>
+                <Tabs.TabPane tab="Сетка" key="1">
+                    <TournamentGridRender/>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Таблица" key="2">
+                    <TournamentTableRender/>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="История" key="3">
+                    <TournamentHistoryRender/>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Настройки" key="4">
+                    <TournamentSettingsRender
+                        tournamentId={tournamentData.id || 0}
+                        teams={tournamentData.teams || []}/>
+                </Tabs.TabPane>
+            </Tabs>
+
+        </BasePage>
     )
 }
 
-export default TournamentsPage;
+export default TournamentPageRender;
