@@ -25,19 +25,11 @@ class UserModel {
                     User
      *************************************/
 
-    /**
-     *
-     * @param user {
-     *      nickname: String
-     *      password: String
-     * }
-     * @return {Promise<Object>}
-     */
     async signUp(user) {
         return Network.fetchPost(Network.paths.settings, user).then(
             response => {
-                if (response.status > 499) throw new Error('server error');
-                return response.json();
+                if (response.status === 409) throw 'Такой пользователь существует';
+                if (response.status > 499) throw 'server error';
             },
             error => { throw new Error(error); }
         );
@@ -48,7 +40,7 @@ class UserModel {
             response => {
                 switch (response.status) {
                 case 200: // успешная регистрация
-                    return response.json();
+                    return;
                 case 404: // юзера не существует
                     return new Error('User not exists');
                 case 500:

@@ -25,10 +25,13 @@ class TeamPage extends React.Component {
 
     load(tid) {
         TeamModel.instance.loadTeam(tid)
-            .then(team => this.setState(prevState => ({
-                ...prevState,
-                team: team
-            })))
+            .then(team => {
+                if (!team.players) team.players = [];
+                this.setState(prevState => ({
+                    ...prevState,
+                    team: team
+                }))
+            })
     }
 
     handleSubmit(values) {

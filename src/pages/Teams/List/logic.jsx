@@ -9,7 +9,6 @@ import TeamModel from 'Models/TeamModel';
 class TeamListPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
         this.load();
 
         this.onTeamClick = this.onTeamClick.bind(this);
@@ -27,11 +26,7 @@ class TeamListPage extends React.Component {
         this.props.history.push(`/teams/${id}`);
     }
 
-    render() {
-        return (
-            <TeamListPageRender teams={this.props.teams} onTeamClick={this.onTeamClick}/>
-        )
-    }
+    render = () => (<TeamListPageRender teams={this.props.teams} onTeamClick={this.onTeamClick}/>);
 }
 
 TeamListPage.propTypes = {

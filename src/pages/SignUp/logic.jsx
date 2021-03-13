@@ -9,48 +9,22 @@ class SignUpPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            nickname: '',
-            password: '',
+            error: null,
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        if (!this.state.password || !this.state.nickname) return;
-        const user = {
-            nickname: this.state.nickname,
-            password: this.state.password
-        };
-        UserModel.instance.signUp(user).then((response) => {
-            console.log(response);
-            this.setState({
-                nickname: '',
-                password: '',
-            });
-            history.push('/profile');
-        });
+    handleSubmit(values) {
+        const user = values;
+        const t = this;
+        if (!user.password || !user.nickname) return;
+        UserModel.instance.signUp(user)
+            .then(() => { t.props.history.push('/teams/list'); })
+            .catch(error => { this.setState({ error: error }) });
     }
 
-    handleInputChange(event) {
-        const {name, value} = event.target;
-        this.setState(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    }
-
-    render() {
-        return (
-            <SignUpPageRender
-                onChange={this.handleInputChange}
-                onSubmit={this.handleSubmit}
-                {...this.state}
-            />
-        )
-    }
+    render = () => (<SignUpPageRender onSubmit={this.handleSubmit} error={this.state.error}/>)
 }
 
 SignUpPage.propTypes = {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './style.scss';
 
-import Footer from 'Components/Footer/render';
+// import Footer from 'Components/Footer/render';
 import Thanks from 'Components/Thanks/render';
 import Header from 'Components/Header/render';
 
@@ -10,7 +10,7 @@ function HomePage() {
         <div className='page'>
             <Header />
             <Thanks />
-            <Footer />
+            {/*<Footer />*/}
         </div>
     )
 }

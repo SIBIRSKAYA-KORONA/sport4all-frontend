@@ -16,16 +16,14 @@ class TeamCreatePage extends React.Component {
     handleSubmit(values) {
         if (!values.name) return;
         TeamModel.instance.createTeam(values)
-            .then(response => { console.log(response); })
+            .then(() => {
+                console.log('redirecting');
+                history.push('/teams/list');
+            })
             .catch(error => { console.error(error); })
     }
 
-    render = () => (
-        <TeamCreatePageRender
-            onSubmit={this.handleSubmit}
-            players={this.state.players}
-        />
-    );
+    render = () => (<TeamCreatePageRender onSubmit={this.handleSubmit}/>);
 }
 
 TeamCreatePage.propTypes = {
