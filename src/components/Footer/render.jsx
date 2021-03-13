@@ -9,6 +9,8 @@ function Footer() {
             <div className='footer__list'>
                 <Link to='/' className='footer__link'>Home</Link>
                 <Link to='/teams' className='footer__link'>Teams</Link>
+                <Link to='/tournaments/create' className='footer__link'>Tournament CREATE</Link>
+                <Link to='/tournaments/1' className='footer__link'>Tournament EXAMPLE</Link>
                 <Link to='/profile' className='footer__link'>Profile</Link>
             </div>
             <a className='footer__avatar' href='https://github.com/EgorBedov' target='_blank' rel='noopener noreferrer'>
