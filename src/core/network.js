@@ -5,7 +5,9 @@
 export default class Network {
     static url = 'https://sport4all.tech/api';
     static paths = {
-        settings: '/settings'
+        settings: '/settings',
+        teams: '/teams',
+        sessions: '/sessions'
     };
 
     /**
@@ -16,7 +18,7 @@ export default class Network {
         // const token = getCookie('csrf');
         return fetch(this.url + path, {
             method: 'GET',
-            mode: 'no-cors',
+            mode: 'cors',
             credentials: 'include',
             headers: {
                 // 'X-CSRF-Token': token

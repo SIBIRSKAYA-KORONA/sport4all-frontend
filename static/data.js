@@ -45,6 +45,7 @@ const Data = {
         [CONST.TECH.REACT, ReactIcon],
         [CONST.TECH.REDUX, ReduxIcon],
     ]),
+    Sports: ['football', 'basketball']
 };
 
 export default Data;
