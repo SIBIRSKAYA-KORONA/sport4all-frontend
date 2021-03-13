@@ -42,6 +42,26 @@ class UserModel {
             error => { throw new Error(error); }
         );
     }
+
+    async getLogin(user) {
+        return Network.fetchPost(Network.paths.sessions, user).then(
+            response => {
+                if (response.status > 499) throw new Error('Server error');
+                return response;
+            },
+            error => { throw new Error(error); }
+        );
+    }
+
+    async logout(user) {
+        return Network.fetchDelete(Network.paths.sessions, user).then(
+            response => {
+                if (response.status > 499) throw new Error('Server error');
+                return response.json();
+            },
+            error => { throw new Error(error); }
+        );
+    }
 }
 
 export default UserModel;

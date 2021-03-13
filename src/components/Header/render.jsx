@@ -13,6 +13,7 @@ function Header() {
             <div className='header__list'>
                 <Link to='/teams' className='header__link'>Teams</Link>
                 <Link to='/signup' className='header__link'>Sign Up</Link>
+                <Link to='/login' className='header__link'>Login</Link>
             </div>
         </div>
     );

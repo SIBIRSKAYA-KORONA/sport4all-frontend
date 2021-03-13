@@ -12,6 +12,7 @@ import {CONST} from 'Constants';
 import TeamCreatePage from 'Pages/Teams/Create/logic';
 import TeamListPage from 'Pages/Teams/List/logic';
 import TeamsPage from 'Pages/Teams/Teams/render';
+import LoginPage from 'Pages/Login/logic';
 
 render(
     <Provider store={store}>
@@ -28,6 +29,7 @@ render(
 
                 {/* Auth */}
                 <Route path='/signup' component={SignUpPage}/>
+                <Route path='/login' component={LoginPage}/>
             </Switch>
         </BrowserRouter>
     </Provider>,
