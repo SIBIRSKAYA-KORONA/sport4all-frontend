@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import teamsReducer from 'Reducers/Team';
-import userReducer from 'Reducers/User';
+import userReducer from 'Reducers/UserReducer';
 
 const reducer = combineReducers({
     teams: teamsReducer,
