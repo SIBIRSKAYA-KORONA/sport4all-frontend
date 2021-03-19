@@ -1,5 +1,5 @@
-import * as types from 'Actions/User/UserActionTypes';
-import {UserActionType} from 'Actions/User/UserActionTypes';
+import * as types from './UserActionTypes';
+import {UserActionType} from './UserActionTypes';
 
 export type IUserAction = {
     type: UserActionType
