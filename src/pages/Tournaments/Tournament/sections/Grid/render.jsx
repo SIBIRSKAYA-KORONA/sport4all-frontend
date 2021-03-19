@@ -275,7 +275,7 @@ function TournamentGridRender() {
         ],
         'matchGames': []
     };
-    console.log(data)
+
     const config = {
         participantOriginPlacement: 'before',
         showSlotsOrigin: true,
