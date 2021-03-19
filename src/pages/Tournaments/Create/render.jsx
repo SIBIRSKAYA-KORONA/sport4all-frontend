@@ -1,9 +1,10 @@
 import * as React from 'react';
 
 import Footer from 'Components/Footer/render';
-import {Button, Col, Form, Input, Select} from 'antd';
+import {Button, Col, Form} from 'antd';
 import BasePage from 'Components/BasePage/render';
 import PropTypes from 'prop-types'
+import PublicInfoFormItemsRender from 'Pages/Tournaments/Shared/PublicInfoFormItems/render';
 
 const formColLayout = {
     offset: 6,
@@ -15,6 +16,10 @@ const layout = {
     wrapperCol: {span: 14},
 };
 
+const tailLayout = {
+    wrapperCol: { offset: 10 },
+};
+
 function TournamentCreatePageRender(props) {
     return (
         <BasePage>
@@ -23,47 +28,15 @@ function TournamentCreatePageRender(props) {
                     {...layout}
                     onFinish={props.onSubmit}
                 >
-                    <Form.Item
-                        label="Название турнира"
-                        name="tournamentName"
-                        rules={[{required: true, message: 'Введите название турнира'}]}
-                    >
-                        <Input/>
-                    </Form.Item>
-
-                    <Form.Item
-                        label="Вид спорта"
-                        name="sportType"
-                        rules={[{required: true, message: 'Выберите вид спорта'}]}
-                    >
-                        <Select>
-                            <Select.Option value="football">Футбол</Select.Option>
-                            <Select.Option value="basketball">Баскетбол</Select.Option>
-                            <Select.Option value="swimming">Плавание</Select.Option>
-                        </Select>
-                    </Form.Item>
-
-                    <Form.Item
-                        label="Система турнира"
-                        name="tournamentSystem"
-                    >
-                        <Select>
-                            <Select.Option value="round-robin">Круговая</Select.Option>
-                            <Select.Option value="single-elimination">Олимпийская</Select.Option>
-                            <Select.Option value="double-elimination">На выбывание</Select.Option>
-                        </Select>
-                    </Form.Item>
-
-                    <Form.Item>
+                    <PublicInfoFormItemsRender onSubmit={props.onSubmit}/>
+                    <Form.Item {...tailLayout}>
                         <Button type="primary" htmlType="submit">
                             Создать
                         </Button>
                     </Form.Item>
-
                 </Form>
             </Col>
             <Footer/>
-
         </BasePage>
     )
 }

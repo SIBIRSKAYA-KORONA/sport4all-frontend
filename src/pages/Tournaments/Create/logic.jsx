@@ -13,15 +13,18 @@ class TournamentCreatePage extends React.Component {
     /**
      *
      * @param {Object} tournamentData - object with tournament data
-     * @param {String} tournamentData.tournamentName - Name of the tournament
-     * @param {String} tournamentData.sportType - Type of sport
-     * @param {String} [tournamentData.tournamentSystem] - Tournament system
+     * @param {String} tournamentData.name - Name of the tournament
+     * @param {String} [tournamentData.about] - Tournament description
+     * @param {String} [tournamentData.sportType] - Type of sport
+     * @param {String} [tournamentData.systemType] - Tournament system type
      */
     handleSubmit(tournamentData) {
         // TODO: pass location
         const payload = {
             'location': 'Moscow',
-            'name': tournamentData.tournamentName
+            'name': tournamentData.name,
+            'about': tournamentData.about,
+            'system': 1,
         }
 
         TournamentModel.instance.createTournament(payload)

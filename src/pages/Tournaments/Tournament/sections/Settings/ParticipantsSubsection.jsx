@@ -4,8 +4,7 @@ import PropTypes from 'prop-types'
 import TournamentModel from 'Models/TournamentModel';
 
 
-
-function TournamentSettingsRender(props) {
+function ParticipantsSubsection(props) {
     const addTeam = async (teamId) => {
         await TournamentModel.instance.addTeam(props.tournamentId, teamId);
         console.log('ADDED');
@@ -47,9 +46,9 @@ function TournamentSettingsRender(props) {
     )
 }
 
-TournamentSettingsRender.propTypes = {
+ParticipantsSubsection.propTypes = {
     tournamentId: PropTypes.number.isRequired,
     teams: PropTypes.arrayOf(PropTypes.object).isRequired
 }
 
-export default TournamentSettingsRender;
+export default ParticipantsSubsection;

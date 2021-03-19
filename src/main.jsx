@@ -14,7 +14,7 @@ import TeamListPage from 'Pages/Teams/List/logic';
 import TeamsPage from 'Pages/Teams/Teams/render';
 import TeamPage from 'Pages/Teams/Team/logic';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
-import TournamentsPage from 'Pages/Tournaments/Tournaments/logic';
+import TournamentsPage from 'Pages/Tournaments/Tournament/logic';
 import TournamentsListPage from 'Pages/Tournaments/List/render';
 import LoginPage from 'Pages/Login/logic';
 import ProfilePage from 'Pages/Profile/logic';
