@@ -1,9 +1,7 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import TeamPageRender from './render';
-import { createTeam } from 'Actions/Team/TeamActions';
 import TeamModel from 'Models/TeamModel';
 
 class TeamPage extends React.Component {
@@ -15,12 +13,14 @@ class TeamPage extends React.Component {
             selectedPlayer: null,
         };
 
-        this.load(this.props.match.params.id);
-
         this.handleSubmit = this.handleSubmit.bind(this);
         this.loadPlayers = this.loadPlayers.bind(this);
         this.selectPlayer = this.selectPlayer.bind(this);
         this.addPlayer = this.addPlayer.bind(this);
+    }
+
+    componentDidMount() {
+        this.load(this.props.match.params.id);
     }
 
     load(tid) {
@@ -93,9 +93,8 @@ class TeamPage extends React.Component {
 }
 
 TeamPage.propTypes = {
-    createTeam: propTypes.func.isRequired,
     history: propTypes.object.isRequired,
     match: propTypes.object.isRequired,
 };
 
-export default connect(null, { createTeam })(TeamPage);
+export default TeamPage;

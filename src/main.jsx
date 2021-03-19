@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './main.scss';
 
-import store from './store/store';
+import store from 'Store/store';
 import HomePage from 'Pages/Home/render';
 import SignUpPage from 'Pages/SignUp/logic';
 import TestGrid from 'Pages/TestGrid/render';

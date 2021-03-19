@@ -1,9 +1,7 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import TeamCreatePageRender from './render';
-import { createTeam } from 'Actions/Team/TeamActions';
 import TeamModel from 'Models/TeamModel';
 
 class TeamCreatePage extends React.Component {
@@ -31,4 +29,4 @@ TeamCreatePage.propTypes = {
     history: propTypes.object.isRequired,
 };
 
-export default connect(null, { createTeam })(TeamCreatePage);
+export default TeamCreatePage;
