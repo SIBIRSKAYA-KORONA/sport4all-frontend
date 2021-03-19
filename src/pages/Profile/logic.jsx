@@ -10,32 +10,30 @@ class ProfilePage extends React.Component {
         super(props);
         this.state = {
             loggedIn: null, // null, false, true
-            nickname: '',
         };
-
-        UserModel.instance.getLogin()
-            .then(response => {
-                console.log(response);
-                if (response) {
-                    this.setState({
-                        loggedIn: true,
-                        nickname: response.nickname
-                    });
-                } else {
-                    this.setState({
-                        loggedIn: false
-                    });
-                }
-            });
     }
 
-    render() {
-        return (
-            <ProfilePageRender
-                {...this.state}
-            />
-        )
+    componentDidMount() {
+        UserModel.instance.getProfile().then(user => {
+            console.log(user);
+            if (user) {
+                this.setState({
+                    loggedIn: true,
+                    user: user,
+                });
+            } else {
+                this.setState({
+                    loggedIn: false
+                });
+            }
+        });
     }
+
+    render = () => (
+        <ProfilePageRender
+            {...this.state}
+        />
+    );
 }
 
 ProfilePage.propTypes = {

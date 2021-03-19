@@ -35,6 +35,17 @@ class UserModel {
         );
     }
 
+    async getProfile() {
+        return Network.fetchGet(Network.paths.settings).then(
+            response => {
+                if (response.status > 499) throw new Error('Server error');
+                if (response.status === 404) throw new Error('Not found');
+                return response.json();
+            },
+            error => { throw new Error(error); }
+        );
+    }
+
     async getLogin(user) {
         return Network.fetchPost(Network.paths.sessions, user).then(
             response => {

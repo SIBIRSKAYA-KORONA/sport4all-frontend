@@ -10,6 +10,7 @@ function Header() {
                 <Link to='/teams' className='header__link'>Команды</Link>
                 <Link to='/signup' className='header__link'>Sign Up</Link>
                 <Link to='/login' className='header__link'>Login</Link>
+                <Link to='/profile' className='header__link'>Profile</Link>
             </div>
         </div>
     );
