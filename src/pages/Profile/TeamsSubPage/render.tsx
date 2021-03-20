@@ -36,7 +36,7 @@ const TeamsSubPage = (props:RouteComponentProps):JSX.Element => {
 
     return (<>
         <Space direction='vertical'>
-            <Space size='large'>
+            <Space size='large' align='baseline'>
                 <Title level={3}>Тренирую</Title>
                 <Button type='link' href={CONST.PATHS.teams.create}>Создать</Button>
             </Space>
@@ -51,7 +51,7 @@ const TeamsSubPage = (props:RouteComponentProps):JSX.Element => {
         <Divider/>
 
         <Space direction='vertical'>
-            <Space size='large'>
+            <Space size='large' align='baseline'>
                 <Title level={3}>Играю</Title>
                 {/*<Button type='link'>Вступить</Button>*/}
             </Space>

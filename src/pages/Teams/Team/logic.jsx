@@ -10,6 +10,7 @@ class TeamPage extends React.Component {
         super(props);
         this.state = {
             team: null,
+            loading: true,
             playersToAdd: [],
             selectedPlayer: null,
             canEdit: false,
@@ -41,7 +42,8 @@ class TeamPage extends React.Component {
                     ...prevState,
                     team: team
                 }))
-            })
+            })// todo: handle error
+            .finally(() => this.setState(prev => ({ ...prev, loading: false })));
     }
 
     handleSubmit(values) {
@@ -107,15 +109,13 @@ class TeamPage extends React.Component {
 
     render = () => (
         <TeamPageRender
-            canEdit={this.state.canEdit}
             onDelete={this.onPlayerDelete}
             onSubmit={this.handleSubmit}
             loadPlayers={this.loadPlayers}
-            team={this.state.team}
-            playersToAdd={this.state.playersToAdd}
             addPlayer={this.addPlayer}
             selectPlayer={this.selectPlayer}
-            selectedPlayer={this.state.selectedPlayer}/>
+            {...this.state}
+        />
     );
 }
 
