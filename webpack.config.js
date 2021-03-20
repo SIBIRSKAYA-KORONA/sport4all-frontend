@@ -18,12 +18,11 @@ module.exports = {
             Components: path.resolve(__dirname, 'src/components/'),
             Pages: path.resolve(__dirname, 'src/pages/'),
             Models: path.resolve(__dirname, 'src/models/'),
-            Actions: path.resolve(__dirname, 'src/store/actions/'),
-            Reducers: path.resolve(__dirname, 'src/store/reducers/'),
+            Store: path.resolve(__dirname, 'src/store/'),
             Static: path.resolve(__dirname, 'static/'),
             Utils: path.resolve(__dirname, 'src/utils/'),
-            Constants$: path.resolve(__dirname, 'src/utils/constants.js'),
-            Interfaces$: path.resolve(__dirname, 'src/utils/interfaces.js')
+            Constants$: path.resolve(__dirname, 'src/utils/constants.ts'),
+            // Interfaces$: path.resolve(__dirname, 'src/utils/interfaces.js')
         }
     },
 
@@ -32,7 +31,10 @@ module.exports = {
             {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
-                use: 'ts-loader'
+                use: [
+                    'ts-loader',
+                    // 'eslint-loader'
+                ]
             },
             {
                 test: /\.(js|jsx)$/,

@@ -1,4 +1,5 @@
 import Network from '../core/network';
+import {ForbiddenError, NotAuthorizedError, ServerError} from 'Utils/errors';
 
 // SINGLETON
 const teamModelSymbol = Symbol('Model for team');
@@ -78,6 +79,21 @@ class TeamModel {
             .catch(error => {
                 console.error(error);
                 throw error;
+            })
+    }
+
+    async removePlayerFromTheTeam(tid, uid) {
+        return Network.fetchDelete(`${Network.paths.teams}/${tid}/members/${uid}`)
+            .then(res => {
+                switch (res.status) {
+                case 200: return;
+                case 401: throw NotAuthorizedError;
+                case 403: throw ForbiddenError;
+                default: throw ServerError;
+                }
+            }).catch(e => {
+                console.error(e);
+                throw ServerError;
             })
     }
 }

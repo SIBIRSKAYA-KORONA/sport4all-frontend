@@ -1,31 +1,10 @@
 import Network from '../core/network';
-
-// SINGLETON
-const userModelSymbol = Symbol('Model for user');
-const userModelEnforcer = Symbol('The only object that can create UserModel');
+import { NotFoundError, ServerError, NotAuthorizedError } from 'Utils/errors';
+import store from 'Store/store';
+import { loginUser, logoutUser } from 'Store/User/UserActions';
 
 class UserModel {
-    constructor(enforcer) {
-        if (enforcer !== userModelEnforcer) {
-            throw 'Instantiation failed: use UsersModel.instance instead of new()';
-        }
-    }
-
-    static get instance() {
-        if (!this[userModelSymbol])
-            this[userModelSymbol] = new UserModel(userModelEnforcer);
-        return this[userModelSymbol];
-    }
-
-    static set instance(v) {
-        throw 'Can\'t change constant property!';
-    }
-
-    /**************************************
-                    User
-     *************************************/
-
-    async signUp(user) {
+    static async signUp(user) {
         return Network.fetchPost(Network.paths.settings, user).then(
             response => {
                 if (response.status === 409) throw 'Такой пользователь существует';
@@ -35,23 +14,41 @@ class UserModel {
         );
     }
 
-    async getLogin(user) {
+    /**
+     * @return {Promise<Object | IError>}
+     */
+    static async getProfile() {
+        return Network.fetchGet(Network.paths.settings).then(
+            response => {
+                if (response.status > 499) throw ServerError;
+                if (response.status === 404) throw NotFoundError;
+                if (response.status === 401) throw NotAuthorizedError;
+                return response.json();
+            },
+            error => { throw new Error(error); }
+        );
+    }
+
+    /**
+     *
+     * @param user
+     * @return {Promise<Object | IError>}
+     */
+    static async getLogin(user) {
         return Network.fetchPost(Network.paths.sessions, user).then(
             response => {
                 switch (response.status) {
                 case 200: // успешная регистрация
                     return;
-                case 404: // юзера не существует
-                    return new Error('User not exists');
-                case 500:
-                    return new Error('Server error');
+                case 404: throw NotFoundError;
+                case 500: throw ServerError;
                 }
             },
             error => { throw new Error(error); }
         );
     }
 
-    async logout(user) {
+    static async logout(user) {
         return Network.fetchDelete(Network.paths.sessions, user).then(
             response => {
                 if (response.status > 499) throw new Error('Server error');
@@ -59,6 +56,18 @@ class UserModel {
             },
             error => { throw new Error(error); }
         );
+    }
+
+    static async checkAndSetAuth() {
+        return this.getProfile()
+            .then(() => {
+                store.dispatch(loginUser());
+                return true;
+            })
+            .catch(e => {
+                store.dispatch(logoutUser());
+                throw e;
+            });
     }
 }
 

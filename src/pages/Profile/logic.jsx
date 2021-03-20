@@ -2,44 +2,37 @@ import * as React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import ProfilePageRender from './render';
+import ProfilePageRender from './render.tsx';
+import { loginUser } from 'Store/User/UserActions';
 import UserModel from 'Models/UserModel';
 
 class ProfilePage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loggedIn: null, // null, false, true
-            nickname: '',
-        };
-
-        UserModel.instance.getLogin()
-            .then(response => {
-                console.log(response);
-                if (response) {
-                    this.setState({
-                        loggedIn: true,
-                        nickname: response.nickname
-                    });
-                } else {
-                    this.setState({
-                        loggedIn: false
-                    });
-                }
-            });
+    state = {
+        user: null,
     }
 
-    render() {
-        return (
-            <ProfilePageRender
-                {...this.state}
-            />
-        )
+    componentDidMount() {
+        UserModel.getProfile().then(user => {
+            this.setState({ user:user });
+        })
     }
+
+    render = () => (
+        <ProfilePageRender
+            {...this.state}
+            {...this.props}
+        />
+    );
 }
 
 ProfilePage.propTypes = {
     history: propTypes.object.isRequired,
+    loginUser: propTypes.func.isRequired,
+    isAuthenticated: propTypes.bool
 };
 
-export default connect(null, null)(ProfilePage);
+const mapStateToProps = (state) => ({
+    isAuthenticated: state.user.isAuthenticated
+});
+
+export default connect(mapStateToProps, { loginUser })(ProfilePage);
