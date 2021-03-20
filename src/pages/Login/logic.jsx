@@ -13,7 +13,7 @@ class LoginPage extends React.Component {
 
     handleSubmit(values) {
         if (!values.password || !values.nickname) return;
-        UserModel.instance.getLogin(values).then(() => {
+        UserModel.getLogin(values).then(() => {
             this.props.history.push('/teams/list');
         });
     }

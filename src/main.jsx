@@ -8,7 +8,7 @@ import store from 'Store/store';
 import HomePage from 'Pages/Home/render';
 import SignUpPage from 'Pages/SignUp/logic';
 import TestGrid from 'Pages/TestGrid/render';
-import {CONST} from 'Constants';
+import CONST from 'Utils/constants';
 import TeamCreatePage from 'Pages/Teams/Create/logic';
 import TeamListPage from 'Pages/Teams/List/logic';
 import TeamsPage from 'Pages/Teams/Teams/render';
@@ -40,7 +40,7 @@ render(
 
                 {/* Auth */}
                 <Route path='/signup' component={SignUpPage}/>
-                <Route path='/login' component={LoginPage}/>
+                <Route path={CONST.PATHS.login} component={LoginPage}/>
 
                 {/* Test */}
                 <Route path='/test-grid' component={TestGrid}/>

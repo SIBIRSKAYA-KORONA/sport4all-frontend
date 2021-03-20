@@ -4,29 +4,33 @@ import { connect } from 'react-redux';
 
 import ProfilePageRender from './render';
 import UserModel from 'Models/UserModel';
+import { loginUser } from 'Store/User/UserActions';
+import CONST from 'Utils/constants';
+import {NotAuthorizedError} from 'Utils/errors';
 
 class ProfilePage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            loggedIn: null, // null, false, true
-        };
     }
 
     componentDidMount() {
-        UserModel.instance.getProfile().then(user => {
-            console.log(user);
-            if (user) {
-                this.setState({
-                    loggedIn: true,
-                    user: user,
-                });
-            } else {
-                this.setState({
-                    loggedIn: false
-                });
-            }
-        });
+        if (this.props.isAuthenticated === false) {
+            this.props.history.push('/login');
+        } else {
+            UserModel.getProfile().then(user => {
+                if (user) {
+                    if (!this.props.isAuthenticated) this.props.loginUser();
+                    this.setState({
+                        user: user,
+                    });
+                }
+            }).catch(error => {
+                switch (error) {
+                case NotAuthorizedError: this.props.history.push(CONST.PATHS.login); break;
+                default: console.error(error);
+                }
+            });
+        }
     }
 
     render = () => (
@@ -38,6 +42,12 @@ class ProfilePage extends React.Component {
 
 ProfilePage.propTypes = {
     history: propTypes.object.isRequired,
+    loginUser: propTypes.func.isRequired,
+    isAuthenticated: propTypes.bool
 };
 
-export default connect(null, null)(ProfilePage);
+const mapStateToProps = (state) => ({
+    isAuthenticated: state.isAuthenticated
+});
+
+export default connect(mapStateToProps, { loginUser })(ProfilePage);

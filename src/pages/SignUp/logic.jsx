@@ -19,7 +19,7 @@ class SignUpPage extends React.Component {
         const user = values;
         const t = this;
         if (!user.password || !user.nickname) return;
-        UserModel.instance.signUp(user)
+        UserModel.signUp(user)
             .then(() => { t.props.history.push('/teams/list'); })
             .catch(error => { this.setState({ error: error }) });
     }

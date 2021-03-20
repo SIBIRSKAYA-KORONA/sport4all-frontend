@@ -1,31 +1,8 @@
 import Network from '../core/network';
-
-// SINGLETON
-const userModelSymbol = Symbol('Model for user');
-const userModelEnforcer = Symbol('The only object that can create UserModel');
+import { NotFoundError, ServerError, NotAuthorizedError } from 'Utils/errors';
 
 class UserModel {
-    constructor(enforcer) {
-        if (enforcer !== userModelEnforcer) {
-            throw 'Instantiation failed: use UsersModel.instance instead of new()';
-        }
-    }
-
-    static get instance() {
-        if (!this[userModelSymbol])
-            this[userModelSymbol] = new UserModel(userModelEnforcer);
-        return this[userModelSymbol];
-    }
-
-    static set instance(v) {
-        throw 'Can\'t change constant property!';
-    }
-
-    /**************************************
-                    User
-     *************************************/
-
-    async signUp(user) {
+    static async signUp(user) {
         return Network.fetchPost(Network.paths.settings, user).then(
             response => {
                 if (response.status === 409) throw 'Такой пользователь существует';
@@ -35,18 +12,23 @@ class UserModel {
         );
     }
 
-    async getProfile() {
+    /**
+     *
+     * @return {Promise<Object | IError>}
+     */
+    static async getProfile() {
         return Network.fetchGet(Network.paths.settings).then(
             response => {
-                if (response.status > 499) throw new Error('Server error');
-                if (response.status === 404) throw new Error('Not found');
+                if (response.status > 499) throw ServerError;
+                if (response.status === 404) throw NotFoundError;
+                if (response.status === 401) throw NotAuthorizedError;
                 return response.json();
             },
             error => { throw new Error(error); }
         );
     }
 
-    async getLogin(user) {
+    static async getLogin(user) {
         return Network.fetchPost(Network.paths.sessions, user).then(
             response => {
                 switch (response.status) {
@@ -62,7 +44,7 @@ class UserModel {
         );
     }
 
-    async logout(user) {
+    static async logout(user) {
         return Network.fetchDelete(Network.paths.sessions, user).then(
             response => {
                 if (response.status > 499) throw new Error('Server error');

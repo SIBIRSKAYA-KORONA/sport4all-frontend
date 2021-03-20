@@ -1,5 +1,6 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
+import { connect } from 'react-redux';
 import './style.scss';
 
 import {Avatar, Col, Row, Tabs, Typography} from 'antd';
@@ -15,7 +16,7 @@ const {TabPane} = Tabs;
 const ProfilePageRender = (props) => (<>
     <Header/>
     <BasePage>
-        <>{!props.loggedIn && <h1 className='login__header'>Not authorized</h1>}</>
+        <>{!props.isAuthenticated && <h1 className='login__header'>Not authorized</h1>}</>
         {props.user &&
             <Row>
                 <Col flex='100px'>
@@ -47,8 +48,11 @@ const ProfilePageRender = (props) => (<>
 
 ProfilePageRender.propTypes = {
     user: propTypes.object,
-    loggedIn: propTypes.bool,
-    nickname: propTypes.string,
+    isAuthenticated: propTypes.bool
 };
 
-export default ProfilePageRender;
+const mapStateToProps = state => ({
+    isAuthenticated: state.isAuthenticated
+});
+
+export default connect(mapStateToProps)(ProfilePageRender);
