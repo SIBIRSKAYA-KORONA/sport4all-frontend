@@ -5,38 +5,16 @@ import { connect } from 'react-redux';
 import SignUpPageRender from './render';
 import UserModel from 'Models/UserModel';
 import CONST from 'Constants';
-import { loginUser, logoutUser } from 'Store/User/UserActions';
+import { loginUser } from 'Store/User/UserActions';
 
 class SignUpPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
             error: null,
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        const onTrue = () => this.props.history.push(CONST.PATHS.profile);
-        const onFalse = () => this.setState(prevState => ({ ...prevState, loading: false }));
-
-        switch (this.props.isAuthenticated) {
-        case null:
-            UserModel.checkAuth()
-                .then(() => {
-                    this.props.loginUser();
-                    onTrue();
-                })
-                .catch(() => {
-                    this.props.logoutUser();
-                    onFalse();
-                })
-            break;
-        case true: onTrue(); break;
-        case false: onFalse(); break;
-        }
     }
 
     handleSubmit(values) {
@@ -56,7 +34,6 @@ class SignUpPage extends React.Component {
 SignUpPage.propTypes = {
     history: propTypes.object.isRequired,
     loginUser: propTypes.func.isRequired,
-    logoutUser: propTypes.func.isRequired,
     isAuthenticated: propTypes.bool
 };
 
@@ -64,4 +41,4 @@ const mapStateToProps = state => ({
     isAuthenticated: state.user.isAuthenticated
 });
 
-export default connect(mapStateToProps, { loginUser, logoutUser })(SignUpPage);
+export default connect(mapStateToProps, { loginUser })(SignUpPage);
