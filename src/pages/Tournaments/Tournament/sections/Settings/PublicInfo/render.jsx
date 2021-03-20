@@ -1,18 +1,19 @@
 import * as React from 'react';
 import {Button, Form} from 'antd';
 import PublicInfoFormItemsRender from 'Pages/Tournaments/Shared/PublicInfoFormItems/render';
+import PropTypes from 'prop-types'
 
 const layout = {
     labelCol: {span: 10},
     wrapperCol: {span: 14},
 };
 
-function PublicInfoSubsection() {
+function PublicInfoRender(props) {
     return (
         /*TODO: call api*/
         <Form
             {...layout}
-            onFinish={() => console.log('SAVE ME')}
+            onFinish={props.onSubmit}
         >
             <PublicInfoFormItemsRender />
             <Form.Item>
@@ -24,4 +25,8 @@ function PublicInfoSubsection() {
     )
 }
 
-export default PublicInfoSubsection;
+PublicInfoRender.propTypes = {
+    onSubmit: PropTypes.func.isRequired
+}
+
+export default PublicInfoRender;

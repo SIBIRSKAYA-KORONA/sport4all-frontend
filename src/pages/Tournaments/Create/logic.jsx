@@ -21,7 +21,7 @@ class TournamentCreatePage extends React.Component {
     handleSubmit(tournamentData) {
         // TODO: pass location
         const payload = {
-            'location': 'Moscow',
+            'location': tournamentData.location,
             'name': tournamentData.name,
             'about': tournamentData.about,
             'system': 1,

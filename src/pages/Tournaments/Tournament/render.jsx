@@ -69,7 +69,7 @@ const renderLoaded = (props) => {
                     <TournamentHistoryRender/>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab={'Настройки'} key={TournamentPageRender.sections[3]}>
-                    < TournamentSettingsRender
+                    <TournamentSettingsRender
                         tournamentId={props.tournamentData.id}
                         teams={props.tournamentData.teams || []}/>
                 </Tabs.TabPane>

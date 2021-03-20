@@ -37,7 +37,17 @@ class TournamentModel {
     async getTournament(tournamentId) {
         return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}`)
             .then(response => {
-                console.log(response);
+                return response.json();
+            })
+            .catch(error => {
+                console.error(error);
+                return undefined;
+            })
+    }
+
+    async updateTournament(tournamentId, newData) {
+        return Network.fetchPut(Network.paths.tournaments + `/${tournamentId}`, newData)
+            .then(response => {
                 return response.json();
             })
             .catch(error => {
@@ -49,7 +59,6 @@ class TournamentModel {
     async getTeams(tournamentId) {
         return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}/teams`)
             .then(response => {
-                console.log(response);
                 return response.json();
             })
             .catch(error => {
@@ -61,7 +70,17 @@ class TournamentModel {
     async addTeam(tournamentId, teamId) {
         return Network.fetchPut(Network.paths.tournaments + `/${tournamentId}/teams/${teamId}`, {})
             .then(response => {
-                console.log(response);
+                return response.json();
+            })
+            .catch(error => {
+                console.error(error);
+                return undefined;
+            })
+    }
+
+    async removeTeam(tournamentId, teamId) {
+        return Network.fetchDelete(Network.paths.tournaments + `/${tournamentId}/teams/${teamId}`, {})
+            .then(response => {
                 return response.json();
             })
             .catch(error => {
@@ -73,7 +92,6 @@ class TournamentModel {
     async loadTournaments(role) {
         return Network.fetchGet(Network.paths.tournaments + `?role=${role}`)
             .then(response => {
-                console.log(response);
                 return response.json()
             })
             .catch(error => {

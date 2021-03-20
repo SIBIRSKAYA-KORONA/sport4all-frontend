@@ -80,6 +80,18 @@ class TeamModel {
                 throw error;
             })
     }
+
+    async searchTeams(namePart, limit) {
+        const encodedNamePart = encodeURIComponent(namePart);
+        return Network.fetchGet(Network.paths.teams + `/search?name=${encodedNamePart}&limit=${limit}`)
+            .then(response => {
+                return response.json()
+            })
+            .catch(error => {
+                console.error(error);
+                return null;
+            })
+    }
 }
 
 export default TeamModel;
