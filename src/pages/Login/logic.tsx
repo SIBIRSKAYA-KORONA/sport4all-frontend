@@ -7,7 +7,6 @@ import UserModel from 'Models/UserModel';
 import {IUserAction, loginUser, logoutUser} from 'Store/User/UserActions';
 import {UserAuthenticatedType} from 'Store/User/UserState';
 import CONST from 'Constants';
-import {NotFoundError} from 'Utils/errors';
 
 interface IProps extends RouteComponentProps  {
     isAuthenticated: UserAuthenticatedType,
@@ -18,31 +17,7 @@ interface IProps extends RouteComponentProps  {
 class LoginPage extends React.Component<IProps> {
     constructor(props) {
         super(props);
-        this.state = {
-            loading: true,
-        }
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        const onTrue = () => this.props.history.push(CONST.PATHS.profile);
-        const onFalse = () => this.setState(prevState => ({ ...prevState, loading: false }));
-
-        switch (this.props.isAuthenticated) {
-        case null:
-            UserModel.checkAuth()
-                .then(() => {
-                    this.props.loginUser();
-                    onTrue();
-                })
-                .catch(() => {
-                    this.props.logoutUser();
-                    onFalse();
-                })
-            break;
-        case true: onTrue(); break;
-        case false: onFalse(); break;
-        }
     }
 
     handleSubmit(values) {
@@ -58,7 +33,7 @@ class LoginPage extends React.Component<IProps> {
     }
 
     render = ():JSX.Element => (
-        <LoginPageRender onSubmit={this.handleSubmit}  {...this.state} />
+        <LoginPageRender onSubmit={this.handleSubmit} />
     )
 }
 

@@ -17,7 +17,7 @@ import TournamentsPage from 'Pages/Tournaments/Tournaments/logic';
 import TournamentsListPage from 'Pages/Tournaments/List/render';
 import LoginPage from 'Pages/Login/logic';
 import ProfilePage from 'Pages/Profile/logic';
-import LoggedInRoute from 'Utils/LoggedInRoute';
+import AuthedRoute from 'Utils/AuthedRoute';
 
 render(
     <Provider store={store}>
@@ -26,20 +26,20 @@ render(
                 <Route exact path='/' component={HomePage}/>
 
                 {/* Teams */}
-                <Route path={CONST.PATHS.teams.create} component={TeamCreatePage}/>
+                <AuthedRoute path={CONST.PATHS.teams.create} component={TeamCreatePage} mustBeLogged='in'/>
                 <Route path={CONST.PATHS.teams.id(null)} component={TeamPage}/>
                 <Route path={CONST.PATHS.teams.base} component={TeamsPage}/>
 
                 {/* Tournaments */}
-                <Route path='/tournaments/create' component={TournamentCreatePage}/>
+                <AuthedRoute path='/tournaments/create' component={TournamentCreatePage} mustBeLogged='in'/>
                 <Route path='/tournaments/list' component={TournamentsListPage}/>
                 <Route path='/tournaments/:tournamentId' component={TournamentsPage}/>
 
-                <LoggedInRoute path={CONST.PATHS.profile} component={ProfilePage}/>
+                <AuthedRoute path={CONST.PATHS.profile} component={ProfilePage} mustBeLogged='in'/>
 
                 {/* Auth */}
-                <Route path='/signup' component={SignUpPage}/>
-                <Route path={CONST.PATHS.login} component={LoginPage}/>
+                <AuthedRoute path={CONST.PATHS.signup} component={SignUpPage} mustBeLogged='out'/>
+                <AuthedRoute path={CONST.PATHS.login} component={LoginPage} mustBeLogged='out'/>
 
                 {/* Test */}
                 <Route path='/test-grid' component={TestGrid}/>

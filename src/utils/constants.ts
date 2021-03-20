@@ -1,6 +1,7 @@
 const CONST = {
     PATHS: {
         login: '/login',
+        signup: '/signup',
         profile: '/profile',
         teams: {
             base: '/teams',
