@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Form, Input, Select} from 'antd';
+import PropTypes from 'prop-types'
 
-
-function PublicInfoFormItemsRender() {
+function PublicInfoFormItemsRender(props) {
     return (
         <>
             <Form.Item
@@ -10,14 +10,14 @@ function PublicInfoFormItemsRender() {
                 name="name"
                 rules={[{required: true, message: 'Введите название турнира'}]}
             >
-                <Input/>
+                <Input defaultValue={props.name}/>
             </Form.Item>
 
             <Form.Item
                 label="Описание"
                 name="about"
             >
-                <Input.TextArea/>
+                <Input.TextArea defaultValue={props.description}/>
             </Form.Item>
 
             <Form.Item
@@ -25,9 +25,9 @@ function PublicInfoFormItemsRender() {
                 name="systemType"
             >
                 <Select>
-                    <Select.Option value="round-robin">Круговая</Select.Option>
-                    <Select.Option value="single-elimination">Олимпийская</Select.Option>
-                    <Select.Option value="double-elimination">На выбывание</Select.Option>
+                    <Select.Option value={PublicInfoFormItemsRender.systemTypes[0]}>Круговая</Select.Option>
+                    <Select.Option value={PublicInfoFormItemsRender.systemTypes[1]}>Олимпийская</Select.Option>
+                    <Select.Option value={PublicInfoFormItemsRender.systemTypes[2]}>На выбывание</Select.Option>
                 </Select>
             </Form.Item>
 
@@ -36,10 +36,19 @@ function PublicInfoFormItemsRender() {
                 label="Место проведения"
                 name="location"
             >
-                <Input/>
+                <Input defaultValue={props.location}/>
             </Form.Item>
         </>
     )
+}
+
+PublicInfoFormItemsRender.systemTypes = ['round-robin', 'single-elimination', 'double-elimination']
+
+PublicInfoFormItemsRender.propTypes = {
+    name: PropTypes.string,
+    description: PropTypes.string,
+    systemType: PropTypes.string.oneOf(PublicInfoFormItemsRender.systemTypes),
+    location: PropTypes.string
 }
 
 export default PublicInfoFormItemsRender;
