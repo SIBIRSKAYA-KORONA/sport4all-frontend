@@ -1,12 +1,20 @@
 import * as React from 'react';
-import propTypes from 'prop-types';
+import { RouteComponentProps } from 'react-router-dom';
 import './style.scss';
 
-import {Form, Input, Button} from 'antd';
+import { Form, Input, Button } from 'antd';
+
 import BasePage from 'Components/BasePage/render';
+import TeamModel from 'Models/TeamModel';
 
 
-function TeamCreatePageRender(props) {
+const TeamCreatePage = (props:RouteComponentProps):JSX.Element => {
+    const handleSubmit = (values) => {
+        if (!values.name) return;
+        TeamModel.instance.createTeam(values)
+            .then(() => { props.history.push('/teams/list'); })
+            .catch(error => { console.error(error); })
+    }
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
@@ -15,7 +23,7 @@ function TeamCreatePageRender(props) {
         <BasePage>
             <div className='create-team'>
                 <h1>Создайте свою команду</h1>
-                <Form {...layout} onFinish={props.onSubmit}>
+                <Form {...layout} onFinish={handleSubmit}>
                     <Form.Item name='name' label='Название' rules={[{ required: true, }]}>
                         <Input/>
                     </Form.Item>
@@ -34,8 +42,4 @@ function TeamCreatePageRender(props) {
     );
 }
 
-TeamCreatePageRender.propTypes = {
-    onSubmit: propTypes.func.isRequired,
-};
-
-export default TeamCreatePageRender;
+export default TeamCreatePage;
