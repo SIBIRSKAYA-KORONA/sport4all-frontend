@@ -1,5 +1,7 @@
 import Network from '../core/network';
 import { NotFoundError, ServerError, NotAuthorizedError } from 'Utils/errors';
+import getCookie from 'Utils/csrf';
+import CONST from 'Constants';
 
 class UserModel {
     static async signUp(user) {
@@ -13,7 +15,6 @@ class UserModel {
     }
 
     /**
-     *
      * @return {Promise<Object | IError>}
      */
     static async getProfile() {
@@ -28,16 +29,19 @@ class UserModel {
         );
     }
 
+    /**
+     *
+     * @param user
+     * @return {Promise<Object | IError>}
+     */
     static async getLogin(user) {
         return Network.fetchPost(Network.paths.sessions, user).then(
             response => {
                 switch (response.status) {
                 case 200: // успешная регистрация
                     return;
-                case 404: // юзера не существует
-                    return new Error('User not exists');
-                case 500:
-                    return new Error('Server error');
+                case 404: throw NotFoundError;
+                case 500: throw ServerError;
                 }
             },
             error => { throw new Error(error); }
@@ -52,6 +56,12 @@ class UserModel {
             },
             error => { throw new Error(error); }
         );
+    }
+
+    static async checkAuth() {
+        const sessionID = getCookie(CONST.SESSION_ID);
+        if (!sessionID) throw false;
+        return this.getProfile();
     }
 }
 

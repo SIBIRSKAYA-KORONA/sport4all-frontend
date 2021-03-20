@@ -1,16 +1,18 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
 import './style.scss';
-import { Form, Input, Button } from 'antd';
+import {Form, Input, Button, Spin} from 'antd';
 
 import Footer from 'Components/Footer/render';
 import Header from 'Components/Header/render';
+import BasePage from 'Components/BasePage/render';
 
-function LoginPageRender(props) {
-    return (
-        <div className='page'>
-            <Header/>
-            <div className='login'>
+const LoginPageRender = (props) => (<>
+    <Header/>
+    <BasePage>
+        {props.loading
+            ? <><Spin/></>
+            : <div className='login'>
                 <h1 className='login__header'>Вход</h1>
                 <Form name='login' onFinish={props.onSubmit}>
                     <Form.Item
@@ -30,13 +32,14 @@ function LoginPageRender(props) {
                     </Form.Item>
                 </Form>
             </div>
-            <Footer />
-        </div>
-    );
-}
+        }
+    </BasePage>
+    <Footer />
+</>);
 
 LoginPageRender.propTypes = {
     onSubmit: propTypes.func.isRequired,
+    loading: propTypes.bool.isRequired
 };
 
 export default LoginPageRender;

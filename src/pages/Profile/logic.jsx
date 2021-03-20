@@ -15,7 +15,7 @@ class ProfilePage extends React.Component {
 
     componentDidMount() {
         if (this.props.isAuthenticated === false) {
-            this.props.history.push('/login');
+            this.props.history.push(CONST.PATHS.login);
         } else {
             UserModel.getProfile().then(user => {
                 if (user) {
@@ -47,7 +47,7 @@ ProfilePage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    isAuthenticated: state.isAuthenticated
+    isAuthenticated: state.user.isAuthenticated
 });
 
 export default connect(mapStateToProps, { loginUser })(ProfilePage);

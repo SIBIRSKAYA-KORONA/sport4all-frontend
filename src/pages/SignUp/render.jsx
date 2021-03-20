@@ -1,10 +1,11 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
 import './style.scss';
-import { Form, Input, Button } from 'antd';
+import {Form, Input, Button, Spin} from 'antd';
 
 import Footer from 'Components/Footer/render';
 import Header from 'Components/Header/render';
+import BasePage from 'Components/BasePage/render';
 
 const layout = {
     labelCol: { span: 8 },
@@ -17,11 +18,12 @@ const tailLayout = {
     },
 };
 
-const SignUpPageRender = (props) => {
-    return (
-        <div className='page'>
-            <Header/>
-            <div className='signup'>
+const SignUpPageRender = (props) => (<>
+    <Header/>
+    <BasePage>
+        {props.loading
+            ? <><Spin/></>
+            : <div className='signup'>
                 <h1 className='signup__header'>Регистрация</h1>
                 <Form {...layout} onFinish={props.onSubmit}>
                     <Form.Item
@@ -74,14 +76,15 @@ const SignUpPageRender = (props) => {
                     </Form.Item>
                 </Form>
             </div>
-            <Footer />
-        </div>
-    );
-}
+        }
+    </BasePage>
+    <Footer />
+</>);
 
 SignUpPageRender.propTypes = {
     onSubmit: propTypes.func.isRequired,
     error: propTypes.string,
+    loading: propTypes.bool.isRequired,
 };
 
 export default SignUpPageRender;

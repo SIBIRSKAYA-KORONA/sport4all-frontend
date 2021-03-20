@@ -3,6 +3,8 @@ export type IError = {
     message: string
 }
 
+// todo: rewrite to enum
+
 export const NotAuthorizedError: IError = {
     code: 401,
     message: 'Not authorized'

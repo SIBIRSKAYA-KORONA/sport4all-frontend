@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import { Menu } from 'antd';
 import { connect } from 'react-redux';
 
-import { IUserState } from 'Store/User/UserState';
 import { getPageName } from 'Utils/utils';
+import { Header as AntHeader } from 'antd/lib/layout/layout';
 
 interface IProps {
     isAuthenticated: boolean | null;
@@ -14,7 +14,7 @@ interface IProps {
 const Header = (props: IProps) => {
     const pageName = getPageName();
     return (
-        <div className='header'>
+        <AntHeader className='header'>
             <Menu className='header__list' mode='horizontal' selectedKeys={[pageName]}>
                 <Menu.Item key='/'>
                     <Link to='/' className='header__link'>Главная</Link>
@@ -25,7 +25,7 @@ const Header = (props: IProps) => {
 
                 {props.isAuthenticated !== null && props.isAuthenticated
                     ? <>
-                        <Menu.SubMenu key='/profile'>
+                        <Menu.SubMenu key='/profile' title='Профиль'>
                             <Menu.Item key='profile main'>
                                 <Link to='/profile' className='header__link'>Профиль</Link>
                             </Menu.Item>
@@ -44,12 +44,12 @@ const Header = (props: IProps) => {
                     </>
                 }
             </Menu>
-        </div>
+        </AntHeader>
     );
 }
 
-const mapStateToProps = (state: IUserState) => ({
-    isAuthenticated: state.isAuthenticated
+const mapStateToProps = state => ({
+    isAuthenticated: state.user.isAuthenticated
 });
 
 export default connect(

@@ -16,11 +16,10 @@ const {TabPane} = Tabs;
 const ProfilePageRender = (props) => (<>
     <Header/>
     <BasePage>
-        <>{!props.isAuthenticated && <h1 className='login__header'>Not authorized</h1>}</>
         {props.user &&
             <Row>
                 <Col flex='100px'>
-                    <Avatar size='large' icon={JSIcon}/>
+                    <Avatar size='large' icon={<img src={JSIcon}  alt={JSIcon}/>}/>
                 </Col>
                 <Col flex='auto'>
                     <Title className='profile__name'>{props.user.name} {props.user.surname}</Title>

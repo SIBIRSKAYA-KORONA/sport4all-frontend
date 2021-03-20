@@ -36,7 +36,7 @@ render(
                 <Route path='/tournaments/list' component={TournamentsListPage}/>
                 <Route path='/tournaments/:tournamentId' component={TournamentsPage}/>
 
-                <Route path='/profile' component={ProfilePage}/>
+                <Route path={CONST.PATHS.profile} component={ProfilePage}/>
 
                 {/* Auth */}
                 <Route path='/signup' component={SignUpPage}/>

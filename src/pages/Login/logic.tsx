@@ -1,20 +1,26 @@
 import * as React from 'react';
-import propTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 
-import SignUpPageRender from './render';
+import LoginPageRender from './render';
 import UserModel from 'Models/UserModel';
+import {IUserAction, loginUser, logoutUser} from 'Store/User/UserActions';
+import {UserAuthenticatedType} from 'Store/User/UserState';
 import CONST from 'Constants';
-import { loginUser, logoutUser } from 'Store/User/UserActions';
+import {NotFoundError} from 'Utils/errors';
 
-class SignUpPage extends React.Component {
+interface IProps extends RouteComponentProps  {
+    isAuthenticated: UserAuthenticatedType,
+    loginUser: IUserAction,
+    logoutUser: IUserAction
+}
+
+class LoginPage extends React.Component<IProps> {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
-            error: null,
-        };
-
+        }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -40,28 +46,24 @@ class SignUpPage extends React.Component {
     }
 
     handleSubmit(values) {
-        const user = values;
-        if (!user.password || !user.nickname) return;
-        UserModel.signUp(user)
+        if (!values.password || !values.nickname) return;
+        UserModel.getLogin(values)
             .then(() => {
                 this.props.loginUser();
                 this.props.history.push(CONST.PATHS.profile);
             })
-            .catch(error => { this.setState({ error: error }) });
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
-    render = () => (<SignUpPageRender onSubmit={this.handleSubmit} {...this.state}/>)
+    render = ():JSX.Element => (
+        <LoginPageRender onSubmit={this.handleSubmit}  {...this.state} />
+    )
 }
-
-SignUpPage.propTypes = {
-    history: propTypes.object.isRequired,
-    loginUser: propTypes.func.isRequired,
-    logoutUser: propTypes.func.isRequired,
-    isAuthenticated: propTypes.bool
-};
 
 const mapStateToProps = state => ({
     isAuthenticated: state.user.isAuthenticated
 });
 
-export default connect(mapStateToProps, { loginUser, logoutUser })(SignUpPage);
+export default connect(mapStateToProps, { loginUser, logoutUser })(LoginPage);
