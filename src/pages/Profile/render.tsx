@@ -6,7 +6,7 @@ import {Avatar, Col, Row, Tabs, Typography} from 'antd';
 
 import JSIcon from 'Static/icons/js.svg';
 import BasePage from 'Components/BasePage/render';
-import TeamList from 'Components/Teams/List/render';
+import TeamsSubPage from 'Pages/Profile/TeamsSubPage/render';
 import {RouteComponentProps} from 'react-router-dom';
 import {User} from 'Utils/types';
 import {UserAuthenticatedType} from 'Store/User/UserState';
@@ -39,7 +39,7 @@ const ProfilePageRender = (props:IProps):JSX.Element => (
                     <></>
                 </TabPane>
                 <TabPane tab='Команды' key={2}>
-                    <TeamList {...props} />
+                    <TeamsSubPage {...props}/>
                 </TabPane>
                 <TabPane tab='Турниры' key={3}>
                     <></>

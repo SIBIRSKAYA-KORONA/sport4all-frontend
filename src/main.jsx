@@ -25,9 +25,9 @@ render(
                 <Route exact path='/' component={HomePage}/>
 
                 {/* Teams */}
-                <Route path='/teams/create' component={TeamCreatePage}/>
-                <Route path='/teams/:id' component={TeamPage}/>
-                <Route path='/teams/' component={TeamsPage}/>
+                <Route path={CONST.PATHS.teams.create} component={TeamCreatePage}/>
+                <Route path={CONST.PATHS.teams.id(null)} component={TeamPage}/>
+                <Route path={CONST.PATHS.teams.base} component={TeamsPage}/>
 
                 {/* Tournaments */}
                 <Route path='/tournaments/create' component={TournamentCreatePage}/>

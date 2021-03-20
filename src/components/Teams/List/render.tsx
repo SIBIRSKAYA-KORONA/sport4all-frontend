@@ -1,57 +1,36 @@
 import * as React from 'react';
 import './style.scss';
 
-import TeamModel from 'Models/TeamModel';
-
+import { Space, Table } from 'antd';
+import { RouteComponentProps } from 'react-router-dom';
 import { Team } from 'Utils/types';
-import { Spin } from 'antd';
-import {useEffect, useState} from 'react';
-import {RouteComponentProps} from 'react-router-dom';
 
-const initTeams: [Team?] = [];
+interface IProps extends RouteComponentProps {
+    teams: [Team?]
+}
 
-const TeamList = (props:RouteComponentProps):JSX.Element => {
-    const [loading, setLoading] = useState(true);
-    const [teams, setTeams] = useState(initTeams);
-
-    useEffect(() => {
-        const load = () => {
-            TeamModel.instance.loadTeams('owner').then(teams => {
-                setTeams(teams);
-                setLoading(false);
-            });
-        }
-        load();
-    }, []);
-
+const TeamList = (props:IProps):JSX.Element => {
+    const dataSource = props.teams.map(team => ({ ...team, key: team.id }));
+    const columns = [
+        { title: 'Название', dataIndex: 'name', key: 'name' },
+        { title: 'Описание', dataIndex: 'about', key: 'about' },
+        { title: 'Место', dataIndex: 'location', key: 'location' },
+        { title: 'Владелец', dataIndex: 'ownerId', key: 'ownerId' },
+        {
+            title: 'Ссылка',
+            key: 'link',
+            render: function LinkCell(text, team) {
+                return (
+                    <Space size='small'>
+                        <a href={'/teams/'+team.id}>Страница</a>
+                    </Space>
+                )
+            },
+        },
+    ];
     return (
-        <div className="team-list">
-            <h1>Все команды</h1>
-            {loading
-                ? <><Spin/></>
-                : <table className='team-list__table'>
-                    <thead><tr>
-                        <th>Название</th>
-                        <th>Описание</th>
-                        <th>Место</th>
-                        <th>owner_id</th>
-                        <th>ID</th>
-                    </tr></thead>
-                    <tbody>
-                        {teams.map(team =>
-                            <tr key={team.id} data-id={team.id} onClick={() => {props.history.push('/teams/'+team.id)}}>
-                                <td>{team.name}</td>
-                                <td>{team.about}</td>
-                                <td>{team.location}</td>
-                                <td>{team.ownerId}</td>
-                                <td>{team.id}</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            }
-        </div>
-    )
-};
+        <Table dataSource={dataSource} columns={columns} pagination={false} />
+    );
+}
 
 export default TeamList;
