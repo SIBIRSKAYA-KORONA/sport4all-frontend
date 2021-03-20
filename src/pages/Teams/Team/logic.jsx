@@ -24,6 +24,13 @@ class TeamPage extends React.Component {
 
     componentDidMount() {
         this.load(this.props.match.params.id)
+            .then(() => UserModel.checkAndSetAuth())
+            .then(() => UserModel.getProfile())
+            .then(user => {
+                if (user.id === this.state.team.ownerId)
+                    this.setState(prev => ({ ...prev, canEdit:true }))
+            })
+            .catch(() => {});
     }
 
     async load(tid) {

@@ -1,7 +1,7 @@
 import Network from '../core/network';
 import { NotFoundError, ServerError, NotAuthorizedError } from 'Utils/errors';
-import getCookie from 'Utils/csrf';
-import CONST from 'Constants';
+import store from 'Store/store';
+import { loginUser, logoutUser } from 'Store/User/UserActions';
 
 class UserModel {
     static async signUp(user) {
@@ -58,10 +58,16 @@ class UserModel {
         );
     }
 
-    static async checkAuth() {
-        const sessionID = getCookie(CONST.SESSION_ID);
-        if (!sessionID) throw false;
-        return this.getProfile();
+    static async checkAndSetAuth() {
+        return this.getProfile()
+            .then(() => {
+                store.dispatch(loginUser());
+                return true;
+            })
+            .catch(e => {
+                store.dispatch(logoutUser());
+                throw e;
+            });
     }
 }
 

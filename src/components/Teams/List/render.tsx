@@ -1,9 +1,11 @@
 import * as React from 'react';
 import './style.scss';
+import { Link } from 'react-router-dom';
 
 import { Space, Table } from 'antd';
 import { RouteComponentProps } from 'react-router-dom';
 import { Team } from 'Utils/types';
+
 
 interface IProps extends RouteComponentProps {
     teams: [Team?]
@@ -22,7 +24,7 @@ const TeamList = (props:IProps):JSX.Element => {
             render: function LinkCell(text, team) {
                 return (
                     <Space size='small'>
-                        <a href={'/teams/'+team.id}>Страница</a>
+                        <Link to={'/teams/'+team.id}>Страница</Link>
                     </Space>
                 )
             },
