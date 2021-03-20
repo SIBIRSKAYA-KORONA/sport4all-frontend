@@ -43,7 +43,7 @@ const TeamList = (props:RouteComponentProps):JSX.Element => {
                                 <td>{team.name}</td>
                                 <td>{team.about}</td>
                                 <td>{team.location}</td>
-                                <td>{team.owner_id}</td>
+                                <td>{team.ownerId}</td>
                                 <td>{team.id}</td>
                             </tr>
                         )}

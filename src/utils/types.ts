@@ -3,7 +3,7 @@ export interface Team {
     name: string,
     about: string | null,
     location: string | null,
-    owner_id: number
+    ownerId: number
 }
 
 export interface User {
