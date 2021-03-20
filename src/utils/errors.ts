@@ -19,3 +19,8 @@ export const ServerError: IError = {
     code: 500,
     message: 'Server error'
 }
+
+export const ForbiddenError: IError = {
+    code: 403,
+    message: 'Forbidden'
+}

@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 
 import TeamPageRender from './render';
 import TeamModel from 'Models/TeamModel';
+import UserModel from 'Models/UserModel';
 
 class TeamPage extends React.Component {
     constructor(props) {
@@ -11,20 +12,22 @@ class TeamPage extends React.Component {
             team: null,
             playersToAdd: [],
             selectedPlayer: null,
+            canEdit: false,
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.loadPlayers = this.loadPlayers.bind(this);
         this.selectPlayer = this.selectPlayer.bind(this);
         this.addPlayer = this.addPlayer.bind(this);
+        this.onPlayerDelete = this.onPlayerDelete.bind(this);
     }
 
     componentDidMount() {
-        this.load(this.props.match.params.id);
+        this.load(this.props.match.params.id)
     }
 
-    load(tid) {
-        TeamModel.instance.loadTeam(tid)
+    async load(tid) {
+        return TeamModel.instance.loadTeam(tid)
             .then(team => {
                 if (!team.players) team.players = [];
                 this.setState(prevState => ({
@@ -80,8 +83,25 @@ class TeamPage extends React.Component {
             });
     }
 
+    async onPlayerDelete(pid) {
+        if (!this.state.team || !pid) return;
+        return TeamModel.instance.removePlayerFromTheTeam(this.state.team.id, pid)
+            .then(() => {
+                this.setState(prev => ({
+                    ...prev,
+                    team: {
+                        ...prev.team,
+                        players: prev.team.players.filter(player => player.id !== pid)
+                    }
+                }))
+            })
+            .catch(e => { throw e });
+    }
+
     render = () => (
         <TeamPageRender
+            canEdit={this.state.canEdit}
+            onDelete={this.onPlayerDelete}
             onSubmit={this.handleSubmit}
             loadPlayers={this.loadPlayers}
             team={this.state.team}

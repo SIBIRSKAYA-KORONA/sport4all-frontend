@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 
 import { getPageName } from 'Utils/utils';
 import { Header as AntHeader } from 'antd/lib/layout/layout';
+import { UserAuthenticatedType } from 'Store/User/UserState';
 
 interface IProps {
-    isAuthenticated: boolean | null;
+    isAuthenticated: UserAuthenticatedType;
 }
 
 const Header = (props: IProps) => {

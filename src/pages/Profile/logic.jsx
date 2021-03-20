@@ -4,8 +4,19 @@ import { connect } from 'react-redux';
 
 import ProfilePageRender from './render.tsx';
 import { loginUser } from 'Store/User/UserActions';
+import UserModel from 'Models/UserModel';
 
 class ProfilePage extends React.Component {
+    state = {
+        user: null,
+    }
+
+    componentDidMount() {
+        UserModel.getProfile().then(user => {
+            this.setState({ user:user });
+        })
+    }
+
     render = () => (
         <ProfilePageRender
             {...this.state}
