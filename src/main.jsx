@@ -17,6 +17,7 @@ import TournamentsPage from 'Pages/Tournaments/Tournaments/logic';
 import TournamentsListPage from 'Pages/Tournaments/List/render';
 import LoginPage from 'Pages/Login/logic';
 import ProfilePage from 'Pages/Profile/logic';
+import LoggedInRoute from 'Utils/LoggedInRoute';
 
 render(
     <Provider store={store}>
@@ -34,7 +35,7 @@ render(
                 <Route path='/tournaments/list' component={TournamentsListPage}/>
                 <Route path='/tournaments/:tournamentId' component={TournamentsPage}/>
 
-                <Route path={CONST.PATHS.profile} component={ProfilePage}/>
+                <LoggedInRoute path={CONST.PATHS.profile} component={ProfilePage}/>
 
                 {/* Auth */}
                 <Route path='/signup' component={SignUpPage}/>
