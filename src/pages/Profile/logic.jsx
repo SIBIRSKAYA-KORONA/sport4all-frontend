@@ -2,7 +2,7 @@ import * as React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import ProfilePageRender from './render';
+import ProfilePageRender from './render.tsx';
 import UserModel from 'Models/UserModel';
 import { loginUser } from 'Store/User/UserActions';
 import CONST from 'Utils/constants';
@@ -36,6 +36,7 @@ class ProfilePage extends React.Component {
     render = () => (
         <ProfilePageRender
             {...this.state}
+            {...this.props}
         />
     );
 }

@@ -1,20 +1,25 @@
 import * as React from 'react';
-import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './style.scss';
 
 import {Avatar, Col, Row, Tabs, Typography} from 'antd';
 
 import JSIcon from 'Static/icons/js.svg';
-import Footer from 'Components/Footer/render';
-import Header from 'Components/Header/render';
 import BasePage from 'Components/BasePage/render';
+import TeamList from 'Components/Teams/List/render';
+import {RouteComponentProps} from 'react-router-dom';
+import {User} from 'Utils/types';
+import {UserAuthenticatedType} from 'Store/User/UserState';
 
 const {Title, Paragraph} = Typography;
 const {TabPane} = Tabs;
 
-const ProfilePageRender = (props) => (<>
-    <Header/>
+interface IProps extends RouteComponentProps {
+    user: User,
+    isAuthenticated: UserAuthenticatedType
+}
+
+const ProfilePageRender = (props:IProps):JSX.Element => (
     <BasePage>
         {props.user &&
             <Row>
@@ -34,7 +39,7 @@ const ProfilePageRender = (props) => (<>
                     <></>
                 </TabPane>
                 <TabPane tab='Команды' key={2}>
-                    <></>
+                    <TeamList {...props} />
                 </TabPane>
                 <TabPane tab='Турниры' key={3}>
                     <></>
@@ -42,13 +47,7 @@ const ProfilePageRender = (props) => (<>
             </Tabs>
         </Row>
     </BasePage>
-    <Footer />
-</>);
-
-ProfilePageRender.propTypes = {
-    user: propTypes.object,
-    isAuthenticated: propTypes.bool
-};
+);
 
 const mapStateToProps = state => ({
     isAuthenticated: state.isAuthenticated

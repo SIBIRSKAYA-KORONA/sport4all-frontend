@@ -19,9 +19,6 @@ const Header = (props: IProps) => {
                 <Menu.Item key='/'>
                     <Link to='/' className='header__link'>Главная</Link>
                 </Menu.Item>
-                <Menu.Item key='/teams'>
-                    <Link to='/teams' className='header__link'>Команды</Link>
-                </Menu.Item>
 
                 {props.isAuthenticated !== null && props.isAuthenticated
                     ? <>

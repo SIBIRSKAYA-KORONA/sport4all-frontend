@@ -1,19 +1,17 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
 import './style.scss';
-import {Form, Input, Button} from 'antd';
 
-import Footer from 'Components/Footer/render';
-import Header from 'Components/Header/render';
+import {Form, Input, Button} from 'antd';
 import BasePage from 'Components/BasePage/render';
+
 
 function TeamCreatePageRender(props) {
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
     };
-    return (<>
-        <Header/>
+    return (
         <BasePage>
             <div className='create-team'>
                 <h1>Создайте свою команду</h1>
@@ -33,8 +31,7 @@ function TeamCreatePageRender(props) {
                 </Form>
             </div>
         </BasePage>
-        <Footer />
-    </>);
+    );
 }
 
 TeamCreatePageRender.propTypes = {

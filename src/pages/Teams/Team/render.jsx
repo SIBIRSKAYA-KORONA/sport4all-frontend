@@ -1,9 +1,8 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
 import './style.scss';
-import {AutoComplete, Button, Table} from 'antd';
 
-import Header from 'Components/Header/render';
+import {AutoComplete, Button, Table} from 'antd';
 import BasePage from 'Components/BasePage/render';
 
 const { Option } = AutoComplete;
@@ -16,8 +15,7 @@ const TeamPageRender = (props) => {
     const onChange = (data) => {
         setValue(data);
     };
-    return (<>
-        <Header/>
+    return (
         <BasePage>
             {props.team && <>
                 <h1>{props.team.name}</h1>
@@ -49,8 +47,7 @@ const TeamPageRender = (props) => {
                 <Button onClick={onClick} type='primary' disabled={!props.selectedPlayer}>Добавить</Button>
             </>}
             <></>
-        </BasePage>
-    </>)
+        </BasePage>)
 }
 
 TeamPageRender.propTypes = {

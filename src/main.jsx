@@ -10,7 +10,6 @@ import SignUpPage from 'Pages/SignUp/logic';
 import TestGrid from 'Pages/TestGrid/render';
 import CONST from 'Utils/constants';
 import TeamCreatePage from 'Pages/Teams/Create/logic';
-import TeamListPage from 'Pages/Teams/List/logic';
 import TeamsPage from 'Pages/Teams/Teams/render';
 import TeamPage from 'Pages/Teams/Team/logic';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
@@ -27,7 +26,6 @@ render(
 
                 {/* Teams */}
                 <Route path='/teams/create' component={TeamCreatePage}/>
-                <Route path='/teams/list' component={TeamListPage}/>
                 <Route path='/teams/:id' component={TeamPage}/>
                 <Route path='/teams/' component={TeamsPage}/>
 

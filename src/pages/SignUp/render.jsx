@@ -3,8 +3,6 @@ import propTypes from 'prop-types';
 import './style.scss';
 import {Form, Input, Button, Spin} from 'antd';
 
-import Footer from 'Components/Footer/render';
-import Header from 'Components/Header/render';
 import BasePage from 'Components/BasePage/render';
 
 const layout = {
@@ -18,8 +16,7 @@ const tailLayout = {
     },
 };
 
-const SignUpPageRender = (props) => (<>
-    <Header/>
+const SignUpPageRender = (props) => (
     <BasePage>
         {props.loading
             ? <><Spin/></>
@@ -78,8 +75,7 @@ const SignUpPageRender = (props) => (<>
             </div>
         }
     </BasePage>
-    <Footer />
-</>);
+);
 
 SignUpPageRender.propTypes = {
     onSubmit: propTypes.func.isRequired,
