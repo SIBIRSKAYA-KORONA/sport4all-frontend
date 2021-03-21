@@ -10,7 +10,7 @@ import SignUpPage from 'Pages/SignUp/logic';
 import TestGrid from 'Pages/TestGrid/render';
 import CONST from 'Utils/constants';
 import TeamCreatePage from 'Pages/Teams/Create/render';
-import TeamsPage from 'Pages/Teams/Teams/render';
+import TeamsPage from 'Pages/Teams/Team/render';
 import TeamPage from 'Pages/Teams/Team/logic';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
 import TournamentsPage from 'Pages/Tournaments/Tournaments/logic';
