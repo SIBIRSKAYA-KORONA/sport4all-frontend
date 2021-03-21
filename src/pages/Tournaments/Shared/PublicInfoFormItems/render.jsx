@@ -47,7 +47,7 @@ PublicInfoFormItemsRender.systemTypes = ['round-robin', 'single-elimination', 'd
 PublicInfoFormItemsRender.propTypes = {
     name: PropTypes.string,
     description: PropTypes.string,
-    systemType: PropTypes.string.oneOf(PublicInfoFormItemsRender.systemTypes),
+    systemType: PropTypes.oneOf(PublicInfoFormItemsRender.systemTypes),
     location: PropTypes.string
 }
 

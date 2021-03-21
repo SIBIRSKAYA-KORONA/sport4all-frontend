@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Avatar, Button, Col, Form, Input, List, Divider} from 'antd';
+import {Avatar, Button, Col, Divider, Input, List} from 'antd';
 import PropTypes from 'prop-types'
-import {PlusOutlined, MinusOutlined} from '@ant-design/icons/lib/icons';
+import {MinusOutlined, PlusOutlined} from '@ant-design/icons/lib/icons';
 
 
 function ParticipantsRender(props) {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Row, Tabs} from 'antd'
+import {Tabs} from 'antd'
 import PropTypes from 'prop-types'
 import ParticipantsLogic from 'Pages/Tournaments/Tournament/sections/Settings/Participants/logic';
 import PublicInfoLogic from 'Pages/Tournaments/Tournament/sections/Settings/PublicInfo/logic';
