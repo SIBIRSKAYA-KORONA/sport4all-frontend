@@ -9,7 +9,7 @@ function PublicInfoLogic(props) {
             'location': newInfo.location,
             'name': newInfo.name,
             'about': newInfo.about,
-            'system': 1,
+            'system': newInfo.systemType,
         }
 
         await TournamentModel.instance.updateTournament(props.tournamentId, payload)

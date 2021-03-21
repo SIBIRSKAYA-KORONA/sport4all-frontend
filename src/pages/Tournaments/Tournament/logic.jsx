@@ -12,7 +12,6 @@ function TournamentPage(props) {
     useEffect(async () => {
         const gotTournamentData = await TournamentModel.instance.getTournament(tournamentId);
         const gotTeams = await TournamentModel.instance.getTeams(tournamentId);
-        console.log(gotTeams)
         setTournamentData({...gotTournamentData, teams: gotTeams});
     }, [])
 

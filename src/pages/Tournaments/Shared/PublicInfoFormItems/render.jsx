@@ -24,10 +24,10 @@ function PublicInfoFormItemsRender(props) {
                 label="Система турнира"
                 name="systemType"
             >
-                <Select>
+                <Select defaultValue={props.systemType}>
                     <Select.Option value={PublicInfoFormItemsRender.systemTypes[0]}>Круговая</Select.Option>
                     <Select.Option value={PublicInfoFormItemsRender.systemTypes[1]}>Олимпийская</Select.Option>
-                    <Select.Option value={PublicInfoFormItemsRender.systemTypes[2]}>На выбывание</Select.Option>
+                    {/*<Select.Option value={PublicInfoFormItemsRender.systemTypes[2]}>На выбывание</Select.Option>*/}
                 </Select>
             </Form.Item>
 
@@ -42,7 +42,7 @@ function PublicInfoFormItemsRender(props) {
     )
 }
 
-PublicInfoFormItemsRender.systemTypes = ['round-robin', 'single-elimination', 'double-elimination']
+PublicInfoFormItemsRender.systemTypes = ['circular', 'olympic', 'double-elimination']
 
 PublicInfoFormItemsRender.propTypes = {
     name: PropTypes.string,
