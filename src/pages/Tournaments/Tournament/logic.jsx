@@ -17,7 +17,7 @@ function TournamentPage(props) {
 
         const gotTournamentData = await TournamentModel.instance.getTournament(tournamentId);
         const gotTeams = await TournamentModel.instance.getTeams(tournamentId);
-        const gotMatches = await TournamentModel.instance.getMatches(tournamentId);
+        const gotMatches = await TournamentModel.instance.getMeetings(tournamentId);
 
         setTournamentData({...gotTournamentData, teams: gotTeams, matches: gotMatches});
         setIsLoading(false)
