@@ -1,5 +1,5 @@
 import Network from '../core/network';
-import { NotFoundError, ServerError, NotAuthorizedError } from 'Utils/errors';
+import {NotFoundError, ServerError, NotAuthorizedError, ForbiddenError} from 'Utils/errors';
 import store from 'Store/store';
 import { loginUser, logoutUser } from 'Store/User/UserActions';
 
@@ -21,8 +21,10 @@ class UserModel {
         return Network.fetchGet(Network.paths.settings).then(
             response => {
                 if (response.status > 499) throw ServerError;
+                if (response.status === 403) throw ForbiddenError;
                 if (response.status === 404) throw NotFoundError;
                 if (response.status === 401) throw NotAuthorizedError;
+                if (response.status >= 400) throw new Error(response.status);
                 return response.json();
             },
             error => { throw new Error(error); }

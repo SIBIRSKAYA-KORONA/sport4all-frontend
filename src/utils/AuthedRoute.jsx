@@ -17,7 +17,7 @@ class AuthedRoute extends React.Component {
 
     componentDidMount() {
         if (this.props.isAuthenticated === null) {
-            UserModel.checkAndSetAuth().then(() => { this.setState({ loading: false }) });
+            UserModel.checkAndSetAuth().finally(() => { this.setState({ loading: false }) });
         }
     }
 
