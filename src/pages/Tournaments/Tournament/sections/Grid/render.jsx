@@ -295,33 +295,15 @@ function TournamentGridRender() {
 }
 
 TournamentGridRender.propTypes = {
-    gridData: PropTypes.shape({
-        participants: PropTypes.arrayOf({
-            id: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired
-        }).isRequired,
-
+    tournamentData: PropTypes.shape({
         system: PropTypes.string.isRequired,
 
-        matches: PropTypes.arrayOf(PropTypes.shape({
+        teams: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.number.isRequired,
-            number: PropTypes.number.isRequired,
-            stage_id: PropTypes.number.isRequired,
-            round_id: PropTypes.number.isRequired,
-            status: PropTypes.number.isRequired,
-            opponent1: PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                position: PropTypes.string.isRequired,
-                score: PropTypes.number.isRequired,
-                result: PropTypes.oneOf(['win', 'draw', 'loss'])
-            }).isRequired,
-            opponent2: PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                position: PropTypes.string.isRequired,
-                score: PropTypes.number.isRequired,
-                result: PropTypes.oneOf(['win', 'draw', 'loss'])
-            }).isRequired
-        })).isRequired
+            name: PropTypes.string.isRequired
+        })).isRequired,
+
+        matches: PropTypes.arrayOf(PropTypes.object),
     }).isRequired
 }
 

@@ -3,34 +3,34 @@ import {useEffect, useState} from 'react';
 import PropTypes from 'prop-types'
 import TournamentPageRender from './render';
 import TournamentModel from 'Models/TournamentModel';
-
+// import UserModel from 'Models/UserModel';
 
 function TournamentPage(props) {
     const tournamentId = Number(props.match.params.tournamentId);
-    const [tournamentData, setTournamentData] = useState(undefined);
+    const [isLoading, setIsLoading] = useState(true);
+    const [tournamentData, setTournamentData] = useState({})
+
 
     useEffect(async () => {
+        // TODO: check if owner
+        // const userSettings = await UserModel.instance.getProfile();
+
         const gotTournamentData = await TournamentModel.instance.getTournament(tournamentId);
         const gotTeams = await TournamentModel.instance.getTeams(tournamentId);
-        setTournamentData({...gotTournamentData, teams: gotTeams});
+        const gotMatches = await TournamentModel.instance.getMatches(tournamentId);
+
+        setTournamentData({...gotTournamentData, teams: gotTeams, matches: gotMatches});
+        setIsLoading(false)
     }, [])
 
 
-    let section = TournamentPageRender.sections[0];
-    const urlSection = props.history.location?.state?.section;
-    if (TournamentPageRender.sections.includes(urlSection)) {
-        section = urlSection;
-    }
-
-    const onSectionChange = (newSection) => {
-        props.history.replace(props.history.location.pathname, {section: newSection})
-    }
 
     return (
         <TournamentPageRender
+            isLoading={isLoading}
+            isOwner={true}
             tournamentData={tournamentData}
-            section={section}
-            onSectionChange={onSectionChange}
+            setTournamentData={setTournamentData}
         />
     )
 }
@@ -45,4 +45,6 @@ TournamentPage.propTypes = {
     }).isRequired,
 }
 
+
 export default TournamentPage;
+

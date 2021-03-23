@@ -23,7 +23,8 @@ module.exports = {
             Static: path.resolve(__dirname, 'static/'),
             Utils: path.resolve(__dirname, 'src/utils/'),
             Constants$: path.resolve(__dirname, 'src/utils/constants.js'),
-            Interfaces$: path.resolve(__dirname, 'src/utils/interfaces.js')
+            Interfaces$: path.resolve(__dirname, 'src/utils/interfaces.js'),
+            Store: path.resolve(__dirname, 'src/store/'),
         }
     },
 

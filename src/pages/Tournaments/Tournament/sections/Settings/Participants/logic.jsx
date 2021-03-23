@@ -11,12 +11,13 @@ function ParticipantsLogic(props) {
     const [isSearching, setIsSearching] = useState(false);
 
     const addTeam = async (teamId) => {
-        await TournamentModel.instance.addTeam(props.tournamentId, teamId);
+        await TournamentModel.instance.addTeam(props.tournamentData.id, teamId);
         message.success('Команда успешно добавлена')
     }
 
     const deleteTeam = async (teamId) => {
-        // await TournamentModel.instance.removeTeam(props.tournamentId, teamId)
+        // TODO: get api result
+        // await TournamentModel.instance.removeTeam(props.tournamentData.id, teamId)
         console.log('TODO: Delete team', teamId);
     }
 
@@ -30,7 +31,7 @@ function ParticipantsLogic(props) {
         const gotTeams = await TeamModel.instance.searchTeams(teamName, 100);
         setIsSearching(false);
 
-        const currentTeamIds = props.teams.map((team) => team.id);
+        const currentTeamIds = props.tournamentData.teams.map((team) => team.id);
         const teamsForAdding = [];
         for (const team of gotTeams) {
             if (!currentTeamIds.includes(team.id)) {
@@ -43,7 +44,7 @@ function ParticipantsLogic(props) {
 
     return (
         <ParticipantsRender
-            teams={props.teams}
+            teams={props.tournamentData.teams}
             isSearching={isSearching}
             searchResults={searchResults}
             onTeamAdd={addTeam}
@@ -54,8 +55,8 @@ function ParticipantsLogic(props) {
 }
 
 ParticipantsLogic.propTypes = {
-    tournamentId: PropTypes.number.isRequired,
-    teams: PropTypes.arrayOf(PropTypes.object).isRequired
+    tournamentData: PropTypes.object.isRequired,
+    setTournamentData: PropTypes.func.isRequired,
 }
 
 export default ParticipantsLogic;

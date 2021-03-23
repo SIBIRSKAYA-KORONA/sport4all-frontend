@@ -14,8 +14,14 @@ function PublicInfoRender(props) {
         <Form
             {...layout}
             onFinish={props.onSubmit}
+            initialValues={{
+                name: props.tournamentData.name,
+                about: props.tournamentData.about,
+                systemType: props.tournamentData.system,
+                location: props.tournamentData.location,
+            }}
         >
-            <PublicInfoFormItemsRender />
+            <PublicInfoFormItemsRender/>
             <Form.Item>
                 <Button type="primary" htmlType="submit">
                     Сохранить
@@ -26,6 +32,7 @@ function PublicInfoRender(props) {
 }
 
 PublicInfoRender.propTypes = {
+    tournamentData: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired
 }
 

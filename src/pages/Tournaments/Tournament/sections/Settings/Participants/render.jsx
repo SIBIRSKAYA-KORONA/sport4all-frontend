@@ -9,7 +9,6 @@ function ParticipantsRender(props) {
         <Col>
             <Divider orientation={'left'}>Участники</Divider>
 
-
             <List
                 itemLayout="horizontal"
                 dataSource={props.teams}
@@ -18,6 +17,7 @@ function ParticipantsRender(props) {
                         actions={[
                             <Button
                                 danger
+                                key={'delete' + item.id}
                                 icon={<MinusOutlined/>}
                                 onClick={() => props.onTeamDelete(item.id)}
                             >
@@ -48,6 +48,7 @@ function ParticipantsRender(props) {
                     <List.Item
                         actions={[
                             <Button
+                                key={'add' + item.id}
                                 type="primary"
                                 icon={<PlusOutlined/>}
                                 onClick={() => props.onTeamAdd(item.id)}

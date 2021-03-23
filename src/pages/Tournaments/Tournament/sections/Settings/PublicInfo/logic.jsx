@@ -12,16 +12,20 @@ function PublicInfoLogic(props) {
             'system': newInfo.systemType,
         }
 
-        await TournamentModel.instance.updateTournament(props.tournamentId, payload)
+        await TournamentModel.instance.updateTournament(props.tournamentData.id, payload)
     }
 
     return (
-        <PublicInfoRender onSubmit={updatePublicInfo}/>
+        <PublicInfoRender
+            tournamentData={props.tournamentData}
+            onSubmit={updatePublicInfo}
+        />
     )
 }
 
 PublicInfoLogic.propTypes = {
-    tournamentId: PropTypes.number.isRequired,
+    tournamentData: PropTypes.object.isRequired,
+    setTournamentData: PropTypes.func.isRequired,
 }
 
 export default PublicInfoLogic;

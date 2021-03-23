@@ -9,10 +9,16 @@ function TournamentSettingsRender(props) {
 
         <Tabs tabPosition={'left'}>
             <Tabs.TabPane tab={'Публичная информация'} key={'1'}>
-                <PublicInfoLogic tournamentId={props.tournamentId}/>
+                <PublicInfoLogic
+                    tournamentData={props.tournamentData}
+                    setTournamentData={props.setTournamentData}
+                />
             </Tabs.TabPane>
             <Tabs.TabPane tab={'Участники'} key={'2'}>
-                <ParticipantsLogic tournamentId={props.tournamentId} teams={props.teams}/>
+                <ParticipantsLogic
+                    tournamentData={props.tournamentData}
+                    setTournamentData={props.setTournamentData}
+                />
             </Tabs.TabPane>
             <Tabs.TabPane tab={'Встречи'} key={'3'}>
                 СЕТКА СО ВСТРЕЧАМИ
@@ -24,8 +30,8 @@ function TournamentSettingsRender(props) {
 }
 
 TournamentSettingsRender.propTypes = {
-    tournamentId: PropTypes.number.isRequired,
-    teams: PropTypes.arrayOf(PropTypes.object).isRequired
+    tournamentData: PropTypes.object,
+    setTournamentData: PropTypes.func
 }
 
 export default TournamentSettingsRender;

@@ -67,6 +67,17 @@ class TournamentModel {
             })
     }
 
+    async getMatches(tournamentId) {
+        return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}/teams`)
+            .then(response => {
+                return response.json();
+            })
+            .catch(error => {
+                console.error(error);
+                return undefined;
+            })
+    }
+
     async addTeam(tournamentId, teamId) {
         return Network.fetchPut(Network.paths.tournaments + `/${tournamentId}/teams/${teamId}`, {})
             .then(response => {
