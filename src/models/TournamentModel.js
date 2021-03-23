@@ -78,7 +78,7 @@ class TournamentModel {
         return Network.fetchPut(Network.paths.tournaments + `/${tournamentId}`, newData)
             .then(res => {
                 switch (res.status) {
-                case 200: return res.json();
+                case 200: return;
                 case 400: throw BadRequestError;
                 case 401: throw NotAuthorizedError;
                 case 403: throw ForbiddenError;

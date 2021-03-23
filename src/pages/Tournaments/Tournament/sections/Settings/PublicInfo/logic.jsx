@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types'
 import TournamentModel from 'Models/TournamentModel';
 import PublicInfoRender from 'Pages/Tournaments/Tournament/sections/Settings/PublicInfo/render';
+import {message} from 'antd';
 
 function PublicInfoLogic(props) {
     const updatePublicInfo = async (newInfo) => {
@@ -12,7 +13,23 @@ function PublicInfoLogic(props) {
             'system': newInfo.systemType,
         }
 
-        await TournamentModel.instance.updateTournament(props.tournamentData.id, payload)
+        try {
+            await TournamentModel.instance.updateTournament(props.tournamentData.id, payload);
+            message.success('Информация о турнире обновлена');
+        } catch (e) {
+            console.error(e);
+            message.error('Не удалось обновить информацию о турнире');
+            return;
+        }
+
+        try {
+            const updatedData = await TournamentModel.instance.getTournament(props.tournamentData.id);
+            props.setTournamentData({...props.tournamentData, ...updatedData});
+        } catch (e) {
+            console.error(e);
+            message.error('Не удалось получить информацию о турнире');
+        }
+
     }
 
     return (

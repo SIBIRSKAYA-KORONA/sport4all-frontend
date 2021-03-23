@@ -101,13 +101,17 @@ class TeamModel {
     async searchTeams(namePart, limit) {
         const encodedNamePart = encodeURIComponent(namePart);
         return Network.fetchGet(Network.paths.teams + `/search?name=${encodedNamePart}&limit=${limit}`)
-            .then(response => {
-                return response.json()
+            .then(res => {
+                switch (res.status) {
+                case 200: return res.json();
+                case 401: throw NotAuthorizedError;
+                default: throw ServerError;
+                }
             })
             .catch(error => {
                 console.error(error);
-                return null;
-            })
+                throw Error(error);
+            });
     }
 
 }

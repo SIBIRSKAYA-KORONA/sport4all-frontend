@@ -12,22 +12,22 @@ function ParticipantsRender(props) {
             <List
                 itemLayout="horizontal"
                 dataSource={props.teams}
-                renderItem={item => (
+                renderItem={team => (
                     <List.Item
                         actions={[
                             <Button
                                 danger
-                                key={'delete' + item.id}
+                                key={'delete' + team.id}
                                 icon={<MinusOutlined/>}
-                                onClick={() => props.onTeamDelete(item.id)}
+                                onClick={() => props.onTeamDelete(team.id)}
                             >
                                 Удалить
                             </Button>
                         ]}>
                         <List.Item.Meta
                             avatar={<Avatar/>}
-                            title={item.name}
-                            description={item.about}
+                            title={team.name}
+                            description={team.about}
                         />
                     </List.Item>
                 )}
@@ -44,22 +44,22 @@ function ParticipantsRender(props) {
             <List
                 itemLayout="horizontal"
                 dataSource={props.searchResults}
-                renderItem={item => (
+                renderItem={team => (
                     <List.Item
                         actions={[
                             <Button
-                                key={'add' + item.id}
+                                key={'add' + team.id}
                                 type="primary"
                                 icon={<PlusOutlined/>}
-                                onClick={() => props.onTeamAdd(item.id)}
+                                onClick={() => props.onTeamAdd(team.id)}
                             >
                                 Добавить
                             </Button>
                         ]}>
                         <List.Item.Meta
                             avatar={<Avatar/>}
-                            title={item.name}
-                            description={item.about}
+                            title={team.name}
+                            description={team.about}
                         />
                     </List.Item>
                 )}

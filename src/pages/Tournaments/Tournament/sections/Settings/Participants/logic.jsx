@@ -10,36 +10,65 @@ function ParticipantsLogic(props) {
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
 
+    const updateTeams = async () => {
+        try {
+            const teams = await TournamentModel.instance.getTeams(props.tournamentData.id);
+            props.setTournamentData({...props.tournamentData, teams: teams});
+        } catch (e) {
+            console.error(e);
+            message.error('Не удалось обновить информацию о турнире');
+        }
+    }
+
     const addTeam = async (teamId) => {
-        await TournamentModel.instance.addTeam(props.tournamentData.id, teamId);
-        message.success('Команда успешно добавлена')
+        try {
+            await TournamentModel.instance.addTeam(props.tournamentData.id, teamId);
+        } catch (e) {
+            console.error(e);
+            message.error('Не удалось добавить команду');
+            return;
+        }
+
+        await updateTeams();
     }
 
     const deleteTeam = async (teamId) => {
-        // TODO: get api result
-        // await TournamentModel.instance.removeTeam(props.tournamentData.id, teamId)
-        console.log('TODO: Delete team', teamId);
+        try {
+            await TournamentModel.instance.removeTeam(props.tournamentData.id, teamId);
+        } catch (e) {
+            console.error(e);
+            message.error('Не удалось убрать команду');
+            return;
+        }
+
+        await updateTeams();
     }
 
     const searchTeams = async (teamName) => {
         if (!teamName) {
-            message.error('Введите название команды');
             return;
         }
 
         setIsSearching(true);
-        const gotTeams = await TeamModel.instance.searchTeams(teamName, 100);
-        setIsSearching(false);
-
-        const currentTeamIds = props.tournamentData.teams.map((team) => team.id);
-        const teamsForAdding = [];
-        for (const team of gotTeams) {
-            if (!currentTeamIds.includes(team.id)) {
-                teamsForAdding.push(team);
+        try {
+            // TODO: remove limit, add pagination or something idk
+            const limit = 100;
+            const gotTeams = await TeamModel.instance.searchTeams(teamName, limit);
+            const currentTeamIds = props.tournamentData.teams.map((team) => team.id);
+            const teamsForAdding = [];
+            for (const team of gotTeams) {
+                if (!currentTeamIds.includes(team.id)) {
+                    teamsForAdding.push(team);
+                }
             }
-        }
 
-        setSearchResults(teamsForAdding);
+            setSearchResults(teamsForAdding);
+        } catch (e) {
+            console.error(e);
+            message.error('Не удалось осуществить поиск');
+        } finally {
+            setIsSearching(false);
+        }
     }
 
     return (

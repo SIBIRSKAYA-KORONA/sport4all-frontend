@@ -12,8 +12,6 @@ const {Title, Paragraph} = Typography;
 
 
 function TournamentPageRender(props) {
-    console.log('props', props)
-
     return (
         <BasePage>
             <Row style={{marginBottom: 8}}>

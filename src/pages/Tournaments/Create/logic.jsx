@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import TournamentCreatePageRender from './render';
 import TournamentModel from 'Models/TournamentModel';
+import {message} from 'antd';
 
 class TournamentCreatePage extends React.Component {
     constructor(props) {
@@ -30,10 +31,9 @@ class TournamentCreatePage extends React.Component {
 
         TournamentModel.instance.createTournament(payload)
             .then(response => {
-                console.log(response);
                 this.props.history.push(`/tournaments/${response.id}`);
             })
-            .catch(error => { console.error(error); })
+            .catch(() => { message.error('Не удалось создать турнир'); })
     }
 
     render() {
