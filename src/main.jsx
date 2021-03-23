@@ -4,20 +4,20 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './main.scss';
 
-import store from './store/store';
+import store from 'Store/store';
 import HomePage from 'Pages/Home/render';
 import SignUpPage from 'Pages/SignUp/logic';
 import TestGrid from 'Pages/TestGrid/render';
-import {CONST} from 'Constants';
-import TeamCreatePage from 'Pages/Teams/Create/logic';
-import TeamListPage from 'Pages/Teams/List/logic';
-import TeamsPage from 'Pages/Teams/Teams/render';
+import CONST from 'Utils/constants';
+import TeamCreatePage from 'Pages/Teams/Create/render';
+import TeamsPage from 'Pages/Teams/Team/render';
 import TeamPage from 'Pages/Teams/Team/logic';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
 import TournamentsPage from 'Pages/Tournaments/Tournament/logic';
 import TournamentsListPage from 'Pages/Tournaments/List/render';
 import LoginPage from 'Pages/Login/logic';
 import ProfilePage from 'Pages/Profile/logic';
+import AuthedRoute from 'Utils/AuthedRoute';
 
 render(
     <Provider store={store}>
@@ -26,21 +26,20 @@ render(
                 <Route exact path='/' component={HomePage}/>
 
                 {/* Teams */}
-                <Route path='/teams/create' component={TeamCreatePage}/>
-                <Route path='/teams/list' component={TeamListPage}/>
-                <Route path='/teams/:id' component={TeamPage}/>
-                <Route path='/teams/' component={TeamsPage}/>
+                <AuthedRoute path={CONST.PATHS.teams.create} component={TeamCreatePage} mustBeLogged='in'/>
+                <Route path={CONST.PATHS.teams.id(null)} component={TeamPage}/>
+                <Route path={CONST.PATHS.teams.base} component={TeamsPage}/>
 
                 {/* Tournaments */}
-                <Route path='/tournaments/create' component={TournamentCreatePage}/>
+                <AuthedRoute path='/tournaments/create' component={TournamentCreatePage} mustBeLogged='in'/>
                 <Route path='/tournaments/list' component={TournamentsListPage}/>
                 <Route path='/tournaments/:tournamentId' component={TournamentsPage}/>
 
-                <Route path='/profile' component={ProfilePage}/>
+                <AuthedRoute path={CONST.PATHS.profile} component={ProfilePage} mustBeLogged='in'/>
 
                 {/* Auth */}
-                <Route path='/signup' component={SignUpPage}/>
-                <Route path='/login' component={LoginPage}/>
+                <AuthedRoute path={CONST.PATHS.signup} component={SignUpPage} mustBeLogged='out'/>
+                <AuthedRoute path={CONST.PATHS.login} component={LoginPage} mustBeLogged='out'/>
 
                 {/* Test */}
                 <Route path='/test-grid' component={TestGrid}/>

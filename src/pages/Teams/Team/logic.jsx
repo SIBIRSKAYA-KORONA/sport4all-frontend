@@ -1,37 +1,49 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import TeamPageRender from './render';
-import { createTeam } from 'Actions/Team/TeamActions';
 import TeamModel from 'Models/TeamModel';
+import UserModel from 'Models/UserModel';
 
 class TeamPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             team: null,
+            loading: true,
             playersToAdd: [],
             selectedPlayer: null,
+            canEdit: false,
         };
-
-        this.load(this.props.match.params.id);
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.loadPlayers = this.loadPlayers.bind(this);
         this.selectPlayer = this.selectPlayer.bind(this);
         this.addPlayer = this.addPlayer.bind(this);
+        this.onPlayerDelete = this.onPlayerDelete.bind(this);
     }
 
-    load(tid) {
-        TeamModel.instance.loadTeam(tid)
+    componentDidMount() {
+        this.load(this.props.match.params.id)
+            .then(() => UserModel.checkAndSetAuth())
+            .then(() => UserModel.getProfile())
+            .then(user => {
+                if (user.id === this.state.team.ownerId)
+                    this.setState(prev => ({ ...prev, canEdit:true }))
+            })
+            .catch(() => {});
+    }
+
+    async load(tid) {
+        return TeamModel.instance.loadTeam(tid)
             .then(team => {
                 if (!team.players) team.players = [];
                 this.setState(prevState => ({
                     ...prevState,
                     team: team
                 }))
-            })
+            })// todo: handle error
+            .finally(() => this.setState(prev => ({ ...prev, loading: false })));
     }
 
     handleSubmit(values) {
@@ -80,22 +92,36 @@ class TeamPage extends React.Component {
             });
     }
 
+    async onPlayerDelete(pid) {
+        if (!this.state.team || !pid) return;
+        return TeamModel.instance.removePlayerFromTheTeam(this.state.team.id, pid)
+            .then(() => {
+                this.setState(prev => ({
+                    ...prev,
+                    team: {
+                        ...prev.team,
+                        players: prev.team.players.filter(player => player.id !== pid)
+                    }
+                }))
+            })
+            .catch(e => { throw e });
+    }
+
     render = () => (
         <TeamPageRender
+            onDelete={this.onPlayerDelete}
             onSubmit={this.handleSubmit}
             loadPlayers={this.loadPlayers}
-            team={this.state.team}
-            playersToAdd={this.state.playersToAdd}
             addPlayer={this.addPlayer}
             selectPlayer={this.selectPlayer}
-            selectedPlayer={this.state.selectedPlayer}/>
+            {...this.state}
+        />
     );
 }
 
 TeamPage.propTypes = {
-    createTeam: propTypes.func.isRequired,
     history: propTypes.object.isRequired,
     match: propTypes.object.isRequired,
 };
 
-export default connect(null, { createTeam })(TeamPage);
+export default TeamPage;

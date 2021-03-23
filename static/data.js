@@ -1,4 +1,4 @@
-import {CONST} from 'Constants';
+import {CONST} from 'Utils/constants';
 import ForkIcon from 'Static/icons/fork.svg';
 import IssueIcon from 'Static/icons/issue.svg';
 import JSIcon from 'Static/icons/js.svg';

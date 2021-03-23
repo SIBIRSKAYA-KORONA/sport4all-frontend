@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import SignUpPageRender from './render';
 import UserModel from 'Models/UserModel';
+import CONST from 'Constants';
+import { loginUser } from 'Store/User/UserActions';
 
 class SignUpPage extends React.Component {
     constructor(props) {
@@ -17,18 +19,26 @@ class SignUpPage extends React.Component {
 
     handleSubmit(values) {
         const user = values;
-        const t = this;
         if (!user.password || !user.nickname) return;
-        UserModel.instance.signUp(user)
-            .then(() => { t.props.history.push('/teams/list'); })
+        UserModel.signUp(user)
+            .then(() => {
+                this.props.loginUser();
+                this.props.history.push(CONST.PATHS.profile);
+            })
             .catch(error => { this.setState({ error: error }) });
     }
 
-    render = () => (<SignUpPageRender onSubmit={this.handleSubmit} error={this.state.error}/>)
+    render = () => (<SignUpPageRender onSubmit={this.handleSubmit} {...this.state}/>)
 }
 
 SignUpPage.propTypes = {
     history: propTypes.object.isRequired,
+    loginUser: propTypes.func.isRequired,
+    isAuthenticated: propTypes.bool
 };
 
-export default connect(null, null)(SignUpPage);
+const mapStateToProps = state => ({
+    isAuthenticated: state.user.isAuthenticated
+});
+
+export default connect(mapStateToProps, { loginUser })(SignUpPage);
