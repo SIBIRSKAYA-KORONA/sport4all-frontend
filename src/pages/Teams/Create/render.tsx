@@ -20,7 +20,7 @@ const TeamCreatePage = (props:RouteComponentProps):JSX.Element => {
         wrapperCol: { span: 16 },
     };
     return (
-        <BasePage>
+        <BasePage {...props}>
             <div className='create-team'>
                 <h1>Создайте свою команду</h1>
                 <Form {...layout} onFinish={handleSubmit}>

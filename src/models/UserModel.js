@@ -54,7 +54,8 @@ class UserModel {
         return Network.fetchDelete(Network.paths.sessions, user).then(
             response => {
                 if (response.status > 499) throw new Error('Server error');
-                return response.json();
+                if (response.status > 400) throw new Error(response.status);
+                store.dispatch(logoutUser());
             },
             error => { throw new Error(error); }
         );

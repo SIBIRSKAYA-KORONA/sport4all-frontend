@@ -20,7 +20,7 @@ interface IProps extends RouteComponentProps {
 }
 
 const ProfilePageRender = (props:IProps):JSX.Element => (
-    <BasePage>
+    <BasePage {...props}>
         {props.user &&
             <Row>
                 <Col flex='100px'>
