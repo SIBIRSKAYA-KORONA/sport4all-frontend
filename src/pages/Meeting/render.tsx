@@ -44,7 +44,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                             <Title level={2}>Результаты встречи</Title>
                             <Row>
                                 <Col span={8}>
-                                    <Space direction='vertical' size='middle'>
+                                    <Space direction='vertical' size='middle' align='center'>
                                         <Avatar size={128}>{props.meeting.teams[0].name}</Avatar>
                                         <Title level={5}>{props.meeting.teams[0].name}</Title>
                                     </Space>
@@ -55,7 +55,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                                     </Title>
                                 </Col>
                                 <Col span={8}>
-                                    <Space direction='vertical' size='middle'>
+                                    <Space direction='vertical' size='middle' align='center'>
                                         <Avatar size={128}>{props.meeting.teams[1].name}</Avatar>
                                         <Title level={5}>{props.meeting.teams[1].name}</Title>
                                     </Space>
