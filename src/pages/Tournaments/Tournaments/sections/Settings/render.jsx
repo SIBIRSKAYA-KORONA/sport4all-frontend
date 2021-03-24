@@ -7,7 +7,7 @@ import TournamentModel from 'Models/TournamentModel';
 
 function TournamentSettingsRender(props) {
     const addTeam = async (teamId) => {
-        await TournamentModel.instance.addTeam(props.tournamentId, teamId);
+        await TournamentModel.addTeam(props.tournamentId, teamId);
         console.log('ADDED');
     }
 

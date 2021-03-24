@@ -24,7 +24,7 @@ class TournamentCreatePage extends React.Component {
             'name': tournamentData.tournamentName
         }
 
-        TournamentModel.instance.createTournament(payload)
+        TournamentModel.createTournament(payload)
             .then(response => {
                 console.log(response);
                 this.props.history.push(`/tournaments/${response.id}`);

@@ -5,7 +5,7 @@ import TournamentPageRender from './render';
 class TournamentPage extends React.Component {
     render() {
         return (
-            <TournamentPageRender tournamentId={Number(this.props.match.params.tournamentId || 0)}/>
+            <TournamentPageRender {...this.props} tournamentId={Number(this.props.match.params.tournamentId || 0)}/>
         )
     }
 }

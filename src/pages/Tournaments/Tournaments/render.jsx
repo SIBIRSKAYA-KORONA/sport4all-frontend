@@ -15,15 +15,15 @@ function TournamentPageRender(props) {
     const [tournamentData, setTournamentData] = useState({});
     const tournamentId = props.tournamentId;
     useEffect(async () => {
-        const gotTournamentData = await TournamentModel.instance.getTournament(tournamentId);
-        const gotTeams = await TournamentModel.instance.getTeams(tournamentId);
+        const gotTournamentData = await TournamentModel.getTournament(tournamentId);
+        const gotTeams = await TournamentModel.getTeams(tournamentId);
         console.log(gotTournamentData);
         console.log(gotTeams);
         setTournamentData({...gotTournamentData, teams: gotTeams});
     }, [])
 
     return (
-        <BasePage>
+        <BasePage {...props}>
             <Row style={{marginBottom: 8}}>
                 <Space size="large" align="center">
                     <Avatar size={64}/>
