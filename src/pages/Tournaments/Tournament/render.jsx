@@ -2,7 +2,8 @@ import * as React from 'react';
 import BasePage from 'Components/BasePage/render';
 import {Avatar, Row, Skeleton, Space, Spin, Tabs, Typography} from 'antd'
 import TournamentGridRender from 'Pages/Tournaments/Tournament/sections/Grid/render';
-import TournamentTableRender from 'Pages/Tournaments/Tournament/sections/Table/render';
+{/*TODO: add table*/}
+// import TournamentTableRender from 'Pages/Tournaments/Tournament/sections/Table/render';
 {/*TODO: add history*/}
 // import TournamentHistoryRender from 'Pages/Tournaments/Tournament/sections/History/render';
 import TournamentSettingsRender from 'Pages/Tournaments/Tournament/sections/Settings/render';
@@ -45,9 +46,11 @@ function TournamentPageRender(props) {
                 <Tabs.TabPane tab={'Сетка'} key={TournamentPageRender.sections[0]}>
                     {props.isLoading ? <Spin/> : <TournamentGridRender tournamentData={props.tournamentData}/>}
                 </Tabs.TabPane>
-                <Tabs.TabPane tab={'Таблица'} key={TournamentPageRender.sections[1]}>
-                    {props.isLoading ? <Spin/> : <TournamentTableRender tournamentData={props.tournamentData}/>}
-                </Tabs.TabPane>
+
+                {/*TODO: add table*/}
+                {/*<Tabs.TabPane tab={'Таблица'} key={TournamentPageRender.sections[1]}>*/}
+                {/*    {props.isLoading ? <Spin/> : <TournamentTableRender tournamentData={props.tournamentData}/>}*/}
+                {/*</Tabs.TabPane>*/}
                 {/*TODO: add history*/}
                 {/*<Tabs.TabPane tab={'История'} key={TournamentPageRender.sections[2]}>*/}
                 {/*    {props.isLoading ? <Spin/> : <TournamentHistoryRender/>}*/}
