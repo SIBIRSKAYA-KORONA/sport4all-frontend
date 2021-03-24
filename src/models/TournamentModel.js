@@ -1,4 +1,5 @@
 import Network from '../core/network';
+import HttpStatusCode from 'Utils/httpErrors';
 
 class TournamentModel {
     static async createTournament(tournamentData) {
@@ -38,6 +39,7 @@ class TournamentModel {
     static async addTeam(tournamentId, teamId) {
         return Network.fetchPut(Network.paths.tournaments + `/${tournamentId}/teams/${teamId}`, {})
             .then(response => {
+                if (response.status === HttpStatusCode.NOT_ACCEPTABLE) throw new Error ('Start the match first');
                 console.log(response);
                 return response.json();
             })

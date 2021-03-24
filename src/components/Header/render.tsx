@@ -9,6 +9,7 @@ const AntHeader = Layout.Header;
 import UserModel from 'Models/UserModel';
 import { getPageName } from 'Utils/utils';
 import { UserAuthenticatedType } from 'Store/User/UserState';
+import CONST from 'Constants';
 
 
 interface IProps extends RouteComponentProps {
@@ -54,6 +55,10 @@ const Header = (props: IProps) => {
                         </Menu.Item>
                     </>
                 }
+
+                <Menu.Item>
+                    <Link to={CONST.PATHS.meetings.id(1)}>Матч</Link>
+                </Menu.Item>
             </Menu>
         </AntHeader>
     );
