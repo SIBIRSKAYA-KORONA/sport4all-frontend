@@ -7,6 +7,9 @@ const CONST = {
             base: '/teams',
             create: '/teams/create',
             id: (id: string | number | null):string => '/teams/'+(id ? id : ':id'),
+        },
+        meetings: {
+            id: (id: string | number | null):string => '/meeting/'+(id ? id : ':id'),
         }
     },
     SESSION_ID: 'session_id',
