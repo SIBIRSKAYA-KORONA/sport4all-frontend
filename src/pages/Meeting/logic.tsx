@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import {Meeting, Team} from 'Utils/types';
+import {Meeting, Stats, Team} from 'Utils/types';
 import MeetingModel from 'Models/MeetingModel';
-import TournamentModel from 'Models/TournamentModel';
 import MeetingPageRender from 'Pages/Meeting/render';
 
 
@@ -11,9 +10,7 @@ import MeetingPageRender from 'Pages/Meeting/render';
 
 interface IState {
     meeting?: Meeting,
-    loadingMeeting: boolean,
-    leftTeam?: Team,
-    rightTeam?: Team
+    loadingMeeting: boolean
 }
 
 class MeetingPage extends React.Component<RouteComponentProps, IState> {
@@ -24,7 +21,6 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
         };
 
         this.handlePointsSave = this.handlePointsSave.bind(this);
-        this.saveMeeting = this.saveMeeting.bind(this);
         this.handleTeamsAdd = this.handleTeamsAdd.bind(this);
         this.changeStatus = this.changeStatus.bind(this);
     }
@@ -39,9 +35,7 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
             .then(meeting => {
                 console.log(meeting);
                 this.setState({
-                    meeting: meeting as Meeting,
-                    leftTeam: null,
-                    rightTeam: null,
+                    meeting: meeting as Meeting
                 });
             })
             .catch(e => { console.error(e); })
@@ -49,8 +43,15 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
     }
 
     // Handlers
-    handlePointsSave(row):void {
-        console.log(row);
+    handlePointsSave(values: { id:number }):void {
+        for (const key in values) if (Object.prototype.hasOwnProperty.call(values, key)) {
+            const stats = {
+                score: +values[key],
+                meetingId: this.state.meeting.id,
+                teamId: +key,
+            };
+            MeetingModel.addTeamResults(stats);
+        }
     }
 
     async handleTeamsAdd(values:Array<number>):Promise<void> {
@@ -66,10 +67,6 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
         return MeetingModel.changeStatus(this.state.meeting.id, this.state.meeting.status + 1)
             .then(() => { this.parseMeeting(); })
             .catch(e => { console.error(e); });
-    }
-
-    saveMeeting():void {
-        console.log(this.state);
     }
 
     render(): JSX.Element {

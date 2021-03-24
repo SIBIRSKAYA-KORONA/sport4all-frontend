@@ -36,9 +36,9 @@ export enum EventStatus {
 }
 
 export interface Stats {
-    id: number,
+    id?: number,
     score: number,
     meetingId: number,
     teamId: number,
-    playerId: number
+    playerId?: number
 }

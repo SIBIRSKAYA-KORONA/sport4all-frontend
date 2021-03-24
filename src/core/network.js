@@ -13,6 +13,7 @@ export default class Network {
             base: '/meetings',
             id: (mid) => '/meetings/'+mid,
             addTeam: (id, tid) => `/meetings/${id}/teams/${tid}`,
+            addResultsForTeam: (mid, tid) => `/meetings/${mid}/teams/${tid}/stat`,
         }
     };
 

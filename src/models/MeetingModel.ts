@@ -1,6 +1,6 @@
 import Network from '../core/network';
 import HttpStatusCode from 'Utils/httpErrors';
-import { EventStatus, Meeting } from 'Utils/types';
+import {EventStatus, Meeting, Stats} from 'Utils/types';
 
 class MeetingModel {
     static async getMeeting(mid: number):Promise<HttpStatusCode | Meeting> {
@@ -31,6 +31,18 @@ class MeetingModel {
         return Network.fetchPost(Network.paths.meetings.addTeam(mid, tid), {})
             .then(response => {
                 if (response.status === HttpStatusCode.NOT_ACCEPTABLE) throw new Error ('Start the match first');
+                return;
+            })
+            .catch(e => {
+                console.error(e);
+                throw e;
+            })
+    }
+
+    static async addTeamResults(stats: Stats):Promise<HttpStatusCode | null> {
+        return Network.fetchPut(Network.paths.meetings.addResultsForTeam(stats.meetingId, stats.teamId), stats)
+            .then(response => {
+                if (response.status >= HttpStatusCode.BAD_REQUEST) throw HttpStatusCode[response.status];
                 return;
             })
             .catch(e => {
