@@ -8,7 +8,11 @@ export default class Network {
         settings: '/settings',
         teams: '/teams',
         tournaments: '/tournaments',
-        sessions: '/sessions'
+        sessions: '/sessions',
+        meetings: {
+            base: '/meetings',
+            id: (mid) => '/meetings/'+mid
+        }
     };
 
     /**

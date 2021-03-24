@@ -32,8 +32,8 @@ render(
                 <Route path={CONST.PATHS.teams.base} component={TeamsPage}/>
 
                 {/* Tournaments */}
-                <AuthedRoute path='/tournaments/create' component={TournamentCreatePage} mustBeLogged='in'/>
-                <Route path='/tournaments/list' component={TournamentsListPage}/>
+                <AuthedRoute path={CONST.PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
+                <Route path={CONST.PATHS.tournaments.list} component={TournamentsListPage}/>
                 <Route path='/tournaments/:tournamentId' component={TournamentsPage}/>
 
                 {/* Meetings */}
