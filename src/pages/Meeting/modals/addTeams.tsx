@@ -8,7 +8,7 @@ import TournamentModel from 'Models/TournamentModel';
 
 
 type IProps = {
-    tournamentId: typeof TournamentModel.id,
+    tournamentId: number,
     visible: boolean,
     onOk: (teams) => void,
     onCancel: () => void,

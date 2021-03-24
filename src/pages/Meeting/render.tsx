@@ -1,20 +1,23 @@
 import './style.scss';
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import {RouteComponentProps} from 'react-router-dom';
 
-import {Button, Modal, Space, Table} from 'antd';
-
-import {EventStatus, Meeting} from 'Utils/types';
+import {Button, Modal, Space, Table, Typography} from 'antd';
+import {EventStatus, Meeting, Team} from 'Utils/types';
 import BasePage from 'Components/BasePage/render';
 import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
+import MeetingSteps from 'Components/Meeting/Steps/render';
+
+const { Title } = Typography;
 
 
 interface IProps extends RouteComponentProps {
-    meeting: Meeting | null,
-    leftTeam: Array<any>,
-    rightTeam: Array<any>,
+    meeting?: Meeting,
+    leftTeam?: Team,
+    rightTeam?: Team,
     handlePointsSave: (row: any) => void,
     handleTeamsAdd: (values:[any]) => void,
+    changeStatus: () => void,
     loadingMeeting: boolean,
 }
 
@@ -48,18 +51,22 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
             })
         }
     });
-    const leftColumns = [...columns];
-    const rightColumns = [...columns].reverse();
+    // const leftColumns = [...columns];
+    // const rightColumns = [...columns].reverse();
 
     return (
         <BasePage {...props} loading={props.loadingMeeting}>
             {props.meeting
-                ? <>
-                    <section className='meeting__section-center'>
-                        <h1>{EventStatus[props.meeting.status]}</h1>
-                    </section>
+                ? <Space direction='vertical'>
+                    <Space direction='vertical'>
+                        <Title level={3}>Статус встречи</Title>
+                        <MeetingSteps current={props.meeting.status - 1} />
+                        {props.meeting.status !== EventStatus.FinishedEvent &&
+                            <Button type='primary' onClick={props.changeStatus}>Следующий этап</Button>
+                        }
+                    </Space>
                     {props.meeting.teams.length > 0
-                        ? <section>
+                        ? <Space direction='vertical'>
                             <h3>Судейский мостик</h3>
                             <Button
                                 type='primary'
@@ -73,15 +80,15 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                             >
                                 <h3>Внесите очки команд</h3>
                                 <Space direction='horizontal' size='small'>
-                                    <Table dataSource={props.leftTeam} columns={leftColumns} pagination={false}></Table>
-                                    <Table dataSource={props.rightTeam} columns={rightColumns} pagination={false}></Table>
+                                    {/*<Table dataSource={props.leftTeam} columns={leftColumns} pagination={false}></Table>*/}
+                                    {/*<Table dataSource={props.rightTeam} columns={rightColumns} pagination={false}></Table>*/}
                                 </Space>
                                 <Button
                                     type='primary'
                                     onClick={handleOk.bind(this, 'addTeams')}
                                 >Сохранить</Button>
                             </Modal>
-                        </section>
+                        </Space>
                         : <>
                             <Button type='primary' onClick={() => { showModal('addTeams'); }}>Добавить команды</Button>
                             <AddTeamsModal
@@ -94,7 +101,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                                 tournamentId={props.meeting.id}
                             />
                         </>}
-                </>
+                </Space>
                 : <p>Not found</p>
             }
         </BasePage>

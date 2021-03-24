@@ -1,13 +1,13 @@
 import Network from '../core/network';
 import HttpStatusCode from 'Utils/httpErrors';
-import {Meeting} from 'Utils/types';
+import {EventStatus, Meeting} from 'Utils/types';
 
 class MeetingModel {
     static async getMeeting(mid: number):Promise<HttpStatusCode | Meeting> {
         return Network.fetchGet(Network.paths.meetings.id(mid))
             .then(response => {
                 if (response.status >= 400) throw response.status;
-                else return response.json();
+                return response.json();
             })
             .then(meeting => {
                 ['teams', 'stats', 'prevMeetings'].forEach(key => {
@@ -15,7 +15,16 @@ class MeetingModel {
                 });
                 return meeting;
             })
-            .catch(error => { throw new Error(error); });
+            .catch(e => { throw new Error(e); });
+    }
+
+    static async changeStatus(mid: number, status: EventStatus):Promise<HttpStatusCode | Meeting> {
+        return Network.fetchPut(Network.paths.meetings.id(mid), { status:status })
+            .then(response => {
+                if (response.status >= 400) throw HttpStatusCode[response.status];
+                return;
+            })
+            .catch(e => { throw new Error(e); });
     }
 }
 

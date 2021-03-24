@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Meeting } from 'Utils/types';
+import {Meeting, Team} from 'Utils/types';
 import MeetingModel from 'Models/MeetingModel';
 import TournamentModel from 'Models/TournamentModel';
 import MeetingPageRender from 'Pages/Meeting/render';
@@ -10,25 +10,23 @@ import MeetingPageRender from 'Pages/Meeting/render';
 // interface IProps extends RouteComponentProps {}
 
 interface IState {
-    meeting: Meeting | null,
+    meeting?: Meeting,
     loadingMeeting: boolean,
-    leftTeam: Array<any>,
-    rightTeam: Array<any>
+    leftTeam?: Team,
+    rightTeam?: Team
 }
 
 class MeetingPage extends React.Component<RouteComponentProps, IState> {
     constructor(props:RouteComponentProps) {
         super(props);
         this.state = {
-            meeting: null,
             loadingMeeting: true,
-            leftTeam: [],
-            rightTeam: [],
         };
 
         this.handlePointsSave = this.handlePointsSave.bind(this);
         this.saveMeeting = this.saveMeeting.bind(this);
         this.handleTeamsAdd = this.handleTeamsAdd.bind(this);
+        this.changeStatus = this.changeStatus.bind(this);
     }
 
     componentDidMount():void {
@@ -36,15 +34,14 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
     }
 
     parseMeeting():void {
-        const leftTeam = [];
-        const rightTeam = [];
+        this.setState(prev => ({ ...prev, loadingMeets:true }) );
         MeetingModel.getMeeting(this.props.match.params['id'])
             .then(meeting => {
                 console.log(meeting);
                 this.setState({
                     meeting: meeting as Meeting,
-                    leftTeam: leftTeam,
-                    rightTeam: rightTeam,
+                    leftTeam: null,
+                    rightTeam: null,
                 });
             })
             .catch(e => { console.error(e); })
@@ -56,10 +53,16 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
         console.log(row);
     }
 
-    handleTeamsAdd(values:Array<number>) {
+    handleTeamsAdd(values:Array<number>):void {
         TournamentModel.addTeam(this.state.meeting.tournamentId, values[0])
-            .then(() => { this.setState(prev => ({ ...prev, loadingMeeting:true }))})
             .then(() => { this.parseMeeting(); });
+    }
+
+    async changeStatus():Promise<void> {
+        if (!confirm('Изменить статус встречи?')) return;
+        return MeetingModel.changeStatus(this.state.meeting.id, this.state.meeting.status + 1)
+            .then(() => { this.parseMeeting(); })
+            .catch(e => { console.error(e); });
     }
 
     saveMeeting():void {
@@ -70,6 +73,7 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
         return (<MeetingPageRender {...this.props} {...this.state}
             handlePointsSave={this.handlePointsSave}
             handleTeamsAdd={this.handleTeamsAdd}
+            changeStatus={this.changeStatus}
         />);
     }
 }
