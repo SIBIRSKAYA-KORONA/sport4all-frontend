@@ -1,64 +1,186 @@
 import Network from '../core/network';
-import HttpStatusCode from 'Utils/httpErrors';
+import {
+    BadRequestError,
+    ForbiddenError,
+    NotAcceptableError,
+    NotAuthorizedError,
+    NotFoundError,
+    ServerError
+} from 'Utils/errors';
 
 class TournamentModel {
     static async createTournament(tournamentData) {
         return Network.fetchPost(Network.paths.tournaments, tournamentData)
-            .then(response => {
-                if (response.status > 499) throw new Error('server error');
-                else return response.json();
+            .then(res => {
+                switch (res.status) {
+                case 200: return res.json();
+                case 400: throw BadRequestError;
+                case 401: throw NotAuthorizedError;
+                default: throw ServerError;
+                }
             })
-            .catch(error => { throw new Error(error); });
+            .catch(error => {
+                console.error(error);
+                throw Error(error);
+            });
     }
 
-
-    static async getTournament(tournamentId) {
+    /**
+     *
+     * @param {Number | String} tournamentId
+     * @return {Promise<Object | IError>}
+     */
+    async getTournament(tournamentId) {
         return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}`)
-            .then(response => {
-                console.log(response);
-                return response.json();
+            .then(res => {
+                switch (res.status) {
+                case 200: return res.json();
+                case 404: throw NotFoundError;
+                default: throw ServerError;
+                }
             })
             .catch(error => {
                 console.error(error);
-                return undefined;
-            })
+                throw Error(error);
+            });
     }
 
-    static async getTeams(tournamentId) {
+    /**
+     *
+     * @param {Number | String} tournamentId
+     * @param {Object} newData
+     * @return {Promise<Object | IError>}
+     */
+    async updateTournament(tournamentId, newData) {
+        return Network.fetchPut(Network.paths.tournaments + `/${tournamentId}`, newData)
+            .then(res => {
+                switch (res.status) {
+                case 200: return;
+                case 400: throw BadRequestError;
+                case 401: throw NotAuthorizedError;
+                case 403: throw ForbiddenError;
+                case 404: throw NotFoundError;
+                case 406: throw NotAcceptableError;
+                default: throw ServerError;
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                throw Error(error);
+            });
+    }
+
+    /**
+     *
+     * @param {Number | String} tournamentId
+     * @return {Promise<Object | IError>}
+     */
+    async getMeetings(tournamentId) {
+        return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}/meetings`)
+            .then(res => {
+                switch (res.status) {
+                case 200: return res.json();
+                case 400: throw BadRequestError;
+                case 404: throw NotFoundError;
+                default: throw ServerError;
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                throw Error(error);
+            });
+    }
+
+    /**
+     *
+     * @param {Number | String} tournamentId
+     * @return {Promise<Object | IError>}
+     */
+    async getTeams(tournamentId) {
         return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}/teams`)
-            .then(response => {
-                console.log(response);
-                return response.json();
+            .then(res => {
+                switch (res.status) {
+                case 200: return res.json();
+                case 400: throw BadRequestError;
+                case 404: throw NotFoundError;
+                default: throw ServerError;
+                }
             })
             .catch(error => {
                 console.error(error);
-                return undefined;
-            })
+                throw Error(error);
+            });
     }
 
-    static async addTeam(tournamentId, teamId) {
+    /**
+     *
+     * @param {Number | String} tournamentId
+     * @param {Number | String} teamId
+     * @return {Promise<Object | IError>}
+     */
+    async addTeam(tournamentId, teamId) {
         return Network.fetchPut(Network.paths.tournaments + `/${tournamentId}/teams/${teamId}`, {})
-            .then(response => {
-                if (response.status === HttpStatusCode.NOT_ACCEPTABLE) throw new Error ('Start the match first');
-                console.log(response);
-                return response.json();
+            .then(res => {
+                switch (res.status) {
+                case 200: return;
+                case 400: throw BadRequestError;
+                case 401: throw NotAuthorizedError;
+                case 403: throw ForbiddenError;
+                case 404: throw NotFoundError;
+                case 406: throw NotAcceptableError;
+                default: throw ServerError;
+                }
             })
             .catch(error => {
                 console.error(error);
-                return undefined;
-            })
+                throw Error(error);
+            });
     }
 
-    static async loadTournaments(role) {
-        return Network.fetchGet(Network.paths.tournaments + `?role=${role}`)
-            .then(response => {
-                console.log(response);
-                return response.json()
+    /**
+     *
+     * @param {Number | String} tournamentId
+     * @param {Number | String} teamId
+     * @return {Promise<Object | IError>}
+     */
+    async removeTeam(tournamentId, teamId) {
+        return Network.fetchDelete(Network.paths.tournaments + `/${tournamentId}/teams/${teamId}`, {})
+            .then(res => {
+                switch (res.status) {
+                case 200: return;
+                case 400: throw BadRequestError;
+                case 401: throw NotAuthorizedError;
+                case 403: throw ForbiddenError;
+                case 404: throw NotFoundError;
+                case 406: throw NotAcceptableError;
+                default: throw ServerError;
+                }
             })
             .catch(error => {
                 console.error(error);
-                return [];
+                throw Error(error);
+            });
+    }
+
+    /**
+     *
+     * @param {Number | String} userId
+     * @return {Promise<Object | IError>}
+     */
+    async getTournaments(userId) {
+        return Network.fetchGet(Network.paths.tournaments + `?userId=${userId}`)
+            .then(res => {
+                switch (res.status) {
+                case 200: return res.json();
+                case 400: throw BadRequestError;
+                case 404: throw NotFoundError;
+                default: throw ServerError;
+                }
             })
+            .catch(error => {
+                console.error(error);
+                throw Error(error);
+            });
     }
 }
 

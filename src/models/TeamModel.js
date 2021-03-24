@@ -82,6 +82,7 @@ class TeamModel {
             })
     }
 
+
     async removePlayerFromTheTeam(tid, uid) {
         return Network.fetchDelete(`${Network.paths.teams}/${tid}/members/${uid}`)
             .then(res => {
@@ -96,6 +97,23 @@ class TeamModel {
                 throw ServerError;
             })
     }
+
+    async searchTeams(namePart, limit) {
+        const encodedNamePart = encodeURIComponent(namePart);
+        return Network.fetchGet(Network.paths.teams + `/search?name=${encodedNamePart}&limit=${limit}`)
+            .then(res => {
+                switch (res.status) {
+                case 200: return res.json();
+                case 401: throw NotAuthorizedError;
+                default: throw ServerError;
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                throw Error(error);
+            });
+    }
+
 }
 
 export default TeamModel;
