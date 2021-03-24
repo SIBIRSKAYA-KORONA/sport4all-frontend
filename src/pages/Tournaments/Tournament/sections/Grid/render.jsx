@@ -200,74 +200,6 @@ function TournamentGridRender(props) {
                 }
             },
             {
-                'id': 4,
-                'number': 5,
-                'stage_id': 0,
-                'group_id': 0,
-                'round_id': 0,
-                'child_count': 0,
-                'status': 2,
-                'opponent1': {
-                    'id': 7,
-                    'position': 9
-                },
-                'opponent2': {
-                    'id': 8,
-                    'position': 10
-                }
-            },
-            {
-                'id': 5,
-                'number': 6,
-                'stage_id': 0,
-                'group_id': 0,
-                'round_id': 0,
-                'child_count': 0,
-                'status': 2,
-                'opponent1': {
-                    'id': 9,
-                    'position': 11
-                },
-                'opponent2': {
-                    'id': 10,
-                    'position': 12
-                }
-            },
-            {
-                'id': 6,
-                'number': 7,
-                'stage_id': 0,
-                'group_id': 0,
-                'round_id': 0,
-                'child_count': 0,
-                'status': 2,
-                'opponent1': {
-                    'id': 11,
-                    'position': 13
-                },
-                'opponent2': {
-                    'id': 12,
-                    'position': 14
-                }
-            },
-            {
-                'id': 7,
-                'number': 8,
-                'stage_id': 0,
-                'group_id': 0,
-                'round_id': 0,
-                'child_count': 0,
-                'status': 2,
-                'opponent1': {
-                    'id': 13,
-                    'position': 15
-                },
-                'opponent2': {
-                    'id': null,
-                    'position': 16
-                }
-            },
-            {
                 'id': 8,
                 'number': 1,
                 'stage_id': 0,
@@ -292,6 +224,21 @@ function TournamentGridRender(props) {
                 'status': 1,
                 'opponent1': {
                     'id': 4
+                },
+                'opponent2': {
+                    'id': null
+                }
+            },
+            {
+                'id': 10,
+                'number': 1,
+                'stage_id': 0,
+                'group_id': 0,
+                'round_id': 2,
+                'child_count': 0,
+                'status': 1,
+                'opponent1': {
+                    'id': null
                 },
                 'opponent2': {
                     'id': null
@@ -333,8 +280,8 @@ function TournamentGridRender(props) {
         showLowerBracketSlotsOrigin: true,
         highlightParticipantOnHover: true,
         participantOnClick: (match, teamId) => {
-            console.log('TeamId: ', teamId);
-            console.log('Match data: ', match);
+            console.log(props);
+            props.history.push(`/meetings/${match.id}`);
         },
     };
     return (
@@ -345,6 +292,7 @@ function TournamentGridRender(props) {
 }
 
 TournamentGridRender.propTypes = {
+    history: PropTypes.object.isRequired,
     tournamentData: PropTypes.object.isRequired
 }
 

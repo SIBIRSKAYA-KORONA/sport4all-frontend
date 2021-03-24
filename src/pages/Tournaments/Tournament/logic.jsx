@@ -45,6 +45,7 @@ function TournamentPage(props) {
 
     return (
         <TournamentPageRender
+            history={props.history}
             isLoading={isLoading}
             isOwner={isOwner}
             tournamentData={tournamentData}
@@ -55,7 +56,7 @@ function TournamentPage(props) {
 
 
 TournamentPage.propTypes = {
-    history: PropTypes.object,
+    history: PropTypes.object.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
             tournamentId: PropTypes.string.isRequired,

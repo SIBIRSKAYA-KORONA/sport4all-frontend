@@ -44,7 +44,10 @@ function TournamentPageRender(props) {
 
             <Tabs tabBarStyle={{marginBottom: 32}}>
                 <Tabs.TabPane tab={'Сетка'} key={TournamentPageRender.sections[0]}>
-                    {props.isLoading ? <Spin/> : <TournamentGridRender tournamentData={props.tournamentData}/>}
+                    {props.isLoading ? <Spin/> : <TournamentGridRender
+                        history={props.history}
+                        tournamentData={props.tournamentData}
+                    />}
                 </Tabs.TabPane>
 
                 {/*TODO: add table*/}
@@ -72,6 +75,7 @@ function TournamentPageRender(props) {
 }
 
 TournamentPageRender.propTypes = {
+    history: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired,
     isOwner: PropTypes.bool.isRequired,
     tournamentData: PropTypes.object.isRequired,
