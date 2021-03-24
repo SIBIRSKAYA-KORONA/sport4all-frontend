@@ -2,7 +2,32 @@ import * as React from 'react';
 import TournamentGrid from 'Components/TournamentGrid/render';
 import PropTypes from 'prop-types'
 
-function TournamentGridRender() {
+
+const prepareMatches = (roots) => {
+    // TODO: fix for double elimination and test it
+    let matches = []
+    let matchesQueue = [roots];
+    let matchesQueue2 = [];
+
+
+    while (matchesQueue.length !== 0) {
+        for (let i = 0; i < matchesQueue.length; i++) {
+            const match = matchesQueue[i];
+            matches.push({
+                id: matches.length,
+                child_count: 0,
+                group_id: 0,
+                number: i,
+                opponent1: { id: match?.teams?.[0]?.id || null },
+                opponent2: { id: match?.teams?.[1]?.id || null },
+
+            })
+        }
+    }
+
+}
+
+function TournamentGridRender(props) {
 
     const data = {
         'participants': [
@@ -134,7 +159,7 @@ function TournamentGridRender() {
                 'status': 3,
                 'opponent1': {
                     'id': 2,
-                    'position': 3,
+                    'position': 4,
                     'score': 8
                 },
                 'opponent2': {
@@ -277,6 +302,31 @@ function TournamentGridRender() {
         'matchGames': []
     };
 
+    const preparedTeams = props.tournamentData.teams.map((team) => {
+        return {
+            id: team.id,
+            tournament_id: props.tournamentData.id,
+            name: team.name
+        };
+    });
+
+    const preparedMatches = props.tournamentData.matches;
+
+    const myData = {
+        matchGames: [],
+        participants: preparedTeams,
+        marches: preparedMatches,
+        stages: [{
+            id: 0,
+            name: '',
+            number: 1
+        }],
+
+    };
+
+
+    console.log(data);
+    console.log(myData);
     const config = {
         participantOriginPlacement: 'before',
         showSlotsOrigin: true,
@@ -295,16 +345,7 @@ function TournamentGridRender() {
 }
 
 TournamentGridRender.propTypes = {
-    tournamentData: PropTypes.shape({
-        system: PropTypes.string.isRequired,
-
-        teams: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired
-        })).isRequired,
-
-        matches: PropTypes.arrayOf(PropTypes.object),
-    }).isRequired
+    tournamentData: PropTypes.object.isRequired
 }
 
 export default TournamentGridRender;
