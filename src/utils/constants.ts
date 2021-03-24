@@ -13,7 +13,7 @@ const CONST = {
         },
         tournaments: {
             base: '/tournaments',
-            create: 'tournaments/create',
+            create: '/tournaments/create',
             list: '/tournaments/list',
             id: (id: string | number | null):string => '/tournaments/'+(id ? id : ':tournamentId'),
         }
