@@ -12,6 +12,7 @@ interface IProps {
 
 function MeetingSteps(props: IProps): JSX.Element {
     const steps = [
+        { key:EventStatus.UnknownEvent, title:'Создан' },
         { key:EventStatus.NotStartedEvent, title:'Не начат' },
         { key:EventStatus.RegistrationEvent, title:'Регистрация' },
         { key:EventStatus.InProgressEvent, title:'Матч идёт!' },

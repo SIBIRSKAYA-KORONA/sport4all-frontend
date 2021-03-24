@@ -1,6 +1,6 @@
 import Network from '../core/network';
 import HttpStatusCode from 'Utils/httpErrors';
-import {EventStatus, Meeting} from 'Utils/types';
+import { EventStatus, Meeting } from 'Utils/types';
 
 class MeetingModel {
     static async getMeeting(mid: number):Promise<HttpStatusCode | Meeting> {
@@ -25,6 +25,18 @@ class MeetingModel {
                 return;
             })
             .catch(e => { throw new Error(e); });
+    }
+
+    static async addTeam(mid:number, tid:number):Promise<HttpStatusCode | null> {
+        return Network.fetchPost(Network.paths.meetings.addTeam(mid, tid), {})
+            .then(response => {
+                if (response.status === HttpStatusCode.NOT_ACCEPTABLE) throw new Error ('Start the match first');
+                return;
+            })
+            .catch(e => {
+                console.error(e);
+                throw e;
+            })
     }
 }
 

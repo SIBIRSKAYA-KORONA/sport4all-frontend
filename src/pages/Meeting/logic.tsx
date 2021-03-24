@@ -53,9 +53,12 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
         console.log(row);
     }
 
-    handleTeamsAdd(values:Array<number>):void {
-        TournamentModel.addTeam(this.state.meeting.tournamentId, values[0])
-            .then(() => { this.parseMeeting(); });
+    async handleTeamsAdd(values:Array<number>):Promise<void> {
+        for (const tid of values) {
+            const res = await MeetingModel.addTeam(this.state.meeting.tournamentId, tid);
+            console.log(res);
+        }
+        this.parseMeeting();
     }
 
     async changeStatus():Promise<void> {

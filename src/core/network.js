@@ -11,7 +11,8 @@ export default class Network {
         sessions: '/sessions',
         meetings: {
             base: '/meetings',
-            id: (mid) => '/meetings/'+mid
+            id: (mid) => '/meetings/'+mid,
+            addTeam: (id, tid) => `/meetings/${id}/teams/${tid}`,
         }
     };
 

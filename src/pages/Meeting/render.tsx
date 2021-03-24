@@ -60,7 +60,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                 ? <Space direction='vertical'>
                     <Space direction='vertical'>
                         <Title level={3}>Статус встречи</Title>
-                        <MeetingSteps current={props.meeting.status - 1} />
+                        <MeetingSteps current={props.meeting.status} />
                         {props.meeting.status !== EventStatus.FinishedEvent &&
                             <Button type='primary' onClick={props.changeStatus}>Следующий этап</Button>
                         }
