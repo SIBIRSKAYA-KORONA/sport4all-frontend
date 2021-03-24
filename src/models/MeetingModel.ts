@@ -50,6 +50,18 @@ class MeetingModel {
                 throw e;
             })
     }
+
+    static async getStats(mid:number):Promise<HttpStatusCode | Array<Stats>> {
+        return Network.fetchGet(Network.paths.meetings.stats(mid))
+            .then(response => {
+                if (response.status >= HttpStatusCode.BAD_REQUEST) throw HttpStatusCode[response.status];
+                return response.json();
+            })
+            .catch(e => {
+                console.error(e);
+                throw e;
+            })
+    }
 }
 
 export default MeetingModel;

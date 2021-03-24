@@ -21,7 +21,7 @@ export interface Meeting {
     round: number,
     group: number,
     tournamentId: number,
-    stats: Array<any>,
+    stats: Array<Stats>,
     nextMeetingID: number,
     prevMeetings: Array<Meeting>,
     teams: Array<Team>

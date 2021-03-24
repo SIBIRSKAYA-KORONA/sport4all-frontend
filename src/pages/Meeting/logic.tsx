@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import {Meeting, Stats, Team} from 'Utils/types';
+import { Meeting, Stats } from 'Utils/types';
 import MeetingModel from 'Models/MeetingModel';
 import MeetingPageRender from 'Pages/Meeting/render';
 
@@ -10,6 +10,7 @@ import MeetingPageRender from 'Pages/Meeting/render';
 
 interface IState {
     meeting?: Meeting,
+    stats?: Array<Stats>,
     loadingMeeting: boolean
 }
 
@@ -32,14 +33,12 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
     parseMeeting():void {
         this.setState(prev => ({ ...prev, loadingMeets:true }) );
         MeetingModel.getMeeting(this.props.match.params['id'])
-            .then(meeting => {
-                console.log(meeting);
-                this.setState({
-                    meeting: meeting as Meeting
-                });
-            })
+            .then(meeting => { this.setState({ meeting: meeting as Meeting }); })
             .catch(e => { console.error(e); })
             .finally(() => { this.setState(prev => ({ ...prev, loadingMeeting:false }) ); });
+        MeetingModel.getStats(this.props.match.params['id'])
+            .then(stats => { this.setState(prev => ({ ...prev, stats:stats as Array<Stats> })); })
+            .catch(e => console.error(e));
     }
 
     // Handlers
