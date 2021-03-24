@@ -7,6 +7,15 @@ const CONST = {
             base: '/teams',
             create: '/teams/create',
             id: (id: string | number | null):string => '/teams/'+(id ? id : ':id'),
+        },
+        meetings: {
+            id: (id: string | number | null):string => '/meetings/'+(id ? id : ':id'),
+        },
+        tournaments: {
+            base: '/tournaments',
+            create: 'tournaments/create',
+            list: '/tournaments/list',
+            id: (id: string | number | null):string => '/tournaments/'+(id ? id : ':tournamentId'),
         }
     },
     SESSION_ID: 'session_id',

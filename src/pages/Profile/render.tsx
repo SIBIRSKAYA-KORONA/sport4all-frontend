@@ -6,10 +6,11 @@ import {Avatar, Col, Row, Tabs, Typography} from 'antd';
 
 import JSIcon from 'Static/icons/js.svg';
 import BasePage from 'Components/BasePage/render';
-import TeamsSubPage from 'Pages/Profile/TeamsSubPage/render';
+import TeamsSubPage from 'Pages/Profile/sections/Teams/render';
 import {RouteComponentProps} from 'react-router-dom';
 import {User} from 'Utils/types';
 import {UserAuthenticatedType} from 'Store/User/UserState';
+import TournamentsProfileSection from 'Pages/Profile/sections/Tournaments/render';
 
 const {Title, Paragraph} = Typography;
 const {TabPane} = Tabs;
@@ -42,7 +43,7 @@ const ProfilePageRender = (props:IProps):JSX.Element => (
                     <TeamsSubPage {...props}/>
                 </TabPane>
                 <TabPane tab='Турниры' key={3}>
-                    <></>
+                    <TournamentsProfileSection {...props}/>
                 </TabPane>
             </Tabs>
         </Row>
