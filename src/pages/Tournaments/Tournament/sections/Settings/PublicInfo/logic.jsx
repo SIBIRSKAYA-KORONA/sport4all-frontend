@@ -11,6 +11,7 @@ function PublicInfoLogic(props) {
             'name': newInfo.name,
             'about': newInfo.about,
             'system': newInfo.systemType,
+            'status': newInfo.status,
         }
 
         try {

@@ -30,6 +30,7 @@ function ParticipantsLogic(props) {
         }
 
         await updateTeams();
+        setSearchResults(searchResults.filter((team)=>team.id !== teamId))
     }
 
     const deleteTeam = async (teamId) => {
