@@ -24,8 +24,8 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
 
     useEffect(() => {
         const load = () => {
-            TournamentModel.getTournaments(props.user.id).then(teams => {
-                setTournamentsOwned(teams);
+            TournamentModel.getTournaments(props.user.id).then(tours => {
+                setTournamentsOwned(tours.owner);
                 setLoadingOwnTournaments(false);
             });
         }
@@ -43,7 +43,7 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
             {loadingOwnTournaments
                 ? <Spin/>
                 : tournamentsOwned.length > 0
-                    ? <>{tournamentsOwned.map((t, index) => <p key={index}>{t}</p>)}</>
+                    ? <>{tournamentsOwned.map(tour => <Link key={tour.id} to={CONST.PATHS.tournaments.id(tour.id)}>{tour.name}</Link>)}</>
                     : <Text type='secondary'>Нет турниров</Text>
             }
         </Space>
