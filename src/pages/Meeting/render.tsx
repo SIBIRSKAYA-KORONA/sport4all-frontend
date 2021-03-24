@@ -39,19 +39,22 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
         <BasePage {...props} loading={props.loadingMeeting}>
             {props.meeting
                 ? <Space direction='vertical' size='large' className='meeting__section-center'>
-                    {props.meeting.status >= EventStatus.InProgressEvent && props.stats &&
+                    {props.meeting.status >= EventStatus.RegistrationEvent && props.meeting.teams.length === 2 &&
                         <Space direction='vertical' size='small' align='center'>
                             <Title level={2}>Результаты встречи</Title>
-                            <Row>
+                            <Row justify='center'>
                                 <Col span={8}>
                                     <Space direction='vertical' size='middle' align='center'>
                                         <Avatar size={128}>{props.meeting.teams[0].name}</Avatar>
                                         <Title level={5}>{props.meeting.teams[0].name}</Title>
                                     </Space>
                                 </Col>
-                                <Col span={8}>
+                                <Col span={8} flex='auto'>
                                     <Title level={5}>
-                                        {props.stats.find(stat => stat.teamId === props.meeting.teams[0].id).score || 0} - {props.stats.find(stat => stat.teamId === props.meeting.teams[1].id).score || 0}
+                                        {props.stats && props.stats.length === 2
+                                            ? <>{props.stats.find(stat => stat.teamId === props.meeting.teams[0].id).score || 0} - {props.stats.find(stat => stat.teamId === props.meeting.teams[1].id).score || 0}</>
+                                            : '0 - 0'
+                                        }
                                     </Title>
                                 </Col>
                                 <Col span={8}>
@@ -70,7 +73,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                             <Button type='primary' onClick={props.changeStatus}>Следующий этап</Button>
                         }
                     </Space>
-                    {props.meeting.status === EventStatus.InProgressEvent && !props.stats &&
+                    {props.meeting.status === EventStatus.InProgressEvent && (!props.stats || props.stats.length === 0) &&
                         <Space direction='vertical' size='small'>
                             <Title level={3}>Судейский мостик</Title>
                             <Button
@@ -88,7 +91,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                             />
                         </Space>
                     }
-                    {props.meeting.status === EventStatus.RegistrationEvent && <>
+                    {props.meeting.status === EventStatus.RegistrationEvent && props.meeting.teams.length !== 2 && <>
                         <Button type='primary' onClick={() => { showModal('addTeams'); }}>Добавить команды</Button>
                         <AddTeamsModal
                             visible={isModalVisible['addTeams']}
@@ -108,6 +111,3 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
 }
 
 export default MeetingPageRender;
-
-// todo: if teams are added but status is registration - change button title and checkboxes in modal
-

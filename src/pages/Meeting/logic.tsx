@@ -33,12 +33,14 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
     parseMeeting():void {
         this.setState(prev => ({ ...prev, loadingMeets:true }) );
         MeetingModel.getMeeting(this.props.match.params['id'])
-            .then(meeting => { this.setState({ meeting: meeting as Meeting }); })
+            .then(meeting => { this.setState({ meeting: meeting as Meeting }); console.log(meeting); })
             .catch(e => { console.error(e); })
             .finally(() => { this.setState(prev => ({ ...prev, loadingMeeting:false }) ); });
         MeetingModel.getStats(this.props.match.params['id'])
             .then(stats => { this.setState(prev => ({ ...prev, stats:stats as Array<Stats> })); })
-            .catch(e => console.error(e));
+            .catch(e => {
+                if (e !== 404) console.error(e);
+            });
     }
 
     // Handlers
@@ -54,11 +56,8 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
     }
 
     async handleTeamsAdd(values:Array<number>):Promise<void> {
-        for (const tid of values) {
-            const res = await MeetingModel.addTeam(this.state.meeting.tournamentId, tid);
-            console.log(res);
-        }
-        this.parseMeeting();
+        Promise.all(values.map(tid => MeetingModel.addTeam(this.state.meeting.id, tid)))
+            .then(() => { this.parseMeeting(); });
     }
 
     async changeStatus():Promise<void> {

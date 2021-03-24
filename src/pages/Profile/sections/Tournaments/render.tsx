@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { Spin, Typography, Space, Button } from 'antd';
 const { Title, Text } = Typography;
@@ -36,7 +36,9 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
         <Space direction='vertical'>
             <Space size='large' align='baseline'>
                 <Title level={3}>Мои турниры</Title>
-                <Button type='link' href={CONST.PATHS.tournaments.create}>Создать</Button>
+                <Button type='link'>
+                    <Link to={CONST.PATHS.tournaments.create}>Создать</Link>
+                </Button>
             </Space>
             {loadingOwnTournaments
                 ? <Spin/>

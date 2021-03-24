@@ -54,7 +54,7 @@ class MeetingModel {
     static async getStats(mid:number):Promise<HttpStatusCode | Array<Stats>> {
         return Network.fetchGet(Network.paths.meetings.stats(mid))
             .then(response => {
-                if (response.status >= HttpStatusCode.BAD_REQUEST) throw HttpStatusCode[response.status];
+                if (response.status >= HttpStatusCode.BAD_REQUEST && response.status !== HttpStatusCode.NOT_FOUND) throw HttpStatusCode[response.status];
                 return response.json();
             })
             .catch(e => {
