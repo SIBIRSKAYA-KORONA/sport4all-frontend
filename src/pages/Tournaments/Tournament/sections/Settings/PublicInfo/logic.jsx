@@ -15,7 +15,7 @@ function PublicInfoLogic(props) {
         }
 
         try {
-            await TournamentModel.instance.updateTournament(props.tournamentData.id, payload);
+            await TournamentModel.updateTournament(props.tournamentData.id, payload);
             message.success('Информация о турнире обновлена');
         } catch (e) {
             console.error(e);
@@ -24,7 +24,7 @@ function PublicInfoLogic(props) {
         }
 
         try {
-            const updatedData = await TournamentModel.instance.getTournament(props.tournamentData.id);
+            const updatedData = await TournamentModel.getTournament(props.tournamentData.id);
             props.setTournamentData({...props.tournamentData, ...updatedData});
         } catch (e) {
             console.error(e);

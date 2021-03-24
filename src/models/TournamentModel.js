@@ -30,7 +30,7 @@ class TournamentModel {
      * @param {Number | String} tournamentId
      * @return {Promise<Object | IError>}
      */
-    async getTournament(tournamentId) {
+    static async getTournament(tournamentId) {
         return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}`)
             .then(res => {
                 switch (res.status) {
@@ -51,7 +51,7 @@ class TournamentModel {
      * @param {Object} newData
      * @return {Promise<Object | IError>}
      */
-    async updateTournament(tournamentId, newData) {
+    static async updateTournament(tournamentId, newData) {
         return Network.fetchPut(Network.paths.tournaments + `/${tournamentId}`, newData)
             .then(res => {
                 switch (res.status) {
@@ -75,7 +75,7 @@ class TournamentModel {
      * @param {Number | String} tournamentId
      * @return {Promise<Object | IError>}
      */
-    async getMeetings(tournamentId) {
+    static async getMeetings(tournamentId) {
         return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}/meetings`)
             .then(res => {
                 switch (res.status) {
@@ -96,7 +96,7 @@ class TournamentModel {
      * @param {Number | String} tournamentId
      * @return {Promise<Object | IError>}
      */
-    async getTeams(tournamentId) {
+    static async getTeams(tournamentId) {
         return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}/teams`)
             .then(res => {
                 switch (res.status) {
@@ -118,7 +118,7 @@ class TournamentModel {
      * @param {Number | String} teamId
      * @return {Promise<Object | IError>}
      */
-    async addTeam(tournamentId, teamId) {
+    static async addTeam(tournamentId, teamId) {
         return Network.fetchPut(Network.paths.tournaments + `/${tournamentId}/teams/${teamId}`, {})
             .then(res => {
                 switch (res.status) {
@@ -143,7 +143,7 @@ class TournamentModel {
      * @param {Number | String} teamId
      * @return {Promise<Object | IError>}
      */
-    async removeTeam(tournamentId, teamId) {
+    static async removeTeam(tournamentId, teamId) {
         return Network.fetchDelete(Network.paths.tournaments + `/${tournamentId}/teams/${teamId}`, {})
             .then(res => {
                 switch (res.status) {
@@ -167,7 +167,7 @@ class TournamentModel {
      * @param {Number | String} userId
      * @return {Promise<Object | IError>}
      */
-    async getTournaments(userId) {
+    static async getTournaments(userId) {
         return Network.fetchGet(Network.paths.tournaments + `?userId=${userId}`)
             .then(res => {
                 switch (res.status) {

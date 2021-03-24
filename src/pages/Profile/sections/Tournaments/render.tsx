@@ -7,17 +7,24 @@ const { Title, Text } = Typography;
 
 import CONST from 'Constants';
 import TournamentModel from 'Models/TournamentModel';
+import {UserAuthenticatedType} from 'Store/User/UserState';
+import {User} from 'Utils/types';
 
 
 const initTeams: [any?] = [];
 
-const TournamentsProfileSection = (props:RouteComponentProps):JSX.Element => {
+interface IProps extends RouteComponentProps {
+    user: User,
+    isAuthenticated: UserAuthenticatedType
+}
+
+const TournamentsProfileSection = (props:IProps):JSX.Element => {
     const [loadingOwnTournaments, setLoadingOwnTournaments] = useState(true);
     const [tournamentsOwned, setTournamentsOwned] = useState(initTeams);
 
     useEffect(() => {
         const load = () => {
-            TournamentModel.loadTournaments('owner').then(teams => {
+            TournamentModel.getTournaments(props.user.id).then(teams => {
                 setTournamentsOwned(teams);
                 setLoadingOwnTournaments(false);
             });

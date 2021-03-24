@@ -55,6 +55,9 @@ const Header = (props: IProps) => {
                         </Menu.Item>
                     </>
                 }
+                <Menu.Item key='meeting2'>
+                    <Link to={CONST.PATHS.meetings.id(2)} className='header__link'>Матч</Link>
+                </Menu.Item>
             </Menu>
         </AntHeader>
     );
