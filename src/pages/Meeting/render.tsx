@@ -2,7 +2,7 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Button, Row, Space, Typography, Col } from 'antd';
+import {Button, Row, Space, Typography, Col, Avatar} from 'antd';
 
 import BasePage from 'Components/BasePage/render';
 import { EventStatus, Meeting, Stats } from 'Utils/types';
@@ -38,21 +38,27 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
     return (
         <BasePage {...props} loading={props.loadingMeeting}>
             {props.meeting
-                ? <Space direction='vertical' size='large'>
+                ? <Space direction='vertical' size='large' className='meeting__section-center'>
                     {props.meeting.status >= EventStatus.InProgressEvent && props.stats &&
-                        <Space direction='vertical' size='small'>
+                        <Space direction='vertical' size='small' align='center'>
                             <Title level={2}>Результаты встречи</Title>
                             <Row>
                                 <Col span={8}>
-                                    {props.meeting.teams[0].name}
+                                    <Space direction='vertical' size='middle'>
+                                        <Avatar size={128}>{props.meeting.teams[0].name}</Avatar>
+                                        <Title level={5}>{props.meeting.teams[0].name}</Title>
+                                    </Space>
                                 </Col>
                                 <Col span={8}>
-                                    <p>
+                                    <Title level={5}>
                                         {props.stats.find(stat => stat.teamId === props.meeting.teams[0].id).score || 0} - {props.stats.find(stat => stat.teamId === props.meeting.teams[1].id).score || 0}
-                                    </p>
+                                    </Title>
                                 </Col>
                                 <Col span={8}>
-                                    {props.meeting.teams[1].name}
+                                    <Space direction='vertical' size='middle'>
+                                        <Avatar size={128}>{props.meeting.teams[1].name}</Avatar>
+                                        <Title level={5}>{props.meeting.teams[1].name}</Title>
+                                    </Space>
                                 </Col>
                             </Row>
                         </Space>

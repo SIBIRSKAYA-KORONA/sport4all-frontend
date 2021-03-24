@@ -55,10 +55,6 @@ const Header = (props: IProps) => {
                         </Menu.Item>
                     </>
                 }
-
-                <Menu.Item>
-                    <Link to={CONST.PATHS.meetings.id(1)}>Матч</Link>
-                </Menu.Item>
             </Menu>
         </AntHeader>
     );
