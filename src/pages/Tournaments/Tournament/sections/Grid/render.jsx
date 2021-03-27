@@ -4,27 +4,39 @@ import PropTypes from 'prop-types'
 
 
 const prepareMatches = (roots) => {
-    // TODO: fix for double elimination and test it
+    // TODO: fix for double elimination and round-robin; test it
     let matches = []
-    let matchesQueue = [roots];
-    let matchesQueue2 = [];
+    let matchesQueue = [roots[0]];
 
-
+    let currentRound = roots[0].round;
+    let currentNumber = 1;
     while (matchesQueue.length !== 0) {
-        for (let i = 0; i < matchesQueue.length; i++) {
-            const match = matchesQueue[i];
-            matches.push({
-                id: matches.length,
-                child_count: 0,
-                group_id: 0,
-                number: i,
-                opponent1: { id: match?.teams?.[0]?.id || null },
-                opponent2: { id: match?.teams?.[1]?.id || null },
+        const match = matchesQueue.shift();
 
-            })
+        if (currentRound !== match.round) {
+            currentRound = match.round;
+            currentNumber = 1;
         }
+
+        matches.push({
+            id: match.id,
+            number: currentNumber,
+            stage_id: 0,
+            group_id: match.group,
+            round_id: match.round,
+            child_count: 0,
+            status: 0,
+            opponent1: {id: match?.teams?.[0]?.id || null},
+            opponent2: {id: match?.teams?.[1]?.id || null},
+        });
+
+        const previousMatches = match?.prevMeetings || [];
+        matchesQueue.push(...previousMatches);
+        currentNumber += 1;
+
     }
 
+    return matches;
 }
 
 function TournamentGridRender(props) {
@@ -257,36 +269,49 @@ function TournamentGridRender(props) {
         };
     });
 
-    const preparedMatches = props.tournamentData.matches;
-
+    console.log('matches', props.tournamentData.matches);
+    let preparedMatches = prepareMatches(props.tournamentData.matches);
+    console.log(preparedMatches);
     const myData = {
         matchGames: [],
         participants: preparedTeams,
-        marches: preparedMatches,
+        matches: preparedMatches,
         stages: [{
             id: 0,
+            tournament_id: props.tournamentData.id,
             name: '',
-            number: 1
+            number: 1,
+            type: 'double_elimination',
+            settings: {
+                seedOrdering: [
+                    'natural',
+                    'natural',
+                    'reverse_half_shift',
+                    'reverse'
+                ],
+                skipFirstRound: 'false',
+                grandFinal: 'double',
+                matchesChildCount: 0
+            }
         }],
 
     };
 
-
     console.log(data);
     console.log(myData);
+
     const config = {
         participantOriginPlacement: 'before',
         showSlotsOrigin: true,
         showLowerBracketSlotsOrigin: true,
         highlightParticipantOnHover: true,
         participantOnClick: (match, teamId) => {
-            console.log(props);
             props.history.push(`/meetings/${match.id}`);
         },
     };
     return (
         <div style={{overflowX: 'auto'}}>
-            <TournamentGrid data={data} config={config}/>
+            <TournamentGrid data={myData} config={config}/>
         </div>
     )
 }
