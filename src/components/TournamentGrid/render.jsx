@@ -61,8 +61,7 @@ class TournamentGrid extends React.Component {
                     highlightParticipantOnHover: true,
                     participantOnClick: this.participantOnClickHandler,
                 });
-        }
-        catch (e) {
+        } catch (e) {
             console.error('Could not render grid');
         }
     }
@@ -90,15 +89,34 @@ class TournamentGrid extends React.Component {
         }
     }
 
-    static parseMatchesAsSingleElimination(matchesTree) {
-        if (matchesTree.length === 0) {
-            return [];
+    static parseMatchesAsSingleElimination(matches) {
+        const matchesCopy = [...matches];
+        const matchesById = matchesCopy.reduce((map, match) => {
+            map[match.id] = match;
+            return map
+        }, {})
+
+        // building matches tree
+        let matchesTree;
+        for (const match of matchesCopy) {
+            const nextMatch = matchesById[match.nextMeetingID];
+            if (!nextMatch) {
+                matchesTree = match;
+                continue;
+            }
+
+            if (!nextMatch.previousMatches) {
+                nextMatch.previousMatches = [match];
+            } else {
+                nextMatch.previousMatches.push(match);
+            }
         }
 
+        // preparing data for grid
         const parsedMatches = [];
-        let matchesQueue = [matchesTree[0]];
+        let matchesQueue = [matchesTree];
 
-        let currentRound = matchesTree[0].round;
+        let currentRound = matchesTree.round;
         let currentNumber = 1;
         while (matchesQueue.length !== 0) {
             const match = matchesQueue.shift();
@@ -118,7 +136,7 @@ class TournamentGrid extends React.Component {
                 opponent2: {id: match?.teams?.[1]?.id || null},
             });
 
-            const previousMatches = match?.prevMeetings || [];
+            const previousMatches = match?.previousMatches || [];
             matchesQueue.push(...previousMatches);
             currentNumber += 1;
 
