@@ -10,7 +10,14 @@ const CONST = {
         }
     },
     SESSION_ID: 'session_id',
-    BASE_SELECTOR: '#application'
+    BASE_SELECTOR: '#application',
+    TOURNAMENTS: {
+        systems: {
+            roundRobin: 'circular',
+            singleElimination: 'olympic',
+            doubleElimination: 'double-elimination',
+        }
+    }
 };
 
 export default CONST;

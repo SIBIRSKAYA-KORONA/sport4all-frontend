@@ -162,7 +162,7 @@ export function getFinalMatchLabel(finalType: FinalType, roundNumber: number, ro
  *
  * @param status The match status.
  */
-export function getMatchStatus(status: Status): string {
+export function getMatchStatus(status: Status): string | null {
     switch (status) {
         case Status.Locked:
             return i18n('match-status', 'locked');
@@ -176,6 +176,8 @@ export function getMatchStatus(status: Status): string {
             return i18n('match-status', 'completed');
         case Status.Archived:
             return i18n('match-status', 'archived');
+        default:
+            return null;
     }
 }
 

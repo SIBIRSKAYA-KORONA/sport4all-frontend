@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Form, Input, Select} from 'antd';
+import CONST from 'Constants';
 
 function PublicInfoFormItemsRender() {
     return (
@@ -24,9 +25,9 @@ function PublicInfoFormItemsRender() {
                 name="systemType"
             >
                 <Select>
-                    <Select.Option value={PublicInfoFormItemsRender.systemTypes[0]}>Круговая</Select.Option>
-                    <Select.Option value={PublicInfoFormItemsRender.systemTypes[1]}>Олимпийская</Select.Option>
-                    {/*<Select.Option value={PublicInfoFormItemsRender.systemTypes[2]}>На выбывание</Select.Option>*/}
+                    <Select.Option value={CONST.TOURNAMENTS.systems.roundRobin}>Круговая</Select.Option>
+                    <Select.Option value={CONST.TOURNAMENTS.systems.singleElimination}>Олимпийская</Select.Option>
+                    {/*<Select.Option value={CONST.TOURNAMENTS.systems.doubleElimination}>На выбывание</Select.Option>*/}
                 </Select>
             </Form.Item>
 
@@ -40,7 +41,5 @@ function PublicInfoFormItemsRender() {
         </>
     )
 }
-
-PublicInfoFormItemsRender.systemTypes = ['circular', 'olympic', 'double-elimination']
 
 export default PublicInfoFormItemsRender;

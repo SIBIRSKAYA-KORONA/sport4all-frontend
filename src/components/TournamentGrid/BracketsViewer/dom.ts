@@ -41,14 +41,17 @@ export function createBracketContainer(id: number): HTMLElement {
  * @param id ID of the group.
  * @param title Title of the group.
  */
-export function createGroupContainer(id: number, title: string): HTMLElement {
-    const h2 = document.createElement('h2');
-    h2.innerText = title;
-
+export function createGroupContainer(id: number, title: string | null): HTMLElement {
     const group = document.createElement('section');
     group.classList.add('group');
     group.setAttribute('data-group-id', id.toString());
-    group.append(h2);
+
+    if (title) {
+        const h2 = document.createElement('h2');
+        h2.innerText = title;
+        group.append(h2);
+    }
+
     return group;
 }
 
@@ -87,10 +90,12 @@ export function createMatchContainer(id: number): HTMLElement {
  * @param label The label of the match.
  * @param status The status to set as tooltip.
  */
-export function createMatchLabel(label: string, status: string): HTMLElement {
+export function createMatchLabel(label: string, status: string | null): HTMLElement {
     const span = document.createElement('span');
     span.innerText = label;
-    span.title = status;
+    if (status) {
+        span.title = status;
+    }
     return span;
 }
 
