@@ -78,6 +78,7 @@ class TournamentGrid extends React.Component {
     static parseMatches(matches, system) {
         switch (system) {
         case CONST.TOURNAMENTS.systems.roundRobin:
+            return this.parseMatchesAsRoundRobin(matches);
         case CONST.TOURNAMENTS.systems.doubleElimination:
             console.error(`Unsupported tournament system "${system}". Unable to render grid`)
             return [];
@@ -87,6 +88,30 @@ class TournamentGrid extends React.Component {
             console.error(`Unknown tournament system "${system}". Unable to render grid`);
             return [];
         }
+    }
+
+    static parseMatchesAsRoundRobin(matches) {
+        const matchesCopy = [...matches];
+        const matchesLastNumbers = {};
+        const parsedMatches = matchesCopy.map((match)=>{
+            if (!(match.round in matchesLastNumbers)) {
+                matchesLastNumbers[match.round] = 0;
+            }
+
+            return {
+                id: match.id,
+                number: matchesLastNumbers[match.round]++,
+                stage_id: 0,
+                group_id: match.group,
+                round_id: match.round,
+                opponent1: {id: match?.teams?.[0]?.id || null},
+                opponent2: {id: match?.teams?.[1]?.id || null},
+            };
+        });
+
+        console.log(parsedMatches);
+        return parsedMatches;
+
     }
 
     static parseMatchesAsSingleElimination(matches) {
