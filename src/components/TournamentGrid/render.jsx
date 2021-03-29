@@ -113,7 +113,6 @@ class TournamentGrid extends React.Component {
             };
         });
 
-        console.log(parsedMatches);
         return parsedMatches;
 
     }
