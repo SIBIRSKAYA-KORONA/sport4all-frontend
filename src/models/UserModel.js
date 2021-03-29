@@ -24,6 +24,7 @@ class UserModel {
             })
             .then(user => {
                 store.dispatch(setUser(user));
+                return user;
             })
             .catch(e => { throw e });
     }
