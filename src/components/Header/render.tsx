@@ -18,16 +18,7 @@ interface IProps extends RouteComponentProps {
 
 const Header = (props: IProps) => {
     const pageName = getPageName();
-    const [logoutLoading, setLogoutLoading] = React.useState(false);
-    const logout = () => {
-        setLogoutLoading(true);
-        UserModel.logout()
-            .then(() => { props.history.push('/'); })
-            .catch(e => {
-                console.error(e);
-                setLogoutLoading(false);
-            });
-    };
+
     return (
         <AntHeader className='header'>
             <Menu className='header__list' mode='horizontal' selectedKeys={[pageName]}>
@@ -36,22 +27,15 @@ const Header = (props: IProps) => {
                 </Menu.Item>
 
                 {props.isAuthenticated !== null && props.isAuthenticated
-                    ? <>
-                        <Menu.SubMenu key='/profile' title='Профиль'>
-                            <Menu.Item key='profile main'>
-                                <Link to='/profile' className='header__link'>Профиль</Link>
-                            </Menu.Item>
-                            <Menu.Item key='profile logout'>
-                                <Button type='link' onClick={logout} loading={logoutLoading}>Выйти</Button>
-                            </Menu.Item>
-                        </Menu.SubMenu>
-                    </>
+                    ? <Menu.Item key='profile main'>
+                        <Link to='/profile' className='header__link'>Профиль</Link>
+                    </Menu.Item>
                     : <>
                         <Menu.Item key='/signup'>
-                            <Link to='/signup' className='header__link'>Sign Up</Link>
+                            <Link to='/signup' className='header__link'>Регистрация</Link>
                         </Menu.Item>
                         <Menu.Item key='/login'>
-                            <Link to='/login' className='header__link'>Login</Link>
+                            <Link to='/login' className='header__link'>Войти</Link>
                         </Menu.Item>
                     </>
                 }

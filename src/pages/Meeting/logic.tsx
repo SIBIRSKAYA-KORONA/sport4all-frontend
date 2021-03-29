@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
+import { message } from 'antd';
+
 import { Meeting, Stats } from 'Utils/types';
 import MeetingModel from 'Models/MeetingModel';
 import MeetingPageRender from 'Pages/Meeting/render';
+import HttpStatusCode from 'Utils/httpErrors';
 
 
 // interface IProps extends RouteComponentProps {}
@@ -11,7 +14,8 @@ import MeetingPageRender from 'Pages/Meeting/render';
 interface IState {
     meeting?: Meeting,
     stats?: Array<Stats>,
-    loadingMeeting: boolean
+    canEdit: boolean,
+    loadingMeeting: boolean,
 }
 
 class MeetingPage extends React.Component<RouteComponentProps, IState> {
@@ -19,6 +23,7 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
         super(props);
         this.state = {
             loadingMeeting: true,
+            canEdit: true, // get ownerId of tournament and check rights
         };
 
         this.handlePointsSave = this.handlePointsSave.bind(this);
@@ -33,7 +38,13 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
     parseMeeting():void {
         this.setState(prev => ({ ...prev, loadingMeets:true }) );
         MeetingModel.getMeeting(this.props.match.params['id'])
-            .then(meeting => { this.setState({ meeting: meeting as Meeting }); console.log(meeting); })
+            .then(meeting => {
+                const castedMeeting: Meeting = meeting as Meeting;
+                this.setState({
+                    meeting: castedMeeting
+                });
+                console.log(meeting);
+            })
             .catch(e => { console.error(e); })
             .finally(() => { this.setState(prev => ({ ...prev, loadingMeeting:false }) ); });
         MeetingModel.getStats(this.props.match.params['id'])
@@ -60,11 +71,18 @@ class MeetingPage extends React.Component<RouteComponentProps, IState> {
             .then(() => { this.parseMeeting(); });
     }
 
-    async changeStatus():Promise<void> {
+    async changeStatus():Promise<HttpStatusCode | Meeting> {
         if (!confirm('Изменить статус встречи?')) return;
-        return MeetingModel.changeStatus(this.state.meeting.id, this.state.meeting.status + 1)
+        await MeetingModel.changeStatus(this.state.meeting.id, this.state.meeting.status + 1)
             .then(() => { this.parseMeeting(); })
-            .catch(e => { console.error(e); });
+            .catch(e => {
+                const error = e as HttpStatusCode;
+                let errorText = 'Ошибка';
+                switch (error) {
+                case HttpStatusCode.FORBIDDEN: errorText = 'У вас нет прав'; break;
+                }
+                message.error(errorText);
+            });
     }
 
     render(): JSX.Element {

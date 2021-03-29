@@ -1,8 +1,18 @@
+import { ProfileSections, ProfileSettingsSections } from 'Utils/enums';
+
 const CONST = {
     PATHS: {
         login: '/login',
         signup: '/signup',
-        profile: '/profile',
+        profile: {
+            __config: '/profile/:section?/:settingsSection?',
+            base: '/profile',
+            section: (section?:ProfileSections):string => `/profile/${section || ':section'}`,
+            settings: {
+                base: '/profile/settings',
+                section: (section?:ProfileSettingsSections):string => `/profile/settings/${section || ':settingsSection'}`,
+            }
+        },
         teams: {
             base: '/teams',
             create: '/teams/create',
@@ -15,6 +25,7 @@ const CONST = {
             base: '/tournaments',
             create: '/tournaments/create',
             list: '/tournaments/list',
+            meetings: (id: number | null):string => `/tournaments/${id ? id : ':tournamentId'}/meetings`,
             id: (id: string | number | null):string => '/tournaments/'+(id ? id : ':tournamentId'),
         }
     },

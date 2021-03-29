@@ -11,8 +11,11 @@ export interface User {
     name: string,
     surname: string,
     nickname: string,
-    email: string | null,
-    about: string | null
+    created: number,
+    height: number,
+    email?: string,
+    about?: string,
+    birthday?: string
 }
 
 export interface Meeting {

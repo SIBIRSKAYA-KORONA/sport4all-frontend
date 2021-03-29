@@ -2,4 +2,4 @@ export type UserActionType = string;
 
 export const LOGIN: UserActionType = 'LOGIN';
 export const LOGOUT: UserActionType = 'LOGOUT';
-export const SIGNUP: UserActionType = 'SIGNUP';
+export const SET_USER: UserActionType = 'SET_USER';

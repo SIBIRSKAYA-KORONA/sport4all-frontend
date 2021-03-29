@@ -15,16 +15,16 @@ class MeetingModel {
                 });
                 return meeting;
             })
-            .catch(e => { throw new Error(e); });
+            .catch(e => { throw e; });
     }
 
     static async changeStatus(mid: number, status: EventStatus):Promise<HttpStatusCode | Meeting> {
         return Network.fetchPut(Network.paths.meetings.id(mid), { status:status })
             .then(response => {
-                if (response.status >= 400) throw HttpStatusCode[response.status];
+                if (response.status >= 400) throw response.status;
                 return;
             })
-            .catch(e => { throw new Error(e); });
+            .catch(e => { throw e; });
     }
 
     static async addTeam(mid:number, tid:number):Promise<HttpStatusCode | null> {
@@ -33,10 +33,7 @@ class MeetingModel {
                 if (response.status === HttpStatusCode.NOT_ACCEPTABLE) throw new Error ('Start the match first');
                 return;
             })
-            .catch(e => {
-                console.error(e);
-                throw e;
-            })
+            .catch(e => { throw e; })
     }
 
     static async addTeamResults(stats: Stats):Promise<HttpStatusCode | null> {
