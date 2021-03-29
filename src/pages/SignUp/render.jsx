@@ -1,9 +1,11 @@
+import './style.scss';
 import * as React from 'react';
 import propTypes from 'prop-types';
-import './style.scss';
+
 import { Form, Input, Button } from 'antd';
 
 import BasePage from 'Components/BasePage/render';
+
 
 const layout = {
     labelCol: { span: 8 },
@@ -17,7 +19,7 @@ const tailLayout = {
 };
 
 const SignUpPageRender = (props) => (
-    <BasePage>
+    <BasePage {...props}>
         <div className='signup'>
             <h1 className='signup__header'>Регистрация</h1>
             <Form {...layout} onFinish={props.onSubmit}>

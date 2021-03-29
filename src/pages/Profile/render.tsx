@@ -3,11 +3,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { Avatar, Col, Row, Tabs, Tag, Typography } from 'antd';
-const { Title, Paragraph } = Typography;
-const { TabPane } = Tabs;
-
 import CONST from 'Constants';
-import { ProfileSections } from 'Utils/enums';
+import { ProfileSections, ProfileSettingsSections } from 'Utils/enums';
 import { lettersForAvatar } from 'Utils/utils';
 import BasePage from 'Components/BasePage/render';
 import { RouteComponentProps } from 'react-router-dom';
@@ -16,6 +13,9 @@ import TeamsSubPage from 'Pages/Profile/sections/Teams/render';
 import SettingsProfileSection from 'Pages/Profile/sections/Settings/render';
 import TournamentsProfileSection from 'Pages/Profile/sections/Tournaments/render';
 
+const { Title, Paragraph } = Typography;
+const { TabPane } = Tabs;
+
 
 interface IProps extends RouteComponentProps {
     user: UserType,
@@ -23,6 +23,12 @@ interface IProps extends RouteComponentProps {
 }
 
 const ProfilePage = (props:IProps):JSX.Element => {
+    const redirect = (key:ProfileSections) => {
+        props.history.push(key === ProfileSections.Settings
+            ? CONST.PATHS.profile.settings.section(ProfileSettingsSections.Personal)
+            : CONST.PATHS.profile.section(key)
+        )
+    };
     return (
         <BasePage {...props}>{props.user && <>
             <Row>
@@ -40,7 +46,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
                 <Tabs
                     activeKey={props.match.params['section']}
                     defaultActiveKey={ProfileSections.Settings}
-                    onChange={(key) => {props.history.push(CONST.PATHS.profile.section(key as ProfileSections))}}
+                    onChange={redirect}
                 >
                     <TabPane tab='Команды' key={ProfileSections.Teams}>
                         <TeamsSubPage {...props}/>

@@ -15,7 +15,7 @@ import TeamPage from 'Pages/Teams/Team/logic';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
 import TournamentsPage from 'Pages/Tournaments/Tournament/logic';
 import TournamentsListPage from 'Pages/Tournaments/List/render';
-import LoginPage from 'Pages/Login/logic';
+import LoginPage from 'Pages/Login/render';
 import ProfilePage from 'Pages/Profile/render';
 import AuthedRoute from 'Utils/AuthedRoute';
 import MeetingPage from 'Pages/Meeting/logic';
@@ -46,11 +46,10 @@ render(
                 <Route exact path={CONST.PATHS.profile.settings.base}>
                     <Redirect to={CONST.PATHS.profile.settings.section(ProfileSettingsSections.Personal)}/>
                 </Route>
-                <AuthedRoute path={CONST.PATHS.profile.settings.section()} component={ProfilePage} mustBeLogged='in'/>
-                <AuthedRoute path={CONST.PATHS.profile.section()} component={ProfilePage} mustBeLogged='in'/>
                 <Route exact path={CONST.PATHS.profile.base}>
                     <Redirect to={CONST.PATHS.profile.section(ProfileSections.Teams)}/>
                 </Route>
+                <AuthedRoute path={CONST.PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
 
                 {/* Auth */}
                 <AuthedRoute path={CONST.PATHS.signup} component={SignUpPage} mustBeLogged='out'/>

@@ -5,6 +5,7 @@ const CONST = {
         login: '/login',
         signup: '/signup',
         profile: {
+            __config: '/profile/:section?/:settingsSection?',
             base: '/profile',
             section: (section?:ProfileSections):string => `/profile/${section || ':section'}`,
             settings: {

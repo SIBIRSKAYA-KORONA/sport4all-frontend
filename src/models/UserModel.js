@@ -1,6 +1,5 @@
 import store from 'Store/store';
 import Network from '../core/network';
-import { NotFoundError, ServerError } from 'Utils/errors';
 import { loginUser, logoutUser, setUser } from 'Store/User/UserActions';
 
 class UserModel {
@@ -35,17 +34,10 @@ class UserModel {
      * @return {Promise<Object | IError>}
      */
     static async getLogin(user) {
-        return Network.fetchPost(Network.paths.sessions, user).then(
-            response => {
-                switch (response.status) {
-                case 200: // успешная регистрация
-                    return;
-                case 404: throw NotFoundError;
-                case 500: throw ServerError;
-                }
-            },
-            error => { throw new Error(error); }
-        );
+        return Network.fetchPost(Network.paths.sessions, user).then(res => {
+            if (res.status >= 400) throw res.status;
+            store.dispatch(loginUser());
+        });
     }
 
     static async logout(user) {

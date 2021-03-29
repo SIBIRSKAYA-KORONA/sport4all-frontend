@@ -2,9 +2,9 @@ import * as React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import CONST from 'Constants';
 import SignUpPageRender from './render';
 import UserModel from 'Models/UserModel';
-import CONST from 'Constants';
 import { loginUser } from 'Store/User/UserActions';
 
 class SignUpPage extends React.Component {
@@ -23,7 +23,7 @@ class SignUpPage extends React.Component {
         UserModel.signUp(user)
             .then(() => {
                 this.props.loginUser();
-                this.props.history.push(CONST.PATHS.profile);
+                this.props.history.push(CONST.PATHS.profile.base);
             })
             .catch(error => { this.setState({ error: error }) });
     }
