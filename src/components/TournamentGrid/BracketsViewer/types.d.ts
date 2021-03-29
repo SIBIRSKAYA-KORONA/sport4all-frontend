@@ -14,9 +14,6 @@ export interface ViewerData {
     /** The matches of the stage to display. */
     matches: Match[],
 
-    /** The games of the matches to display. */
-    matchGames: MatchGame[],
-
     /** The participants who play in the stage to display. */
     participants: Participant[],
 }

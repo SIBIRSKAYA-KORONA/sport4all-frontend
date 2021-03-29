@@ -76,6 +76,7 @@
 
   .round-robin {
     display: flex;
+    flex-direction: column;
 
     .group {
       text-align: center;

@@ -111,7 +111,8 @@ export class BracketsViewer {
 
         for (const groupMatches of matchesByGroup) {
             const groupId = groupMatches[0].group_id;
-            const groupContainer = dom.createGroupContainer(groupId, lang.getGroupName(groupNumber++));
+            const groupContainer = dom.createGroupContainer(groupId, null);
+            groupContainer.style.display = 'flex';
             const matchesByRound = splitBy(groupMatches, 'round_id');
 
             let roundNumber = 1;
@@ -119,6 +120,8 @@ export class BracketsViewer {
             for (const roundMatches of matchesByRound) {
                 const roundId = roundMatches[0].round_id;
                 const roundContainer = dom.createRoundContainer(roundId, lang.getRoundName(roundNumber++, 0));
+                roundContainer.style.marginLeft = '8px';
+                roundContainer.style.marginRight = '8px';
 
                 for (const match of roundMatches)
                     roundContainer.append(this.createMatch(match));
@@ -126,8 +129,14 @@ export class BracketsViewer {
                 groupContainer.append(roundContainer);
             }
 
-            groupContainer.append(this.createRanking(groupMatches));
-            container.append(groupContainer);
+            const groupWrapper = document.createElement('div');
+            groupWrapper.setAttribute('name','round-robin-group-wrapper');
+            const h2 = document.createElement('h2');
+            h2.innerText = lang.getGroupName(groupNumber++);
+            groupWrapper.append(h2);
+
+            groupWrapper.append(groupContainer);
+            container.append(groupWrapper);
         }
 
         root.append(dom.createTitle(stageName), container);
