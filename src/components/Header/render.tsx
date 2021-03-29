@@ -1,19 +1,33 @@
-import * as React from 'react';
 import './style.scss';
-import { Link } from 'react-router-dom';
-import { Menu } from 'antd';
+import * as React from 'react';
 import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
+import { Menu, Layout, Button } from 'antd';
+const AntHeader = Layout.Header;
+
+import UserModel from 'Models/UserModel';
 import { getPageName } from 'Utils/utils';
-import { Header as AntHeader } from 'antd/lib/layout/layout';
 import { UserAuthenticatedType } from 'Store/User/UserState';
+import CONST from 'Constants';
 
-interface IProps {
+
+interface IProps extends RouteComponentProps {
     isAuthenticated: UserAuthenticatedType;
 }
 
 const Header = (props: IProps) => {
     const pageName = getPageName();
+    const [logoutLoading, setLogoutLoading] = React.useState(false);
+    const logout = () => {
+        setLogoutLoading(true);
+        UserModel.logout()
+            .then(() => { props.history.push('/'); })
+            .catch(e => {
+                console.error(e);
+                setLogoutLoading(false);
+            });
+    };
     return (
         <AntHeader className='header'>
             <Menu className='header__list' mode='horizontal' selectedKeys={[pageName]}>
@@ -28,7 +42,7 @@ const Header = (props: IProps) => {
                                 <Link to='/profile' className='header__link'>Профиль</Link>
                             </Menu.Item>
                             <Menu.Item key='profile logout'>
-                                <Link to='/logout' className='header__link'>Выйти</Link>
+                                <Button type='link' onClick={logout} loading={logoutLoading}>Выйти</Button>
                             </Menu.Item>
                         </Menu.SubMenu>
                     </>
@@ -41,6 +55,15 @@ const Header = (props: IProps) => {
                         </Menu.Item>
                     </>
                 }
+                <Menu.Item key='meeting1'>
+                    <Link to={CONST.PATHS.meetings.id(1)} className='header__link'>Матч 1</Link>
+                </Menu.Item>
+                <Menu.Item key='meeting2'>
+                    <Link to={CONST.PATHS.meetings.id(2)} className='header__link'>Матч 2</Link>
+                </Menu.Item>
+                <Menu.Item key='meeting3'>
+                    <Link to={CONST.PATHS.meetings.id(3)} className='header__link'>Матч 3</Link>
+                </Menu.Item>
             </Menu>
         </AntHeader>
     );

@@ -8,7 +8,14 @@ export default class Network {
         settings: '/settings',
         teams: '/teams',
         tournaments: '/tournaments',
-        sessions: '/sessions'
+        sessions: '/sessions',
+        meetings: {
+            base: '/meetings',
+            id: (mid) => '/meetings/'+mid,
+            addTeam: (id, tid) => `/meetings/${id}/teams/${tid}`,
+            addResultsForTeam: (mid, tid) => `/meetings/${mid}/teams/${tid}/stat`,
+            stats: (mid) => `/meetings/${mid}/stat`
+        }
     };
 
     /**

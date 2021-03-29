@@ -18,6 +18,7 @@ import TournamentsListPage from 'Pages/Tournaments/List/render';
 import LoginPage from 'Pages/Login/logic';
 import ProfilePage from 'Pages/Profile/logic';
 import AuthedRoute from 'Utils/AuthedRoute';
+import MeetingPage from 'Pages/Meeting/logic';
 
 render(
     <Provider store={store}>
@@ -31,9 +32,12 @@ render(
                 <Route path={CONST.PATHS.teams.base} component={TeamsPage}/>
 
                 {/* Tournaments */}
-                <AuthedRoute path='/tournaments/create' component={TournamentCreatePage} mustBeLogged='in'/>
-                <Route path='/tournaments/list' component={TournamentsListPage}/>
+                <AuthedRoute path={CONST.PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
+                <Route path={CONST.PATHS.tournaments.list} component={TournamentsListPage}/>
                 <Route path='/tournaments/:tournamentId' component={TournamentsPage}/>
+
+                {/* Meetings */}
+                <Route path={CONST.PATHS.meetings.id(null)} component={MeetingPage}/>
 
                 <AuthedRoute path={CONST.PATHS.profile} component={ProfilePage} mustBeLogged='in'/>
 

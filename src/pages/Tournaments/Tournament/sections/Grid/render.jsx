@@ -3,10 +3,7 @@ import TournamentGrid from 'Components/TournamentGrid/render';
 import PropTypes from 'prop-types'
 
 
-
-
 function TournamentGridRender(props) {
-
     return (
         <div style={{overflowX: 'auto'}}>
             <TournamentGrid
@@ -25,5 +22,5 @@ TournamentGridRender.propTypes = {
     history: PropTypes.object.isRequired,
     tournamentData: PropTypes.object.isRequired
 }
-
+Так 
 export default TournamentGridRender;

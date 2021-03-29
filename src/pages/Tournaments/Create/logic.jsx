@@ -29,7 +29,7 @@ class TournamentCreatePage extends React.Component {
             'system': tournamentData.systemType,
         }
 
-        TournamentModel.instance.createTournament(payload)
+        TournamentModel.createTournament(payload)
             .then(response => {
                 this.props.history.push(`/tournaments/${response.id}`);
             })

@@ -12,7 +12,7 @@ function ParticipantsLogic(props) {
 
     const updateTeams = async () => {
         try {
-            const teams = await TournamentModel.instance.getTeams(props.tournamentData.id);
+            const teams = await TournamentModel.getTeams(props.tournamentData.id);
             props.setTournamentData({...props.tournamentData, teams: teams});
         } catch (e) {
             console.error(e);
@@ -22,7 +22,7 @@ function ParticipantsLogic(props) {
 
     const addTeam = async (teamId) => {
         try {
-            await TournamentModel.instance.addTeam(props.tournamentData.id, teamId);
+            await TournamentModel.addTeam(props.tournamentData.id, teamId);
         } catch (e) {
             console.error(e);
             message.error('Не удалось добавить команду');
@@ -35,7 +35,7 @@ function ParticipantsLogic(props) {
 
     const deleteTeam = async (teamId) => {
         try {
-            await TournamentModel.instance.removeTeam(props.tournamentData.id, teamId);
+            await TournamentModel.removeTeam(props.tournamentData.id, teamId);
         } catch (e) {
             console.error(e);
             message.error('Не удалось убрать команду');

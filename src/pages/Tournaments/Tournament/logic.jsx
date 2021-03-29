@@ -18,9 +18,9 @@ function TournamentPage(props) {
         let gotTournamentData;
 
         try {
-            gotTournamentData = await TournamentModel.instance.getTournament(tournamentId);
-            const gotTeams = await TournamentModel.instance.getTeams(tournamentId);
-            const gotMatches = await TournamentModel.instance.getMeetings(tournamentId);
+            gotTournamentData = await TournamentModel.getTournament(tournamentId);
+            const gotTeams = await TournamentModel.getTeams(tournamentId);
+            const gotMatches = await TournamentModel.getMeetings(tournamentId);
 
             setTournamentData({...gotTournamentData, teams: gotTeams, matches: gotMatches});
         } catch (e) {
