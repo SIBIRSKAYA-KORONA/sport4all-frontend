@@ -43,7 +43,7 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
             {loadingOwnTournaments
                 ? <Spin/>
                 : tournamentsOwned.length > 0
-                    ? <>{tournamentsOwned.map(tour => <Link key={tour.id} to={CONST.PATHS.tournaments.meetings(tour.id)}>{tour.name}</Link>)}</>
+                    ? <>{tournamentsOwned.map(tour => <Link key={tour.id} to={CONST.PATHS.tournaments.id(tour.id)}>{tour.name}</Link>)}</>
                     : <Text type='secondary'>Нет турниров</Text>
             }
         </Space>
