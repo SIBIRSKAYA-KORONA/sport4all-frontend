@@ -22,5 +22,5 @@ TournamentGridRender.propTypes = {
     history: PropTypes.object.isRequired,
     tournamentData: PropTypes.object.isRequired
 }
-Так 
+
 export default TournamentGridRender;
