@@ -2,7 +2,7 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import {Layout, Spin} from 'antd';
+import { Layout, Spin } from 'antd';
 
 import Header from 'Components/Header/render';
 import Footer from 'Components/Footer/render';

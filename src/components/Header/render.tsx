@@ -3,13 +3,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { Menu, Layout, Button } from 'antd';
+import { Menu, Layout } from 'antd';
 const AntHeader = Layout.Header;
 
-import UserModel from 'Models/UserModel';
+import CONST from 'Constants';
 import { getPageName } from 'Utils/utils';
 import { UserAuthenticatedType } from 'Store/User/UserState';
-import CONST from 'Constants';
 
 
 interface IProps extends RouteComponentProps {
@@ -20,8 +19,10 @@ const Header = (props: IProps) => {
     const pageName = getPageName();
 
     return (
-        <AntHeader className='header'>
-            <Menu className='header__list' mode='horizontal' selectedKeys={[pageName]}>
+        <AntHeader className='header
+
+        '>
+            <Menu mode='horizontal' selectedKeys={[pageName]}>
                 <Menu.Item key='/'>
                     <Link to='/' className='header__link'>Главная</Link>
                 </Menu.Item>
@@ -39,15 +40,6 @@ const Header = (props: IProps) => {
                         </Menu.Item>
                     </>
                 }
-                <Menu.Item key='meeting1'>
-                    <Link to={CONST.PATHS.meetings.id(1)} className='header__link'>Матч 1</Link>
-                </Menu.Item>
-                <Menu.Item key='meeting2'>
-                    <Link to={CONST.PATHS.meetings.id(2)} className='header__link'>Матч 2</Link>
-                </Menu.Item>
-                <Menu.Item key='meeting3'>
-                    <Link to={CONST.PATHS.meetings.id(3)} className='header__link'>Матч 3</Link>
-                </Menu.Item>
             </Menu>
         </AntHeader>
     );

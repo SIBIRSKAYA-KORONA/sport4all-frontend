@@ -1,18 +1,13 @@
-import * as React from 'react';
 import './style.scss';
+import * as React from 'react';
 
-// import Footer from 'Components/Footer/render';
 import Thanks from 'Components/Thanks/render';
-import Header from 'Components/Header/render';
+import BasePage from 'Components/BasePage/render';
 
-function HomePage() {
-    return (
-        <div className='page'>
-            <Header />
-            <Thanks />
-            {/*<Footer />*/}
-        </div>
-    )
-}
+const HomePage = (props) => (
+    <BasePage {...props}>
+        <Thanks/>
+    </BasePage>
+)
 
 export default HomePage;
