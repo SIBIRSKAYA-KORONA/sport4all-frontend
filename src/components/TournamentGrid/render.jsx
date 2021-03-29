@@ -62,7 +62,7 @@ class TournamentGrid extends React.Component {
                     participantOnClick: this.participantOnClickHandler,
                 });
         } catch (e) {
-            console.error('Could not render grid');
+            console.log('WARNING: Could not render grid');
         }
     }
 
@@ -91,6 +91,10 @@ class TournamentGrid extends React.Component {
     }
 
     static parseMatchesAsRoundRobin(matches) {
+        if (matches.length === 0) {
+            return [];
+        }
+
         const matchesCopy = [...matches];
         const matchesLastNumbers = {};
         const parsedMatches = matchesCopy.map((match)=>{
@@ -115,6 +119,10 @@ class TournamentGrid extends React.Component {
     }
 
     static parseMatchesAsSingleElimination(matches) {
+        if (matches.length === 0) {
+            return [];
+        }
+
         const matchesCopy = [...matches];
         const matchesById = matchesCopy.reduce((map, match) => {
             map[match.id] = match;
