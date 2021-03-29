@@ -7,6 +7,7 @@ import {
     NotFoundError,
     ServerError
 } from 'Utils/errors';
+import HttpStatusCode from 'Utils/httpErrors';
 
 class TournamentModel {
     static async createTournament(tournamentData) {
@@ -71,23 +72,22 @@ class TournamentModel {
     }
 
     /**
-     *
      * @param {Number | String} tournamentId
-     * @return {Promise<Object | IError>}
+     * @return {Promise<Array<Meeting>>}
      */
     static async getMeetings(tournamentId) {
         return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}/meetings`)
             .then(res => {
-                switch (res.status) {
-                case 200: return res.json();
-                case 400: throw BadRequestError;
-                case 404: throw NotFoundError;
-                default: throw ServerError;
+                if (res.status >= 400) {
+                    console.error(HttpStatusCode[res.status]);
+                    return [];
                 }
+                return res.json();
             })
-            .catch(error => {
-                console.error(error);
-                throw Error(error);
+            .then(meetings => meetings.map(m => ({ ...m, teams: m.teams || [], stats: m.stats || [] })))
+            .catch(e => {
+                console.error(e);
+                return [];
             });
     }
 

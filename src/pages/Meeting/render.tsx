@@ -11,6 +11,7 @@ import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
 import MeetingSteps from 'Components/Meeting/Steps/render';
 import AddResultsModal from 'Pages/Meeting/modals/addResults';
 import { lettersForAvatar } from 'Utils/utils';
+import { meetingResult } from 'Utils/structUtils';
 
 
 
@@ -51,10 +52,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                             </Col>
                             <Col span={8} className='meeting__result'>
                                 <Title level={4} className='meeting__title'>
-                                    {props.stats && props.stats.length === 2
-                                        ? <>{props.stats.find(stat => stat.teamId === props.meeting.teams[0].id).score || 0} - {props.stats.find(stat => stat.teamId === props.meeting.teams[1].id).score || 0}</>
-                                        : '0 - 0'
-                                    }
+                                    {meetingResult(props.stats, props.meeting.teams)}
                                 </Title>
                             </Col>
                             <Col span={8}>

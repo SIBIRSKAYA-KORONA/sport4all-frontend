@@ -15,6 +15,7 @@ const CONST = {
             base: '/tournaments',
             create: '/tournaments/create',
             list: '/tournaments/list',
+            meetings: (id: number | null):string => `/tournaments/${id ? id : ':tournamentId'}/meetings`,
             id: (id: string | number | null):string => '/tournaments/'+(id ? id : ':tournamentId'),
         }
     },
