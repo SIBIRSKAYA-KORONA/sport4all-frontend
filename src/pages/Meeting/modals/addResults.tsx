@@ -1,10 +1,11 @@
 import * as React from 'react';
 
-import { Form, Modal, Input, Tabs, Row, Col } from 'antd';
+import { Form, Modal, Input, Tabs, Row, Col, Table, message } from 'antd';
 const { Item } = Form;
 const { TabPane } = Tabs;
 
 import { Team } from 'Utils/types';
+import { initStats } from 'Utils/structUtils';
 
 
 type IProps = {
@@ -19,16 +20,35 @@ const TEAMS_TAB = '2';
 
 function AddResultsModal(props: IProps): JSX.Element {
     const [form] = Form.useForm();
-    // const [playersForm] = Form.useForm();
+    const [stats, setStats] = React.useState(initStats(props.teams));
     const [activeTab, setActiveTab] = React.useState(PLAYERS_TAB);
     const onOk = () => {
-        form.validateFields()
-            .then(values => {
-                form.resetFields();
-                props.handleOk(values);
-            })
-            .catch(e => console.error(e));
+        if (activeTab === TEAMS_TAB) {
+            form.validateFields()
+                .then(values => {
+                    form.resetFields();
+                    props.handleOk(values);
+                })
+                .catch(e => message.error(e));
+        } else {
+            console.log(stats);
+        }
     };
+    const leftTeam = props.teams[0].players.map(player => ({ ...player, key:player.id }));
+    const rightTeam = props.teams[1].players.map(player => ({ ...player, key:player.id }));
+    const columns = [
+        { title:'Никнейм', dataIndex:'nickname', key:'nickname' },
+        {
+            title:'Очки',
+            key:'points',
+            render: function InputCell(text, player) {
+                return (<Input
+                    value={stats[player.id]}
+                    onChange={(e) => { setStats(prev => ({ ...prev, [player.id]:isNaN(+e.target.value) ? 0 : +e.target.value })); }}
+                />);
+            }
+        }
+    ];
 
     return (
         <Modal
@@ -51,10 +71,12 @@ function AddResultsModal(props: IProps): JSX.Element {
                 </TabPane>
                 <TabPane key={PLAYERS_TAB} tab='По игрокам'>
                     <Row gutter={[12, 0]}>
-                        <Col span={12}>leftTeam
-                            {/*<Table dataSource={leftTeam} columns={leftColumns} />*/}
+                        <Col span={12}>
+                            <Table dataSource={leftTeam} columns={columns} pagination={false}/>
                         </Col>
-                        <Col span={12}>rightTeam</Col>
+                        <Col span={12}>
+                            <Table dataSource={rightTeam} columns={[...columns].reverse()} pagination={false}/>
+                        </Col>
                     </Row>
                 </TabPane>
             </Tabs>

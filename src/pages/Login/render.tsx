@@ -1,12 +1,13 @@
 import './style.scss';
 import * as React from 'react';
 
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 
 import CONST from 'Constants';
 import UserModel from 'Models/UserModel';
 import BasePage from 'Components/BasePage/render';
 import { RouteComponentProps } from 'react-router-dom';
+import HttpStatusCode from 'Utils/httpErrors';
 
 
 const LoginPageRender = (props: RouteComponentProps):JSX.Element => {
@@ -15,7 +16,9 @@ const LoginPageRender = (props: RouteComponentProps):JSX.Element => {
         UserModel.getLogin(values)
             .then(() => UserModel.getProfile())
             .then(() => this.props.history.push(CONST.PATHS.profile.base))
-            .catch(e => console.error(e));
+            .catch(e => {
+                if (e === HttpStatusCode.PRECONDITION_FAILED) message.error('Неправильный пароль');
+            });
     }
 
     return (

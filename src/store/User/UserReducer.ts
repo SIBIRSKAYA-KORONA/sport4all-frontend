@@ -6,7 +6,7 @@ export default function userReducer(state: IUserState = initialState, action: IU
     switch (action.type) {
     case LOGIN:     return { ...state, isAuthenticated: true };
     case LOGOUT:    return { isAuthenticated: false, user: null };
-    case SET_USER:  return { ...state, user: action.user };
+    case SET_USER:  return { isAuthenticated: true, user: action.user };
     }
     return state;
 }

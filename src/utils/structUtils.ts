@@ -14,3 +14,19 @@ export function meetingResult(stats: Array<Stats> | null, teams: Array<Team>): s
     if (!stats || !stats.length) return '-';
     return `${stats.find(stat => stat.teamId === teams[0].id).score || 0} - ${stats.find(stat => stat.teamId === teams[1].id).score || 0}`;
 }
+
+type initStats = {
+    [id:number]: number
+}
+
+export function initStats(teams: Array<Team>):initStats {
+    if (!teams) return {};
+
+    return teams.reduce((totalTeamed, team) => ({
+        ...totalTeamed,
+        ...team.players.reduce((totalPlayered, player) => ({
+            ...totalPlayered,
+            [player.id]:0
+        }), {})
+    }), {});
+}

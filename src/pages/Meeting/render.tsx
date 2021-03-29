@@ -22,6 +22,7 @@ interface IProps extends RouteComponentProps {
     handleTeamsAdd: (values:[any]) => void,
     changeStatus: () => void,
     loadingMeeting: boolean,
+    canEdit: boolean
 }
 
 type visibleModals = {
@@ -39,9 +40,9 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
 
     return (
         <BasePage {...props} loading={props.loadingMeeting}>{props.meeting
-            ? <Space direction='vertical' size='large' className='meeting__section-center'>
+            ? <Space direction='vertical' size='large'>
                 {props.meeting.status >= EventStatus.RegistrationEvent && props.meeting.teams.length === 2 &&
-                    <Space direction='vertical' size='small' align='center'>
+                    <Space direction='vertical' size='small' align='center' className='meeting__section-center'>
                         <Title level={2}>Результаты встречи</Title>
                         <Row justify='center'>
                             <Col span={8}>
@@ -67,11 +68,12 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                 <Space direction='vertical' size='small'>
                     <Title level={3}>Статус встречи</Title>
                     <MeetingSteps current={props.meeting.status} />
-                    {props.meeting.status !== EventStatus.FinishedEvent &&
+                    {props.canEdit && (props.meeting.status !== EventStatus.FinishedEvent
+                    && (props.meeting.status === EventStatus.InProgressEvent && props.stats && props.stats.length > 0)) &&
                         <Button type='primary' onClick={props.changeStatus}>Следующий этап</Button>
                     }
                 </Space>
-                {props.meeting.status === EventStatus.InProgressEvent && (!props.stats || props.stats.length === 0) &&
+                {props.canEdit && props.meeting.status === EventStatus.InProgressEvent && (!props.stats || props.stats.length === 0) &&
                     <Space direction='vertical' size='small'>
                         <Title level={3}>Судейский мостик</Title>
                         <Button
@@ -89,7 +91,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                         />
                     </Space>
                 }
-                {props.meeting.status === EventStatus.RegistrationEvent && props.meeting.teams.length !== 2 && <>
+                {props.canEdit && props.meeting.status === EventStatus.RegistrationEvent && props.meeting.teams.length !== 2 && <>
                     <Button type='primary' onClick={() => { showModal('addTeams'); }}>Добавить команды</Button>
                     <AddTeamsModal
                         visible={isModalVisible['addTeams']}
