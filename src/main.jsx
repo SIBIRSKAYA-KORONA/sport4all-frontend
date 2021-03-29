@@ -16,7 +16,7 @@ import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
 import TournamentsPage from 'Pages/Tournaments/Tournament/logic';
 import TournamentsListPage from 'Pages/Tournaments/List/render';
 import LoginPage from 'Pages/Login/logic';
-import ProfilePage from 'Pages/Profile/logic';
+import ProfilePage from 'Pages/Profile/render';
 import AuthedRoute from 'Utils/AuthedRoute';
 import MeetingPage from 'Pages/Meeting/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';

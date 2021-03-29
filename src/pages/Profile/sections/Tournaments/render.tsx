@@ -6,9 +6,9 @@ import { Spin, Typography, Space, Button } from 'antd';
 const { Title, Text } = Typography;
 
 import CONST from 'Constants';
+import { User } from 'Utils/types';
 import TournamentModel from 'Models/TournamentModel';
-import {UserAuthenticatedType} from 'Store/User/UserState';
-import {User} from 'Utils/types';
+import { UserAuthenticatedType } from 'Store/User/UserState';
 
 
 const initTeams: [any?] = [];

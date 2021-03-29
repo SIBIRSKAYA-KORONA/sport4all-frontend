@@ -4,7 +4,8 @@ export const getPageName = ():string => {
     return path.slice(0, secondSlash > 0 ? secondSlash : path.length);
 }
 
-export function lettersForAvatar(name:string): string {
+export function lettersForAvatar(name?:string): string {
+    if (!name) return '';
     const arr = name.toLocaleUpperCase().split(' ');
     if (arr.length === 1) return arr[0][0];
     if (arr.length >= 2) return arr[0][0] + arr[1][0];
