@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './main.scss';
 
@@ -20,6 +20,7 @@ import ProfilePage from 'Pages/Profile/logic';
 import AuthedRoute from 'Utils/AuthedRoute';
 import MeetingPage from 'Pages/Meeting/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
+import { ProfileSections } from 'Utils/enums';
 
 render(
     <Provider store={store}>
@@ -41,7 +42,10 @@ render(
                 {/* Meetings */}
                 <Route path={CONST.PATHS.meetings.id(null)} component={MeetingPage}/>
 
-                <AuthedRoute path={CONST.PATHS.profile} component={ProfilePage} mustBeLogged='in'/>
+                <AuthedRoute path={CONST.PATHS.profile.section()} component={ProfilePage} mustBeLogged='in'/>
+                <Route path={CONST.PATHS.profile.base}>
+                    <Redirect to={CONST.PATHS.profile.section(ProfileSections.Settings)}/>
+                </Route>
 
                 {/* Auth */}
                 <AuthedRoute path={CONST.PATHS.signup} component={SignUpPage} mustBeLogged='out'/>

@@ -11,6 +11,9 @@ import {RouteComponentProps} from 'react-router-dom';
 import {User} from 'Utils/types';
 import {UserAuthenticatedType} from 'Store/User/UserState';
 import TournamentsProfileSection from 'Pages/Profile/sections/Tournaments/render';
+import SettingsProfileSection from 'Pages/Profile/sections/Settings/render';
+import { ProfileSections } from 'Utils/enums';
+import CONST from 'Constants';
 
 const {Title, Paragraph} = Typography;
 const {TabPane} = Tabs;
@@ -35,15 +38,19 @@ const ProfilePageRender = (props:IProps):JSX.Element => (
             </Row>
         }
         <Row>
-            <Tabs>
-                <TabPane tab='История' key={1}>
-                    <></>
-                </TabPane>
-                <TabPane tab='Команды' key={2}>
+            <Tabs
+                activeKey={props.match.params['section']}
+                defaultActiveKey={ProfileSections.Settings}
+                onChange={(key) => { props.history.push(CONST.PATHS.profile.section(key as ProfileSections)) }}
+            >
+                <TabPane tab='Команды' key={ProfileSections.Teams}>
                     <TeamsSubPage {...props}/>
                 </TabPane>
-                <TabPane tab='Турниры' key={3}>
+                <TabPane tab='Турниры' key={ProfileSections.Tournaments}>
                     <TournamentsProfileSection {...props}/>
+                </TabPane>
+                <TabPane tab='Настройки' key={ProfileSections.Settings}>
+                    <SettingsProfileSection {...props}/>
                 </TabPane>
             </Tabs>
         </Row>

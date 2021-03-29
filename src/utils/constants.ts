@@ -1,8 +1,13 @@
+import { ProfileSections } from 'Utils/enums';
+
 const CONST = {
     PATHS: {
         login: '/login',
         signup: '/signup',
-        profile: '/profile',
+        profile: {
+            base: '/profile',
+            section: (section?:ProfileSections):string => `/profile/${section || ':section'}`,
+        },
         teams: {
             base: '/teams',
             create: '/teams/create',
