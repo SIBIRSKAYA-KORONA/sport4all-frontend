@@ -1,7 +1,6 @@
-import Network from '../core/network';
-import { NotFoundError, ServerError, NotAuthorizedError } from 'Utils/errors';
 import store from 'Store/store';
-import { loginUser, logoutUser } from 'Store/User/UserActions';
+import Network from '../core/network';
+import { loginUser, logoutUser, setUser } from 'Store/User/UserActions';
 
 class UserModel {
     static async signUp(user) {
@@ -15,18 +14,18 @@ class UserModel {
     }
 
     /**
-     * @return {Promise<Object | IError>}
+     * @return {Promise<Object | HttpStatusCode>}
      */
     static async getProfile() {
-        return Network.fetchGet(Network.paths.settings).then(
-            response => {
-                if (response.status > 499) throw ServerError;
-                if (response.status === 404) throw NotFoundError;
-                if (response.status === 401) throw NotAuthorizedError;
-                return response.json();
-            },
-            error => { throw new Error(error); }
-        );
+        return Network.fetchGet(Network.paths.settings)
+            .then(res => {
+                if (res.status >= 400) throw res.status;
+                return res.json();
+            })
+            .then(user => {
+                store.dispatch(setUser(user));
+            })
+            .catch(e => { throw e });
     }
 
     /**
@@ -35,24 +34,18 @@ class UserModel {
      * @return {Promise<Object | IError>}
      */
     static async getLogin(user) {
-        return Network.fetchPost(Network.paths.sessions, user).then(
-            response => {
-                switch (response.status) {
-                case 200: // успешная регистрация
-                    return;
-                case 404: throw NotFoundError;
-                case 500: throw ServerError;
-                }
-            },
-            error => { throw new Error(error); }
-        );
+        return Network.fetchPost(Network.paths.sessions, user).then(res => {
+            if (res.status >= 400) throw res.status;
+            store.dispatch(loginUser());
+        });
     }
 
     static async logout(user) {
         return Network.fetchDelete(Network.paths.sessions, user).then(
             response => {
                 if (response.status > 499) throw new Error('Server error');
-                return response.json();
+                if (response.status > 400) throw new Error(response.status);
+                store.dispatch(logoutUser());
             },
             error => { throw new Error(error); }
         );

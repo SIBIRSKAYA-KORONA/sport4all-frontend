@@ -17,7 +17,7 @@ class AuthedRoute extends React.Component {
 
     componentDidMount() {
         if (this.props.isAuthenticated === null) {
-            UserModel.checkAndSetAuth().then(() => { this.setState({ loading: false }) });
+            UserModel.checkAndSetAuth().finally(() => { this.setState({ loading: false }) });
         }
     }
 
@@ -29,7 +29,7 @@ class AuthedRoute extends React.Component {
             ? <Spin/>
             : (this.props.isAuthenticated && mustBeLogged === 'in') || (!this.props.isAuthenticated && mustBeLogged === 'out')
                 ? <Component {...props} />
-                : <Redirect to={{ pathname: mustBeLogged === 'in' ? CONST.PATHS.login : CONST.PATHS.profile, state: { from: this.props.location } }} />
+                : <Redirect to={{ pathname: mustBeLogged === 'in' ? CONST.PATHS.login : CONST.PATHS.profile.base, state: { from: this.props.location } }} />
         }/>
     }
 }

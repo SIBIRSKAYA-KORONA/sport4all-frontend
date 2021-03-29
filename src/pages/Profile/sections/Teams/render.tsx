@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { Divider, Spin, Typography, Space, Button } from 'antd';
 
@@ -38,7 +38,9 @@ const TeamsSubPage = (props:RouteComponentProps):JSX.Element => {
         <Space direction='vertical'>
             <Space size='large' align='baseline'>
                 <Title level={3}>Тренирую</Title>
-                <Button type='link' href={CONST.PATHS.teams.create}>Создать</Button>
+                <Button type='link'>
+                    <Link to={CONST.PATHS.teams.create}>Создать</Link>
+                </Button>
             </Space>
             {loadingOwnTeams
                 ? <Spin/>

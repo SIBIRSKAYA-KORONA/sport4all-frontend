@@ -1,19 +1,24 @@
-import * as React from 'react';
 import './style.scss';
-import { Link } from 'react-router-dom';
-import { Menu } from 'antd';
+import * as React from 'react';
 import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
+import { Menu, Layout, Button } from 'antd';
+const AntHeader = Layout.Header;
+
+import UserModel from 'Models/UserModel';
 import { getPageName } from 'Utils/utils';
-import { Header as AntHeader } from 'antd/lib/layout/layout';
 import { UserAuthenticatedType } from 'Store/User/UserState';
+import CONST from 'Constants';
 
-interface IProps {
+
+interface IProps extends RouteComponentProps {
     isAuthenticated: UserAuthenticatedType;
 }
 
 const Header = (props: IProps) => {
     const pageName = getPageName();
+
     return (
         <AntHeader className='header'>
             <Menu className='header__list' mode='horizontal' selectedKeys={[pageName]}>
@@ -22,25 +27,27 @@ const Header = (props: IProps) => {
                 </Menu.Item>
 
                 {props.isAuthenticated !== null && props.isAuthenticated
-                    ? <>
-                        <Menu.SubMenu key='/profile' title='Профиль'>
-                            <Menu.Item key='profile main'>
-                                <Link to='/profile' className='header__link'>Профиль</Link>
-                            </Menu.Item>
-                            <Menu.Item key='profile logout'>
-                                <Link to='/logout' className='header__link'>Выйти</Link>
-                            </Menu.Item>
-                        </Menu.SubMenu>
-                    </>
+                    ? <Menu.Item key='profile main'>
+                        <Link to='/profile' className='header__link'>Профиль</Link>
+                    </Menu.Item>
                     : <>
                         <Menu.Item key='/signup'>
-                            <Link to='/signup' className='header__link'>Sign Up</Link>
+                            <Link to='/signup' className='header__link'>Регистрация</Link>
                         </Menu.Item>
                         <Menu.Item key='/login'>
-                            <Link to='/login' className='header__link'>Login</Link>
+                            <Link to='/login' className='header__link'>Войти</Link>
                         </Menu.Item>
                     </>
                 }
+                <Menu.Item key='meeting1'>
+                    <Link to={CONST.PATHS.meetings.id(1)} className='header__link'>Матч 1</Link>
+                </Menu.Item>
+                <Menu.Item key='meeting2'>
+                    <Link to={CONST.PATHS.meetings.id(2)} className='header__link'>Матч 2</Link>
+                </Menu.Item>
+                <Menu.Item key='meeting3'>
+                    <Link to={CONST.PATHS.meetings.id(3)} className='header__link'>Матч 3</Link>
+                </Menu.Item>
             </Menu>
         </AntHeader>
     );

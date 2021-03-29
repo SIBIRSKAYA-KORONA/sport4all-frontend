@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './main.scss';
 
@@ -15,9 +15,12 @@ import TeamPage from 'Pages/Teams/Team/logic';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
 import TournamentsPage from 'Pages/Tournaments/Tournament/logic';
 import TournamentsListPage from 'Pages/Tournaments/List/render';
-import LoginPage from 'Pages/Login/logic';
-import ProfilePage from 'Pages/Profile/logic';
+import LoginPage from 'Pages/Login/render';
+import ProfilePage from 'Pages/Profile/render';
 import AuthedRoute from 'Utils/AuthedRoute';
+import MeetingPage from 'Pages/Meeting/logic';
+import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
+import {ProfileSections, ProfileSettingsSections} from 'Utils/enums';
 
 render(
     <Provider store={store}>
@@ -31,11 +34,22 @@ render(
                 <Route path={CONST.PATHS.teams.base} component={TeamsPage}/>
 
                 {/* Tournaments */}
-                <AuthedRoute path='/tournaments/create' component={TournamentCreatePage} mustBeLogged='in'/>
-                <Route path='/tournaments/list' component={TournamentsListPage}/>
+                <AuthedRoute path={CONST.PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
+                <Route path={CONST.PATHS.tournaments.list} component={TournamentsListPage}/>
+                <Route path={CONST.PATHS.tournaments.meetings(null)} exact component={TournamentMeetingsListPage}/>
                 <Route path='/tournaments/:tournamentId' component={TournamentsPage}/>
 
-                <AuthedRoute path={CONST.PATHS.profile} component={ProfilePage} mustBeLogged='in'/>
+                {/* Meetings */}
+                <Route path={CONST.PATHS.meetings.id(null)} component={MeetingPage}/>
+
+                {/* Profile */}
+                <Route exact path={CONST.PATHS.profile.settings.base}>
+                    <Redirect to={CONST.PATHS.profile.settings.section(ProfileSettingsSections.Personal)}/>
+                </Route>
+                <Route exact path={CONST.PATHS.profile.base}>
+                    <Redirect to={CONST.PATHS.profile.section(ProfileSections.Teams)}/>
+                </Route>
+                <AuthedRoute path={CONST.PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
 
                 {/* Auth */}
                 <AuthedRoute path={CONST.PATHS.signup} component={SignUpPage} mustBeLogged='out'/>

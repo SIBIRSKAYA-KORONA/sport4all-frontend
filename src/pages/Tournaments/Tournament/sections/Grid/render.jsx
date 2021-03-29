@@ -3,8 +3,6 @@ import TournamentGrid from 'Components/TournamentGrid/render';
 import PropTypes from 'prop-types'
 
 
-
-
 function TournamentGridRender(props) {
 
     return (
