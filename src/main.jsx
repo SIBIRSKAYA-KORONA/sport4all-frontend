@@ -20,7 +20,7 @@ import ProfilePage from 'Pages/Profile/render';
 import AuthedRoute from 'Utils/AuthedRoute';
 import MeetingPage from 'Pages/Meeting/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
-import { ProfileSections } from 'Utils/enums';
+import {ProfileSections, ProfileSettingsSections} from 'Utils/enums';
 
 render(
     <Provider store={store}>
@@ -42,9 +42,14 @@ render(
                 {/* Meetings */}
                 <Route path={CONST.PATHS.meetings.id(null)} component={MeetingPage}/>
 
+                {/* Profile */}
+                <Route exact path={CONST.PATHS.profile.settings.base}>
+                    <Redirect to={CONST.PATHS.profile.settings.section(ProfileSettingsSections.Personal)}/>
+                </Route>
+                <AuthedRoute path={CONST.PATHS.profile.settings.section()} component={ProfilePage} mustBeLogged='in'/>
                 <AuthedRoute path={CONST.PATHS.profile.section()} component={ProfilePage} mustBeLogged='in'/>
-                <Route path={CONST.PATHS.profile.base}>
-                    <Redirect to={CONST.PATHS.profile.section(ProfileSections.Settings)}/>
+                <Route exact path={CONST.PATHS.profile.base}>
+                    <Redirect to={CONST.PATHS.profile.section(ProfileSections.Teams)}/>
                 </Route>
 
                 {/* Auth */}

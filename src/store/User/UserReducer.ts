@@ -5,7 +5,7 @@ import { initialState, IUserState } from './UserState';
 export default function userReducer(state: IUserState = initialState, action: IUserActionReturn): IUserState {
     switch (action.type) {
     case LOGIN:     return { ...state, isAuthenticated: true };
-    case LOGOUT:    return { ...state, isAuthenticated: false };
+    case LOGOUT:    return { isAuthenticated: false, user: null };
     case SET_USER:  return { ...state, user: action.user };
     }
     return state;

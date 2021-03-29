@@ -3,3 +3,8 @@ export enum ProfileSections {
     Tournaments = 'tournaments',
     Settings = 'settings'
 }
+
+export enum ProfileSettingsSections {
+    Personal = 'personal',
+    Actions = 'actions'
+}

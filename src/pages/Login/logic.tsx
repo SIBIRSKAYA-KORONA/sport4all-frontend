@@ -2,12 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
+import CONST from 'Constants';
 import LoginPageRender from './render';
 import UserModel from 'Models/UserModel';
 import { IUserAction, loginUser, logoutUser } from 'Store/User/UserActions';
 import { UserAuthenticatedType } from 'Store/User/UserState';
-import CONST from 'Constants';
-import { ProfileSections } from 'Utils/enums';
 
 interface IProps extends RouteComponentProps  {
     isAuthenticated: UserAuthenticatedType,
@@ -26,7 +25,7 @@ class LoginPage extends React.Component<IProps> {
         UserModel.getLogin(values)
             .then(() => {
                 this.props.loginUser();
-                this.props.history.push(CONST.PATHS.profile.section(ProfileSections.Settings));
+                this.props.history.push(CONST.PATHS.profile.base);
             })
             .catch((error) => {
                 console.error(error);
