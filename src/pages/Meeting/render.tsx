@@ -2,15 +2,16 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import {Button, Row, Space, Typography, Col, Avatar} from 'antd';
+import { Avatar, Button, Col, Row, Space, Typography } from 'antd';
+const { Title } = Typography;
 
 import BasePage from 'Components/BasePage/render';
 import { EventStatus, Meeting, Stats } from 'Utils/types';
 import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
 import MeetingSteps from 'Components/Meeting/Steps/render';
 import AddResultsModal from 'Pages/Meeting/modals/addResults';
+import { lettersForAvatar } from 'Utils/utils';
 
-const { Title } = Typography;
 
 
 interface IProps extends RouteComponentProps {
@@ -44,12 +45,12 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                         <Row justify='center'>
                             <Col span={8}>
                                 <Space direction='vertical' size='middle' align='center'>
-                                    <Avatar size={128}>{props.meeting.teams[0].name}</Avatar>
-                                    <Title level={5}>{props.meeting.teams[0].name}</Title>
+                                    <Avatar size={100}>{lettersForAvatar(props.meeting.teams[0].name)}</Avatar>
+                                    <Title level={5} className='meeting__title'>{props.meeting.teams[0].name}</Title>
                                 </Space>
                             </Col>
-                            <Col span={8} flex='auto'>
-                                <Title level={5}>
+                            <Col span={8} className='meeting__result'>
+                                <Title level={4} className='meeting__title'>
                                     {props.stats && props.stats.length === 2
                                         ? <>{props.stats.find(stat => stat.teamId === props.meeting.teams[0].id).score || 0} - {props.stats.find(stat => stat.teamId === props.meeting.teams[1].id).score || 0}</>
                                         : '0 - 0'
@@ -58,8 +59,8 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                             </Col>
                             <Col span={8}>
                                 <Space direction='vertical' size='middle' align='center'>
-                                    <Avatar size={128}>{props.meeting.teams[1].name}</Avatar>
-                                    <Title level={5}>{props.meeting.teams[1].name}</Title>
+                                    <Avatar size={100}>{lettersForAvatar(props.meeting.teams[1].name)}</Avatar>
+                                    <Title level={5} className='meeting__title'>{props.meeting.teams[1].name}</Title>
                                 </Space>
                             </Col>
                         </Row>
