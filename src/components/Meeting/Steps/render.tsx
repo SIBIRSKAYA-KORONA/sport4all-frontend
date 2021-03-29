@@ -19,7 +19,7 @@ function MeetingSteps(props: IProps): JSX.Element {
         { key:EventStatus.FinishedEvent, title:'Матч завершён' },
     ];
     return (
-        <Steps current={props.current}>
+        <Steps current={props.current} status={props.current === EventStatus.FinishedEvent ? 'finish' : 'process'}>
             {steps.map(step => <Step key={step.key} title={step.title} /> )}
         </Steps>
     )
