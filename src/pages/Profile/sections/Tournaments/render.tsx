@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { Spin, Typography, Space, Button, Table, Empty } from 'antd';
-const { Title, Text } = Typography;
-import { GlobalOutlined } from '@ant-design/icons';
+const { Title } = Typography;
 
 import CONST from 'Constants';
 import { User } from 'Utils/types';
@@ -42,16 +41,7 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
             render: function StatusCell(text, tour) {
                 return (<MeetingStatusTag status={tour.status}/>)
             }
-        },
-        {
-            title: 'Страница',
-            key: 'link',
-            render: function LinkCell(text, tour) {
-                return (<Space size='small' align='center'>
-                    <Link to={CONST.PATHS.tournaments.id(tour.id)}><GlobalOutlined /></Link>
-                </Space>)
-            },
-        },
+        }
     ];
     const dataSource = tournamentsOwned // TODO: fix duplicates on the backend
         .filter((t, index) => tournamentsOwned.findIndex(tt => t.id === tt.id) === index)
@@ -69,7 +59,14 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
             {loadingOwnTournaments
                 ? <Spin/>
                 : tournamentsOwned.length > 0
-                    ? <Table dataSource={dataSource} columns={columns} pagination={false}/>
+                    ? <Table
+                        dataSource={dataSource}
+                        columns={columns}
+                        pagination={false}
+                        rowClassName={() => 'row'}
+                        onRow={tour => ({
+                            onClick: () => { props.history.push(CONST.PATHS.tournaments.id(tour.id)); }
+                        })}/>
                     : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             }
         </Space>
