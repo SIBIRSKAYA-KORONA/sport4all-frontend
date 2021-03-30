@@ -48,6 +48,14 @@ class MeetingModel {
             })
     }
 
+    static async addPlayerResults(stats: Stats):Promise<HttpStatusCode | null> {
+        return Network.fetchPut(Network.paths.meetings.addResultsForPlayer(stats.meetingId, stats.teamId, stats.playerId), stats)
+            .then(response => {
+                if (response.status >= HttpStatusCode.BAD_REQUEST) throw response.status;
+                return;
+            });
+    }
+
     static async getStats(mid:number):Promise<HttpStatusCode | Array<Stats>> {
         return Network.fetchGet(Network.paths.meetings.stats(mid))
             .then(response => {

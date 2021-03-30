@@ -6,7 +6,6 @@ import TournamentModel from 'Models/TournamentModel';
 import {message} from 'antd';
 import {connect} from 'react-redux';
 
-import UserModel from 'Models/UserModel';
 
 function TournamentPage(props) {
     const tournamentId = Number(props.match.params.tournamentId);

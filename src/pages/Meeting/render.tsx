@@ -18,7 +18,7 @@ import { meetingResult } from 'Utils/structUtils';
 interface IProps extends RouteComponentProps {
     meeting?: Meeting,
     stats?: Array<Stats>,
-    handlePointsSave: (stats: any) => void,
+    handlePointsSave: () => void,
     handleTeamsAdd: (values:[any]) => void,
     changeStatus: () => void,
     loadingMeeting: boolean,
@@ -81,11 +81,12 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                             onClick={showModal.bind(this, 'stats')}
                         >Закончить встречу и внести результаты</Button>
                         <AddResultsModal
+                            meetingId={props.meeting.id}
                             teams={props.meeting.teams}
                             visible={isModalVisible['stats']}
                             onCancel={() => { handleCancel('stats') }}
-                            handleOk={(stats) => {
-                                props.handlePointsSave(stats);
+                            handleOk={() => {
+                                props.handlePointsSave();
                                 handleOk('stats');
                             }}
                         />
