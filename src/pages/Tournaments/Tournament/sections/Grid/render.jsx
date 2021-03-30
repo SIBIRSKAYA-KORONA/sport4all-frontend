@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 
 function TournamentGridRender(props) {
+
     return (
         <div style={{overflowX: 'auto'}}>
             <TournamentGrid
