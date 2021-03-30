@@ -15,7 +15,7 @@ export default class Network {
             addTeam: (id, tid) => `/meetings/${id}/teams/${tid}`,
             addResultsForTeam: (mid, tid) => `/meetings/${mid}/teams/${tid}/stat`,
             stats: (mid) => `/meetings/${mid}/stat`,
-            addResultsForPlayer: (mid, tid, pid) => `/api/meetings/${mid}/teams/${tid}/players/${pid}/stat`
+            addResultsForPlayer: (mid, tid, pid) => `/meetings/${mid}/teams/${tid}/players/${pid}/stat`
         }
     };
 
