@@ -1,15 +1,17 @@
 import './style.scss';
 import * as React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { Avatar, Col, Row, Tabs, Typography } from 'antd';
 const { Title, Paragraph } = Typography;
 
-import { Team, User } from 'Utils/types';
-import BasePage from 'Components/BasePage/render';
-import { RouteComponentProps } from 'react-router-dom';
-import { lettersForAvatar } from 'Utils/utils';
+import { Team } from 'Utils/types';
 import { TeamSections } from 'Utils/enums';
-import TeamPlayers from 'Pages/Teams/Team/Components/Players';
+import { lettersForAvatar } from 'Utils/utils';
+import BasePage from 'Components/BasePage/render';
+import TeamPlayers from 'Pages/Teams/Team/Sections/Players';
+import TeamPublicInfo from 'Pages/Teams/Team/Sections/PublicInfo';
+
 
 interface IProps extends RouteComponentProps {
     loading: boolean,
@@ -18,13 +20,12 @@ interface IProps extends RouteComponentProps {
     reload: () => void
 }
 
-
 const TeamPageRender = (props: IProps):JSX.Element => {
     return (
         <BasePage {...props} loading={props.loading}>{props.team && <>
             <Row>
                 <Col flex='100px'>
-                    <Avatar size='large'>{lettersForAvatar(props.team.name)}</Avatar>
+                    <Avatar size={90} src={props.team.avatar.url}>{lettersForAvatar(props.team.name)}</Avatar>
                 </Col>
                 <Col flex='auto'>
                     <Title level={2}>{props.team.name}</Title>
@@ -40,6 +41,11 @@ const TeamPageRender = (props: IProps):JSX.Element => {
                         players={props.team.players}
                     />
                 </Tabs.TabPane>
+                {props.canEdit && props.team &&
+                    <Tabs.TabPane tab='Настройки' key={TeamSections.PublicInfo}>
+                        <TeamPublicInfo teamId={props.team.id} reload={props.reload}/>
+                    </Tabs.TabPane>
+                }
             </Tabs>
         </>}</BasePage>
     )

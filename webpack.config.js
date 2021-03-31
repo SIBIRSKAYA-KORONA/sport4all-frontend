@@ -21,6 +21,7 @@ module.exports = {
             Store: path.resolve(__dirname, 'src/store/'),
             Static: path.resolve(__dirname, 'static/'),
             Utils: path.resolve(__dirname, 'src/utils/'),
+            Core: path.resolve(__dirname, 'src/core'),
             Constants$: path.resolve(__dirname, 'src/utils/constants.ts'),
             // Interfaces$: path.resolve(__dirname, 'src/utils/interfaces.js')
         }

@@ -91,4 +91,13 @@ export default class Network {
             body: JSON.stringify(body)
         });
     };
+
+    static uploadFile = formData => {
+        return fetch('https://sport4all.tech/api/attachments', {
+            method: 'POST',
+            body: formData,
+            mode: 'cors',
+            credentials: 'include'
+        });
+    };
 }

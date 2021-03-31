@@ -21,6 +21,7 @@
       "Store/*": ["src/store/*"],
       "Static/*": ["static/*"],
       "Utils/*": ["src/utils/*"],
+      "Core/*": ["src/core/*"],
       "Constants": ["src/utils/constants.ts"],
       "Interfaces": ["src/utils/interfaces.ts"]
     }
