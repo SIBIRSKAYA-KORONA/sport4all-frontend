@@ -1,15 +1,28 @@
-import * as React from 'react';
-import propTypes from 'prop-types';
 import './style.scss';
+import * as React from 'react';
 
-import { AutoComplete, Button, Space, Spin, Table, Typography } from 'antd';
+import { AutoComplete, Button, Space, Table, Typography } from 'antd';
 const { Option } = AutoComplete;
 const { Title, Text } = Typography;
 
+import { Team, User } from 'Utils/types';
 import BasePage from 'Components/BasePage/render';
+import { RouteComponentProps } from 'react-router-dom';
+
+interface IProps extends RouteComponentProps {
+    loading: boolean,
+    canEdit: boolean,
+    onDelete: (pid:number) => Promise<void>,
+    team: Team | null,
+    playersToAdd: Array<User>,
+    loadPlayers: (text:string) => void,
+    selectPlayer: (data:any, option:any) => void,
+    selectedPlayer: User | null,
+    addPlayer: () => Promise<boolean>,
+}
 
 
-const TeamPageRender = (props) => {
+const TeamPageRender = (props: IProps):JSX.Element => {
     const [value, setValue] = React.useState('');
     const [loadings, setLoadings] = React.useState({});
     const onClick = async () => {
@@ -24,13 +37,11 @@ const TeamPageRender = (props) => {
         setLoadings(prev => ({...prev, [pid]: true}));
         props.onDelete(pid)
             .catch(e => alert.bind(this, e.message))
-            .finally(() => {
-                setLoadings(prev => ({...prev, [pid]: false}))
-            });
+            .finally(() => setLoadings(prev => ({...prev, [pid]: false})));
     };
 
     // For table
-    let columns = [
+    const columns: any[] = [
         {title: 'Имя', dataIndex: 'name', key: 'name'},
         {title: 'Фамилия', dataIndex: 'surname', key: 'surname'},
         {title: 'Никнейм', dataIndex: 'nickname', key: 'nickname'}
@@ -40,20 +51,17 @@ const TeamPageRender = (props) => {
             title: '',
             key: 'delete',
             render: function LinkCell(text, player) {
-                return (
-                    <Button
-                        size='middle'
-                        type='danger'
-                        loading={loadings[player.id]}
-                        onClick={onPlayerDelete.bind(this, player.id)}
-                    >Исключить</Button>
-                )
+                return (<Button
+                    size='middle'
+                    loading={loadings[player.id]}
+                    onClick={onPlayerDelete.bind(this, player.id)}
+                >Исключить</Button>)
             },
         });
+
     return (
-        <BasePage>
-            {props.loading && <Spin/>}
-            {props.team && <Space direction='vertical' size='large'>
+        <BasePage {...props} loading={props.loading}>{props.team &&
+            <Space direction='vertical' size='large'>
                 <Space direction='vertical' size='middle'>
                     <Title level={2}>{props.team.name}</Title>
                     <Text>Описание - {props.team.about}</Text>
@@ -89,17 +97,5 @@ const TeamPageRender = (props) => {
         </BasePage>
     )
 }
-
-TeamPageRender.propTypes = {
-    loading: propTypes.bool.isRequired,
-    canEdit: propTypes.bool.isRequired,
-    onDelete: propTypes.func.isRequired,
-    team: propTypes.object,
-    playersToAdd: propTypes.arrayOf(propTypes.object).isRequired,
-    loadPlayers: propTypes.func.isRequired,
-    selectPlayer: propTypes.func.isRequired,
-    selectedPlayer: propTypes.object,
-    addPlayer: propTypes.func.isRequired,
-};
 
 export default TeamPageRender;

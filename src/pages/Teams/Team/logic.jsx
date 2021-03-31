@@ -1,7 +1,7 @@
 import * as React from 'react';
 import propTypes from 'prop-types';
 
-import TeamPageRender from './render';
+import TeamPageRender from './render.tsx';
 import TeamModel from 'Models/TeamModel';
 import UserModel from 'Models/UserModel';
 
