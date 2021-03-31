@@ -11,6 +11,14 @@ const layout = {
 function PublicInfoRender(props) {
     return (
         <Row>
+            <Upload
+                listType="picture-card"
+                showUploadList={false}
+                customRequest={props.onAvatarChanged}
+            >
+                <Avatar style={{ width: '100%', height: '100%' }} src={props.tournamentData.avatar.url}/>
+            </Upload>
+
             <Form
                 {...layout}
                 onFinish={props.onSubmit}
@@ -42,39 +50,14 @@ function PublicInfoRender(props) {
                     </Button>
                 </Form.Item>
             </Form>
-            <Upload
-                listType="picture-card"
-                showUploadList={false}
-                customRequest={async (fileData)=>{
-                    const formData = new FormData();
-                    formData.append("tournamentId", props.tournamentData.id);
-                    formData.append("attach", fileData.file);
-                    const response = await fetch('https://sport4all.tech/api/attachments', {
-                        method: 'POST',
-                        body: formData,
-                        mode: 'cors',
-                        credentials: 'include'
-                    });
-
-                }}
-            >
-                <Avatar style={{ width: '100%', height: '100%' }}/>
-            </Upload>
-            {/*<Upload*/}
-            {/*    name="avatar"*/}
-            {/*    listType="picture-card"*/}
-            {/*    className="avatar-uploader"*/}
-            {/*    showUploadList={false}*/}
-            {/*>*/}
-            {/*    <img  alt="avatar" style={{ width: '100%' }} />*/}
-            {/*</Upload>*/}
         </Row>
     )
 }
 
 PublicInfoRender.propTypes = {
     tournamentData: PropTypes.object.isRequired,
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    onAvatarChanged: PropTypes.func.isRequired
 }
 
 PublicInfoRender.statuses = {

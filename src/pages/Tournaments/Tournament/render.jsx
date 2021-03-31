@@ -23,7 +23,7 @@ function TournamentPageRender(props) {
                             <Skeleton.Button active size={46} style={{width: 200}}/>
                         </> :
                         <>
-                            <Avatar size={64}/>
+                            <Avatar size={64} src={props.tournamentData.avatar.url}/>
                             <Title style={{marginBottom: 0}}>{props.tournamentData.name || ''}</Title>
                         </>
                     }
