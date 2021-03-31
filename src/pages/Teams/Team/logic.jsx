@@ -11,21 +11,14 @@ class TeamPage extends React.Component {
         this.state = {
             team: null,
             loading: true,
-            playersToAdd: [],
-            selectedPlayer: null,
             canEdit: false,
         };
-
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.loadPlayers = this.loadPlayers.bind(this);
-        this.selectPlayer = this.selectPlayer.bind(this);
-        this.addPlayer = this.addPlayer.bind(this);
-        this.onPlayerDelete = this.onPlayerDelete.bind(this);
+        this.teamId = props.match.params['id'];
+        this.load = this.load.bind(this);
     }
 
     componentDidMount() {
-        this.load(this.props.match.params.id)
-            .then(() => UserModel.checkAndSetAuth())
+        this.load()
             .then(() => UserModel.getProfile())
             .then(user => {
                 if (user.id === this.state.team.ownerId)
@@ -34,8 +27,8 @@ class TeamPage extends React.Component {
             .catch(() => {});
     }
 
-    async load(tid) {
-        return TeamModel.instance.loadTeam(tid)
+    async load() {
+        return TeamModel.instance.loadTeam(this.teamId)
             .then(team => {
                 if (!team.players) team.players = [];
                 this.setState(prevState => ({
@@ -46,75 +39,9 @@ class TeamPage extends React.Component {
             .finally(() => this.setState(prev => ({ ...prev, loading: false })));
     }
 
-    handleSubmit(values) {
-        if (!values.name) return;
-        TeamModel.instance.createTeam(values)
-            .then(response => { console.log(response); })
-            .catch(error => { console.error(error); })
-    }
-
-    loadPlayers(searchText) {
-        if (!searchText) return;
-        TeamModel.instance.loadPlayersToAdd(this.state.team.id, searchText, 5)
-            .then(players => {
-                this.setState(prevState => ({
-                    ...prevState,
-                    playersToAdd: players
-                }))
-            })
-    }
-
-    selectPlayer(data, option) {
-        const id = option['data-id'];
-        const player = this.state.playersToAdd.find(player => player.id === id);
-        console.log(player);
-        this.setState(prevState => ({
-            ...prevState,
-            selectedPlayer: player
-        }));
-    }
-
-    async addPlayer() {
-        if (!this.state.selectedPlayer) return false;
-        return TeamModel.instance.addPlayerToTheTeam(this.state.team.id, this.state.selectedPlayer.id)
-            .then(() => {
-                this.setState(prevState => ({
-                    ...prevState,
-                    selectedPlayer: null,
-                    playersToAdd: [],
-                }));
-                this.load(this.state.team.id);
-                return true;
-            })
-            .catch(error => {
-                console.error(error);
-                return false;
-            });
-    }
-
-    async onPlayerDelete(pid) {
-        if (!this.state.team || !pid) return;
-        return TeamModel.instance.removePlayerFromTheTeam(this.state.team.id, pid)
-            .then(() => {
-                this.setState(prev => ({
-                    ...prev,
-                    team: {
-                        ...prev.team,
-                        players: prev.team.players.filter(player => player.id !== pid)
-                    }
-                }))
-            })
-            .catch(e => { throw e });
-    }
-
     render = () => (
-        <TeamPageRender
-            onDelete={this.onPlayerDelete}
-            onSubmit={this.handleSubmit}
-            loadPlayers={this.loadPlayers}
-            addPlayer={this.addPlayer}
-            selectPlayer={this.selectPlayer}
-            {...this.state}
+        <TeamPageRender {...this.state} {...this.props}
+            reload={this.load}
         />
     );
 }

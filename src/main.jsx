@@ -10,7 +10,6 @@ import SignUpPage from 'Pages/SignUp/logic';
 import TestGrid from 'Pages/TestGrid/render';
 import CONST from 'Utils/constants';
 import TeamCreatePage from 'Pages/Teams/Create/render';
-import TeamsPage from 'Pages/Teams/Team/render';
 import TeamPage from 'Pages/Teams/Team/logic';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
 import TournamentsPage from 'Pages/Tournaments/Tournament/logic';
@@ -29,9 +28,11 @@ render(
                 <Route exact path='/' component={HomePage}/>
 
                 {/* Teams */}
-                <AuthedRoute path={CONST.PATHS.teams.create} component={TeamCreatePage} mustBeLogged='in'/>
-                <Route path={CONST.PATHS.teams.id(null)} component={TeamPage}/>
-                <Route path={CONST.PATHS.teams.base} component={TeamsPage}/>
+                <AuthedRoute exact path={CONST.PATHS.teams.create} component={TeamCreatePage} mustBeLogged='in'/>
+                <Route exact path={CONST.PATHS.teams.id_config} render={props => (
+                    <Redirect to={CONST.PATHS.teams.id(+props.match.params['id'])} />
+                )}/>
+                <Route path={CONST.PATHS.teams.__config} component={TeamPage}/>
 
                 {/* Tournaments */}
                 <AuthedRoute path={CONST.PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
