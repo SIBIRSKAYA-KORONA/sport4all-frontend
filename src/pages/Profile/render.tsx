@@ -47,6 +47,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
                     activeKey={props.match.params['section']}
                     defaultActiveKey={ProfileSections.Settings}
                     onChange={redirect}
+                    className='full-width'
                 >
                     <TabPane tab='Команды' key={ProfileSections.Teams}>
                         <TeamsSubPage {...props}/>

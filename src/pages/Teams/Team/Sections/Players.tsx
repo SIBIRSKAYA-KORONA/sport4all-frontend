@@ -52,7 +52,7 @@ function TeamPlayers(props: IProps): JSX.Element {
                 dataSource={props.players}
                 renderItem={player => (
                     <List.Item
-                        actions={[
+                        actions={props.canEdit ? [
                             <Button
                                 danger
                                 key={'delete' + player.id}
@@ -61,7 +61,7 @@ function TeamPlayers(props: IProps): JSX.Element {
                             >
                                 Исключить
                             </Button>
-                        ]}>
+                        ] : []}>
                         <List.Item.Meta
                             avatar={<Avatar>{lettersForAvatar(player.name)}</Avatar>}
                             title={`${player.name} ${player.surname}`}
@@ -71,37 +71,38 @@ function TeamPlayers(props: IProps): JSX.Element {
                 )}
             />
 
-            <Divider orientation={'left'}>Добавить игроков</Divider>
+            {props.canEdit && <>
+                <Divider orientation={'left'}>Добавить игроков</Divider>
 
-            <Input.Search
-                loading={loadingPlayers}
-                placeholder={'Введите никнейм игрока'}
-                onSearch={onPlayersSearch}/>
+                <Input.Search
+                    loading={loadingPlayers}
+                    placeholder={'Введите никнейм игрока'}
+                    onSearch={onPlayersSearch}/>
 
-            <List
-                itemLayout="horizontal"
-                dataSource={playersToAdd}
-                renderItem={player => (
-                    <List.Item
-                        actions={[
-                            <Button
-                                key={'add' + player.id}
-                                type="primary"
-                                icon={<PlusOutlined/>}
-                                onClick={() => onPlayerAdd(player.id)}
-                            >
-                                Добавить
-                            </Button>
-                        ]}>
-                        <List.Item.Meta
-                            avatar={<Avatar>{lettersForAvatar(player.name)}</Avatar>}
-                            title={`${player.name} ${player.surname}`}
-                            description={'@'+ player.nickname}
-                        />
-                    </List.Item>
-                )}
-            />
-
+                <List
+                    itemLayout="horizontal"
+                    dataSource={playersToAdd}
+                    renderItem={player => (
+                        <List.Item
+                            actions={[
+                                <Button
+                                    key={'add' + player.id}
+                                    type="primary"
+                                    icon={<PlusOutlined/>}
+                                    onClick={() => onPlayerAdd(player.id)}
+                                >
+                                    Добавить
+                                </Button>
+                            ]}>
+                            <List.Item.Meta
+                                avatar={<Avatar>{lettersForAvatar(player.name)}</Avatar>}
+                                title={`${player.name} ${player.surname}`}
+                                description={'@'+ player.nickname}
+                            />
+                        </List.Item>
+                    )}
+                />
+            </>}
         </Col>
     );
 }

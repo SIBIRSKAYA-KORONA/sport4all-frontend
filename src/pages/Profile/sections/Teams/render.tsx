@@ -2,13 +2,12 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { Divider, Spin, Typography, Space, Button } from 'antd';
+import { Divider, Spin, Button, Empty } from 'antd';
 
-import TeamModel from 'Models/TeamModel';
-import { Team } from 'Utils/types';
-import TeamList from 'Components/Teams/List/render';
 import CONST from 'Constants';
-const { Title, Text } = Typography;
+import { Team } from 'Utils/types';
+import TeamModel from 'Models/TeamModel';
+import TeamList from 'Components/Teams/List/render';
 
 
 const initTeams: [Team?] = [];
@@ -35,35 +34,26 @@ const TeamsSubPage = (props:RouteComponentProps):JSX.Element => {
     }, []);
 
     return (<>
-        <Space direction='vertical'>
-            <Space size='large' align='baseline'>
-                <Title level={3}>Тренирую</Title>
-                <Button type='link'>
-                    <Link to={CONST.PATHS.teams.create}>Создать</Link>
-                </Button>
-            </Space>
-            {loadingOwnTeams
-                ? <Spin/>
-                : teamsOwned.length > 0
-                    ? <TeamList teams={teamsOwned} {...props}/>
-                    : <Text type='secondary'>Нет команд</Text>
-            }
-        </Space>
+        <Divider orientation={'left'}>Тренирую</Divider>
 
-        <Divider/>
+        <Button type='link'>
+            <Link to={CONST.PATHS.teams.create}>Создать</Link>
+        </Button>
+        {loadingOwnTeams
+            ? <Spin/>
+            : teamsOwned.length > 0
+                ? <TeamList teams={teamsOwned} {...props}/>
+                : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        }
 
-        <Space direction='vertical'>
-            <Space size='large' align='baseline'>
-                <Title level={3}>Играю</Title>
-                {/*<Button type='link'>Вступить</Button>*/}
-            </Space>
-            {loadingTeamsPlayed
-                ? <Spin/>
-                : teamsPlayed.length > 0
-                    ? <TeamList teams={teamsPlayed} {...props} />
-                    : <Text type='secondary'>Нет команд</Text>
-            }
-        </Space>
+        <Divider orientation={'left'}>Играю</Divider>
+
+        {loadingTeamsPlayed
+            ? <Spin/>
+            : teamsPlayed.length > 0
+                ? <TeamList teams={teamsPlayed} {...props} />
+                : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        }
     </>);
 };
 

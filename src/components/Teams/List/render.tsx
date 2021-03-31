@@ -16,16 +16,12 @@ interface IProps extends RouteComponentProps {
 const TeamList = (props:IProps):JSX.Element => {
     return (
         <List
-            style={{
-                marginLeft: 10,
-            }}
+            style={{ margin: 10 }}
             itemLayout="horizontal"
             dataSource={props.teams}
             renderItem={team => (
                 <List.Item
-                    style={{
-                        paddingLeft: 10,
-                    }}
+                    style={{ paddingLeft: 10 }}
                     className={'row'}
                     onClick={() => { props.history.push(CONST.PATHS.teams.id(team.id)) }}
                 >
