@@ -61,15 +61,8 @@ class MeetingPage extends React.Component<IProps, IState> {
     }
 
     // Handlers
-    handlePointsSave(values: { id:number }):void {
-        for (const key in values) if (Object.prototype.hasOwnProperty.call(values, key)) {
-            const stats = {
-                score: +values[key],
-                meetingId: this.state.meeting.id,
-                teamId: +key,
-            };
-            MeetingModel.addTeamResults(stats);
-        }
+    handlePointsSave():void {
+        this.parseMeeting();
     }
 
     async handleTeamsAdd(values:Array<number>):Promise<void> {

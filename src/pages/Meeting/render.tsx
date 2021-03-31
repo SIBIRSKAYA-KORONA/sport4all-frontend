@@ -2,23 +2,23 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Avatar, Button, Col, Row, Space, Typography } from 'antd';
+import { Button, Col, Row, Space, Typography } from 'antd';
 const { Title } = Typography;
 
+import { meetingResult } from 'Utils/structUtils';
 import BasePage from 'Components/BasePage/render';
 import { EventStatus, Meeting, Stats } from 'Utils/types';
 import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
 import MeetingSteps from 'Components/Meeting/Steps/render';
 import AddResultsModal from 'Pages/Meeting/modals/addResults';
-import { lettersForAvatar } from 'Utils/utils';
-import { meetingResult } from 'Utils/structUtils';
+import MeetingTeamScore from 'Pages/Meeting/Components/TeamScore';
 
 
 
 interface IProps extends RouteComponentProps {
     meeting?: Meeting,
     stats?: Array<Stats>,
-    handlePointsSave: (stats: any) => void,
+    handlePointsSave: () => void,
     handleTeamsAdd: (values:[any]) => void,
     changeStatus: () => void,
     loadingMeeting: boolean,
@@ -42,14 +42,11 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
         <BasePage {...props} loading={props.loadingMeeting}>{props.meeting
             ? <Space direction='vertical' size='large'>
                 {props.meeting.status >= EventStatus.RegistrationEvent && props.meeting.teams.length === 2 &&
-                    <Space direction='vertical' size='small' align='center' className='meeting__section-center'>
+                    <Space direction='vertical' size='small' align='center' className='meeting__section meeting__section-center'>
                         <Title level={2}>Результаты встречи</Title>
                         <Row justify='center'>
                             <Col span={8}>
-                                <Space direction='vertical' size='middle' align='center'>
-                                    <Avatar size={100}>{lettersForAvatar(props.meeting.teams[0].name)}</Avatar>
-                                    <Title level={5} className='meeting__title'>{props.meeting.teams[0].name}</Title>
-                                </Space>
+                                <MeetingTeamScore team={props.meeting.teams[0]} stats={props.stats}/>
                             </Col>
                             <Col span={8} className='meeting__result'>
                                 <Title level={4} className='meeting__title'>
@@ -57,10 +54,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                                 </Title>
                             </Col>
                             <Col span={8}>
-                                <Space direction='vertical' size='middle' align='center'>
-                                    <Avatar size={100}>{lettersForAvatar(props.meeting.teams[1].name)}</Avatar>
-                                    <Title level={5} className='meeting__title'>{props.meeting.teams[1].name}</Title>
-                                </Space>
+                                <MeetingTeamScore team={props.meeting.teams[1]} stats={props.stats}/>
                             </Col>
                         </Row>
                     </Space>
@@ -81,11 +75,12 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                             onClick={showModal.bind(this, 'stats')}
                         >Закончить встречу и внести результаты</Button>
                         <AddResultsModal
+                            meetingId={props.meeting.id}
                             teams={props.meeting.teams}
                             visible={isModalVisible['stats']}
                             onCancel={() => { handleCancel('stats') }}
-                            handleOk={(stats) => {
-                                props.handlePointsSave(stats);
+                            handleOk={() => {
+                                props.handlePointsSave();
                                 handleOk('stats');
                             }}
                         />

@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 
-import { Space, Table } from 'antd';
-import { GlobalOutlined } from '@ant-design/icons';
+import { Table } from 'antd';
 
 import CONST from 'Constants';
 import { Meeting } from 'Utils/types';
-import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
 import { meetingResult } from 'Utils/structUtils';
+import { RouteComponentProps } from 'react-router-dom';
+import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
 
 
-interface IProps {
+interface IProps extends RouteComponentProps {
     meetings: Array<Meeting>
 }
 
@@ -25,17 +24,6 @@ function MeetingsList(props: IProps): JSX.Element {
             }
         },
         { title: 'Результат', dataIndex: 'result', key: 'result' },
-        {
-            title: 'Страница',
-            key: 'link',
-            render: function LinkCell(text, team) {
-                return (
-                    <Space size='small'>
-                        <Link to={CONST.PATHS.meetings.id(team.id)}><GlobalOutlined /></Link>
-                    </Space>
-                )
-            },
-        },
     ];
     const data = props.meetings.map(m => {
         return {
@@ -46,7 +34,13 @@ function MeetingsList(props: IProps): JSX.Element {
     });
 
     return (
-        <Table dataSource={data} columns={columns}/>
+        <Table
+            dataSource={data}
+            columns={columns}
+            rowClassName={() => 'row'}
+            onRow={meeting => ({
+                onClick: () => { props.history.push(CONST.PATHS.meetings.id(meeting.id)); }
+            })}/>
     );
 }
 

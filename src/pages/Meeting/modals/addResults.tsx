@@ -4,14 +4,16 @@ import { Form, Modal, Input, Tabs, Row, Col, Table, message } from 'antd';
 const { Item } = Form;
 const { TabPane } = Tabs;
 
-import { Team } from 'Utils/types';
+import { Stats, Team } from 'Utils/types';
 import { initStats } from 'Utils/structUtils';
+import MeetingModel from 'Models/MeetingModel';
 
 
 type IProps = {
+    meetingId: number,
     teams: Array<Team>,
     visible: boolean,
-    handleOk: (stats) => void,
+    handleOk: () => void,
     onCancel: () => void,
 }
 
@@ -21,17 +23,51 @@ const TEAMS_TAB = '2';
 function AddResultsModal(props: IProps): JSX.Element {
     const [form] = Form.useForm();
     const [stats, setStats] = React.useState(initStats(props.teams));
-    const [activeTab, setActiveTab] = React.useState(PLAYERS_TAB);
+    const [activeTab, setActiveTab] = React.useState(TEAMS_TAB);
+
+    const saveTeamsStats = (values):Promise<any[]> => {
+        const arr = [];
+        for (const key in values) if (Object.prototype.hasOwnProperty.call(values, key)) {
+            const stats = {
+                score: +values[key],
+                meetingId: props.meetingId,
+                teamId: +key,
+            };
+            arr.push(MeetingModel.addTeamResults(stats));
+        }
+        return Promise.all(arr);
+    };
+
+    const savePlayersStats = (stats):Promise<any[]> => {
+        const arr = [];
+        for (const [key, value] of Object.entries(stats)) {
+            if (!value) continue;
+            const team = props.teams.find(team => team.players.some(p => p.id === +key));
+            if (!team) continue;
+            const stata:Stats = {
+                score: +value,
+                meetingId: props.meetingId,
+                playerId: +key,
+                teamId: team.id,
+            };
+            arr.push(MeetingModel.addPlayerResults(stata));
+        }
+        return Promise.all(arr);
+    };
+
     const onOk = () => {
         if (activeTab === TEAMS_TAB) {
             form.validateFields()
                 .then(values => {
                     form.resetFields();
-                    props.handleOk(values);
+                    return saveTeamsStats(values);
                 })
+                .then(() => props.handleOk())
                 .catch(e => message.error(e));
         } else {
-            console.log(stats);
+            savePlayersStats(stats)
+                .then(() => props.handleOk())
+                .catch(e => message.error(e));
         }
     };
     const leftTeam = props.teams[0].players.map(player => ({ ...player, key:player.id }));
@@ -44,7 +80,7 @@ function AddResultsModal(props: IProps): JSX.Element {
             render: function InputCell(text, player) {
                 return (<Input
                     value={stats[player.id]}
-                    onChange={(e) => { setStats(prev => ({ ...prev, [player.id]:isNaN(+e.target.value) ? 0 : +e.target.value })); }}
+                    onChange={(e) => { setStats(prev => ({ ...prev, [player.id]:isNaN(+e.target.value) ? null : +e.target.value })); }}
                 />);
             }
         }

@@ -26,7 +26,7 @@ function TournamentMeetingsListPage(props:RouteComponentProps): JSX.Element {
     return (
         <BasePage {...props} loading={loading}>
             <Title level={1}>Матчи турнира</Title>
-            <MeetingsList meetings={meetings}/>
+            <MeetingsList meetings={meetings} {...props}/>
         </BasePage>
     )
 }

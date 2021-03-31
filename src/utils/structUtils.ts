@@ -21,12 +21,15 @@ type initStats = {
 
 export function initStats(teams: Array<Team>):initStats {
     if (!teams) return {};
+    for (const team of teams) {
+        if (!team.players) return {};
+    }
 
     return teams.reduce((totalTeamed, team) => ({
         ...totalTeamed,
         ...team.players.reduce((totalPlayered, player) => ({
             ...totalPlayered,
-            [player.id]:0
+            [player.id]:null,
         }), {})
     }), {});
 }

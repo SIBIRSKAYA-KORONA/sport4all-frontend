@@ -1,9 +1,9 @@
-import * as React from 'react';
 import './style.scss';
-import { Link } from 'react-router-dom';
-
-import { Space, Table } from 'antd';
+import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+
+import { Table } from 'antd';
+
 import { Team } from 'Utils/types';
 
 
@@ -17,21 +17,17 @@ const TeamList = (props:IProps):JSX.Element => {
         { title: 'Название', dataIndex: 'name', key: 'name' },
         { title: 'Описание', dataIndex: 'about', key: 'about' },
         { title: 'Место', dataIndex: 'location', key: 'location' },
-        { title: 'Владелец', dataIndex: 'ownerId', key: 'ownerId' },
-        {
-            title: 'Ссылка',
-            key: 'link',
-            render: function LinkCell(text, team) {
-                return (
-                    <Space size='small'>
-                        <Link to={'/teams/'+team.id}>Страница</Link>
-                    </Space>
-                )
-            },
-        },
     ];
     return (
-        <Table dataSource={dataSource} columns={columns} pagination={false} />
+        <Table
+            dataSource={dataSource}
+            columns={columns}
+            pagination={false}
+            rowClassName={() => 'row'}
+            onRow={team => ({
+                onClick: () => { props.history.push('/teams/'+team.id); }
+            })}
+        />
     );
 }
 
