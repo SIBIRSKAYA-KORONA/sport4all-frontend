@@ -22,6 +22,14 @@ body {
   flex: 1;
 }
 
+.full-width {
+  width: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .row {
   cursor: pointer;
   transition: all 0.1s ease-in-out;

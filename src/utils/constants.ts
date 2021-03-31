@@ -1,4 +1,4 @@
-import { ProfileSections, ProfileSettingsSections } from 'Utils/enums';
+import { ProfileSections, ProfileSettingsSections, TeamSections } from 'Utils/enums';
 
 const CONST = {
     PATHS: {
@@ -14,9 +14,11 @@ const CONST = {
             }
         },
         teams: {
+            __config: '/teams/:id?/:section?',
             base: '/teams',
             create: '/teams/create',
-            id: (id: string | number | null):string => '/teams/'+(id ? id : ':id'),
+            id: (id: number):string => `/teams/${id}/${TeamSections.Players}`,
+            id_config: '/teams/:id',
         },
         meetings: {
             id: (id: string | number | null):string => '/meetings/'+(id ? id : ':id'),

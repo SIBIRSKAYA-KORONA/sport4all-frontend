@@ -33,6 +33,7 @@ class MeetingPage extends React.Component<IProps, IState> {
         this.handlePointsSave = this.handlePointsSave.bind(this);
         this.handleTeamsAdd = this.handleTeamsAdd.bind(this);
         this.changeStatus = this.changeStatus.bind(this);
+        this.parseMeeting = this.parseMeeting.bind(this);
     }
 
     componentDidMount():void {
@@ -86,6 +87,7 @@ class MeetingPage extends React.Component<IProps, IState> {
 
     render(): JSX.Element {
         return (<MeetingPageRender {...this.props} {...this.state}
+            reload={this.parseMeeting}
             handlePointsSave={this.handlePointsSave}
             handleTeamsAdd={this.handleTeamsAdd}
             changeStatus={this.changeStatus}

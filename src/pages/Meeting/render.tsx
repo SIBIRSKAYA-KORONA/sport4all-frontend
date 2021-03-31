@@ -2,7 +2,7 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Button, Col, Row, Space, Typography } from 'antd';
+import { Button, Card, Carousel, Col, Empty, Image, Row, Space, Typography, Upload } from 'antd';
 const { Title } = Typography;
 
 import { meetingResult } from 'Utils/structUtils';
@@ -12,6 +12,8 @@ import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
 import MeetingSteps from 'Components/Meeting/Steps/render';
 import AddResultsModal from 'Pages/Meeting/modals/addResults';
 import MeetingTeamScore from 'Pages/Meeting/Components/TeamScore';
+import { PlusOutlined } from '@ant-design/icons';
+import MeetingPictureWall from 'Pages/Meeting/Components/PictureWall';
 
 
 
@@ -22,7 +24,8 @@ interface IProps extends RouteComponentProps {
     handleTeamsAdd: (values:[any]) => void,
     changeStatus: () => void,
     loadingMeeting: boolean,
-    canEdit: boolean
+    canEdit: boolean,
+    reload: () => void
 }
 
 type visibleModals = {
@@ -46,7 +49,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                         <Title level={2}>Результаты встречи</Title>
                         <Row justify='center'>
                             <Col span={8}>
-                                <MeetingTeamScore team={props.meeting.teams[0]} stats={props.stats}/>
+                                <MeetingTeamScore team={props.meeting.teams[0]} stats={props.stats} {...props}/>
                             </Col>
                             <Col span={8} className='meeting__result'>
                                 <Title level={4} className='meeting__title'>
@@ -54,7 +57,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                                 </Title>
                             </Col>
                             <Col span={8}>
-                                <MeetingTeamScore team={props.meeting.teams[1]} stats={props.stats}/>
+                                <MeetingTeamScore team={props.meeting.teams[1]} stats={props.stats} {...props}/>
                             </Col>
                         </Row>
                     </Space>
@@ -86,6 +89,16 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                         />
                     </Space>
                 }
+                <Space direction='vertical' size='small'>
+                    <Title level={3}>Фотографии</Title>
+                    {props.meeting.attachments
+                        ? <Space size={[8, 16]} wrap>
+                            {props.meeting.attachments.map(attach => <img key={attach.id} height={100} alt={attach.filename} src={attach.url} />)}
+                        </Space>
+                        : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                    }
+                    {props.canEdit && <MeetingPictureWall meetingId={props.meeting.id} reload={props.reload}/>}
+                </Space>
                 {props.canEdit && props.meeting.status === EventStatus.RegistrationEvent && props.meeting.teams.length !== 2 && <>
                     <Button type='primary' onClick={() => { showModal('addTeams'); }}>Добавить команды</Button>
                     <AddTeamsModal

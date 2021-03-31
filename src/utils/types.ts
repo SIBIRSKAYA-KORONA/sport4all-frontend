@@ -4,7 +4,15 @@ export interface Team {
     about: string | null,
     location: string | null,
     ownerId: number,
-    players: Array<User>
+    players: Array<User>,
+    avatar: IAvatar,
+}
+
+export interface IAvatar {
+    id: number,
+    filename: string,
+    key: string,
+    url: string
 }
 
 export interface User {
@@ -28,7 +36,8 @@ export interface Meeting {
     stats: Array<Stats>,
     nextMeetingID: number,
     prevMeetings: Array<Meeting>,
-    teams: Array<Team>
+    teams: Array<Team>,
+    attachments?: Array<IAvatar>,
 }
 
 export enum EventStatus {

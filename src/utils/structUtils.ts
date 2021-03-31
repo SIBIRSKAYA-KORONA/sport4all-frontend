@@ -12,7 +12,11 @@ export function getStatusShortTitle(status: EventStatus): string {
 
 export function meetingResult(stats: Array<Stats> | null, teams: Array<Team>): string {
     if (!stats || !stats.length) return '-';
-    return `${stats.find(stat => stat.teamId === teams[0].id).score || 0} - ${stats.find(stat => stat.teamId === teams[1].id).score || 0}`;
+    const leftStat = stats.find(stat => stat.teamId === teams[0].id && !stat.playerId);
+    const rightStat = stats.find(stat => stat.teamId === teams[1].id && !stat.playerId);
+    const leftResult = leftStat ? leftStat.score : 0;
+    const rightResult = rightStat ? rightStat.score : 0;
+    return `${leftResult} - ${rightResult}`;
 }
 
 type initStats = {

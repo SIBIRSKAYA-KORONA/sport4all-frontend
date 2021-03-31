@@ -8,3 +8,8 @@ export enum ProfileSettingsSections {
     Personal = 'personal',
     Actions = 'actions'
 }
+
+export enum TeamSections {
+    Players = 'players',
+    PublicInfo = 'public-info'
+}

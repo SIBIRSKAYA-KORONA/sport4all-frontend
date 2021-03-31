@@ -18,7 +18,6 @@ interface ScoredPlayers {
 
 function MeetingScoredPlayers(props: IProps): JSX.Element {
     const scoredPlayers:Array<ScoredPlayers> = props.stats
-        .filter(stata => stata.teamId === props.team.id && props.team.players.find(player => player.id === stata.playerId))
         .map(stata => ({
             playerName: props.team.players.find(player => player.id === stata.playerId).nickname,
             score: stata.score

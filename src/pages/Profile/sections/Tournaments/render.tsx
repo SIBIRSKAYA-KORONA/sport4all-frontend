@@ -44,6 +44,7 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
         }
     ];
     const dataSource = tournamentsOwned // TODO: fix duplicates on the backend
+        .filter(t => t.ownerId === props.user.id)
         .filter((t, index) => tournamentsOwned.findIndex(tt => t.id === tt.id) === index)
         .sort((a, b) => a.status - b.status)
         .map(t => ({ ...t, key:t.id }));
