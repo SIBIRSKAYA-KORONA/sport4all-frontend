@@ -2,7 +2,7 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Button, Col, Row, Space, Typography } from 'antd';
+import { Button, Carousel, Col, Empty, Image, Row, Space, Typography, Upload } from 'antd';
 const { Title } = Typography;
 
 import { meetingResult } from 'Utils/structUtils';
@@ -12,6 +12,8 @@ import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
 import MeetingSteps from 'Components/Meeting/Steps/render';
 import AddResultsModal from 'Pages/Meeting/modals/addResults';
 import MeetingTeamScore from 'Pages/Meeting/Components/TeamScore';
+import { PlusOutlined } from '@ant-design/icons';
+import MeetingPictureWall from 'Pages/Meeting/Components/PictureWall';
 
 
 
@@ -22,7 +24,8 @@ interface IProps extends RouteComponentProps {
     handleTeamsAdd: (values:[any]) => void,
     changeStatus: () => void,
     loadingMeeting: boolean,
-    canEdit: boolean
+    canEdit: boolean,
+    reload: () => void
 }
 
 type visibleModals = {
@@ -86,6 +89,16 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                         />
                     </Space>
                 }
+                <Space direction='vertical' size='small'>
+                    <Title level={3}>Фотографии</Title>
+                    {props.meeting.attachments
+                        ? <Carousel autoplay>
+                            {props.meeting.attachments.map(attach => <Image key={attach.id} height={150} src={attach.url}/>)}
+                        </Carousel>
+                        : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                    }
+                    {props.canEdit && <MeetingPictureWall meetingId={props.meeting.id} reload={props.reload}/>}
+                </Space>
                 {props.canEdit && props.meeting.status === EventStatus.RegistrationEvent && props.meeting.teams.length !== 2 && <>
                     <Button type='primary' onClick={() => { showModal('addTeams'); }}>Добавить команды</Button>
                     <AddTeamsModal

@@ -36,7 +36,8 @@ export interface Meeting {
     stats: Array<Stats>,
     nextMeetingID: number,
     prevMeetings: Array<Meeting>,
-    teams: Array<Team>
+    teams: Array<Team>,
+    attachments?: Array<IAvatar>,
 }
 
 export enum EventStatus {
