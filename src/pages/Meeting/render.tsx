@@ -2,7 +2,7 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Button, Carousel, Col, Empty, Image, Row, Space, Typography, Upload } from 'antd';
+import { Button, Card, Carousel, Col, Empty, Image, Row, Space, Typography, Upload } from 'antd';
 const { Title } = Typography;
 
 import { meetingResult } from 'Utils/structUtils';
@@ -92,9 +92,9 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                 <Space direction='vertical' size='small'>
                     <Title level={3}>Фотографии</Title>
                     {props.meeting.attachments
-                        ? <Carousel autoplay>
-                            {props.meeting.attachments.map(attach => <Image key={attach.id} height={150} src={attach.url}/>)}
-                        </Carousel>
+                        ? <Space size={[8, 16]} wrap>
+                            {props.meeting.attachments.map(attach => <img key={attach.id} height={100} alt={attach.filename} src={attach.url} />)}
+                        </Space>
                         : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
                     }
                     {props.canEdit && <MeetingPictureWall meetingId={props.meeting.id} reload={props.reload}/>}
