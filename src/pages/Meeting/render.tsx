@@ -107,7 +107,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                             props.handleTeamsAdd(teams);
                             handleOk('addTeams');
                         }}
-                        tournamentId={props.meeting.id}
+                        tournamentId={props.meeting.tournamentId}
                     />
                 </>}
             </Space>
