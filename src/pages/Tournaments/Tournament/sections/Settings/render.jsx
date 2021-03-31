@@ -20,9 +20,9 @@ function TournamentSettingsRender(props) {
                     setTournamentData={props.setTournamentData}
                 />
             </Tabs.TabPane>
-            <Tabs.TabPane tab={'Встречи'} key={'3'}>
-                СЕТКА СО ВСТРЕЧАМИ
-            </Tabs.TabPane>
+            {/*<Tabs.TabPane tab={'Встречи'} key={'3'}>*/}
+            {/*    СЕТКА СО ВСТРЕЧАМИ*/}
+            {/*</Tabs.TabPane>*/}
         </Tabs>
 
 

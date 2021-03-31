@@ -2,6 +2,8 @@
 
 // import getCookie from 'Utils/csrf';
 
+import {message} from 'antd';
+
 export default class Network {
     static url = 'https://sport4all.tech/api';
     static paths = {
@@ -17,6 +19,25 @@ export default class Network {
             stats: (mid) => `/meetings/${mid}/stat`
         }
     };
+
+    static initWebSocket() {
+        try {
+            const ws = new WebSocket('wss://sport4all.tech/api/ws');
+            ws.onopen= ()=> {
+                message.info('opened ws');
+                setInterval(() => ws.send(''), 10*1000)
+            };
+            ws.onmessage = (event) => {
+                message.info('Вас добавили в команду');
+            };
+
+        } catch (e) {
+            console.error(e)
+            message.error('could not open websocket');
+        }
+
+    }
+
 
     /**
      * @param path {Network.paths | string} Path to send the query to
