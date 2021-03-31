@@ -2,9 +2,11 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Table } from 'antd';
+import { Avatar, List } from 'antd';
 
+import CONST from 'Constants';
 import { Team } from 'Utils/types';
+import { lettersForAvatar } from 'Utils/utils';
 
 
 interface IProps extends RouteComponentProps {
@@ -12,21 +14,28 @@ interface IProps extends RouteComponentProps {
 }
 
 const TeamList = (props:IProps):JSX.Element => {
-    const dataSource = props.teams.map(team => ({ ...team, key: team.id }));
-    const columns = [
-        { title: 'Название', dataIndex: 'name', key: 'name' },
-        { title: 'Описание', dataIndex: 'about', key: 'about' },
-        { title: 'Место', dataIndex: 'location', key: 'location' },
-    ];
     return (
-        <Table
-            dataSource={dataSource}
-            columns={columns}
-            pagination={false}
-            rowClassName={() => 'row'}
-            onRow={team => ({
-                onClick: () => { props.history.push('/teams/'+team.id); }
-            })}
+        <List
+            style={{
+                marginLeft: 10,
+            }}
+            itemLayout="horizontal"
+            dataSource={props.teams}
+            renderItem={team => (
+                <List.Item
+                    style={{
+                        paddingLeft: 10,
+                    }}
+                    className={'row'}
+                    onClick={() => { props.history.push(CONST.PATHS.teams.id(team.id)) }}
+                >
+                    <List.Item.Meta
+                        avatar={<Avatar src={team.avatar.url}>{lettersForAvatar(team.name)}</Avatar>}
+                        title={team.name}
+                        description={team.about}
+                    />
+                </List.Item>
+            )}
         />
     );
 }

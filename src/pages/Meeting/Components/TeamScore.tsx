@@ -14,12 +14,13 @@ interface IProps {
 }
 
 function MeetingTeamScore(props: IProps): JSX.Element {
-    const ourStats: Array<Stats> = props.stats && props.stats.filter(stata => stata.teamId === props.team.id);
+    const playerStats: Array<Stats> = props.stats && props.team.players &&
+        props.stats.filter(stata => stata.teamId === props.team.id && props.team.players.find(player => player.id === stata.playerId));
     return (
         <Space direction='vertical' size='middle' align='center'>
-            <Avatar size={100}>{lettersForAvatar(props.team.name)}</Avatar>
+            <Avatar size={100} src={props.team.avatar.url}>{lettersForAvatar(props.team.name)}</Avatar>
             <Title level={5} className='meeting__title'>{props.team.name}</Title>
-            {ourStats && <MeetingScoredPlayers stats={ourStats} team={props.team} />}
+            {playerStats && <MeetingScoredPlayers stats={playerStats} team={props.team} />}
         </Space>
     );
 }

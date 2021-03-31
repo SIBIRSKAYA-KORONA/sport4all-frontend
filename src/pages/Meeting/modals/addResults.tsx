@@ -70,8 +70,8 @@ function AddResultsModal(props: IProps): JSX.Element {
                 .catch(e => message.error(e));
         }
     };
-    const leftTeam = props.teams[0].players.map(player => ({ ...player, key:player.id }));
-    const rightTeam = props.teams[1].players.map(player => ({ ...player, key:player.id }));
+    const leftTeam = props.teams[0].players && props.teams[0].players.map(player => ({ ...player, key:player.id }));
+    const rightTeam = props.teams[1].players &&  props.teams[1].players.map(player => ({ ...player, key:player.id }));
     const columns = [
         { title:'Никнейм', dataIndex:'nickname', key:'nickname' },
         {
