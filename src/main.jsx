@@ -21,6 +21,9 @@ import AuthedRoute from 'Utils/AuthedRoute';
 import MeetingPage from 'Pages/Meeting/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
 import {ProfileSections, ProfileSettingsSections} from 'Utils/enums';
+import Network from './core/network';
+
+Network.initWebSocket();
 
 render(
     <Provider store={store}>
