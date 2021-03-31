@@ -49,7 +49,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                         <Title level={2}>Результаты встречи</Title>
                         <Row justify='center'>
                             <Col span={8}>
-                                <MeetingTeamScore team={props.meeting.teams[0]} stats={props.stats}/>
+                                <MeetingTeamScore team={props.meeting.teams[0]} stats={props.stats} {...props}/>
                             </Col>
                             <Col span={8} className='meeting__result'>
                                 <Title level={4} className='meeting__title'>
@@ -57,7 +57,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                                 </Title>
                             </Col>
                             <Col span={8}>
-                                <MeetingTeamScore team={props.meeting.teams[1]} stats={props.stats}/>
+                                <MeetingTeamScore team={props.meeting.teams[1]} stats={props.stats} {...props}/>
                             </Col>
                         </Row>
                     </Space>
