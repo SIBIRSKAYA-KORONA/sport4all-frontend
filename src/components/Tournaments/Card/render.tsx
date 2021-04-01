@@ -1,10 +1,15 @@
+import './style.scss';
 import * as React from 'react';
-
-import { Card } from 'antd';
-
-import { Tournament } from 'Utils/types';
 import { RouteComponentProps } from 'react-router-dom';
+
+import { Image, Space, Typography } from 'antd';
+const { Title, Text } = Typography;
+import { TeamOutlined, ClockCircleOutlined } from '@ant-design/icons';
+
 import CONST from 'Constants';
+import { formatDate } from 'Utils/utils';
+import { Tournament } from 'Utils/types';
+import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
 
 
 interface IProps extends RouteComponentProps {
@@ -12,21 +17,29 @@ interface IProps extends RouteComponentProps {
 }
 
 function TournamentCard(props: IProps): JSX.Element {
-    return (<Card
+    const t = props.tournament;
+    return (<div
+        className='tournament-card'
         onClick={() => props.history.push(CONST.PATHS.tournaments.id(props.tournament.id))}
-        key={props.tournament.id}
-        hoverable
-        cover={
-            <img alt={props.tournament.avatar.filename}
-                src={props.tournament.avatar.url}
-            />
-        }
     >
-        <Card.Meta
-            title={props.tournament.name}
-            description={props.tournament.about}
-        />
-    </Card>);
+        {t.avatar.url &&
+            <Image className='tournament-card__img' src={t.avatar.url} alt={t.avatar.filename}/>
+        }
+        <Space size='small' align='start' direction='vertical' className='tournament-card__body'>
+            <h4 className='tournament-card__title'>{t.name}</h4>
+            <MeetingStatusTag status={t.status}/>
+            {t.teams &&
+                <Space direction='vertical' size='small'>
+                    <TeamOutlined />
+                    <Text>{t.teams.length} команд</Text>
+                </Space>
+            }
+            <Space direction='horizontal' size='small'>
+                <ClockCircleOutlined />
+                <Text>{formatDate(new Date(t.created*1000))}</Text>
+            </Space>
+        </Space>
+    </div>);
 }
 
 export default TournamentCard;

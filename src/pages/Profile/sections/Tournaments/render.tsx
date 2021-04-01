@@ -34,37 +34,24 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
         load();
     }, []);
 
-    const columns = [
-        { title: 'Название', dataIndex: 'name', key:'name' },
-        {
-            title: 'Статус',
-            key: 'status',
-            render: function StatusCell(text, tour) {
-                return (<MeetingStatusTag status={tour.status}/>)
-            }
-        }
-    ];
-    const dataSource = tournamentsOwned // TODO: fix duplicates on the backend
+    const filteredTours = tournamentsOwned // TODO: fix duplicates on the backend
         .filter(t => t.ownerId === props.user.id)
         .filter((t, index) => tournamentsOwned.findIndex(tt => t.id === tt.id) === index)
-        .sort((a, b) => a.status - b.status)
-        .map(t => ({ ...t, key:t.id }));
+        .sort((a, b) => a.status - b.status);
 
     return (<>
-        <Space direction='vertical'>
-            <Space size='large' align='baseline'>
-                <Title level={3}>Мои турниры</Title>
-                <Button type='link'>
-                    <Link to={CONST.PATHS.tournaments.create}>Создать</Link>
-                </Button>
-            </Space>
-            {loadingOwnTournaments
-                ? <Spin/>
-                : tournamentsOwned.length > 0
-                    ? <TournamentsFeed tournaments={tournamentsOwned} {...props} />
-                    : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-            }
+        <Space size='large' align='baseline'>
+            <Title level={3}>Мои турниры</Title>
+            <Button type='link'>
+                <Link to={CONST.PATHS.tournaments.create}>Создать</Link>
+            </Button>
         </Space>
+        {loadingOwnTournaments
+            ? <Spin/>
+            : filteredTours.length > 0
+                ? <TournamentsFeed tournaments={filteredTours} {...props} />
+                : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        }
     </>);
 };
 

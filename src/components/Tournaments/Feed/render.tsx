@@ -12,7 +12,7 @@ interface IProps extends RouteComponentProps {
 }
 
 function TournamentsFeed(props: IProps): JSX.Element {
-    return (<Row gutter={[24, 24]} style={{ margin:10 }}>
+    return (<Row gutter={[24, 24]} style={{ marginLeft:10, marginRight:10, marginBottom:10, width:'100%' }}>
         {props.tournaments.map(tour => <Col key={tour.id} span={6}>
             <TournamentCard tournament={tour} {...props}/>
         </Col>)}

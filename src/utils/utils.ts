@@ -10,3 +10,7 @@ export function lettersForAvatar(name?:string): string {
     if (arr.length === 1) return arr[0][0];
     if (arr.length >= 2) return arr[0][0] + arr[1][0];
 }
+
+export function formatDate(date: Date):string {
+    return `${date.getDate()}, ${date.getUTCFullYear()}`;
+}
