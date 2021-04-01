@@ -1,0 +1,23 @@
+.meeting {
+  &__section {
+    width: 100%;
+
+    &-center {
+      width: 100%;
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  &__result {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__title {
+    text-align: center;
+  }
+}

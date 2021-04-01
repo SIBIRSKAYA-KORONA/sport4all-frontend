@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic');
+@import '~antd/dist/antd.css';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#application {
+  min-height: 100vh;
+  display: flex;
+  flex-flow: column;
+}
+
+.page {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  flex: 1;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.row {
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 0px 8px;
+  }
+}

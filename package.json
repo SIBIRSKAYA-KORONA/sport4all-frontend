@@ -1,0 +1,66 @@
+{
+  "name": "sport4all-frontend",
+  "author": "SIBIRSKAYA-KORONA",
+  "version": "1.0.0",
+  "description": "React Redux SPA Application",
+  "homepage": "https://github.com/SIBIRSKAYA-KORONA/sport4all-frontend",
+  "private": true,
+  "main": "webpack.config.js",
+  "scripts": {
+    "start": "webpack --mode development --watch",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SIBIRSKAYA-KORONA/sport4all-frontend.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SIBIRSKAYA-KORONA/sport4all-frontend/issues"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.6.2",
+    "antd": "^4.13.1",
+    "i18next": "^19.9.2",
+    "i18next-browser-languagedetector": "^6.0.1",
+    "node-static": "^0.7.11",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-react": "^7.10.1",
+    "@types/history": "^4.7.8",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.2",
+    "@types/react-redux": "^7.1.16",
+    "@types/react-router-dom": "^5.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.18.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "brackets-model": "^1.3.5",
+    "css-loader": "^5.1.2",
+    "eslint": "^7.3.1",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-react": "^7.20.3",
+    "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.3.9",
+    "node-sass": "^5.0.0",
+    "prop-types": "^15.7.2",
+    "sass": "^1.26.10",
+    "sass-loader": "^11.0.1",
+    "source-map-loader": "^2.0.1",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.0.18",
+    "typescript": "^4.2.3",
+    "webpack": "^5.24.4",
+    "webpack-cli": "^4.5.0"
+  }
+}

@@ -1,0 +1,161 @@
+import {Stage, Match, MatchGame, Participant, ParticipantResult} from 'brackets-model';
+import { BracketsViewer } from './main';
+import { locales } from './i18n';
+import {TFunction} from "i18next";
+
+
+/**
+ * The data to display with `brackets-viewer.js`
+ */
+export interface ViewerData {
+    /** The stages to display. */
+    stages: Stage[],
+
+    /** The matches of the stage to display. */
+    matches: Match[],
+
+    /** The participants who play in the stage to display. */
+    participants: Participant[],
+}
+
+/**
+ * The possible placements of a participant's origin.
+ */
+export type Placement = 'none' | 'before' | 'after';
+
+/**
+ * An optional config to provide to `brackets-viewer.js`
+ */
+export interface Config {
+    /**
+     * Bracket will be drawn inside given container
+     */
+    containerNode: HTMLElement,
+
+    /**
+     * Where the position of a participant is placed relative to its name.
+     * - If `none`, the position is not added.
+     * - If `before`, the position is prepended before the participant name. "#1 Team"
+     * - If `after`, the position is appended after the participant name, in parentheses. "Team (#1)"
+     */
+    participantOriginPlacement?: Placement,
+
+    /**
+     * Whether to show the origin of a slot (wherever possible).
+     */
+    showSlotsOrigin?: boolean,
+
+    /**
+     * Whether to show the origin of a slot (in the lower bracket of an elimination stage).
+     */
+    showLowerBracketSlotsOrigin?: boolean,
+
+    /**
+     * Whether to highlight every instance of a participant on hover.
+     */
+    highlightParticipantOnHover?: boolean,
+
+    /**
+     *  Function which is called when match was clicked
+     */
+    participantOnClick(match: Match, participantId: number|null|undefined): void,
+}
+
+/**
+ * The possible types of connection between matches.
+ */
+export type ConnectionType = 'square' | 'straight' | false;
+
+/**
+ * The possible types of final.
+ */
+export type FinalType = 'consolation_final' | 'grand_final';
+
+/**
+ * The possible types of bracket.
+ */
+export type BracketType = 'single-bracket' | 'winner-bracket' | 'loser-bracket' | 'final-group';
+
+/**
+ * A function returning an origin hint based on a participant's position.
+ */
+export type OriginHint = ((position: number) => string) | undefined;
+
+/**
+ * A function returning a round name based on its number and the count of rounds.
+ */
+export type RoundName = (roundNumber: number, roundCount: number) => string;
+
+/**
+ * Contains the information about the connections of a match.
+ */
+export interface Connection {
+    connectPrevious?: ConnectionType,
+    connectNext?: ConnectionType,
+}
+
+/**
+ * An item of the ranking.
+ */
+export interface RankingItem {
+    [prop: string]: number,
+
+    rank: number,
+    id: number,
+    played: number,
+    wins: number,
+    draws: number,
+    losses: number,
+    forfeits: number,
+    scoreFor: number,
+    scoreAgainst: number,
+    scoreDifference: number,
+    points: number,
+}
+
+/**
+ * Contains information about a header of the ranking and its tooltip.
+ */
+export interface RankingHeader {
+    text: string,
+    tooltip: string,
+}
+
+/**
+ * A formula which computes points given a ranking row.
+ */
+export type RankingFormula = (ranking: RankingItem) => number;
+
+/**
+ * An object mapping ranking properties to their header.
+ */
+export type RankingHeaders = { [name in keyof RankingItem]: RankingHeader };
+
+/**
+ * An object mapping a participant id to its row in the ranking.
+ */
+export type RankingMap = { [id: number]: RankingItem };
+
+/**
+ * Definition of a ranking.
+ */
+export type Ranking = RankingItem[];
+
+/**
+ * Structure containing all the containers for a participant.
+ */
+export interface ParticipantContainers {
+    participant: HTMLElement,
+    name: HTMLElement,
+    result: HTMLElement,
+}
+
+/**
+ * The format of a locale.
+ */
+export type Locale = typeof locales['en'];
+
+/**
+ * An object containing all the locales for the project.
+ */
+export type Locales = { [lang: string]: Locale };

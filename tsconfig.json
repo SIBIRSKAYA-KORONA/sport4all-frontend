@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "es6",
+    "target": "es6",
+    // Base directory to resolve non-relative module names (project root)
+    "baseUrl": ".",
+    // Search under node_modules for non-relative imports.
+    "moduleResolution": "node",
+    // allow .json modules (translation files)
+    "resolveJsonModule": true,
+    // Allow default imports from modules with no default export (e.g
+    // import React from "React")
+    "allowSyntheticDefaultImports": true,
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "jsx": "react",
+    "paths": {
+      "Components/*": ["src/components/*"],
+      "Pages/*": ["src/pages/*"],
+      "Models/*": ["src/models/*"],
+      "Store/*": ["src/store/*"],
+      "Static/*": ["static/*"],
+      "Utils/*": ["src/utils/*"],
+      "Core/*": ["src/core/*"],
+      "Constants": ["src/utils/constants.ts"],
+      "Interfaces": ["src/utils/interfaces.ts"]
+    }
+  },
+  "include": ["src"],
+  "exclude": [
+    "node_modules"
+  ]
+}
