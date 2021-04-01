@@ -10,6 +10,7 @@ import { User } from 'Utils/types';
 import TournamentModel from 'Models/TournamentModel';
 import { UserAuthenticatedType } from 'Store/User/UserState';
 import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
+import TournamentsFeed from 'Components/Tournaments/Feed/render';
 
 
 const initTeams: [any?] = [];
@@ -60,14 +61,7 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
             {loadingOwnTournaments
                 ? <Spin/>
                 : tournamentsOwned.length > 0
-                    ? <Table
-                        dataSource={dataSource}
-                        columns={columns}
-                        pagination={false}
-                        rowClassName={() => 'row'}
-                        onRow={tour => ({
-                            onClick: () => { props.history.push(CONST.PATHS.tournaments.id(tour.id)); }
-                        })}/>
+                    ? <TournamentsFeed tournaments={tournamentsOwned} {...props} />
                     : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             }
         </Space>

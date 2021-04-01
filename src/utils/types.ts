@@ -8,6 +8,20 @@ export interface Team {
     avatar: IAvatar,
 }
 
+export interface Tournament {
+    id: number,
+    name: string,
+    about: string,
+    system: string,
+    ownerId: number,
+    avatar: IAvatar,
+    created: number,
+    location: string,
+    teams: Array<Team>
+    status: EventStatus,
+    meetings: Array<Meeting>,
+}
+
 export interface IAvatar {
     id: number,
     filename: string,

@@ -35,8 +35,8 @@ function PublicInfoLogic(props) {
 
     const onAvatarChanged = async(fileData) => {
         const formData = new FormData();
-        formData.append("tournamentId", props.tournamentData.id);
-        formData.append("attach", fileData.file);
+        formData.append('tournamentId', props.tournamentData.id);
+        formData.append('attach', fileData.file);
         const response = await (await fetch('https://sport4all.tech/api/attachments', {
             method: 'POST',
             body: formData,
