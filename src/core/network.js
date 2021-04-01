@@ -28,7 +28,7 @@ export default class Network {
                 message.info('opened ws');
                 setInterval(() => ws.send(''), 10*1000)
             };
-            ws.onmessage = (event) => {
+            ws.onmessage = () => {
                 message.info('Вас добавили в команду');
             };
 
