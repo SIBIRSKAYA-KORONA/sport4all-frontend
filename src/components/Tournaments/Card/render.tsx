@@ -26,17 +26,17 @@ function TournamentCard(props: IProps): JSX.Element {
             <Image className='tournament-card__img' src={t.avatar.url} alt={t.avatar.filename}/>
         }
         <Space size='small' align='start' direction='vertical' className='tournament-card__body'>
-            <h4 className='tournament-card__title'>{t.name}</h4>
+            <h3 className='tournament-card__title'>{t.name}</h3>
             <MeetingStatusTag status={t.status}/>
             {t.teams &&
                 <Space direction='vertical' size='small'>
                     <TeamOutlined />
-                    <Text>{t.teams.length} команд</Text>
+                    <Text type='secondary'>{t.teams.length} команд</Text>
                 </Space>
             }
             <Space direction='horizontal' size='small'>
                 <ClockCircleOutlined />
-                <Text>{formatDate(new Date(t.created*1000))}</Text>
+                <Text type='secondary'>{formatDate(new Date(t.created*1000))}</Text>
             </Space>
         </Space>
     </div>);
