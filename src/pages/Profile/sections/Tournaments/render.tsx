@@ -2,8 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { Spin, Typography, Space, Button, Empty } from 'antd';
-const { Title } = Typography;
+import { Spin, Button, Empty } from 'antd';
 
 import CONST from 'Constants';
 import { User } from 'Utils/types';
