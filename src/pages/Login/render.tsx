@@ -1,12 +1,12 @@
 import './style.scss';
 import * as React from 'react';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { Form, Input, Button, message } from 'antd';
 
 import CONST from 'Constants';
 import UserModel from 'Models/UserModel';
 import BasePage from 'Components/BasePage/render';
-import { RouteComponentProps } from 'react-router-dom';
 import HttpStatusCode from 'Utils/httpErrors';
 
 
@@ -17,7 +17,10 @@ const LoginPageRender = (props: RouteComponentProps):JSX.Element => {
             .then(() => UserModel.getProfile())
             .then(() => this.props.history.push('/'))
             .catch(e => {
-                if (e === HttpStatusCode.PRECONDITION_FAILED) message.error('Неправильный пароль');
+                switch (e) {
+                case HttpStatusCode.PRECONDITION_FAILED: message.error('Неправильный пароль'); break;
+                case HttpStatusCode.NOT_FOUND: message.error('Пользователя с таким логином не существует'); break;
+                }
             });
     }
 
@@ -39,9 +42,12 @@ const LoginPageRender = (props: RouteComponentProps):JSX.Element => {
                         <Input.Password/>
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit">Войти</Button>
+                        <Button type="primary" htmlType="submit" className='login__button'>Войти</Button>
                     </Form.Item>
                 </Form>
+                <Button type='link'>
+                    <Link to={CONST.PATHS.signup}>Или зарегистрируйтесь</Link>
+                </Button>
             </div>
         </BasePage>
     );

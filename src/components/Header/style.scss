@@ -1,11 +1,50 @@
 @import "../../utils/variables";
 
 .header {
-  height: 53px;
+  height: 54px;
   line-height: 50px;
   background-color: white;
+  padding: 0;
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    width: 960px;
+    margin: auto;
+    justify-content: space-between;
+  }
+
+  &__logo {
+    height: 70%;
+  }
+
+  &__search {
+    width: 40%;
+  }
 
   &__link {
+    height: 100%;
+  }
+
+  &__side_content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__notification_badge_wrapper {
+    display: flex;
+    cursor: pointer;
+  }
+
+  &__notification_icon {
+    font-size: 2em;
+  }
+
+  &__link_old {
     margin: 0 10px;
     color: $dark-gray;
     text-decoration: none;

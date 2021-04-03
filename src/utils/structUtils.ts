@@ -47,3 +47,7 @@ export function lettersForUserAvatar(user: User):string {
     if (user.name) return lettersForAvatar(user.name);
     if (user.nickname) return lettersForAvatar(user.nickname);
 }
+
+export function allEventStatuses(): Array<EventStatus> {
+    return Object.keys(EventStatus).filter(key => isNaN(+key)).map(key => EventStatus[key]);
+}
