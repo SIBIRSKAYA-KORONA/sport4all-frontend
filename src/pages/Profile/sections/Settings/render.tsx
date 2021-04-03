@@ -16,13 +16,14 @@ interface IProps extends RouteComponentProps {
 }
 
 const SettingsProfileSection = (props:IProps):JSX.Element => {
-    const canEdit = props.user.id === props.match.params['id'];
+    const paramsID = +props.match.params['id'];
+    const canEdit = props.user.id === paramsID;
     return (
         <Tabs
             tabPosition='left'
             activeKey={props.match.params['settingsSection']}
             defaultActiveKey={ProfileSettingsSections.Personal}
-            onChange={(key) => { props.history.push(CONST.PATHS.profile.settings.section(key as ProfileSettingsSections)) }}
+            onChange={(key) => { props.history.push(CONST.PATHS.profile.settings.section(paramsID, key as ProfileSettingsSections)) }}
         >
             {canEdit &&
                 <Tabs.TabPane tab='Личная информация' key={ProfileSettingsSections.Personal}>

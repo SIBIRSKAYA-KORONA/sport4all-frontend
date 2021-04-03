@@ -23,10 +23,11 @@ interface IProps extends RouteComponentProps {
 }
 
 const ProfilePage = (props:IProps):JSX.Element => {
+    const paramsID = +props.match.params['id'];
     const redirect = (key:ProfileSections) => {
         props.history.push(key === ProfileSections.Settings
-            ? CONST.PATHS.profile.settings.section(ProfileSettingsSections.Personal)
-            : CONST.PATHS.profile.section(key)
+            ? CONST.PATHS.profile.settings.section(paramsID, ProfileSettingsSections.Personal)
+            : CONST.PATHS.profile.section(paramsID, key)
         )
     };
     return (
