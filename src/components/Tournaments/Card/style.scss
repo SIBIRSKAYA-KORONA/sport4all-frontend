@@ -1,0 +1,28 @@
+.tournament-card {
+  width: 100%;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  flex-flow: column;
+  border-radius: 7px;
+  border: 1px #212529 solid;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgb(0 0 0 / 60%);
+  }
+
+  &__img {
+    height: 100px;
+    width: 100%;
+  }
+
+  &__body {
+    padding: 10px;
+  }
+
+  &__title {
+    margin-bottom: 10px;
+  }
+}

@@ -37,3 +37,7 @@ export function initStats(teams: Array<Team>):initStats {
         }), {})
     }), {});
 }
+
+export function allEventStatuses(): Array<EventStatus> {
+    return Object.keys(EventStatus).filter(key => isNaN(+key)).map(key => EventStatus[key]);
+}
