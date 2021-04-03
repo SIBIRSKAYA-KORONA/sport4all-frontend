@@ -71,12 +71,13 @@ export interface Stats {
 }
 
 export interface Notification {
-    type: 'added_to_team' | 'meeting_started' | 'meeting_finished',
-    createAt: string,
-    source_id: Number,
-    target_id: Number,
-    meeting_id: Number,
-    team_id: Number,
+    type: 'added_to_team' | 'tournament_started' | 'tournament_finished'| 'meeting_started' | 'meeting_finished',
+    createAt: number,
+    source_uid: number,
+    target_uid: number,
+    tournament_id: number,
+    meeting_id: number,
+    team_id: number,
     isRead: boolean,
 
 }
