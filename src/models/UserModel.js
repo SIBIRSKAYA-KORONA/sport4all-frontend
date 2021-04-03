@@ -29,6 +29,14 @@ class UserModel {
             .catch(e => { throw e });
     }
 
+    static async getProfileByNickname(nickname) {
+        return Network.fetchGet(Network.paths.profile.nickname(nickname))
+            .then(res => {
+                if (res.status >= 400) throw res.status;
+                return res.json();
+            });
+    }
+
     /**
      *
      * @param user

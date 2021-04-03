@@ -48,10 +48,10 @@ render(
 
                 {/* Profile */}
                 <Route exact path={CONST.PATHS.profile.settings.base} render={props => (
-                    <Redirect to={CONST.PATHS.profile.settings.section(+props.match.params['id'], ProfileSettingsSections.Personal)}/>
+                    <Redirect to={CONST.PATHS.profile.settings.section(props.match.params['nickname'], ProfileSettingsSections.Personal)}/>
                 )}/>
                 <Route exact path={CONST.PATHS.profile.id__config} render={props => (
-                    <Redirect to={CONST.PATHS.profile.section(+props.match.params['id'], ProfileSections.Teams)}/>
+                    <Redirect to={CONST.PATHS.profile.section(props.match.params['nickname'], ProfileSections.Teams)}/>
                 )}/>
                 <AuthedRoute path={CONST.PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
 

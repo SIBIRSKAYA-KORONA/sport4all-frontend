@@ -1,5 +1,7 @@
-import { EventStatus, Stats, Team } from 'Utils/types';
+import { EventStatus, Stats, Team, User } from 'Utils/types';
+import { lettersForAvatar } from 'Utils/utils';
 
+// Statuses
 export function getStatusShortTitle(status: EventStatus): string {
     switch (status) {
     case EventStatus.UnknownEvent:      return 'Ошибка';
@@ -10,6 +12,7 @@ export function getStatusShortTitle(status: EventStatus): string {
     }
 }
 
+// Meeting
 export function meetingResult(stats: Array<Stats> | null, teams: Array<Team>): string {
     if (!stats || !stats.length) return '-';
     const leftStat = stats.find(stat => stat.teamId === teams[0].id && !stat.playerId);
@@ -36,4 +39,11 @@ export function initStats(teams: Array<Team>):initStats {
             [player.id]:null,
         }), {})
     }), {});
+}
+
+// User
+export function lettersForUserAvatar(user: User):string {
+    if (user.name && user.surname) return lettersForAvatar(`${user.name} ${user.surname}`);
+    if (user.name) return lettersForAvatar(user.name);
+    if (user.nickname) return lettersForAvatar(user.nickname);
 }

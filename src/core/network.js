@@ -20,6 +20,7 @@ export default class Network {
             addResultsForPlayer: (mid, tid, pid) => `/meetings/${mid}/teams/${tid}/players/${pid}/stat`
         },
         profile: {
+            nickname: (nickname) => `/profile/${nickname}`,
             skills: (pid) => `/profile/${pid}/skills`,
         },
         skills: {

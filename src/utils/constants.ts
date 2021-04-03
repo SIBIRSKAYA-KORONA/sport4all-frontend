@@ -5,12 +5,12 @@ const CONST = {
         login: '/login',
         signup: '/signup',
         profile: {
-            __config: '/profile/:id/:section?/:settingsSection?',
-            id__config: '/profile/:id',
-            section: (id: number, section?:ProfileSections):string => `/profile/${id}/${section || ':section'}`,
+            __config: '/profile/:nickname/:section?/:settingsSection?',
+            id__config: '/profile/:nickname',
+            section: (nickname:string, section?:ProfileSections):string => `/profile/${nickname}/${section || ':section'}`,
             settings: {
-                base: '/profile/:id/settings',
-                section: (id:number, section?:ProfileSettingsSections):string => `/profile/${id}/settings/${section || ':settingsSection'}`,
+                base: '/profile/:nickname/settings',
+                section: (nickname:string, section?:ProfileSettingsSections):string => `/profile/${nickname}/settings/${section || ':settingsSection'}`,
             }
         },
         teams: {

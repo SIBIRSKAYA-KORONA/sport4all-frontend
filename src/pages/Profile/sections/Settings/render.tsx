@@ -12,18 +12,20 @@ import ProfileSettingsPersonal from 'Pages/Profile/sections/Settings/sections/Pe
 
 
 interface IProps extends RouteComponentProps {
-    user: User
+    user: User,
+    profile: User
 }
 
 const SettingsProfileSection = (props:IProps):JSX.Element => {
-    const paramsID = +props.match.params['id'];
-    const canEdit = props.user.id === paramsID;
+    const canEdit = props.user.id === props.profile.id;
     return (
         <Tabs
             tabPosition='left'
             activeKey={props.match.params['settingsSection']}
             defaultActiveKey={ProfileSettingsSections.Personal}
-            onChange={(key) => { props.history.push(CONST.PATHS.profile.settings.section(paramsID, key as ProfileSettingsSections)) }}
+            onChange={(key) => {
+                props.history.push(CONST.PATHS.profile.settings.section(props.profile.nickname, key as ProfileSettingsSections))
+            }}
         >
             {canEdit &&
                 <Tabs.TabPane tab='Личная информация' key={ProfileSettingsSections.Personal}>
