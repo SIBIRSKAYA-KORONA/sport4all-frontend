@@ -1,47 +1,53 @@
 import './style.scss';
+import {connect} from 'react-redux';
+
 import * as React from 'react';
 
-import {Button, Col, List, Popover} from 'antd';
+import {Button, Col, List, Popover, Spin} from 'antd';
+import {Notification} from "Utils/types";
 
 interface IProps {
-    children: React.ReactNode
+    children: React.ReactNode,
+    notifications: Notification[],
+    isLoading: boolean,
 }
 
 const NotificationsPopover = (props: IProps) => {
-    const notificationsMock = [
-        {
-            title: 'NOTIFICATION 1'
-        },
-        {
-            title: 'NOTIFICATION 2'
-        },
-        {
-            title: 'NOTIFICATION 3'
-        },
-        {
-            title: 'NOTIFICATION 4'
-        },
-    ];
 
     return (
         <Popover
             title='Уведомления'
             content={
                 <Col>
-                    <List
-                        size="small"
-                        dataSource={notificationsMock}
-                        renderItem={item => <List.Item
-                            onClick={()=>console.log(item)}
-                            className={'notifications_popover__item'}
-                        >
-                            {item.title}
-                        </List.Item>}
-                    />
-                    <div className={'notifications_popover__controls'}>
-                        <Button type='primary'>Всё прочитано</Button>
-                        <Button danger>Очистить</Button>
-                    </div>
+                    {props.isLoading ?
+                        <>
+                            <Spin/>
+
+                            <div className={'notifications_popover__controls'}>
+                                <Button type='primary' disabled>Всё прочитано</Button>
+                                <Button danger disabled>Очистить</Button>
+                            </div>
+                        </>
+                        :
+                        <>
+                            <List
+                                size="small"
+                                dataSource={props.notifications}
+                                locale={{emptyText: 'Кажется, тут ничего нет'}}
+                                renderItem={item => <List.Item
+                                    onClick={() => console.log(item)}
+                                    className={'notifications_popover__item'}
+                                >
+                                    {item.message_type}
+                                </List.Item>}
+                            />
+
+                            <div className={'notifications_popover__controls'}>
+                                <Button type='primary'>Всё прочитано</Button>
+                                <Button danger>Очистить</Button>
+                            </div>
+                        </>
+                    }
                 </Col>
             }
             placement='bottomRight'
@@ -52,5 +58,9 @@ const NotificationsPopover = (props: IProps) => {
     );
 }
 
+const mapStateToProps = state => ({
+    notifications: state.notifications.notifications,
+    isLoading: state.notifications.isLoading
+});
 
-export default NotificationsPopover;
+export default connect(mapStateToProps)(NotificationsPopover);

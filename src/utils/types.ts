@@ -69,3 +69,9 @@ export interface Stats {
     teamId: number,
     playerId?: number
 }
+
+export interface Notification {
+    message_type: 'meeting_started' | 'kek',
+    time: string,
+    isRead: boolean
+}
