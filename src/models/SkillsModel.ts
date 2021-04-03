@@ -9,6 +9,7 @@ class SkillsModel {
                 if (res.status >= 400) return res.status as HttpStatusCode;
                 return res.json() as Array<Skill>;
             })
+            .then(skills => Array.isArray(skills) ? skills : [])
             .catch(e => console.error(e));
     }
 
