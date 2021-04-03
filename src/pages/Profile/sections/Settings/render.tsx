@@ -22,7 +22,7 @@ const SettingsProfileSection = (props:IProps):JSX.Element => {
         <Tabs
             tabPosition='left'
             activeKey={props.match.params['settingsSection']}
-            defaultActiveKey={ProfileSettingsSections.Personal}
+            defaultActiveKey={ProfileSettingsSections.Skills}
             onChange={(key) => {
                 props.history.push(CONST.PATHS.profile.settings.section(props.profile.nickname, key as ProfileSettingsSections))
             }}
