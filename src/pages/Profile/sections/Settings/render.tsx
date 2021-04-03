@@ -3,11 +3,12 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Tabs } from 'antd';
 
+import CONST from 'Constants';
 import { User } from 'Utils/types';
 import { ProfileSettingsSections } from 'Utils/enums';
-import ProfileSettingsPersonal from 'Pages/Profile/sections/Settings/sections/PersonalInfo/render';
+import ProfileSettingsSkills from 'Pages/Profile/sections/Settings/sections/Skills/render';
 import ProfileSettingsActions from 'Pages/Profile/sections/Settings/sections/Actions/render';
-import CONST from 'Constants';
+import ProfileSettingsPersonal from 'Pages/Profile/sections/Settings/sections/PersonalInfo/render';
 
 
 interface IProps extends RouteComponentProps {
@@ -24,6 +25,9 @@ const SettingsProfileSection = (props:IProps):JSX.Element => {
         >
             <Tabs.TabPane tab='Личная информация' key={ProfileSettingsSections.Personal}>
                 <ProfileSettingsPersonal user={props.user}/>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab='Навыки' key={ProfileSettingsSections.Skills}>
+                <ProfileSettingsSkills user={props.user}/>
             </Tabs.TabPane>
             <Tabs.TabPane tab='Действия' key={ProfileSettingsSections.Actions}>
                 <ProfileSettingsActions {...props}/>

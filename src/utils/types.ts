@@ -40,6 +40,12 @@ export interface Meeting {
     attachments?: Array<IAvatar>,
 }
 
+export interface Skill {
+    id: number,
+    name: string,
+    approved: Array<User>
+}
+
 export enum EventStatus {
     UnknownEvent,
     NotStartedEvent,
