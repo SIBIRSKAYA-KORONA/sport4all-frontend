@@ -29,31 +29,25 @@ const SkillListItem = (props:IProps):JSX.Element => {
         message.error('Я ещё не умею удалять навыки');
     };
     return (<Row>
-        <Col span={20}>
-            <Space direction='vertical' size='small'>
-                <Title level={4}>{props.skill.name}</Title>
-                {props.skill.approved && props.skill.approved.length > 0
-                    ? <Avatar.Group
-                        maxCount={5}
-                        size='small'
-                    >
-                        {props.skill.approved.map(user => <Avatar key={user.id} >{lettersForAvatar(user.name)}</Avatar>)}
-                    </Avatar.Group>
-                    : <Text type='secondary'>Не подтверждено</Text>
-                }
-            </Space>
+        <Col flex='auto'>
+            <h4>{props.skill.name}</h4>
+            {props.skill.approved && props.skill.approved.length > 0
+                ? <Avatar.Group
+                    maxCount={5}
+                    size='small'
+                >
+                    {props.skill.approved.map(user => <Avatar key={user.id} >{lettersForAvatar(user.name)}</Avatar>)}
+                </Avatar.Group>
+                : <Text type='secondary'>Не подтверждено</Text>
+            }
         </Col>
-        <Col span={4}>
+        <Col>
             {props.canEdit
                 ? <Button icon={<MinusOutlined/>} danger onClick={onSkillDelete}>Удалить</Button>
                 : <Button icon={<CheckOutlined/>} onClick={onSkillApprove} loading={loading}>Подтвердить</Button>
             }
         </Col>
-
-
     </Row>);
 };
 
 export default SkillListItem;
-
-// TODO: add avatars of people who approved
