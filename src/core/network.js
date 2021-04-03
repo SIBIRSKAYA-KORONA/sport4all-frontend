@@ -10,7 +10,7 @@ export default class Network {
         settings: '/settings',
         teams: '/teams',
         tournaments: '/tournaments',
-        tournamentsFeed: (offset) => `/tournaments/feed?offset=${offset}`,
+        tournamentsFeed: (offset) => `/tournaments/feeds?offset=${offset}`,
         sessions: '/sessions',
         meetings: {
             base: '/meetings',

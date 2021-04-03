@@ -8,7 +8,6 @@ import {
     ServerError
 } from 'Utils/errors';
 import HttpStatusCode from 'Utils/httpErrors';
-import httpErrors from 'Utils/httpErrors';
 
 class TournamentModel {
     static async createTournament(tournamentData) {

@@ -4,7 +4,7 @@ const CONST = {
     PATHS: {
         login: '/login',
         signup: '/signup',
-        feed: 'feed',
+        feed: '/feed',
         profile: {
             __config: '/profile/:section?/:settingsSection?',
             base: '/profile',

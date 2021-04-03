@@ -1,31 +1,32 @@
 import * as React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { Form, Input, Button, message } from 'antd';
 
 import BasePage from 'Components/BasePage/render';
-import { RouteComponentProps } from 'react-router-dom';
-import { Tournament } from 'Utils/types';
+import TournamentModel from 'Models/TournamentModel';
 import TournamentsFeedRow from 'Components/Tournaments/Feed/render';
 
 
-interface IProps extends RouteComponentProps {
-    tournaments: Tournament[]
-}
-
-const FeedPage = (props: IProps):JSX.Element => {
-    const [loading, setLoading] = React.useState([]);
+const FeedPage = (props: RouteComponentProps):JSX.Element => {
+    const [tournaments, setTournaments] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);
     const load = () => {
-        console.log(loading);
+        TournamentModel.loadFeed(tournaments.length + 10)
+            .then(ts => setTournaments(prev => prev.concat(ts)))
+            .catch(e => message.error(e))
+            .finally(() => setLoading(false));
     };
 
-    React.useEffect(() => load(), []);
+    React.useEffect(() => { load() }, []);
 
     return (
         <BasePage {...props}>
-            <TournamentsFeedRow tours={props.tournaments} {...props} />
+            <TournamentsFeedRow tours={tournaments} {...props} />
             <Button
                 type='default'
                 onClick={() => load()}
+                loading={loading}
             >Загрузить ещё</Button>
         </BasePage>
     );
