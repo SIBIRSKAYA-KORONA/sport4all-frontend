@@ -23,11 +23,19 @@ const FeedPage = (props: RouteComponentProps):JSX.Element => {
     return (
         <BasePage {...props}>
             <TournamentsFeedRow tours={tournaments} {...props} />
-            <Button
-                type='default'
-                onClick={() => load()}
-                loading={loading}
-            >Загрузить ещё</Button>
+            <div style={{
+                width:'100%',
+                height: 75,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                <Button
+                    type='default'
+                    onClick={() => load()}
+                    loading={loading}
+                >Загрузить ещё</Button>
+            </div>
         </BasePage>
     );
 }
