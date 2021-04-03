@@ -21,8 +21,14 @@ import MeetingPage from 'Pages/Meeting/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
 import {ProfileSections, ProfileSettingsSections} from 'Utils/enums';
 import Network from './core/network';
+import UserModel from 'Models/UserModel';
 
 Network.initWebSocket();
+try {
+    UserModel.getProfile();
+} catch (e) {
+    console.error(e);
+}
 
 render(
     <Provider store={store}>

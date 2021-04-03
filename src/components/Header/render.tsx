@@ -9,7 +9,7 @@ import {BellOutlined} from "@ant-design/icons/lib";
 const AntHeader = Layout.Header;
 
 import CONST from 'Constants';
-import {getPageName} from 'Utils/utils';
+import {getPageName, lettersForAvatar} from 'Utils/utils';
 import {UserAuthenticatedType, UserType} from 'Store/User/UserState';
 import logo from '/static/images/logo.svg'
 
@@ -36,12 +36,14 @@ const Header = (props: IProps) => {
                         ? <>
                             <div className={'header__notification_badge_wrapper'}
                                  onClick={() => console.log('OPEN NOTIFICATIONS MENU')}>
-                                <Badge count={4}>
+                                <Badge>
                                     <BellOutlined className={'header__notification_icon'}/>
                                 </Badge>
                             </div>
                             <Link to={'/profile'}>
-                                <Avatar size='large'/>
+                                <Avatar size='large'>
+                                    {lettersForAvatar(props.user?.name ? props.user?.name + props.user?.surname : props.user?.nickname)}
+                                </Avatar>
                             </Link>
                         </>
                         : <>
@@ -49,22 +51,20 @@ const Header = (props: IProps) => {
                                 <Button>Регистрация</Button>
                             </Link>
                             <Link to={'/login'}>
-                                <Button>Войти</Button>
+                                <Button type="primary">Вход</Button>
                             </Link>
                         </>
                     }
                 </div>
             </div>
 
-
         </AntHeader>
-
     );
 }
 
 const mapStateToProps = state => ({
     isAuthenticated: state.user.isAuthenticated,
-    user: state.user
+    user: state.user.user
 });
 
 export default connect(
