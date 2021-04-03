@@ -12,6 +12,8 @@ import CONST from 'Constants';
 import {getPageName, lettersForAvatar} from 'Utils/utils';
 import {UserAuthenticatedType, UserType} from 'Store/User/UserState';
 import logo from '/static/images/logo.svg'
+import NotificationsPopover from "Components/NotificationsPopover/render";
+
 
 interface IProps extends RouteComponentProps {
     isAuthenticated: UserAuthenticatedType;
@@ -34,12 +36,13 @@ const Header = (props: IProps) => {
                 <div className={'header__side_content'}>
                     {props.isAuthenticated !== null && props.isAuthenticated
                         ? <>
-                            <div className={'header__notification_badge_wrapper'}
-                                 onClick={() => console.log('OPEN NOTIFICATIONS MENU')}>
-                                <Badge>
-                                    <BellOutlined className={'header__notification_icon'}/>
-                                </Badge>
-                            </div>
+                            <NotificationsPopover>
+                                <div className={'header__notification_badge_wrapper'}>
+                                    <Badge>
+                                        <BellOutlined className={'header__notification_icon'}/>
+                                    </Badge>
+                                </div>
+                            </NotificationsPopover>
                             <Link to={'/profile'}>
                                 <Avatar size='large'>
                                     {lettersForAvatar(props.user?.name ? props.user?.name + props.user?.surname : props.user?.nickname)}
