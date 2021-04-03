@@ -4,6 +4,7 @@ const CONST = {
     PATHS: {
         login: '/login',
         signup: '/signup',
+        feed: '/feed',
         profile: {
             __config: '/profile/:section?/:settingsSection?',
             base: '/profile',
@@ -26,7 +27,7 @@ const CONST = {
         tournaments: {
             base: '/tournaments',
             create: '/tournaments/create',
-            list: '/tournaments/list',
+            list: '/tournaments/feed',
             meetings: (id: number | null):string => `/tournaments/${id ? id : ':tournamentId'}/meetings`,
             id: (id: string | number | null):string => '/tournaments/'+(id ? id : ':tournamentId'),
         }

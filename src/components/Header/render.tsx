@@ -28,6 +28,7 @@ const Header = (props: IProps) => {
                 <Link to='/' className={'header__link'}>
                     <img src={logo} className={'header__logo'} alt={'Logo'}/>
                 </Link>
+                <Link to={CONST.PATHS.feed} className={'header__link'}>Лента</Link>
 
                 <Input.Search disabled className={'header__search'}/>
 

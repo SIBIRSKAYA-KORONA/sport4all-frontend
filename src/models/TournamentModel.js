@@ -182,6 +182,14 @@ class TournamentModel {
                 throw Error(error);
             });
     }
+
+    static async loadFeed(offset) {
+        return Network.fetchGet(Network.paths.tournamentsFeed(offset))
+            .then(res => {
+                if (res.status >= 400) throw res.status;
+                return res.json();
+            });
+    }
 }
 
 export default TournamentModel;
