@@ -8,6 +8,7 @@ import {
     ServerError
 } from 'Utils/errors';
 import HttpStatusCode from 'Utils/httpErrors';
+import httpErrors from 'Utils/httpErrors';
 
 class TournamentModel {
     static async createTournament(tournamentData) {
@@ -180,6 +181,14 @@ class TournamentModel {
             .catch(error => {
                 console.error(error);
                 throw Error(error);
+            });
+    }
+
+    static async loadFeed(offset) {
+        return Network.fetchGet(Network.paths.tournamentsFeed(offset))
+            .then(res => {
+                if (res.status >= 400) throw res.status;
+                return res.json();
             });
     }
 }

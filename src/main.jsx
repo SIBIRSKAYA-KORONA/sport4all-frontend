@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import './main.scss';
 
 import store from 'Store/store';
+import FeedPage from 'Pages/Feed/render';
 import HomePage from 'Pages/Home/render';
 import SignUpPage from 'Pages/SignUp/logic';
 import TestGrid from 'Pages/TestGrid/render';
@@ -35,6 +36,7 @@ render(
         <BrowserRouter>
             <Switch>
                 <Route exact path='/' component={HomePage}/>
+                <Route exact path={CONST.PATHS.feed} component={FeedPage}/>
 
                 {/* Teams */}
                 <AuthedRoute exact path={CONST.PATHS.teams.create} component={TeamCreatePage} mustBeLogged='in'/>
