@@ -1,3 +1,5 @@
+import './extensions';
+
 export const getPageName = ():string => {
     const path = new URL(document.URL).pathname;
     const secondSlash = path.indexOf('/', 1);

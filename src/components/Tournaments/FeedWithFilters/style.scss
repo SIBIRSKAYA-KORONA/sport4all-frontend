@@ -1,0 +1,11 @@
+.filters {
+  &__container {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    background-color: #f1f1f1;
+    border: #c1c1c1 1px solid;
+    padding: 10px;
+    border-radius: 7px;
+  }
+}

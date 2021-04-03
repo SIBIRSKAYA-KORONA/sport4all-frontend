@@ -2,15 +2,14 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { Spin, Typography, Space, Button, Table, Empty } from 'antd';
+import { Spin, Typography, Space, Button, Empty } from 'antd';
 const { Title } = Typography;
 
 import CONST from 'Constants';
 import { User } from 'Utils/types';
 import TournamentModel from 'Models/TournamentModel';
 import { UserAuthenticatedType } from 'Store/User/UserState';
-import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
-import TournamentsFeed from 'Components/Tournaments/Feed/render';
+import TournamentsFeedWithFilters from 'Components/Tournaments/FeedWithFilters/render';
 
 
 const initTeams: [any?] = [];
@@ -35,21 +34,18 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
     }, []);
 
     const filteredTours = tournamentsOwned // TODO: fix duplicates on the backend
-        .filter(t => t.ownerId === props.user.id)
+        // .filter(t => t.ownerId === props.user.id)
         .filter((t, index) => tournamentsOwned.findIndex(tt => t.id === tt.id) === index)
         .sort((a, b) => a.status - b.status);
 
     return (<>
-        <Space size='large' align='baseline'>
-            <Title level={3}>Мои турниры</Title>
-            <Button type='link'>
-                <Link to={CONST.PATHS.tournaments.create}>Создать</Link>
-            </Button>
-        </Space>
+        <Button type='primary'>
+            <Link to={CONST.PATHS.tournaments.create}>Создать</Link>
+        </Button>
         {loadingOwnTournaments
             ? <Spin/>
             : filteredTours.length > 0
-                ? <TournamentsFeed tournaments={filteredTours} {...props} />
+                ? <TournamentsFeedWithFilters tournaments={filteredTours} {...props} />
                 : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         }
     </>);
