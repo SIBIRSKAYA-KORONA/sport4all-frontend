@@ -1,7 +1,8 @@
 import Network from '../core/network';
 import {BadRequestError, NotAuthorizedError, ServerError} from 'Utils/errors';
 import store from 'Store/store';
-import {deleteNotifications, markAsRead, setNotifications} from 'Store/Notifications/NotificationsActions';
+import {deleteNotifications, markAsRead, setNotifications, addNotification} from 'Store/Notifications/NotificationsActions';
+import {message} from 'antd';
 
 class NotificationsModel {
     static socket;
@@ -17,7 +18,7 @@ class NotificationsModel {
                 this.pingInterval = setInterval(() => this.socket.send(''), 10*1000)
             };
             this.socket.onmessage = (event) => {
-                console.log(event.data);
+                store.dispatch(addNotification(JSON.parse(event.data)));
             };
 
         } catch (e) {
@@ -52,15 +53,7 @@ class NotificationsModel {
                 }
             })
             .catch(error => {
-                // TODO: debug
-                const mock = [
-                    {message_type: 'some_message1',time:'11:11:11', isRead: false},
-                    {message_type: 'some_message2',time:'11:11:11', isRead: false},
-                    {message_type: 'some_message3',time:'11:11:11', isRead: false},
-                    {message_type: 'some_message4',time:'11:11:11', isRead: false}
-                ];
-                store.dispatch(setNotifications(mock));
-
+                message.error('Не удалось получить уведомления');
                 console.error(error);
                 throw Error(error);
             });
@@ -84,8 +77,7 @@ class NotificationsModel {
                 }
             })
             .catch(error => {
-                // TODO: debug
-                store.dispatch(deleteNotifications());
+                message.error('Не удалось очистить уведомления');
                 console.error(error);
                 throw Error(error);
             });

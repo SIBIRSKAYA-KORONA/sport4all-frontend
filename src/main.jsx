@@ -32,10 +32,10 @@ store.subscribe(() => {
     const isAuthenticated = state.user.isAuthenticated;
     if (lastIsAuthenticated !== state.user.isAuthenticated) {
         if (isAuthenticated) {
-            console.log('opening')
+            console.log('opening socket')
             NotificationsModel.openWebSocket();
         } else {
-            console.log('closing')
+            console.log('closing socket')
             NotificationsModel.closeWebSocket();
         }
     }
@@ -43,11 +43,15 @@ store.subscribe(() => {
     lastIsAuthenticated = isAuthenticated;
 });
 
-try {
-    UserModel.getProfile();
-} catch (e) {
+
+UserModel.getProfile().catch(() => {
     console.log('Could not get profile. User probably is not authenticated');
-}
+});
+
+NotificationsModel.getNotifications().catch(() => {
+    console.log('Could not get notifications. User probably is not authenticated');
+});
+
 
 
 render(

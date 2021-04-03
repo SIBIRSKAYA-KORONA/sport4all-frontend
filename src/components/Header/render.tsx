@@ -3,21 +3,21 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {Link, RouteComponentProps} from 'react-router-dom';
 
-import {Menu, Layout, Input, Button, Avatar, Badge} from 'antd';
+import {Avatar, Badge, Button, Input, Layout} from 'antd';
 import {BellOutlined} from "@ant-design/icons/lib";
-
-const AntHeader = Layout.Header;
-
-import CONST from 'Constants';
+import {Notification} from "Utils/types";
 import {getPageName, lettersForAvatar} from 'Utils/utils';
 import {UserAuthenticatedType, UserType} from 'Store/User/UserState';
 import logo from '/static/images/logo.svg'
 import NotificationsPopover from "Components/NotificationsPopover/render";
 import NotificationsModel from 'Models/NotificationsModel'
 
+const AntHeader = Layout.Header;
+
 interface IProps extends RouteComponentProps {
     isAuthenticated: UserAuthenticatedType;
     user: UserType;
+    notifications: Notification[];
 }
 
 const Header = (props: IProps) => {
@@ -39,9 +39,9 @@ const Header = (props: IProps) => {
                             <NotificationsPopover>
                                 <div
                                     className={'header__notification_badge_wrapper'}
-                                    onClick={()=>NotificationsModel.getNotifications()}
+                                    onClick={() => NotificationsModel.getNotifications()}
                                 >
-                                    <Badge>
+                                    <Badge count={props.notifications.length}>
                                         <BellOutlined className={'header__notification_icon'}/>
                                     </Badge>
                                 </div>
@@ -70,7 +70,8 @@ const Header = (props: IProps) => {
 
 const mapStateToProps = state => ({
     isAuthenticated: state.user.isAuthenticated,
-    user: state.user.user
+    user: state.user.user,
+    notifications: state.notifications.notifications,
 });
 
 export default connect(
