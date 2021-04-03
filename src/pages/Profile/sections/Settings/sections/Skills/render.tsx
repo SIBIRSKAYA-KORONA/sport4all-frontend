@@ -1,16 +1,16 @@
+import './style.scss';
 import * as React from 'react';
 
 import { message, List, Space, Row, Col, Typography } from 'antd';
 const { Title } = Typography;
 
 import { Skill, User } from 'Utils/types';
-import ProfileModel from 'Models/ProfileModel';
-import UserModel from 'Models/UserModel';
+import SkillsModel from 'Models/SkillsModel';
 import HttpStatusCode from 'Utils/httpErrors';
+import ProfileModel from 'Models/ProfileModel';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import SkillListItem from 'Components/Skill/ListItem/render';
 import AddSkillsModal from 'Pages/Profile/sections/Settings/sections/Skills/AddSkillModal';
-import SkillsModel from 'Models/SkillsModel';
 
 
 interface IProps {
@@ -25,8 +25,9 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
         ProfileModel.loadSkills(props.user.id)
             .then(skills => setSkills(skills as Array<Skill>))
             .catch(e => {
-                console.error(e);
-                if (isNaN(+e)) message.error(HttpStatusCode[e]);
+                if (isNaN(+e)) {
+                    if (e !== 404) message.error(HttpStatusCode[e]);
+                }
                 else message.error('Не удалось загрузить навыки');
             });
     };
@@ -35,19 +36,29 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
         if (props.user) loadSkills();
     }, []);
 
-    const addSkills = (skills: Skill[]) => {
-        SkillsModel.addSkills(props.user.id, skills)
-            .then(() => loadSkills());
+    const addSkills = (skillsToAdd: Skill[]) => {
+        const arr = [];
+        for (const skill of skillsToAdd) {
+            if (skill.id === 0) {
+                arr.push(SkillsModel.createSkill(props.user.id, skill.name));
+            } else {
+                arr.push(SkillsModel.approveSkill(props.user.id, skill.id));
+            }
+        }
+        Promise.all(arr).finally(() => loadSkills());
     };
 
     return (<div style={{ width:'100%' }}>{props.user &&
-        <Space direction='vertical' size='middle'>
+        <Space direction='vertical' size='middle' style={{ width:'100%' }}>
             <Row>
                 <Col span={12}>
-                    <Title>Навыки</Title>
+                    <Title level={3}>Навыки</Title>
                 </Col>
                 <Col span={12} className='skills__buttons'>
-                    <PlusCircleOutlined />
+                    <PlusCircleOutlined
+                        size={256}
+                        onClick={() => setModalVisible(true)}
+                    />
                     <AddSkillsModal
                         addedSkills={skills}
                         visible={modalVisible}

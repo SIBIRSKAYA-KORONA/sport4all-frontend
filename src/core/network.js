@@ -23,8 +23,9 @@ export default class Network {
             skills: (pid) => `/profile/${pid}/skills`,
         },
         skills: {
-            search: (text) => `/skills/search?name=${text}`,
-            add: (pid) => `/skills/${pid}`
+            search: (text) => `/skills/search?name=${text}&limit=10`,
+            create: (pid) => `/skills/${pid}`,
+            approve: (sid, pid) => `/skills/${sid}/approve/${pid}`,
         }
     };
 
