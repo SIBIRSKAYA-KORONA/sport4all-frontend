@@ -27,11 +27,15 @@ interface IProps extends RouteComponentProps {
 
 const ProfilePage = (props:IProps):JSX.Element => {
     const [profile, setProfile] = React.useState<User|null>(null);
+    const [canEdit, setCanEdit] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
         UserModel.getProfileByNickname(props.match.params['nickname'])
-            .then(profile => setProfile(profile))
+            .then((profile:User) => {
+                if (props.user && props.user.id === profile.id) setCanEdit(true);
+                setProfile(profile);
+            })
             .catch(e => message.error(e))
             .finally(() => setLoading(false));
     }, []);
@@ -45,7 +49,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
     return (
         <BasePage {...props} loading={loading}>{profile && <>
             <Row>
-                <Col>
+                <Col flex='100px'>
                     <Avatar size='large'>{lettersForUserAvatar(profile)}</Avatar>
                 </Col>
                 <Col flex='auto'>
@@ -61,11 +65,13 @@ const ProfilePage = (props:IProps):JSX.Element => {
                     onChange={redirect}
                     className='full-width'
                 >
-                    <TabPane tab='Команды' key={ProfileSections.Teams}>
-                        <TeamsSubPage {...props}/>
-                    </TabPane>
+                    {canEdit &&
+                        <TabPane tab='Команды' key={ProfileSections.Teams}>
+                            <TeamsSubPage {...props}/>
+                        </TabPane>
+                    }
                     <TabPane tab='Турниры' key={ProfileSections.Tournaments}>
-                        <TournamentsProfileSection {...props}/>
+                        <TournamentsProfileSection profile={profile} {...props}/>
                     </TabPane>
                     <TabPane tab='Настройки' key={ProfileSections.Settings}>
                         <SettingsProfileSection profile={profile} {...props}/>

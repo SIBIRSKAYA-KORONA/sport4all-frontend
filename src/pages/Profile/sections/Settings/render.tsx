@@ -33,7 +33,7 @@ const SettingsProfileSection = (props:IProps):JSX.Element => {
                 </Tabs.TabPane>
             }
             <Tabs.TabPane tab='Навыки' key={ProfileSettingsSections.Skills}>
-                <ProfileSettingsSkills canEdit={canEdit} user={props.user}/>
+                <ProfileSettingsSkills canEdit={canEdit} profile={props.profile} {...props}/>
             </Tabs.TabPane>
             {canEdit &&
                 <Tabs.TabPane tab='Действия' key={ProfileSettingsSections.Actions}>

@@ -7,6 +7,7 @@ const CONST = {
         profile: {
             __config: '/profile/:nickname/:section?/:settingsSection?',
             id__config: '/profile/:nickname',
+            nickname: (nickname:string):string => `/profile/${nickname}/${ProfileSections.Tournaments}`,
             section: (nickname:string, section?:ProfileSections):string => `/profile/${nickname}/${section || ':section'}`,
             settings: {
                 base: '/profile/:nickname/settings',

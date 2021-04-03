@@ -43,7 +43,13 @@ export interface Meeting {
 export interface Skill {
     id: number,
     name: string,
-    approved: Array<User>
+    approvals: Array<SkillApproval>
+}
+
+export interface SkillApproval {
+    id: number,
+    skillId: number,
+    userSkillApprovals: Array<User>
 }
 
 export enum EventStatus {

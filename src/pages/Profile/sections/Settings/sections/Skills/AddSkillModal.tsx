@@ -27,7 +27,7 @@ const AddSkillsModal = (props:IProps):JSX.Element => {
             .then((skills: Skill[]) => {
                 setLoadedSkills(skills && skills.length > 0
                     ? skills.filter(skill => !props.addedSkills.find(addedSkill => addedSkill.id === skill.id))
-                    : [{ id:0, name:searchText, approved:[] }]
+                    : [{ id:0, name:searchText, approvals:[] }]
                 );
             })
             .finally(() => setLoadingSkills(false));

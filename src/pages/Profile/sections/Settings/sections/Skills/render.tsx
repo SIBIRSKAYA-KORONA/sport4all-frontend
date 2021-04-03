@@ -1,5 +1,7 @@
 import './style.scss';
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { message, List, Space, Row, Col, Typography } from 'antd';
 const { Title } = Typography;
@@ -13,8 +15,9 @@ import SkillListItem from 'Components/Skill/ListItem/render';
 import AddSkillsModal from 'Pages/Profile/sections/Settings/sections/Skills/AddSkillModal';
 
 
-interface IProps {
+interface IProps extends RouteComponentProps {
     user: User,
+    profile: User,
     canEdit: boolean
 }
 
@@ -22,8 +25,8 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
     const [skills, setSkills] = React.useState<Skill[]>([]);
     const [modalVisible, setModalVisible] = React.useState(false);
 
-    const loadSkills = () => {
-        ProfileModel.loadSkills(props.user.id)
+    const loadSkills = async () => {
+        ProfileModel.loadSkills(props.profile.id)
             .then(skills => setSkills(skills as Array<Skill>))
             .catch(e => {
                 if (isNaN(+e)) {
@@ -34,22 +37,22 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
     };
 
     React.useEffect(() => {
-        if (props.user) loadSkills();
+        if (props.profile) loadSkills();
     }, []);
 
     const addSkills = (skillsToAdd: Skill[]) => {
         const arr = [];
         for (const skill of skillsToAdd) {
             if (skill.id === 0) {
-                arr.push(SkillsModel.createSkill(props.user.id, skill.name));
+                if (props.canEdit) arr.push(SkillsModel.createSkill(props.user.id, skill.name));
             } else {
-                arr.push(SkillsModel.approveSkill(props.user.id, skill.id));
+                arr.push(SkillsModel.approveSkill(props.profile.id, skill.id));
             }
         }
         Promise.all(arr).finally(() => loadSkills());
     };
 
-    return (<div style={{ width:'100%' }}>{props.user &&
+    return (<div style={{ width:'100%' }}>{props.profile &&
         <Space direction='vertical' size='middle' style={{ width:'100%' }}>
             <Row>
                 <Col span={12}>
@@ -76,10 +79,14 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
             <List
                 itemLayout="horizontal"
                 dataSource={skills}
-                renderItem={item => (<SkillListItem canEdit={props.canEdit} pid={props.user.id} skill={item}/>)}
+                renderItem={item => (<SkillListItem reloadSkills={loadSkills} canEdit={props.canEdit} profile={props.profile} skill={item} {...props}/>)}
             />
         </Space>
     }</div>);
 };
 
-export default ProfileSettingsSkills;
+const mapStateToProps = state => ({
+    user: state.user.user
+});
+
+export default connect(mapStateToProps)(ProfileSettingsSkills);

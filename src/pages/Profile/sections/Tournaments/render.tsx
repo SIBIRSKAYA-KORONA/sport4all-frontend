@@ -15,7 +15,7 @@ import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
 const initTeams: [any?] = [];
 
 interface IProps extends RouteComponentProps {
-    user: User,
+    profile: User,
     isAuthenticated: UserAuthenticatedType
 }
 
@@ -25,7 +25,7 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
 
     useEffect(() => {
         const load = () => {
-            TournamentModel.getTournaments(props.user.id).then(tours => {
+            TournamentModel.getTournaments(props.profile.id).then(tours => {
                 setTournamentsOwned(tours.owner);
                 setLoadingOwnTournaments(false);
             });
@@ -44,7 +44,7 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
         }
     ];
     const dataSource = tournamentsOwned // TODO: fix duplicates on the backend
-        .filter(t => t.ownerId === props.user.id)
+        .filter(t => t.ownerId === props.profile.id)
         .filter((t, index) => tournamentsOwned.findIndex(tt => t.id === tt.id) === index)
         .sort((a, b) => a.status - b.status)
         .map(t => ({ ...t, key:t.id }));

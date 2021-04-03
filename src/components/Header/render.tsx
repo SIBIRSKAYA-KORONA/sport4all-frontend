@@ -3,16 +3,18 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { Menu, Layout } from 'antd';
-const AntHeader = Layout.Header;
-
+import { Layout, Menu } from 'antd';
 import CONST from 'Constants';
 import { getPageName } from 'Utils/utils';
-import { UserAuthenticatedType } from 'Store/User/UserState';
+import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
+import { ProfileSections } from 'Utils/enums';
+
+const AntHeader = Layout.Header;
 
 
 interface IProps extends RouteComponentProps {
-    isAuthenticated: UserAuthenticatedType;
+    isAuthenticated: UserAuthenticatedType,
+    user: UserType,
 }
 
 const Header = (props: IProps) => {
@@ -27,9 +29,9 @@ const Header = (props: IProps) => {
                     <Link to='/' className='header__link'>Главная</Link>
                 </Menu.Item>
 
-                {props.isAuthenticated !== null && props.isAuthenticated
+                {props.isAuthenticated !== null && props.isAuthenticated && props.user
                     ? <Menu.Item key='profile main'>
-                        <Link to='/profile' className='header__link'>Профиль</Link>
+                        <Link to={CONST.PATHS.profile.nickname(props.user.nickname)} className='header__link'>Профиль</Link>
                     </Menu.Item>
                     : <>
                         <Menu.Item key='/signup'>
@@ -46,7 +48,8 @@ const Header = (props: IProps) => {
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.user.isAuthenticated
+    isAuthenticated: state.user.isAuthenticated,
+    user: state.user.user,
 });
 
 export default connect(
