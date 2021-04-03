@@ -1,52 +1,70 @@
 import './style.scss';
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
 
-import { Menu, Layout } from 'antd';
+import {Menu, Layout, Input, Button, Avatar, Badge} from 'antd';
+import {BellOutlined} from "@ant-design/icons/lib";
+
 const AntHeader = Layout.Header;
 
 import CONST from 'Constants';
-import { getPageName } from 'Utils/utils';
-import { UserAuthenticatedType } from 'Store/User/UserState';
-
+import {getPageName, lettersForAvatar} from 'Utils/utils';
+import {UserAuthenticatedType, UserType} from 'Store/User/UserState';
+import logo from '/static/images/logo.svg'
 
 interface IProps extends RouteComponentProps {
     isAuthenticated: UserAuthenticatedType;
+    user: UserType;
 }
 
 const Header = (props: IProps) => {
     const pageName = getPageName();
 
     return (
-        <AntHeader className='header
+        <AntHeader className='header'>
 
-        '>
-            <Menu mode='horizontal' selectedKeys={[pageName]}>
-                <Menu.Item key='/'>
-                    <Link to='/' className='header__link'>Главная</Link>
-                </Menu.Item>
+            <div className={'header__content'}>
+                <Link to='/' className={'header__link'}>
+                    <img src={logo} className={'header__logo'} alt={'Logo'}/>
+                </Link>
 
-                {props.isAuthenticated !== null && props.isAuthenticated
-                    ? <Menu.Item key='profile main'>
-                        <Link to='/profile' className='header__link'>Профиль</Link>
-                    </Menu.Item>
-                    : <>
-                        <Menu.Item key='/signup'>
-                            <Link to='/signup' className='header__link'>Регистрация</Link>
-                        </Menu.Item>
-                        <Menu.Item key='/login'>
-                            <Link to='/login' className='header__link'>Войти</Link>
-                        </Menu.Item>
-                    </>
-                }
-            </Menu>
+                <Input.Search disabled className={'header__search'}/>
+
+                <div className={'header__side_content'}>
+                    {props.isAuthenticated !== null && props.isAuthenticated
+                        ? <>
+                            <div className={'header__notification_badge_wrapper'}
+                                 onClick={() => console.log('OPEN NOTIFICATIONS MENU')}>
+                                <Badge>
+                                    <BellOutlined className={'header__notification_icon'}/>
+                                </Badge>
+                            </div>
+                            <Link to={'/profile'}>
+                                <Avatar size='large'>
+                                    {lettersForAvatar(props.user?.name ? props.user?.name + props.user?.surname : props.user?.nickname)}
+                                </Avatar>
+                            </Link>
+                        </>
+                        : <>
+                            <Link to={'/signup'}>
+                                <Button>Регистрация</Button>
+                            </Link>
+                            <Link to={'/login'}>
+                                <Button type="primary">Вход</Button>
+                            </Link>
+                        </>
+                    }
+                </div>
+            </div>
+
         </AntHeader>
     );
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.user.isAuthenticated
+    isAuthenticated: state.user.isAuthenticated,
+    user: state.user.user
 });
 
 export default connect(
