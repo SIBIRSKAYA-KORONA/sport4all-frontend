@@ -3,15 +3,13 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {Link, RouteComponentProps} from 'react-router-dom';
 
-import {Menu, Layout, Input, Button, Avatar, Badge} from 'antd';
-import {BellOutlined} from "@ant-design/icons/lib";
+import {Layout, Input, Button, Avatar, Badge} from 'antd';
+import {BellOutlined} from '@ant-design/icons/lib';
 
-import { Layout, Menu } from 'antd';
 import CONST from 'Constants';
+import logo from '/static/images/logo.svg'
 import { getPageName, lettersForAvatar } from 'Utils/utils';
 import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
-import { ProfileSections } from 'Utils/enums';
-import logo from '/static/images/logo.svg'
 
 const AntHeader = Layout.Header;
 
