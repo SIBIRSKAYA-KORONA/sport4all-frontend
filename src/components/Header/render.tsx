@@ -34,7 +34,7 @@ const Header = (props: IProps) => {
                 <Input.Search disabled className={'header__search'}/>
 
                 <div className={'header__side_content'}>
-                    {props.isAuthenticated !== null && props.isAuthenticated
+                    {props.isAuthenticated !== null && props.isAuthenticated && props.user
                         ? <>
                             <div className={'header__notification_badge_wrapper'}
                                  onClick={() => console.log('OPEN NOTIFICATIONS MENU')}>

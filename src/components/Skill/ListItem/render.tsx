@@ -15,12 +15,13 @@ interface IProps extends RouteComponentProps {
     skill: Skill,
     canEdit: boolean,
     profile: User,
-    reloadSkills: () => Promise<void>
+    reloadSkills: () => Promise<void>,
+    userId: number
 }
 
 const SkillListItem = (props:IProps):JSX.Element => {
     const [loading, setLoading] = React.useState(false);
-    const [canApprove, setCanApprove] = React.useState(!props.skill.approvals.some(appr => appr.userSkillApprovals.some(u => u.id === props.profile.id)));
+    const [canApprove, setCanApprove] = React.useState(props.profile.id !== props.userId && !props.skill.approvals.some(appr => appr.userSkillApprovals.some(u => u.id === props.profile.id)));
     const onSkillApprove = () => {
         setLoading(true);
         SkillsModel.approveSkill(props.profile.id, props.skill.id)
@@ -49,7 +50,7 @@ const SkillListItem = (props:IProps):JSX.Element => {
                             <div
                                 key={approval.id}
                                 className='cursor-pointer'
-                                onClick={() => { props.history.push(CONST.PATHS.profile.nickname(props.profile.nickname)) }}
+                                onClick={() => { props.history.push(CONST.PATHS.profile.nickname(approval.userSkillApprovals[0].nickname)) }}
                             >
                                 <Avatar>
                                     {lettersForAvatar(approval.userSkillApprovals[0].name)}

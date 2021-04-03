@@ -56,12 +56,12 @@ render(
 
                 {/* Profile */}
                 <Route exact path={CONST.PATHS.profile.settings.base} render={props => (
-                    <Redirect to={CONST.PATHS.profile.settings.section(props.match.params['nickname'], ProfileSettingsSections.Personal)}/>
+                    <Redirect exact to={CONST.PATHS.profile.settings.section(props.match.params['nickname'], ProfileSettingsSections.Personal)}/>
                 )}/>
                 <Route exact path={CONST.PATHS.profile.id__config} render={props => (
-                    <Redirect to={CONST.PATHS.profile.section(props.match.params['nickname'], ProfileSections.Teams)}/>
+                    <Redirect exact to={CONST.PATHS.profile.section(props.match.params['nickname'], ProfileSections.Tournaments)}/>
                 )}/>
-                <AuthedRoute path={CONST.PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
+                <AuthedRoute exact path={CONST.PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
 
                 {/* Auth */}
                 <AuthedRoute path={CONST.PATHS.signup} component={SignUpPage} mustBeLogged='out'/>

@@ -27,7 +27,12 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
 
     const loadSkills = async () => {
         ProfileModel.loadSkills(props.profile.id)
-            .then(skills => setSkills(skills as Array<Skill>))
+            .then((skills:Skill[]) => {
+                for (const skill of skills) {
+                    skill.approvals = skill.approvals.filter(appr => !appr.userSkillApprovals.some(user => user.id === props.profile.id))
+                }
+                setSkills(skills);
+            })
             .catch(e => {
                 if (isNaN(+e)) {
                     if (e !== 404) message.error(HttpStatusCode[e]);
@@ -79,7 +84,7 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
             <List
                 itemLayout="horizontal"
                 dataSource={skills}
-                renderItem={item => (<SkillListItem reloadSkills={loadSkills} canEdit={props.canEdit} profile={props.profile} skill={item} {...props}/>)}
+                renderItem={item => (<SkillListItem userId={props.user.id} reloadSkills={loadSkills} canEdit={props.canEdit} profile={props.profile} skill={item} {...props}/>)}
             />
         </Space>
     }</div>);

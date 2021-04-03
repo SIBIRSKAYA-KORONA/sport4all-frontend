@@ -42,7 +42,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
 
     const redirect = (key:ProfileSections) => {
         props.history.push(key === ProfileSections.Settings
-            ? CONST.PATHS.profile.settings.section(profile.nickname, ProfileSettingsSections.Personal)
+            ? CONST.PATHS.profile.settings.section(profile.nickname, ProfileSettingsSections.Skills)
             : CONST.PATHS.profile.section(profile.nickname, key)
         )
     };
@@ -61,7 +61,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
             <Row>
                 <Tabs
                     activeKey={props.match.params['section']}
-                    defaultActiveKey={ProfileSections.Settings}
+                    defaultActiveKey={ProfileSections.Tournaments}
                     onChange={redirect}
                     className='full-width'
                 >
