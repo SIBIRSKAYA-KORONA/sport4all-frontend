@@ -3,19 +3,20 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {Link, RouteComponentProps} from 'react-router-dom';
 
-import {Menu, Layout, Input, Button, Avatar, Badge} from 'antd';
-import {BellOutlined} from "@ant-design/icons/lib";
+import {Layout, Input, Button, Avatar, Badge} from 'antd';
+import {BellOutlined} from '@ant-design/icons/lib';
+
+import CONST from 'Constants';
+import logo from '/static/images/logo.svg'
+import { getPageName, lettersForAvatar } from 'Utils/utils';
+import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
 
 const AntHeader = Layout.Header;
 
-import CONST from 'Constants';
-import {getPageName, lettersForAvatar} from 'Utils/utils';
-import {UserAuthenticatedType, UserType} from 'Store/User/UserState';
-import logo from '/static/images/logo.svg'
 
 interface IProps extends RouteComponentProps {
-    isAuthenticated: UserAuthenticatedType;
-    user: UserType;
+    isAuthenticated: UserAuthenticatedType,
+    user: UserType,
 }
 
 const Header = (props: IProps) => {
@@ -33,7 +34,7 @@ const Header = (props: IProps) => {
                 <Input.Search disabled className={'header__search'}/>
 
                 <div className={'header__side_content'}>
-                    {props.isAuthenticated !== null && props.isAuthenticated
+                    {props.isAuthenticated !== null && props.isAuthenticated && props.user
                         ? <>
                             <div className={'header__notification_badge_wrapper'}
                                  onClick={() => console.log('OPEN NOTIFICATIONS MENU')}>
@@ -41,7 +42,7 @@ const Header = (props: IProps) => {
                                     <BellOutlined className={'header__notification_icon'}/>
                                 </Badge>
                             </div>
-                            <Link to={'/profile'}>
+                            <Link to={CONST.PATHS.profile.nickname(props.user.nickname)}>
                                 <Avatar size='large'>
                                     {lettersForAvatar(props.user?.name ? props.user?.name + props.user?.surname : props.user?.nickname)}
                                 </Avatar>
@@ -58,14 +59,13 @@ const Header = (props: IProps) => {
                     }
                 </div>
             </div>
-
         </AntHeader>
     );
 }
 
 const mapStateToProps = state => ({
     isAuthenticated: state.user.isAuthenticated,
-    user: state.user.user
+    user: state.user.user,
 });
 
 export default connect(

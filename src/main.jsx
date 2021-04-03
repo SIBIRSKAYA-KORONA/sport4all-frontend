@@ -55,13 +55,13 @@ render(
                 <Route path={CONST.PATHS.meetings.id(null)} component={MeetingPage}/>
 
                 {/* Profile */}
-                <Route exact path={CONST.PATHS.profile.settings.base}>
-                    <Redirect to={CONST.PATHS.profile.settings.section(ProfileSettingsSections.Personal)}/>
-                </Route>
-                <Route exact path={CONST.PATHS.profile.base}>
-                    <Redirect to={CONST.PATHS.profile.section(ProfileSections.Teams)}/>
-                </Route>
-                <AuthedRoute path={CONST.PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
+                <Route exact path={CONST.PATHS.profile.settings.base} render={props => (
+                    <Redirect exact to={CONST.PATHS.profile.settings.section(props.match.params['nickname'], ProfileSettingsSections.Personal)}/>
+                )}/>
+                <Route exact path={CONST.PATHS.profile.id__config} render={props => (
+                    <Redirect exact to={CONST.PATHS.profile.section(props.match.params['nickname'], ProfileSections.Tournaments)}/>
+                )}/>
+                <AuthedRoute exact path={CONST.PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
 
                 {/* Auth */}
                 <AuthedRoute path={CONST.PATHS.signup} component={SignUpPage} mustBeLogged='out'/>

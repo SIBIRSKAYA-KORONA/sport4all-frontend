@@ -2,7 +2,7 @@
 
 // import getCookie from 'Utils/csrf';
 
-import {message} from 'antd';
+import { message } from 'antd';
 
 export default class Network {
     static url = 'https://sport4all.tech/api';
@@ -19,6 +19,15 @@ export default class Network {
             addResultsForTeam: (mid, tid) => `/meetings/${mid}/teams/${tid}/stat`,
             stats: (mid) => `/meetings/${mid}/stat`,
             addResultsForPlayer: (mid, tid, pid) => `/meetings/${mid}/teams/${tid}/players/${pid}/stat`
+        },
+        profile: {
+            nickname: (nickname) => `/profile/${nickname}`,
+            skills: (pid) => `/profile/${pid}/skills`,
+        },
+        skills: {
+            search: (text) => `/skills/search?name=${text}&limit=10`,
+            create: (pid) => `/skills/${pid}`,
+            approve: (sid, pid) => `/skills/${sid}/approve/${pid}`,
         }
     };
 

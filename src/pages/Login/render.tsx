@@ -15,7 +15,7 @@ const LoginPageRender = (props: RouteComponentProps):JSX.Element => {
         if (!values.password || !values.nickname) return;
         UserModel.getLogin(values)
             .then(() => UserModel.getProfile())
-            .then(() => this.props.history.push(CONST.PATHS.profile.base))
+            .then(() => this.props.history.push('/'))
             .catch(e => {
                 switch (e) {
                 case HttpStatusCode.PRECONDITION_FAILED: message.error('Неправильный пароль'); break;

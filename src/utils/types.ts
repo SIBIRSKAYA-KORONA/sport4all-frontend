@@ -54,6 +54,18 @@ export interface Meeting {
     attachments?: Array<IAvatar>,
 }
 
+export interface Skill {
+    id: number,
+    name: string,
+    approvals: Array<SkillApproval>
+}
+
+export interface SkillApproval {
+    id: number,
+    skillId: number,
+    userSkillApprovals: Array<User>
+}
+
 export enum EventStatus {
     UnknownEvent,
     NotStartedEvent,

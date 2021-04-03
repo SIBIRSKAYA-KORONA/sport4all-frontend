@@ -6,12 +6,13 @@ const CONST = {
         signup: '/signup',
         feed: '/feed',
         profile: {
-            __config: '/profile/:section?/:settingsSection?',
-            base: '/profile',
-            section: (section?:ProfileSections):string => `/profile/${section || ':section'}`,
+            __config: '/profile/:nickname/:section?/:settingsSection?',
+            id__config: '/profile/:nickname',
+            nickname: (nickname:string):string => `/profile/${nickname}/${ProfileSections.Tournaments}`,
+            section: (nickname:string, section?:ProfileSections):string => `/profile/${nickname}/${section || ':section'}`,
             settings: {
-                base: '/profile/settings',
-                section: (section?:ProfileSettingsSections):string => `/profile/settings/${section || ':settingsSection'}`,
+                base: '/profile/:nickname/settings',
+                section: (nickname:string, section?:ProfileSettingsSections):string => `/profile/${nickname}/settings/${section || ':settingsSection'}`,
             }
         },
         teams: {

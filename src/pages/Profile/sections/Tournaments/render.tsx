@@ -2,8 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { Spin, Typography, Space, Button, Empty } from 'antd';
-const { Title } = Typography;
+import { Spin, Button, Empty } from 'antd';
 
 import CONST from 'Constants';
 import { User } from 'Utils/types';
@@ -15,7 +14,7 @@ import TournamentsFeedWithFilters from 'Components/Tournaments/FeedWithFilters/r
 const initTeams: [any?] = [];
 
 interface IProps extends RouteComponentProps {
-    user: User,
+    profile: User,
     isAuthenticated: UserAuthenticatedType
 }
 
@@ -25,7 +24,7 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
 
     useEffect(() => {
         const load = () => {
-            TournamentModel.getTournaments(props.user.id).then(tours => {
+            TournamentModel.getTournaments(props.profile.id).then(tours => {
                 setTournamentsOwned(tours.owner);
                 setLoadingOwnTournaments(false);
             });
