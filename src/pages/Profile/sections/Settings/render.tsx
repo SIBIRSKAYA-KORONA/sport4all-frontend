@@ -16,6 +16,7 @@ interface IProps extends RouteComponentProps {
 }
 
 const SettingsProfileSection = (props:IProps):JSX.Element => {
+    const canEdit = props.user.id === props.match.params['id'];
     return (
         <Tabs
             tabPosition='left'
@@ -23,15 +24,19 @@ const SettingsProfileSection = (props:IProps):JSX.Element => {
             defaultActiveKey={ProfileSettingsSections.Personal}
             onChange={(key) => { props.history.push(CONST.PATHS.profile.settings.section(key as ProfileSettingsSections)) }}
         >
-            <Tabs.TabPane tab='Личная информация' key={ProfileSettingsSections.Personal}>
-                <ProfileSettingsPersonal user={props.user}/>
-            </Tabs.TabPane>
+            {canEdit &&
+                <Tabs.TabPane tab='Личная информация' key={ProfileSettingsSections.Personal}>
+                    <ProfileSettingsPersonal user={props.user}/>
+                </Tabs.TabPane>
+            }
             <Tabs.TabPane tab='Навыки' key={ProfileSettingsSections.Skills}>
-                <ProfileSettingsSkills user={props.user}/>
+                <ProfileSettingsSkills canEdit={canEdit} user={props.user}/>
             </Tabs.TabPane>
-            <Tabs.TabPane tab='Действия' key={ProfileSettingsSections.Actions}>
-                <ProfileSettingsActions {...props}/>
-            </Tabs.TabPane>
+            {canEdit &&
+                <Tabs.TabPane tab='Действия' key={ProfileSettingsSections.Actions}>
+                    <ProfileSettingsActions {...props}/>
+                </Tabs.TabPane>
+            }
         </Tabs>
     );
 };

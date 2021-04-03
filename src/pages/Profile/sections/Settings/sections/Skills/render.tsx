@@ -14,7 +14,8 @@ import AddSkillsModal from 'Pages/Profile/sections/Settings/sections/Skills/AddS
 
 
 interface IProps {
-    user: User
+    user: User,
+    canEdit: boolean
 }
 
 const ProfileSettingsSkills = (props:IProps):JSX.Element => {
@@ -54,26 +55,28 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
                 <Col span={12}>
                     <Title level={3}>Навыки</Title>
                 </Col>
-                <Col span={12} className='skills__buttons'>
-                    <PlusCircleOutlined
-                        size={256}
-                        onClick={() => setModalVisible(true)}
-                    />
-                    <AddSkillsModal
-                        addedSkills={skills}
-                        visible={modalVisible}
-                        onOk={(skills) => {
-                            addSkills(skills);
-                            setModalVisible(false);
-                        }}
-                        onCancel={() => setModalVisible(false)}
-                    />
-                </Col>
+                {props.canEdit &&
+                    <Col span={12} className='skills__buttons'>
+                        <PlusCircleOutlined
+                            size={256}
+                            onClick={() => setModalVisible(true)}
+                        />
+                        <AddSkillsModal
+                            addedSkills={skills}
+                            visible={modalVisible}
+                            onOk={(skills) => {
+                                addSkills(skills);
+                                setModalVisible(false);
+                            }}
+                            onCancel={() => setModalVisible(false)}
+                        />
+                    </Col>
+                }
             </Row>
             <List
                 itemLayout="horizontal"
                 dataSource={skills}
-                renderItem={item => (<SkillListItem skill={item}/>)}
+                renderItem={item => (<SkillListItem canEdit={props.canEdit} pid={props.user.id} skill={item}/>)}
             />
         </Space>
     }</div>);
