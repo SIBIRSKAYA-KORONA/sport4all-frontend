@@ -20,15 +20,35 @@ import AuthedRoute from 'Utils/AuthedRoute';
 import MeetingPage from 'Pages/Meeting/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
 import {ProfileSections, ProfileSettingsSections} from 'Utils/enums';
-import Network from './core/network';
 import UserModel from 'Models/UserModel';
+import NotificationsModel from 'Models/NotificationsModel'
 
-Network.initWebSocket();
+
+// PREPARE APP
+// TODO: refactor this
+let lastIsAuthenticated = store.getState().user.isAuthenticated;
+store.subscribe(() => {
+    const state = store.getState();
+    const isAuthenticated = state.user.isAuthenticated;
+    if (lastIsAuthenticated !== state.user.isAuthenticated) {
+        if (isAuthenticated) {
+            console.log('opening')
+            NotificationsModel.openWebSocket();
+        } else {
+            console.log('closing')
+            NotificationsModel.closeWebSocket();
+        }
+    }
+
+    lastIsAuthenticated = isAuthenticated;
+});
+
 try {
     UserModel.getProfile();
 } catch (e) {
-    console.error(e);
+    console.log('Could not get profile. User probably is not authenticated');
 }
+
 
 render(
     <Provider store={store}>

@@ -1,10 +1,11 @@
 import './style.scss';
 import {connect} from 'react-redux';
-
+import NotificationsModel from 'Models/NotificationsModel'
 import * as React from 'react';
 
 import {Button, Col, List, Popover, Spin} from 'antd';
 import {Notification} from "Utils/types";
+
 
 interface IProps {
     children: React.ReactNode,
@@ -13,7 +14,6 @@ interface IProps {
 }
 
 const NotificationsPopover = (props: IProps) => {
-
     return (
         <Popover
             title='Уведомления'
@@ -38,13 +38,13 @@ const NotificationsPopover = (props: IProps) => {
                                     onClick={() => console.log(item)}
                                     className={'notifications_popover__item'}
                                 >
-                                    {item.message_type}
+                                    {item.type}
                                 </List.Item>}
                             />
 
                             <div className={'notifications_popover__controls'}>
-                                <Button type='primary'>Всё прочитано</Button>
-                                <Button danger>Очистить</Button>
+                                <Button type='primary' onClick={()=>NotificationsModel.markAsRead()}>Всё прочитано</Button>
+                                <Button danger onClick={()=>NotificationsModel.deleteNotifications()}>Очистить</Button>
                             </div>
                         </>
                     }

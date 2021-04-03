@@ -13,7 +13,7 @@ import {getPageName, lettersForAvatar} from 'Utils/utils';
 import {UserAuthenticatedType, UserType} from 'Store/User/UserState';
 import logo from '/static/images/logo.svg'
 import NotificationsPopover from "Components/NotificationsPopover/render";
-
+import NotificationsModel from 'Models/NotificationsModel'
 
 interface IProps extends RouteComponentProps {
     isAuthenticated: UserAuthenticatedType;
@@ -37,7 +37,10 @@ const Header = (props: IProps) => {
                     {props.isAuthenticated !== null && props.isAuthenticated
                         ? <>
                             <NotificationsPopover>
-                                <div className={'header__notification_badge_wrapper'}>
+                                <div
+                                    className={'header__notification_badge_wrapper'}
+                                    onClick={()=>NotificationsModel.getNotifications()}
+                                >
                                     <Badge>
                                         <BellOutlined className={'header__notification_icon'}/>
                                     </Badge>

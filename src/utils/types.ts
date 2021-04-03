@@ -71,7 +71,12 @@ export interface Stats {
 }
 
 export interface Notification {
-    message_type: 'meeting_started' | 'kek',
-    time: string,
-    isRead: boolean
+    type: 'added_to_team' | 'meeting_started' | 'meeting_finished',
+    createAt: string,
+    source_id: Number,
+    target_id: Number,
+    meeting_id: Number,
+    team_id: Number,
+    isRead: boolean,
+
 }
