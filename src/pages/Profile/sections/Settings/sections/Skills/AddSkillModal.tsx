@@ -25,11 +25,10 @@ const AddSkillsModal = (props:IProps):JSX.Element => {
         setLoadingSkills(true);
         SkillsModel.searchSkills(searchText)
             .then((skills: Skill[]) => {
-                if (skills && skills.length > 0) {
-                    setLoadedSkills(skills.filter(skill => !props.addedSkills.find(addedSkill => addedSkill.id === skill.id)))
-                } else {
-                    setLoadedSkills([{ id:0, name:searchText, approved:[] }]);
-                }
+                setLoadedSkills(skills && skills.length > 0
+                    ? skills.filter(skill => !props.addedSkills.find(addedSkill => addedSkill.id === skill.id))
+                    : [{ id:0, name:searchText, approved:[] }]
+                );
             })
             .finally(() => setLoadingSkills(false));
     };
@@ -37,6 +36,13 @@ const AddSkillsModal = (props:IProps):JSX.Element => {
     const onSkillAdd = (skill:Skill) => {
         setSkillsToAdd(prev => [...prev, skill]);
         setLoadedSkills(prev => prev.filter(p => p.id !== skill.id))
+    };
+
+    const onCancel = () => {
+        setLoadedSkills([]);
+        setSearchText('');
+        setSkillsToAdd([]);
+        props.onCancel();
     };
 
     return (
@@ -47,7 +53,7 @@ const AddSkillsModal = (props:IProps):JSX.Element => {
             okText='Добавить'
             cancelText='Отменить'
             onOk={() => props.onOk(skillsToAdd)}
-            onCancel={props.onCancel}
+            onCancel={onCancel}
             destroyOnClose={true}
         >
             {skillsToAdd.length > 0 &&
@@ -71,7 +77,7 @@ const AddSkillsModal = (props:IProps):JSX.Element => {
             }
             <Input.Search
                 loading={loadingSkills}
-                placeholder={'Введите навык'}
+                placeholder={'Введите название навыка'}
                 onSearch={onSkillsSearch}
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
