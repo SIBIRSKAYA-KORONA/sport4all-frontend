@@ -34,6 +34,9 @@ store.subscribe(() => {
         if (isAuthenticated) {
             console.log('opening socket')
             NotificationsModel.openWebSocket();
+            NotificationsModel.getNotifications().catch(() => {
+                console.log('Could not get notifications. User probably is not authenticated');
+            });
         } else {
             console.log('closing socket')
             NotificationsModel.closeWebSocket();
@@ -48,9 +51,6 @@ UserModel.getProfile().catch(() => {
     console.log('Could not get profile. User probably is not authenticated');
 });
 
-NotificationsModel.getNotifications().catch(() => {
-    console.log('Could not get notifications. User probably is not authenticated');
-});
 
 
 

@@ -18,6 +18,7 @@ interface IProps extends RouteComponentProps {
     isAuthenticated: UserAuthenticatedType;
     user: UserType;
     notifications: Notification[];
+    history: RouteComponentProps['history'];
 }
 
 const Header = (props: IProps) => {
@@ -36,7 +37,7 @@ const Header = (props: IProps) => {
                 <div className={'header__side_content'}>
                     {props.isAuthenticated !== null && props.isAuthenticated
                         ? <>
-                            <NotificationsPopover>
+                            <NotificationsPopover history={props.history}>
                                 <div
                                     className={'header__notification_badge_wrapper'}
                                     onClick={() => NotificationsModel.getNotifications()}

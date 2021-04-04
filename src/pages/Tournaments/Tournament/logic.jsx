@@ -38,7 +38,7 @@ function TournamentPage(props) {
 
         setIsLoading(false);
 
-    }, [])
+    }, [props.match.params.tournamentId])
 
 
     return (

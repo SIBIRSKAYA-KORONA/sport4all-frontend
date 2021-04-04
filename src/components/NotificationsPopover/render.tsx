@@ -2,25 +2,25 @@ import './style.scss';
 import {connect} from 'react-redux';
 import NotificationsModel from 'Models/NotificationsModel'
 import Network from '../../core/network';
-
+import { RouteComponentProps } from 'react-router-dom';
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 
 import {Button, Col, List, Popover, Spin} from 'antd';
 import {Notification} from 'Utils/types';
 
-
 interface IProps {
     children: React.ReactNode,
     notifications: Notification[],
     isLoading: boolean,
+    history: RouteComponentProps['history']
 }
 
 interface IParsedNotification {
     title: string,
     description: string,
     imageSrc: string,
-    href: string
+    href: string | null
 }
 
 
@@ -37,7 +37,7 @@ const NotificationsPopover = (props: IProps) => {
                 title: '',
                 description: '',
                 imageSrc: '',
-                href: '',
+                href: null,
             };
             parsedNotification.description = new Date(notification.createAt * 1000).toLocaleString('ru-RU');
 
@@ -98,7 +98,11 @@ const NotificationsPopover = (props: IProps) => {
                                 dataSource={parsedNotifications}
                                 locale={{emptyText: 'Кажется, тут ничего нет'}}
                                 renderItem={notification => <List.Item
-                                    onClick={() => console.log(notification)}
+                                    onClick={() => {
+                                        if (notification.href !== null) {
+                                            props.history.push(notification.href)
+                                        }
+                                    }}
                                     className={'notifications_popover__item'}
                                 >
                                     <List.Item.Meta

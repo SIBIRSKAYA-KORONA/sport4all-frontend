@@ -14,7 +14,7 @@ const {Title, Paragraph} = Typography;
 
 function TournamentPageRender(props) {
     return (
-        <BasePage>
+        <BasePage {...props}>
             <Row style={{marginBottom: 8}}>
                 <Space size='large' align='center'>
                     {props.isLoading ?
@@ -45,6 +45,7 @@ function TournamentPageRender(props) {
             <Tabs tabBarStyle={{marginBottom: 32}}>
                 <Tabs.TabPane tab={'Сетка'} key={TournamentPageRender.sections[0]}>
                     {props.isLoading ? <Spin/> : <TournamentGridRender
+                        key={props.tournamentData.id}
                         history={props.history}
                         tournamentData={props.tournamentData}
                     />}
