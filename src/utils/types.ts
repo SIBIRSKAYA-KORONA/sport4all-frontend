@@ -81,3 +81,15 @@ export interface Stats {
     teamId: number,
     playerId?: number
 }
+
+export interface Notification {
+    type: 'added_to_team' | 'tournament_started' | 'tournament_finished'| 'meeting_started' | 'meeting_finished',
+    createAt: number,
+    source_uid: number,
+    target_uid: number,
+    tournament_id: number,
+    meeting_id: number,
+    team_id: number,
+    isRead: boolean,
+
+}

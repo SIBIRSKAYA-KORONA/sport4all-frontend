@@ -1,8 +1,10 @@
 import { createStore, combineReducers } from 'redux';
 import userReducer from 'Store/User/UserReducer';
+import notificationsReducer from 'Store/Notifications/NotificationsReducer';
 
 const reducer = combineReducers({
-    user: userReducer
+    user: userReducer,
+    notifications: notificationsReducer
 });
 
 const store = createStore(

@@ -18,6 +18,17 @@ interface IProps extends RouteComponentProps {
     isAuthenticated: UserAuthenticatedType,
     user: UserType,
 }
+import {Notification} from "Utils/types";
+import NotificationsPopover from "Components/NotificationsPopover/render";
+import NotificationsModel from 'Models/NotificationsModel'
+
+
+interface IProps extends RouteComponentProps {
+    isAuthenticated: UserAuthenticatedType;
+    user: UserType;
+    notifications: Notification[];
+    history: RouteComponentProps['history'];
+}
 
 const Header = (props: IProps) => {
     const pageName = getPageName();
@@ -36,12 +47,16 @@ const Header = (props: IProps) => {
                 <div className={'header__side_content'}>
                     {props.isAuthenticated !== null && props.isAuthenticated && props.user
                         ? <>
-                            <div className={'header__notification_badge_wrapper'}
-                                 onClick={() => console.log('OPEN NOTIFICATIONS MENU')}>
-                                <Badge>
-                                    <BellOutlined className={'header__notification_icon'}/>
-                                </Badge>
-                            </div>
+                            <NotificationsPopover history={props.history}>
+                                <div
+                                    className={'header__notification_badge_wrapper'}
+                                    onClick={() => NotificationsModel.getNotifications()}
+                                >
+                                    <Badge count={props.notifications.length}>
+                                        <BellOutlined className={'header__notification_icon'}/>
+                                    </Badge>
+                                </div>
+                            </NotificationsPopover>
                             <Link to={CONST.PATHS.profile.nickname(props.user.nickname)}>
                                 <Avatar size='large'>
                                     {lettersForAvatar(props.user?.name ? props.user?.name + props.user?.surname : props.user?.nickname)}
@@ -66,6 +81,7 @@ const Header = (props: IProps) => {
 const mapStateToProps = state => ({
     isAuthenticated: state.user.isAuthenticated,
     user: state.user.user,
+    notifications: state.notifications.notifications,
 });
 
 export default connect(

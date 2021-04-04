@@ -2,8 +2,6 @@
 
 // import getCookie from 'Utils/csrf';
 
-import { message } from 'antd';
-
 export default class Network {
     static url = 'https://sport4all.tech/api';
     static paths = {
@@ -28,26 +26,9 @@ export default class Network {
             search: (text) => `/skills/search?name=${text}&limit=10`,
             create: (pid) => `/skills/${pid}`,
             approve: (sid, pid) => `/skills/${sid}/approve/${pid}`,
-        }
+        },
+        notifications: '/messages'
     };
-
-    static initWebSocket() {
-        try {
-            const ws = new WebSocket('wss://sport4all.tech/api/ws');
-            ws.onopen= ()=> {
-                message.info('opened ws');
-                setInterval(() => ws.send(''), 10*1000)
-            };
-            ws.onmessage = () => {
-                message.info('Вас добавили в команду');
-            };
-
-        } catch (e) {
-            console.error(e)
-            message.error('could not open websocket');
-        }
-
-    }
 
 
     /**
