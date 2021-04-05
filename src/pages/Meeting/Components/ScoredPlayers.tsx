@@ -24,7 +24,7 @@ function MeetingScoredPlayers(props: IProps): JSX.Element {
         }));
 
     return (<Space direction='vertical' size='small'>
-        {scoredPlayers.map(player => <Text key={player.playerName} type='secondary' strong>{player.playerName}:{player.score}</Text>)}
+        {scoredPlayers.map(player => <Text key={player.playerName} type='secondary' strong>{player.playerName} - {player.score}</Text>)}
     </Space>);
 }
 

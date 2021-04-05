@@ -2,14 +2,13 @@
 
 // import getCookie from 'Utils/csrf';
 
-import {message} from 'antd';
-
 export default class Network {
     static url = 'https://sport4all.tech/api';
     static paths = {
         settings: '/settings',
         teams: '/teams',
         tournaments: '/tournaments',
+        tournamentsFeed: (offset) => `/tournaments/feeds?offset=${offset}`,
         sessions: '/sessions',
         meetings: {
             base: '/meetings',
@@ -18,26 +17,18 @@ export default class Network {
             addResultsForTeam: (mid, tid) => `/meetings/${mid}/teams/${tid}/stat`,
             stats: (mid) => `/meetings/${mid}/stat`,
             addResultsForPlayer: (mid, tid, pid) => `/meetings/${mid}/teams/${tid}/players/${pid}/stat`
-        }
+        },
+        profile: {
+            nickname: (nickname) => `/profile/${nickname}`,
+            skills: (pid) => `/profile/${pid}/skills`,
+        },
+        skills: {
+            search: (text) => `/skills/search?name=${text}&limit=10`,
+            create: (pid) => `/skills/${pid}`,
+            approve: (sid, pid) => `/skills/${sid}/approve/${pid}`,
+        },
+        notifications: '/messages'
     };
-
-    static initWebSocket() {
-        try {
-            const ws = new WebSocket('wss://sport4all.tech/api/ws');
-            ws.onopen= ()=> {
-                message.info('opened ws');
-                setInterval(() => ws.send(''), 10*1000)
-            };
-            ws.onmessage = () => {
-                message.info('Вас добавили в команду');
-            };
-
-        } catch (e) {
-            console.error(e)
-            message.error('could not open websocket');
-        }
-
-    }
 
 
     /**

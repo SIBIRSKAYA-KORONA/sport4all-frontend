@@ -22,7 +22,7 @@ const tailLayout = {
 
 function TournamentCreatePageRender(props) {
     return (
-        <BasePage>
+        <BasePage {...props}>
             <Col {...formColLayout}>
                 <Form
                     {...layout}

@@ -8,6 +8,20 @@ export interface Team {
     avatar: IAvatar,
 }
 
+export interface Tournament {
+    id: number,
+    name: string,
+    about: string,
+    system: string,
+    ownerId: number,
+    avatar: IAvatar,
+    created: number,
+    location: string,
+    teams: Array<Team>
+    status: EventStatus,
+    meetings: Array<Meeting>,
+}
+
 export interface IAvatar {
     id: number,
     filename: string,
@@ -40,6 +54,18 @@ export interface Meeting {
     attachments?: Array<IAvatar>,
 }
 
+export interface Skill {
+    id: number,
+    name: string,
+    approvals: Array<SkillApproval>
+}
+
+export interface SkillApproval {
+    id: number,
+    skillId: number,
+    userSkillApprovals: Array<User>
+}
+
 export enum EventStatus {
     UnknownEvent,
     NotStartedEvent,
@@ -54,4 +80,16 @@ export interface Stats {
     meetingId: number,
     teamId: number,
     playerId?: number
+}
+
+export interface Notification {
+    type: 'added_to_team' | 'tournament_started' | 'tournament_finished'| 'meeting_started' | 'meeting_finished',
+    createAt: number,
+    source_uid: number,
+    target_uid: number,
+    tournament_id: number,
+    meeting_id: number,
+    team_id: number,
+    isRead: boolean,
+
 }

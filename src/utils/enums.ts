@@ -6,6 +6,7 @@ export enum ProfileSections {
 
 export enum ProfileSettingsSections {
     Personal = 'personal',
+    Skills = 'skills',
     Actions = 'actions'
 }
 

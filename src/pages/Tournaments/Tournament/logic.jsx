@@ -13,6 +13,12 @@ function TournamentPage(props) {
     const [tournamentData, setTournamentData] = useState({})
     const [isOwner, setIsOwner] = useState(false);
 
+    if (props.isAuthenticated) {
+        const newIsOwner = props.user.id === tournamentData.ownerId;
+        if (isOwner !== newIsOwner) {
+            setIsOwner(newIsOwner);
+        }
+    }
 
     useEffect(async () => {
         let gotTournamentData;
@@ -24,9 +30,6 @@ function TournamentPage(props) {
 
             setTournamentData({...gotTournamentData, teams: gotTeams, matches: gotMatches});
 
-            if (props.isAuthenticated) {
-                setIsOwner(props.user.id === gotTournamentData.ownerId);
-            }
         } catch (e) {
             console.error(e);
             message.error('Не удалось получить данные о турнире');
@@ -35,7 +38,7 @@ function TournamentPage(props) {
 
         setIsLoading(false);
 
-    }, [])
+    }, [props.match.params.tournamentId])
 
 
     return (

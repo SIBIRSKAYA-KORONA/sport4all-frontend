@@ -1,0 +1,20 @@
+@import "../../utils/variables";
+
+.notifications_popover {
+  &__item {
+    cursor: pointer;
+    @include transition(0.2s, ease-in-out);
+
+    &:hover {
+      color: $dark-gray;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: row;
+    margin-top: 16px;
+    gap: 16px;
+    justify-content: space-between;
+  }
+}

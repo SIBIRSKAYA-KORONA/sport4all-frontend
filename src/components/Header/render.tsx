@@ -1,52 +1,87 @@
 import './style.scss';
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {Link, RouteComponentProps} from 'react-router-dom';
 
-import { Menu, Layout } from 'antd';
-const AntHeader = Layout.Header;
+import {Layout, Input, Button, Avatar, Badge} from 'antd';
+import {BellOutlined} from '@ant-design/icons/lib';
 
 import CONST from 'Constants';
-import { getPageName } from 'Utils/utils';
-import { UserAuthenticatedType } from 'Store/User/UserState';
+import logo from '/static/images/logo.svg'
+import { getPageName, lettersForAvatar } from 'Utils/utils';
+import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
+
+const AntHeader = Layout.Header;
+
+
+interface IProps extends RouteComponentProps {
+    isAuthenticated: UserAuthenticatedType,
+    user: UserType,
+}
+import {Notification} from "Utils/types";
+import NotificationsPopover from "Components/NotificationsPopover/render";
+import NotificationsModel from 'Models/NotificationsModel'
 
 
 interface IProps extends RouteComponentProps {
     isAuthenticated: UserAuthenticatedType;
+    user: UserType;
+    notifications: Notification[];
+    history: RouteComponentProps['history'];
 }
 
 const Header = (props: IProps) => {
     const pageName = getPageName();
 
     return (
-        <AntHeader className='header
+        <AntHeader className='header'>
 
-        '>
-            <Menu mode='horizontal' selectedKeys={[pageName]}>
-                <Menu.Item key='/'>
-                    <Link to='/' className='header__link'>Главная</Link>
-                </Menu.Item>
+            <div className={'header__content'}>
+                <Link to='/' className={'header__link'}>
+                    <img src={logo} className={'header__logo'} alt={'Logo'}/>
+                </Link>
+                <Link to={CONST.PATHS.feed} className={'header__link'}>Лента</Link>
 
-                {props.isAuthenticated !== null && props.isAuthenticated
-                    ? <Menu.Item key='profile main'>
-                        <Link to='/profile' className='header__link'>Профиль</Link>
-                    </Menu.Item>
-                    : <>
-                        <Menu.Item key='/signup'>
-                            <Link to='/signup' className='header__link'>Регистрация</Link>
-                        </Menu.Item>
-                        <Menu.Item key='/login'>
-                            <Link to='/login' className='header__link'>Войти</Link>
-                        </Menu.Item>
-                    </>
-                }
-            </Menu>
+                <Input.Search disabled className={'header__search'}/>
+
+                <div className={'header__side_content'}>
+                    {props.isAuthenticated !== null && props.isAuthenticated && props.user
+                        ? <>
+                            <NotificationsPopover history={props.history}>
+                                <div
+                                    className={'header__notification_badge_wrapper'}
+                                    onClick={() => NotificationsModel.getNotifications()}
+                                >
+                                    <Badge count={props.notifications.length}>
+                                        <BellOutlined className={'header__notification_icon'}/>
+                                    </Badge>
+                                </div>
+                            </NotificationsPopover>
+                            <Link to={CONST.PATHS.profile.nickname(props.user.nickname)}>
+                                <Avatar size='large'>
+                                    {lettersForAvatar(props.user?.name ? props.user?.name + props.user?.surname : props.user?.nickname)}
+                                </Avatar>
+                            </Link>
+                        </>
+                        : <>
+                            <Link to={'/signup'}>
+                                <Button>Регистрация</Button>
+                            </Link>
+                            <Link to={'/login'}>
+                                <Button type="primary">Вход</Button>
+                            </Link>
+                        </>
+                    }
+                </div>
+            </div>
         </AntHeader>
     );
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.user.isAuthenticated
+    isAuthenticated: state.user.isAuthenticated,
+    user: state.user.user,
+    notifications: state.notifications.notifications,
 });
 
 export default connect(

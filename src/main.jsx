@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import './main.scss';
 
 import store from 'Store/store';
+import FeedPage from 'Pages/Feed/render';
 import HomePage from 'Pages/Home/render';
 import SignUpPage from 'Pages/SignUp/logic';
 import TestGrid from 'Pages/TestGrid/render';
@@ -20,15 +21,46 @@ import AuthedRoute from 'Utils/AuthedRoute';
 import MeetingPage from 'Pages/Meeting/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
 import {ProfileSections, ProfileSettingsSections} from 'Utils/enums';
-import Network from './core/network';
+import UserModel from 'Models/UserModel';
+import NotificationsModel from 'Models/NotificationsModel'
 
-Network.initWebSocket();
+
+// PREPARE APP
+// TODO: refactor this
+let lastIsAuthenticated = store.getState().user.isAuthenticated;
+store.subscribe(() => {
+    const state = store.getState();
+    const isAuthenticated = state.user.isAuthenticated;
+    if (lastIsAuthenticated !== state.user.isAuthenticated) {
+        if (isAuthenticated) {
+            console.log('opening socket')
+            NotificationsModel.openWebSocket();
+            NotificationsModel.getNotifications().catch(() => {
+                console.log('Could not get notifications. User probably is not authenticated');
+            });
+        } else {
+            console.log('closing socket')
+            NotificationsModel.closeWebSocket();
+        }
+    }
+
+    lastIsAuthenticated = isAuthenticated;
+});
+
+
+UserModel.getProfile().catch(() => {
+    console.log('Could not get profile. User probably is not authenticated');
+});
+
+
+
 
 render(
     <Provider store={store}>
         <BrowserRouter>
             <Switch>
                 <Route exact path='/' component={HomePage}/>
+                <Route exact path={CONST.PATHS.feed} component={FeedPage}/>
 
                 {/* Teams */}
                 <AuthedRoute exact path={CONST.PATHS.teams.create} component={TeamCreatePage} mustBeLogged='in'/>
@@ -47,13 +79,13 @@ render(
                 <Route path={CONST.PATHS.meetings.id(null)} component={MeetingPage}/>
 
                 {/* Profile */}
-                <Route exact path={CONST.PATHS.profile.settings.base}>
-                    <Redirect to={CONST.PATHS.profile.settings.section(ProfileSettingsSections.Personal)}/>
-                </Route>
-                <Route exact path={CONST.PATHS.profile.base}>
-                    <Redirect to={CONST.PATHS.profile.section(ProfileSections.Teams)}/>
-                </Route>
-                <AuthedRoute path={CONST.PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
+                <Route exact path={CONST.PATHS.profile.settings.base} render={props => (
+                    <Redirect exact to={CONST.PATHS.profile.settings.section(props.match.params['nickname'], ProfileSettingsSections.Personal)}/>
+                )}/>
+                <Route exact path={CONST.PATHS.profile.id__config} render={props => (
+                    <Redirect exact to={CONST.PATHS.profile.section(props.match.params['nickname'], ProfileSections.Tournaments)}/>
+                )}/>
+                <AuthedRoute exact path={CONST.PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
 
                 {/* Auth */}
                 <AuthedRoute path={CONST.PATHS.signup} component={SignUpPage} mustBeLogged='out'/>
