@@ -31,7 +31,7 @@ const TeamsSubPage = (props:RouteComponentProps):JSX.Element => {
             });
         }
         load();
-    }, []);
+    }, [props.match.params]);
 
     return (<>
         <Divider orientation={'left'}>Тренирую</Divider>

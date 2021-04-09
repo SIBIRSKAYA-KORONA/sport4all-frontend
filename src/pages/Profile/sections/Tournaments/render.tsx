@@ -30,7 +30,7 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
             });
         }
         load();
-    }, []);
+    }, [props.match.params]);
 
     const filteredTours = tournamentsOwned
         .filter((t, index) => tournamentsOwned.findIndex(tt => t.id === tt.id) === index)
