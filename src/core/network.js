@@ -27,6 +27,7 @@ export default class Network {
             create: (pid) => `/skills/${pid}`,
             approve: (sid, pid) => `/skills/${sid}/approve/${pid}`,
         },
+        sports: '/sports',
         notifications: '/messages'
     };
 

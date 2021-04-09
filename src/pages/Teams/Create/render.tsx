@@ -2,9 +2,12 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 
+import CONST from 'Constants';
+import { Team } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
+import { ProfileSections } from 'Utils/enums';
 import BasePage from 'Components/BasePage/render';
 
 
@@ -13,8 +16,11 @@ const TeamCreatePage = (props:RouteComponentProps):JSX.Element => {
         if (!values.name) return;
         // todo: handle 409 error
         TeamModel.instance.createTeam(values)
-            .then(() => { props.history.push('/profile'); })
-            .catch(e => { console.error(e); })
+            .then((team:Team) => props.history.push(CONST.PATHS.teams.id(team.id)))
+            .catch(e => {
+                message.error(e);
+                props.history.push(CONST.PATHS.profile.section(ProfileSections.Teams));
+            });
     }
     const layout = {
         labelCol: { span: 8 },

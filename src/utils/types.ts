@@ -20,6 +20,7 @@ export interface Tournament {
     teams: Array<Team>
     status: EventStatus,
     meetings: Array<Meeting>,
+    sport: Sport
 }
 
 export interface IAvatar {
@@ -82,6 +83,13 @@ export interface Stats {
     meetingId: number,
     teamId: number,
     playerId?: number
+}
+
+export interface Sport {
+    id: number,
+    name: string,
+    about: string,
+    avatar: string
 }
 
 export interface Notification {

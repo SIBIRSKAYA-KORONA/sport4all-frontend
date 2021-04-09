@@ -2,12 +2,12 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Image, Space, Typography } from 'antd';
+import { Avatar, Image, Space, Typography } from 'antd';
 const { Title, Text } = Typography;
 import { TeamOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
 import CONST from 'Constants';
-import { formatDate } from 'Utils/utils';
+import { formatDate, lettersForAvatar } from 'Utils/utils';
 import { Tournament } from 'Utils/types';
 import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
 
@@ -32,6 +32,12 @@ function TournamentCard(props: IProps): JSX.Element {
                 <Space direction='vertical' size='small'>
                     <TeamOutlined />
                     <Text type='secondary'>{t.teams.length} команд</Text>
+                </Space>
+            }
+            {t.sport &&
+                <Space direction='vertical' size='small'>
+                    {t.sport.avatar && <Avatar src={t.sport.avatar} size='small'>{lettersForAvatar(t.sport.name)}</Avatar>}
+                    <Text type='secondary'>{t.sport}</Text>
                 </Space>
             }
             <Space direction='horizontal' size='small'>

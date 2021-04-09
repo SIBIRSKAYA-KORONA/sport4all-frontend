@@ -1,8 +1,22 @@
 import * as React from 'react';
-import {Form, Input, Select} from 'antd';
+
+import {Form, Input, Select, message} from 'antd';
+
 import CONST from 'Constants';
+import SportModel from 'Models/SportModel';
+
 
 function PublicInfoFormItemsRender() {
+    const [sports, setSports] = React.useState([]);
+    React.useEffect(() => {
+        function load() {
+            SportModel.loadSports()
+                .then(sports => setSports(sports))
+                .catch(e => message.error(e));
+        }
+        load();
+    }, []);
+
     return (
         <>
             <Form.Item
@@ -31,6 +45,14 @@ function PublicInfoFormItemsRender() {
                 </Select>
             </Form.Item>
 
+            <Form.Item
+                label="Вид спорта"
+                name="systemSport"
+            >
+                <Select>
+                    {sports.map(sport => <Select.Option key={sport.name} value={sport.name}>{sport.name}</Select.Option>)}
+                </Select>
+            </Form.Item>
 
             <Form.Item
                 label="Место проведения"
