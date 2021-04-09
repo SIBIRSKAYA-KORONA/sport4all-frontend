@@ -20,7 +20,7 @@ export interface Tournament {
     teams: Array<Team>
     status: EventStatus,
     meetings: Array<Meeting>,
-    sport: Sport
+    sport: string // Sport.name
 }
 
 export interface IAvatar {

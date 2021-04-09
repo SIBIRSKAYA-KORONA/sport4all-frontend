@@ -36,7 +36,6 @@ function TournamentCard(props: IProps): JSX.Element {
             }
             {t.sport &&
                 <Space direction='vertical' size='small'>
-                    {t.sport.avatar && <Avatar src={t.sport.avatar} size='small'>{lettersForAvatar(t.sport.name)}</Avatar>}
                     <Text type='secondary'>{t.sport}</Text>
                 </Space>
             }

@@ -47,7 +47,7 @@ function PublicInfoFormItemsRender() {
 
             <Form.Item
                 label="Вид спорта"
-                name="systemSport"
+                name="sport"
             >
                 <Select>
                     {sports.map(sport => <Select.Option key={sport.name} value={sport.name}>{sport.name}</Select.Option>)}
