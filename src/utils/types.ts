@@ -63,7 +63,9 @@ export interface Skill {
 export interface SkillApproval {
     id: number,
     skillId: number,
-    userSkillApprovals: Array<User>
+    createAt: number,
+    toUid: number,
+    fromUser: User
 }
 
 export enum EventStatus {
