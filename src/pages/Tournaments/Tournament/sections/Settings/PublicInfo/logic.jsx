@@ -25,7 +25,8 @@ function PublicInfoLogic(props) {
 
         try {
             const updatedData = await TournamentModel.getTournament(props.tournamentData.id);
-            props.setTournamentData({...props.tournamentData, ...updatedData});
+            const gotMatches = await TournamentModel.getMeetings(props.tournamentData.id);
+            props.setTournamentData({...props.tournamentData, ...updatedData, matches: gotMatches});
         } catch (e) {
             console.error(e);
             message.error('Не удалось получить информацию о турнире');

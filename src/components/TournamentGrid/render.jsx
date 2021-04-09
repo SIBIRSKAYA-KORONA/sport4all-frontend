@@ -21,35 +21,54 @@ class TournamentGrid extends React.Component {
         return translator;
     }
 
-    constructor(props) {
-        super(props);
-        this.system = TournamentGrid.systemsTranslation[this.props.system];
-        this.participants = this.props.participants.map(
-            (participant) => ({
-                id: participant.id,
-                name: participant.name
-            })
-        );
-        this.matches = TournamentGrid.parseMatches(this.props.matches, this.props.system);
-        this.participantOnClickHandler = this.props.participantOnClick;
+    componentDidMount() {
+        this.fillGridContainer();
     }
 
-    componentDidMount() {
-        if (!this.system) {
+    componentDidUpdate() {
+        this.clearGridContainer();
+        this.fillGridContainer();
+    }
+
+    componentWillUnmount() {
+        this.clearGridContainer();
+    }
+
+    render() {
+        return <div ref={el => this.el = el}/>
+    }
+
+    clearGridContainer() {
+        this.el.className = '';
+        this.el.innerHTML = '';
+    }
+
+    fillGridContainer() {
+        const system = TournamentGrid.systemsTranslation[this.props.system];
+        if (!system) {
             console.error(`Unknown tournament system "${this.props.system}". Unable to render grid`);
             return;
         }
 
+
         try {
+            const participants = this.props.participants.map(
+                (participant) => ({
+                    id: participant.id,
+                    name: participant.name
+                })
+            );
+            const matches = TournamentGrid.parseMatches(this.props.matches, this.props.system);
+
             (new BracketsViewer()).render(
                 {
-                    participants: this.participants,
-                    matches: this.matches,
+                    participants: participants,
+                    matches: matches,
                     stages: [{
                         id: 0,
                         name: '',
                         number: 0,
-                        type: this.system,
+                        type: system,
                         settings: {}
                     }],
                 },
@@ -59,21 +78,13 @@ class TournamentGrid extends React.Component {
                     showSlotsOrigin: true,
                     showLowerBracketSlotsOrigin: true,
                     highlightParticipantOnHover: true,
-                    participantOnClick: this.participantOnClickHandler,
+                    participantOnClick: this.props.participantOnClick,
                 });
         } catch (e) {
             console.log('WARNING: Could not render grid');
         }
     }
 
-    componentWillUnmount() {
-        this.el.className = '';
-        this.el.innerHTML = '';
-    }
-
-    render() {
-        return <div ref={el => this.el = el}/>
-    }
 
     static parseMatches(matches, system) {
         switch (system) {
@@ -97,7 +108,7 @@ class TournamentGrid extends React.Component {
 
         const matchesCopy = [...matches];
         const matchesLastNumbers = {};
-        const parsedMatches = matchesCopy.map((match)=>{
+        const parsedMatches = matchesCopy.map((match) => {
             if (!(match.round in matchesLastNumbers)) {
                 matchesLastNumbers[match.round] = 0;
             }

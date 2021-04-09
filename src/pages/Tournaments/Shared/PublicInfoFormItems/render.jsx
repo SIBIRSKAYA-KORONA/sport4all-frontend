@@ -23,6 +23,7 @@ function PublicInfoFormItemsRender() {
             <Form.Item
                 label="Система турнира"
                 name="systemType"
+                rules={[{required: true, message: 'Выберите систему турнира'}]}
             >
                 <Select>
                     <Select.Option value={CONST.TOURNAMENTS.systems.roundRobin}>Круговая</Select.Option>
