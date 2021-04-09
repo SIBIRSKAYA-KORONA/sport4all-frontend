@@ -38,7 +38,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
             })
             .catch(e => message.error(e))
             .finally(() => setLoading(false));
-    }, []);
+    }, [props.match.params]);
 
     const redirect = (key:ProfileSections) => {
         props.history.push(key === ProfileSections.Settings

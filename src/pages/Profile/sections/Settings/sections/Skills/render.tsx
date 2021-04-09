@@ -29,13 +29,17 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
         ProfileModel.loadSkills(props.profile.id)
             .then((skills:Skill[]) => {
                 for (const skill of skills) {
-                    skill.approvals = skill.approvals.filter(appr => !appr.userSkillApprovals.some(user => user.id === props.profile.id))
+                    if (Array.isArray(skill.approvals)) {
+                        skill.approvals = skill.approvals.filter(appr => appr.fromUser.id !== props.profile.id)
+                    } else {
+                        skill.approvals = [];
+                    }
                 }
                 setSkills(skills);
             })
             .catch(e => {
                 if (isNaN(+e)) {
-                    if (e !== 404) message.error(HttpStatusCode[e]);
+                    if (e !== 404) message.error(HttpStatusCode[e] || e.toString());
                 }
                 else message.error('Не удалось загрузить навыки');
             });
