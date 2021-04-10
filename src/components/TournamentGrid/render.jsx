@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import './BracketsViewer/style.scss';
 import {BracketsViewer} from 'Components/TournamentGrid/BracketsViewer/main.ts';
+import {EventStatus} from 'Utils/types';
 import CONST from 'Constants';
 
 class TournamentGrid extends React.Component {
@@ -46,7 +47,7 @@ class TournamentGrid extends React.Component {
     fillGridContainer() {
         const system = TournamentGrid.systemsTranslation[this.props.system];
         if (!system) {
-            console.error(`Unknown tournament system "${this.props.system}". Unable to render grid`);
+            console.error(`Unknown tournament system '${this.props.system}'. Unable to render grid`);
             return;
         }
 
@@ -82,6 +83,7 @@ class TournamentGrid extends React.Component {
                 });
         } catch (e) {
             console.log('WARNING: Could not render grid');
+            console.error(e);
         }
     }
 
@@ -113,15 +115,10 @@ class TournamentGrid extends React.Component {
                 matchesLastNumbers[match.round] = 0;
             }
 
-            return {
-                id: match.id,
-                number: matchesLastNumbers[match.round]++,
-                stage_id: 0,
-                group_id: match.group,
-                round_id: match.round,
-                opponent1: {id: match?.teams?.[0]?.id || null},
-                opponent2: {id: match?.teams?.[1]?.id || null},
-            };
+            const parsedMatch = this.parseMatch(match);
+            parsedMatch.number = matchesLastNumbers[match.round]++;
+
+            return parsedMatch;
         });
 
         return parsedMatches;
@@ -169,15 +166,10 @@ class TournamentGrid extends React.Component {
                 currentNumber = 1;
             }
 
-            parsedMatches.push({
-                id: match.id,
-                number: currentNumber,
-                stage_id: 0,
-                group_id: match.group,
-                round_id: match.round,
-                opponent1: {id: match?.teams?.[0]?.id || null},
-                opponent2: {id: match?.teams?.[1]?.id || null},
-            });
+            const parsedMatch = this.parseMatch(match);
+            parsedMatch.number = currentNumber;
+
+            parsedMatches.push(parsedMatch);
 
             const previousMatches = match?.previousMatches || [];
             matchesQueue.push(...previousMatches);
@@ -188,6 +180,36 @@ class TournamentGrid extends React.Component {
         return parsedMatches;
     }
 
+
+    static parseMatch(rawMatch) {
+        const parsedMatch = {
+            id: rawMatch.id,
+            stage_id: 0,
+            group_id: rawMatch.group,
+            round_id: rawMatch.round,
+            opponent1: {id: rawMatch?.teams?.[0]?.id || null},
+            opponent2: {id: rawMatch?.teams?.[1]?.id || null},
+        }
+
+        if (rawMatch.status === EventStatus.FinishedEvent) {
+            const scores = {};
+            scores[rawMatch.stats[0].teamId] = rawMatch.stats[0].score;
+            scores[rawMatch.stats[1].teamId] = rawMatch.stats[1].score;
+
+            parsedMatch.opponent1.score = scores[parsedMatch.opponent1.id];
+            parsedMatch.opponent2.score = scores[parsedMatch.opponent2.id];
+            if (parsedMatch.opponent1.score > parsedMatch.opponent2.score) {
+                parsedMatch.opponent1.result = 'win';
+                parsedMatch.opponent2.result = 'loss';
+            }
+            if (parsedMatch.opponent1.score < parsedMatch.opponent2.score) {
+                parsedMatch.opponent1.result = 'loss';
+                parsedMatch.opponent2.result = 'win';
+            }
+        }
+
+        return parsedMatch;
+    }
 }
 
 TournamentGrid.propTypes = {
@@ -204,6 +226,7 @@ TournamentGrid.propTypes = {
     matches: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.number.isRequired,
+            status: PropTypes.number.isRequired,
             group: PropTypes.number.isRequired,
             round: PropTypes.number.isRequired,
             teams: PropTypes.array,
