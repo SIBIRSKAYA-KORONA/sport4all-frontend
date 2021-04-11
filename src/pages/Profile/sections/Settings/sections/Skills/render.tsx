@@ -25,15 +25,13 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
     const [skills, setSkills] = React.useState<Skill[]>([]);
     const [modalVisible, setModalVisible] = React.useState(false);
 
-    const loadSkills = async () => {
+    async function loadSkills() {
         ProfileModel.loadSkills(props.profile.id)
             .then((skills:Skill[]) => {
                 for (const skill of skills) {
-                    if (Array.isArray(skill.approvals)) {
-                        skill.approvals = skill.approvals.filter(appr => appr.fromUser.id !== props.profile.id)
-                    } else {
-                        skill.approvals = [];
-                    }
+                    skill.approvals = Array.isArray(skill.approvals)
+                        ? skill.approvals.filter(appr => appr.fromUser.id !== props.profile.id)
+                        : skill.approvals = [];
                 }
                 setSkills(skills);
             })
@@ -43,13 +41,13 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
                 }
                 else message.error('Не удалось загрузить навыки');
             });
-    };
+    }
 
     React.useEffect(() => {
         if (props.profile) loadSkills();
     }, [props.match.params['id']]);
 
-    const addSkills = (skillsToAdd: Skill[]) => {
+    function addSkills(skillsToAdd: Skill[]) {
         const arr = [];
         for (const skill of skillsToAdd) {
             if (skill.id === 0) {
@@ -59,7 +57,7 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
             }
         }
         Promise.all(arr).finally(() => loadSkills());
-    };
+    }
 
     return (<div style={{ width:'100%' }}>{props.profile &&
         <Space direction='vertical' size='middle' style={{ width:'100%' }}>

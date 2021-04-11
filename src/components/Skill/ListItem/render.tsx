@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 
 import { Typography, Avatar, Row, Col, Button, message, Space } from 'antd';
 const { Text } = Typography;
@@ -21,8 +21,9 @@ interface IProps extends RouteComponentProps {
 
 const SkillListItem = (props:IProps):JSX.Element => {
     const [loading, setLoading] = React.useState(false);
-    const [canApprove, setCanApprove] = React.useState(props.profile.id !== props.userId && !props.skill.approvals.some(appr => appr.fromUser.id === props.profile.id));
-    const onSkillApprove = () => {
+    const [canApprove, setCanApprove] = React.useState(props.profile.id !== props.userId && !props.skill.approvals.some(appr => appr.fromUser.id === props.userId));
+
+    function onSkillApprove() {
         setLoading(true);
         SkillsModel.approveSkill(props.profile.id, props.skill.id)
             .then(() => {
@@ -32,11 +33,12 @@ const SkillListItem = (props:IProps):JSX.Element => {
             })
             .catch(() => { message.error('Ошибка!') })
             .finally(() => setLoading(false));
-    };
+    }
 
-    const onSkillDelete = () => {
+    function onSkillDelete() {
         message.error('Я ещё не умею удалять навыки');
-    };
+    }
+
     return (<Row>
         <Col flex='auto'>
             <h4>{props.skill.name}</h4>
@@ -46,17 +48,9 @@ const SkillListItem = (props:IProps):JSX.Element => {
                         maxCount={5}
                         size='small'
                     >
-                        {props.skill.approvals.map(approval => (
-                            <div
-                                key={approval.id}
-                                className='cursor-pointer'
-                                onClick={() => { props.history.push(CONST.PATHS.profile.nickname(approval.fromUser.nickname)) }}
-                            >
-                                <Avatar>
-                                    {lettersForAvatar(approval.fromUser.name)}
-                                </Avatar>
-                            </div>
-                        ))}
+                        {props.skill.approvals.map(approval => <Avatar key={approval.id}>
+                            <Link to={CONST.PATHS.profile.nickname(approval.fromUser.nickname)}>{lettersForAvatar(approval.fromUser.name)}</Link>
+                        </Avatar>)}
                     </Avatar.Group>
                     <Text type='secondary'>подтвердили</Text>
                 </Space>
