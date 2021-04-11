@@ -3,14 +3,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Space, Select, Divider, Typography, Input, Row, Col } from 'antd';
+import { Space, Select, Divider, Typography, Input } from 'antd';
 const { Title } = Typography;
 
-import { Tournament } from 'Utils/types';
 import { UserType } from 'Store/User/UserState';
-import { allEventStatuses, getStatusShortTitle } from 'Utils/structUtils';
+import { EventStatus, Sport, Tournament } from 'Utils/types';
 import TournamentsFeedRow from 'Components/Tournaments/Feed/render';
-import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
+import { allEventStatuses, getStatusShortTitle } from 'Utils/structUtils';
 
 
 interface IProps extends RouteComponentProps {
@@ -24,25 +23,22 @@ function TournamentsFeed(props: IProps): JSX.Element {
     const [otherTours, setOtherTours] = React.useState<typeof props.tournaments>([]);
 
     const [title, setTitle] = React.useState('');
-    const [statuses, setStatuses] = React.useState(allEventStatuses());
-    React.useEffect(() => {
-        const filter = () => {
-            setFilteredTours(props.tournaments.filter(t =>
-                statuses.includes(t.status)
-            ));
-        };
-        filter();
-    }, [statuses]);
+    const [statuses, setStatuses] = React.useState<EventStatus[]>([]);
+    const [sports, setSports] = React.useState<Sport[]>([]);
 
     React.useEffect(() => {
         const filter = () => {
-            setFilteredTours(title
-                ? props.tournaments.filter(t => t.name.toLowerCase().includes(title.toLowerCase()))
-                : props.tournaments
-            )
+            let filtered = props.tournaments;
+            if (statuses.length > 0)
+                filtered = filtered.filter(t => statuses.includes(t.status));
+            if (title)
+                filtered = filtered.filter(t => t.name.toLowerCase().includes(title.toLowerCase()));
+            if (sports.length > 0)
+                filtered = filtered.filter(t => sports.find(s => s.name === t.sport));
+            setFilteredTours(filtered);
         };
         filter();
-    }, [title]);
+    }, [title, statuses]);
 
     React.useEffect(() => {
         const findOwn = () => {
@@ -80,7 +76,7 @@ function TournamentsFeed(props: IProps): JSX.Element {
                 <Title level={5}>Название</Title>
                 <Input
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={e => setTitle(e.target.value)}
                     placeholder='CSGO'
                 />
             </Space>
