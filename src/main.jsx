@@ -7,7 +7,7 @@ import './main.scss';
 import store from 'Store/store';
 import FeedPage from 'Pages/Feed/render';
 import HomePage from 'Pages/Home/render';
-import SignUpPage from 'Pages/SignUp/logic';
+import SignUpPage from 'Pages/SignUp/render';
 import TestGrid from 'Pages/TestGrid/render';
 import CONST from 'Utils/constants';
 import TeamCreatePage from 'Pages/Teams/Create/render';
