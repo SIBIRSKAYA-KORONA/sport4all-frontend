@@ -28,6 +28,7 @@ function PublicInfoRender(props) {
                     systemType: props.tournamentData.system,
                     location: props.tournamentData.location,
                     status: props.tournamentData.status,
+                    sport: props.tournamentData.sport
                 }}
             >
                 <PublicInfoFormItemsRender/>

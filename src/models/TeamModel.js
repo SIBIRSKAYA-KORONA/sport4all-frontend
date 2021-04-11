@@ -31,7 +31,10 @@ class TeamModel {
                 if (response.status > 499) throw new Error('server error');
                 else return response.json();
             })
-            .catch(error => { throw new Error(error); });
+            .then(team => {
+                if (!team || !team.id) throw 500;
+                return team;
+            });
     }
 
     async loadTeam(tid) {
