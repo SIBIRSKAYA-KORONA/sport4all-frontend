@@ -3,13 +3,14 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Space, Select, Divider, Typography, Input } from 'antd';
+import { Space, Divider, Typography, Input } from 'antd';
 const { Title } = Typography;
 
 import { UserType } from 'Store/User/UserState';
-import { EventStatus, Sport, Tournament } from 'Utils/types';
+import { EventStatus, Tournament } from 'Utils/types';
+import SportSelect from 'Components/Inputs/sportSelect';
+import StatusSelect from 'Components/Inputs/statusSelect';
 import TournamentsFeedRow from 'Components/Tournaments/Feed/render';
-import { allEventStatuses, getStatusShortTitle } from 'Utils/structUtils';
 
 
 interface IProps extends RouteComponentProps {
@@ -24,7 +25,7 @@ function TournamentsFeed(props: IProps): JSX.Element {
 
     const [title, setTitle] = React.useState('');
     const [statuses, setStatuses] = React.useState<EventStatus[]>([]);
-    const [sports, setSports] = React.useState<Sport[]>([]);
+    const [sports, setSports] = React.useState<string[]>([]);
 
     React.useEffect(() => {
         const filter = () => {
@@ -34,11 +35,11 @@ function TournamentsFeed(props: IProps): JSX.Element {
             if (title)
                 filtered = filtered.filter(t => t.name.toLowerCase().includes(title.toLowerCase()));
             if (sports.length > 0)
-                filtered = filtered.filter(t => sports.find(s => s.name === t.sport));
+                filtered = filtered.filter(t => sports.find(s => s === t.sport));
             setFilteredTours(filtered);
         };
         filter();
-    }, [title, statuses]);
+    }, [title, statuses, sports]);
 
     React.useEffect(() => {
         const findOwn = () => {
@@ -59,18 +60,11 @@ function TournamentsFeed(props: IProps): JSX.Element {
             <Title level={4}>Фильтры</Title>
             <Space direction='horizontal' size='small' style={{ width:'100%' }}>
                 <Title level={5} style={{ minWidth:100 }}>Статусы</Title>
-                <Select
-                    mode="multiple"
-                    allowClear
-                    style={{ minWidth:150, width:'auto' }}
-                    placeholder="Статусы"
-                    onChange={(values) => setStatuses(values)}
-                    defaultValue={statuses}
-                >
-                    {allEventStatuses().map(stat => (<Select.Option key={stat} value={stat} style={{ height:'auto' }}>
-                        {getStatusShortTitle(stat)}
-                    </Select.Option>))}
-                </Select>
+                <StatusSelect onChange={values => setStatuses(values)}/>
+            </Space>
+            <Space direction='horizontal' size='small' style={{ width:'100%' }}>
+                <Title level={5} style={{ minWidth:100 }}>Вид спорта</Title>
+                <SportSelect onChange={values => setSports(values)} />
             </Space>
             <Space direction='horizontal' size='middle'>
                 <Title level={5}>Название</Title>

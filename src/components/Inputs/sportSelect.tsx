@@ -1,17 +1,14 @@
 import * as React from 'react';
-
 import { message, Select } from 'antd';
-
 import { Sport } from 'Utils/types';
 import SportModel from 'Models/SportModel';
 
 
 interface IProps {
-    value: Sport | null,
-    onChange: (e) => void
+    onChange: (values: string[]) => void
 }
 
-const SportSelect = (props: IProps): JSX.Element => {
+function SportSelect(props: IProps): JSX.Element {
     const [loading, setLoading] = React.useState(false);
     const [sports, setSports] = React.useState([]);
 
@@ -25,8 +22,18 @@ const SportSelect = (props: IProps): JSX.Element => {
         }
         load();
     }, []);
-    return (<Select loading={loading} value={props.value.name} onChange={(value) => props.onChange(value)}>
-        {sports.map(sport => <Select.Option key={sport.name} value={sport.name}>{sport.name}</Select.Option>)}
+
+    return (<Select
+        mode="multiple"
+        allowClear
+        style={{ minWidth:150, width:'auto' }}
+        placeholder="Все виды спорта"
+        onChange={(values) => props.onChange(values)}
+        defaultValue={[]}
+        loading={loading}
+    >
+        {sports.map(sport => <Select.Option key={sport.id || sport.name} value={sport.name}>{sport.name}</Select.Option>)}
     </Select>);
 }
+
 export default SportSelect;

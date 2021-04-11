@@ -48,6 +48,7 @@ export function lettersForUserAvatar(user: User):string {
     if (user.nickname) return lettersForAvatar(user.nickname);
 }
 
-export function allEventStatuses(): Array<EventStatus> {
-    return Object.keys(EventStatus).filter(key => isNaN(+key)).map(key => EventStatus[key]);
+export function allEventStatuses(withError: boolean): Array<EventStatus> {
+    const all = Object.keys(EventStatus).filter(key => isNaN(+key) && +key !== EventStatus.UnknownEvent).map(key => EventStatus[key]);
+    return withError ? all : all.filter(s => s !== EventStatus.UnknownEvent);
 }
