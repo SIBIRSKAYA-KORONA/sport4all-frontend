@@ -45,7 +45,7 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
 
     React.useEffect(() => {
         if (props.profile) loadSkills();
-    }, [props.match.params['id']]);
+    }, [props.match.params['nickname']]);
 
     function addSkills(skillsToAdd: Skill[]) {
         const arr = [];
