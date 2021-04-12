@@ -30,56 +30,68 @@ const ProfilePage = (props:IProps):JSX.Element => {
     const [canEdit, setCanEdit] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
 
-    React.useEffect(() => {
-        UserModel.getProfileByNickname(props.match.params['nickname'])
+    function isCurrentUserProfile():boolean {
+        return props.user && props.user.nickname === props.match.params['nickname'];
+    }
+
+    async function reload() {
+        if (isCurrentUserProfile()) setProfile(props.user);
+        else UserModel.getProfileByNickname(props.match.params['nickname'])
             .then((profile:User) => {
                 if (props.user && props.user.id === profile.id) setCanEdit(true);
                 setProfile(profile);
             })
-            .catch(e => message.error(e))
-            .finally(() => setLoading(false));
+            .catch(e => message.error(e));
+    }
+
+    React.useEffect(() => {
+        setLoading(true);
+        reload().finally(() => setLoading(false));
     }, [props.match.params['nickname']]);
 
-    const redirect = (key:ProfileSections) => {
+    React.useEffect(() => {
+        if (isCurrentUserProfile()) setProfile(props.user);
+    }, [props.user]);
+
+    function redirect(key:ProfileSections) {
         props.history.push(key === ProfileSections.Settings
             ? CONST.PATHS.profile.settings.section(profile.nickname, ProfileSettingsSections.Skills)
             : CONST.PATHS.profile.section(profile.nickname, key)
         )
-    };
-    return (
-        <BasePage {...props} loading={loading}>{profile && <>
-            <Row>
-                <Col flex='100px'>
-                    <Avatar size='large'>{lettersForUserAvatar(profile)}</Avatar>
-                </Col>
-                <Col flex='auto'>
-                    <Title className='profile__name'>{profile.name} {profile.surname}</Title>
-                    <Tag className='profile__nickname'>@{profile.nickname}</Tag>
-                    <Paragraph className='profile__about'>{profile.about}</Paragraph>
-                </Col>
-            </Row>
-            <Row>
-                <Tabs
-                    activeKey={props.match.params['section']}
-                    defaultActiveKey={ProfileSections.Tournaments}
-                    onChange={redirect}
-                    className='full-width'
-                >
-                    {canEdit &&
-                        <TabPane tab='Команды' key={ProfileSections.Teams}>
-                            <TeamsSubPage {...props}/>
-                        </TabPane>
-                    }
-                    <TabPane tab='Турниры' key={ProfileSections.Tournaments}>
-                        <TournamentsProfileSection profile={profile} {...props}/>
+    }
+
+    return (<BasePage {...props} loading={loading}>{profile && <>
+        <Row>
+            <Col flex='100px'>
+                <Avatar size='large' src={profile.avatar?.url}>{lettersForUserAvatar(profile)}</Avatar>
+            </Col>
+            <Col flex='auto'>
+                <Title className='profile__name'>{profile.name} {profile.surname}</Title>
+                <Tag className='profile__nickname'>@{profile.nickname}</Tag>
+                <Paragraph className='profile__about'>{profile.about}</Paragraph>
+            </Col>
+        </Row>
+        <Row>
+            <Tabs
+                activeKey={props.match.params['section']}
+                defaultActiveKey={ProfileSections.Tournaments}
+                onChange={redirect}
+                className='full-width'
+            >
+                {canEdit &&
+                    <TabPane tab='Команды' key={ProfileSections.Teams}>
+                        <TeamsSubPage {...props}/>
                     </TabPane>
-                    <TabPane tab='Настройки' key={ProfileSections.Settings}>
-                        <SettingsProfileSection profile={profile} {...props}/>
-                    </TabPane>
-                </Tabs>
-            </Row>
-        </>}</BasePage>
-    );
+                }
+                <TabPane tab='Турниры' key={ProfileSections.Tournaments}>
+                    <TournamentsProfileSection profile={profile} {...props}/>
+                </TabPane>
+                <TabPane tab='Настройки' key={ProfileSections.Settings}>
+                    <SettingsProfileSection profile={profile} {...props}/>
+                </TabPane>
+            </Tabs>
+        </Row>
+    </>}</BasePage>);
 }
 
 const mapStateToProps = state => ({

@@ -39,7 +39,8 @@ export interface User {
     height: number,
     email?: string,
     about?: string,
-    birthday?: string
+    birthday?: string,
+    avatar?: IAvatar
 }
 
 export interface Meeting {

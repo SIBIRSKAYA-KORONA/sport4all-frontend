@@ -1,38 +1,28 @@
 import './style.scss';
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {Link, RouteComponentProps} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
-import {Layout, Input, Button, Avatar, Badge} from 'antd';
-import {BellOutlined} from '@ant-design/icons/lib';
-
-import CONST from 'Constants';
-import logo from '/static/images/logo.svg'
-import { getPageName, lettersForAvatar } from 'Utils/utils';
-import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
-
+import { BellOutlined } from '@ant-design/icons/lib';
+import { Layout, Input, Button, Avatar, Badge } from 'antd';
 const AntHeader = Layout.Header;
 
-
-interface IProps extends RouteComponentProps {
-    isAuthenticated: UserAuthenticatedType,
-    user: UserType,
-}
-import {Notification} from "Utils/types";
-import NotificationsPopover from "Components/NotificationsPopover/render";
+import CONST from 'Constants';
+import logo from '/static/images/logo.svg';
+import { Notification } from 'Utils/types';
+import { lettersForAvatar } from 'Utils/utils';
 import NotificationsModel from 'Models/NotificationsModel'
+import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
+import NotificationsPopover from 'Components/NotificationsPopover/render';
 
 
 interface IProps extends RouteComponentProps {
     isAuthenticated: UserAuthenticatedType;
     user: UserType;
     notifications: Notification[];
-    history: RouteComponentProps['history'];
 }
 
 const Header = (props: IProps) => {
-    const pageName = getPageName();
-
     return (
         <AntHeader className='header'>
 
@@ -58,7 +48,7 @@ const Header = (props: IProps) => {
                                 </div>
                             </NotificationsPopover>
                             <Link to={CONST.PATHS.profile.nickname(props.user.nickname)}>
-                                <Avatar size='large'>
+                                <Avatar size='large' src={props.user.avatar?.url}>
                                     {lettersForAvatar(props.user?.name ? props.user?.name + props.user?.surname : props.user?.nickname)}
                                 </Avatar>
                             </Link>
