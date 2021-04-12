@@ -27,7 +27,7 @@ function ParticipantsRender(props:IProps):JSX.Element {
                 {...props}
                 loading={false}
                 teams={props.teams}
-                action={{
+                action={props.status <= EventStatus.RegistrationEvent && {
                     type:TeamListItemAction.delete,
                     handler:(teamID) => props.onTeamDelete(teamID)
                 }}
