@@ -7,7 +7,8 @@ export enum ProfileSections {
 export enum ProfilePersonalSections {
     Information = 'information',
     Skills = 'skills',
-    Actions = 'actions'
+    Actions = 'actions',
+    Invites = 'invites'
 }
 
 export enum TeamSections {

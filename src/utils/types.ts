@@ -102,5 +102,18 @@ export interface Notification {
     meeting_id: number,
     team_id: number,
     isRead: boolean,
+}
 
+export interface Invite {
+    id: number,
+    invited_id: number,
+    assigned_id: number,
+    team_id: number,
+    state: InviteStatus
+}
+
+export enum InviteStatus {
+    Pending,
+    Rejected,
+    Accepted
 }
