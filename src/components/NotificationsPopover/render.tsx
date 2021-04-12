@@ -1,7 +1,7 @@
 import './style.scss';
 import {connect} from 'react-redux';
 import NotificationsModel from 'Models/NotificationsModel'
-import Network from '../../core/network';
+import Network from 'Core/network';
 import { RouteComponentProps } from 'react-router-dom';
 import * as React from 'react';
 import {useEffect, useState} from 'react';

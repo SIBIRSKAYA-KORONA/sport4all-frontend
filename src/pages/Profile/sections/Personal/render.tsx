@@ -9,6 +9,7 @@ import { ProfilePersonalSections } from 'Utils/enums';
 import ProfilePersonalSkills from 'Pages/Profile/sections/Personal/sections/Skills/render';
 import ProfilePersonalActions from 'Pages/Profile/sections/Personal/sections/Actions/render';
 import ProfilePersonalInfo from 'Pages/Profile/sections/Personal/sections/PersonalInfo/render';
+import ProfilePersonalInvites from 'Pages/Profile/sections/Personal/sections/Invites/render';
 
 
 interface IProps extends RouteComponentProps {
@@ -31,6 +32,9 @@ const PersonalProfileSection = (props:IProps):JSX.Element => {
                 <ProfilePersonalSkills canEdit={canEdit} profile={props.profile} {...props}/>
             </Tabs.TabPane>
             {canEdit && <>
+                <Tabs.TabPane tab='Приглашения' key={ProfilePersonalSections.Invites}>
+                    <ProfilePersonalInvites user={props.user}/>
+                </Tabs.TabPane>
                 <Tabs.TabPane tab='Информация' key={ProfilePersonalSections.Information}>
                     <ProfilePersonalInfo user={props.user}/>
                 </Tabs.TabPane>

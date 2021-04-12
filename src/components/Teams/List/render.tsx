@@ -32,7 +32,7 @@ const TeamList = (props:IProps):JSX.Element => {
                     onClick={() => onClick(key, props.action.handler.bind(null, teamID))}
                 >Добавить</Button>)
             }
-            break
+            break;
         case TeamListItemAction.delete:
             actionCreator = function action(teamID:number) {
                 const key = 'delete'+teamID;
