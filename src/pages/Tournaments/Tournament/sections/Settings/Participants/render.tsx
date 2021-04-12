@@ -1,13 +1,14 @@
 import * as React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
-import { Avatar, Button, Col, Divider, Empty, Input, List } from 'antd';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons/lib/icons';
+import { Col, Divider, Empty, Input } from 'antd';
 
 import { EventStatus, Team } from 'Utils/types';
-import { lettersForAvatar } from 'Utils/utils';
+import TeamList from 'Components/Teams/List/render';
+import { TeamListItemAction } from 'Components/Teams/List/interface';
 
 
-interface IProps {
+interface IProps extends RouteComponentProps {
     teams: Team[],
     status: EventStatus,
     isSearching: boolean,
@@ -22,27 +23,16 @@ function ParticipantsRender(props:IProps):JSX.Element {
         ? <Col>
             <Divider orientation={'left'}>Участники</Divider>
 
-            <List
-                itemLayout="horizontal"
-                dataSource={props.teams}
-                renderItem={team => (
-                    <List.Item
-                        actions={props.status <= EventStatus.RegistrationEvent
-                            ? [<Button
-                                danger
-                                key={'delete' + team.id}
-                                icon={<MinusOutlined/>}
-                                onClick={() => props.onTeamDelete(team.id)}
-                            >Удалить</Button>]
-                            : []}>
-                        <List.Item.Meta
-                            avatar={<Avatar src={team.avatar.url}>{lettersForAvatar(team.name)}</Avatar>}
-                            title={team.name}
-                            description={team.about}
-                        />
-                    </List.Item>
-                )}
+            <TeamList
+                {...props}
+                loading={false}
+                teams={props.teams}
+                action={{
+                    type:TeamListItemAction.delete,
+                    handler:(teamID) => props.onTeamDelete(teamID)
+                }}
             />
+
             {props.status <= EventStatus.RegistrationEvent && <>
                 <Divider orientation={'left'}>Добавить участника</Divider>
 
@@ -51,28 +41,14 @@ function ParticipantsRender(props:IProps):JSX.Element {
                     placeholder={'Введите название команды'}
                     onSearch={props.onSearchTeams}/>
 
-                <List
-                    itemLayout="horizontal"
-                    dataSource={props.searchResults}
-                    renderItem={team => (
-                        <List.Item
-                            actions={[
-                                <Button
-                                    key={'add' + team.id}
-                                    type="primary"
-                                    icon={<PlusOutlined/>}
-                                    onClick={() => props.onTeamAdd(team.id)}
-                                >
-                                    Добавить
-                                </Button>
-                            ]}>
-                            <List.Item.Meta
-                                avatar={<Avatar src={team.avatar.url}>{lettersForAvatar(team.name)}</Avatar>}
-                                title={team.name}
-                                description={team.about}
-                            />
-                        </List.Item>
-                    )}
+                <TeamList
+                    {...props}
+                    loading={props.isSearching}
+                    teams={props.searchResults}
+                    action={{
+                        type:TeamListItemAction.add,
+                        handler:(teamID) => props.onTeamAdd(teamID)
+                    }}
                 />
             </>}
         </Col>

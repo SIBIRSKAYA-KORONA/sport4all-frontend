@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { Divider, Spin, Button, Empty } from 'antd';
+import { Divider, Button, Space } from 'antd';
 
 import CONST from 'Constants';
 import { Team } from 'Utils/types';
@@ -34,26 +34,18 @@ const TeamsSubPage = (props:RouteComponentProps):JSX.Element => {
     }, [props.match.params['nickname']]);
 
     return (<>
-        <Divider orientation={'left'}>Тренирую</Divider>
-
-        <Button type='link'>
-            <Link to={CONST.PATHS.teams.create}>Создать</Link>
-        </Button>
-        {loadingOwnTeams
-            ? <Spin/>
-            : teamsOwned.length > 0
-                ? <TeamList teams={teamsOwned} {...props}/>
-                : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        }
+        <Divider orientation={'left'}>
+            <Space direction='horizontal' size='small' align='baseline'>
+                <h4>Тренирую</h4>
+                <Button type='link'>
+                    <Link to={CONST.PATHS.teams.create}>Создать</Link>
+                </Button>
+            </Space>
+        </Divider>
+        <TeamList teams={teamsOwned} action={null} loading={loadingOwnTeams} {...props}/>
 
         <Divider orientation={'left'}>Играю</Divider>
-
-        {loadingTeamsPlayed
-            ? <Spin/>
-            : teamsPlayed.length > 0
-                ? <TeamList teams={teamsPlayed} {...props} />
-                : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        }
+        <TeamList teams={teamsPlayed} action={null} loading={loadingTeamsPlayed} {...props} />
     </>);
 };
 

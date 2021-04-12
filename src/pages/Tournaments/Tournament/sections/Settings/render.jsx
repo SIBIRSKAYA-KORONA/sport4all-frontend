@@ -15,7 +15,7 @@ function TournamentSettingsRender(props) {
                 />
             </Tabs.TabPane>
             <Tabs.TabPane tab={'Участники'} key={'2'}>
-                <ParticipantsLogic
+                <ParticipantsLogic {...props}
                     tournamentData={props.tournamentData}
                     setTournamentData={props.setTournamentData}
                 />

@@ -35,13 +35,17 @@ const ProfilePage = (props:IProps):JSX.Element => {
     }
 
     async function reload() {
-        if (isCurrentUserProfile()) setProfile(props.user);
-        else UserModel.getProfileByNickname(props.match.params['nickname'])
-            .then((profile:User) => {
-                if (props.user && props.user.id === profile.id) setCanEdit(true);
-                setProfile(profile);
-            })
-            .catch(e => message.error(e));
+        if (isCurrentUserProfile()) {
+            setProfile(props.user);
+            setCanEdit(true);
+        } else {
+            UserModel.getProfileByNickname(props.match.params['nickname'])
+                .then((profile:User) => {
+                    if (props.user && props.user.id === profile.id) setCanEdit(true);
+                    setProfile(profile);
+                })
+                .catch(e => message.error(e));
+        }
     }
 
     React.useEffect(() => {
@@ -50,7 +54,10 @@ const ProfilePage = (props:IProps):JSX.Element => {
     }, [props.match.params['nickname']]);
 
     React.useEffect(() => {
-        if (isCurrentUserProfile()) setProfile(props.user);
+        if (isCurrentUserProfile()) {
+            setProfile(props.user);
+            setCanEdit(true);
+        }
     }, [props.user]);
 
     function redirect(key:ProfileSections) {

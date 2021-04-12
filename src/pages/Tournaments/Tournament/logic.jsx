@@ -43,7 +43,7 @@ function TournamentPage(props) {
 
     return (
         <TournamentPageRender
-            history={props.history}
+            {...props}
             isLoading={isLoading}
             isOwner={isOwner}
             tournamentData={tournamentData}

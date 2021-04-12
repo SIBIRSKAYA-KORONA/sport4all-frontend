@@ -87,6 +87,7 @@ const ProfileSettingsSkills = (props:IProps):JSX.Element => {
                 itemLayout="horizontal"
                 dataSource={skills}
                 renderItem={item => (<SkillListItem userId={props.user.id} reloadSkills={loadSkills} canEdit={props.canEdit} profile={props.profile} skill={item} {...props}/>)}
+                locale={{ emptyText:'Вы не добавили ни одного навыка' }}
             />
         </Space>
     }</div>);
