@@ -1,4 +1,4 @@
-import Network from '../core/network';
+import Network from 'Core/network';
 import {
     BadRequestError,
     ForbiddenError,

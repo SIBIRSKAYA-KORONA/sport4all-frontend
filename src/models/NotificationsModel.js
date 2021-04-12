@@ -1,4 +1,4 @@
-import Network from '../core/network';
+import Network from 'Core/network';
 import {BadRequestError, NotAuthorizedError, ServerError} from 'Utils/errors';
 import store from 'Store/store';
 import {deleteNotifications, markAsRead, setNotifications, addNotification} from 'Store/Notifications/NotificationsActions';
