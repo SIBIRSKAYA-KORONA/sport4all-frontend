@@ -1,45 +1,28 @@
 import './style.scss';
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { Button, Card, Carousel, Col, Empty, Image, Row, Space, Typography, Upload } from 'antd';
+import { Button, Col, Empty, Row, Space, Typography } from 'antd';
 const { Title } = Typography;
 
+import { EventStatus } from 'Utils/types';
 import { meetingResult } from 'Utils/structUtils';
 import BasePage from 'Components/BasePage/render';
-import { EventStatus, Meeting, Stats } from 'Utils/types';
 import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
 import MeetingSteps from 'Components/Meeting/Steps/render';
 import AddResultsModal from 'Pages/Meeting/modals/addResults';
 import MeetingTeamScore from 'Pages/Meeting/Components/TeamScore';
-import { PlusOutlined } from '@ant-design/icons';
 import MeetingPictureWall from 'Pages/Meeting/Components/PictureWall';
+import { IProps, visibleModals, visibleModalsKey } from './interface';
+import CONST from 'Constants';
 
-
-
-interface IProps extends RouteComponentProps {
-    meeting?: Meeting,
-    stats?: Array<Stats>,
-    handlePointsSave: () => void,
-    handleTeamsAdd: (values:[any]) => void,
-    changeStatus: () => void,
-    loadingMeeting: boolean,
-    canEdit: boolean,
-    reload: () => void
-}
-
-type visibleModals = {
-    stats: boolean,
-    addTeams: boolean
-};
-type visibleModalsKey = 'stats' | 'addTeams';
 
 const MeetingPageRender = (props:IProps):JSX.Element => {
     const [isModalVisible, setIsModalVisible] = React.useState({} as visibleModals);
 
-    const showModal = (key:visibleModalsKey) => { setIsModalVisible(prev => ({ ...prev, [key]:true })); };
-    const handleOk = (key:visibleModalsKey) => { setIsModalVisible(prev => ({ ...prev, [key]:false })); };
-    const handleCancel = (key:visibleModalsKey) => { setIsModalVisible(prev => ({ ...prev, [key]:false })); };
+    const showModal = (key:visibleModalsKey) => setIsModalVisible(prev => ({ ...prev, [key]:true }));
+    const handleOk = (key:visibleModalsKey) => setIsModalVisible(prev => ({ ...prev, [key]:false }));
+    const handleCancel = (key:visibleModalsKey) => setIsModalVisible(prev => ({ ...prev, [key]:false }));
 
     return (
         <BasePage {...props} loading={props.loadingMeeting}>{props.meeting
@@ -60,6 +43,9 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                                 <MeetingTeamScore team={props.meeting.teams[1]} stats={props.stats} {...props}/>
                             </Col>
                         </Row>
+                        <Button type='link'>
+                            <Link to={CONST.PATHS.tournaments.id(props.meeting.tournamentId)}>Турнир</Link>
+                        </Button>
                     </Space>
                 }
                 <Space direction='vertical' size='small'>

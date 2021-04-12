@@ -48,8 +48,9 @@ const TeamList = (props:IProps):JSX.Element => {
         }
     }
 
-    return (
-        <List
+    return (props.hideEmpty && !props.loading && props.teams?.length === 0
+        ? <></>
+        : <List
             loading={props.loading}
             style={{ margin: 10 }}
             itemLayout="horizontal"

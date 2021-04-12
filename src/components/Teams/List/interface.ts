@@ -9,6 +9,7 @@ export enum TeamListItemAction {
 export interface IProps extends RouteComponentProps {
     teams: Team[],
     loading: boolean,
+    hideEmpty?: boolean,
     action: {
         type: TeamListItemAction,
         handler: (teamID:number) => Promise<void>

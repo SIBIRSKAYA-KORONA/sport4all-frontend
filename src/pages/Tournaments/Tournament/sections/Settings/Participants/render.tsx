@@ -43,6 +43,7 @@ function ParticipantsRender(props:IProps):JSX.Element {
 
                 <TeamList
                     {...props}
+                    hideEmpty={true}
                     loading={props.isSearching}
                     teams={props.searchResults}
                     action={{
