@@ -34,7 +34,7 @@ const SignUpPage = (props:IProps):JSX.Element => {
         if (!user.password || !user.nickname) return; // todo:check error
         UserModel.signUp(user)
             .then(() => UserModel.getProfile())
-            .then(() => props.history.push(CONST.PATHS.profile.section(user.nickname, ProfileSections.Settings)))
+            .then(() => props.history.push(CONST.PATHS.profile.section(user.nickname, ProfileSections.Personal)))
             .catch(error => setError(error));
     }
     return (

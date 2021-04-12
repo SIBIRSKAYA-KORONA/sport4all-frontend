@@ -12,7 +12,7 @@ import HttpStatusCode from 'Utils/httpErrors';
 import ProfileModel from 'Models/ProfileModel';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import SkillListItem from 'Components/Skill/ListItem/render';
-import AddSkillsModal from 'Pages/Profile/sections/Settings/sections/Skills/AddSkillModal';
+import AddSkillsModal from 'Pages/Profile/sections/Personal/sections/Skills/AddSkillModal';
 
 
 interface IProps extends RouteComponentProps {
@@ -21,7 +21,7 @@ interface IProps extends RouteComponentProps {
     canEdit: boolean
 }
 
-const ProfileSettingsSkills = (props:IProps):JSX.Element => {
+const ProfilePersonalSkills = (props:IProps):JSX.Element => {
     const [skills, setSkills] = React.useState<Skill[]>([]);
     const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -97,4 +97,4 @@ const mapStateToProps = state => ({
     user: state.user.user
 });
 
-export default connect(mapStateToProps)(ProfileSettingsSkills);
+export default connect(mapStateToProps)(ProfilePersonalSkills);

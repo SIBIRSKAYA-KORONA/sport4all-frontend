@@ -6,7 +6,7 @@ import { Button, Space } from 'antd';
 import UserModel from 'Models/UserModel';
 
 
-const ProfileSettingsActions = (props:RouteComponentProps):JSX.Element => {
+const ProfilePersonalActions = (props:RouteComponentProps):JSX.Element => {
     const [logoutLoading, setLogoutLoading] = React.useState(false);
     const logout = () => {
         setLogoutLoading(true);
@@ -33,4 +33,4 @@ const ProfileSettingsActions = (props:RouteComponentProps):JSX.Element => {
     </Space>);
 };
 
-export default ProfileSettingsActions;
+export default ProfilePersonalActions;

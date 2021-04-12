@@ -1,11 +1,11 @@
 export enum ProfileSections {
     Teams = 'teams',
     Tournaments = 'tournaments',
-    Settings = 'settings'
+    Personal = 'personal'
 }
 
-export enum ProfileSettingsSections {
-    Personal = 'personal',
+export enum ProfilePersonalSections {
+    Information = 'information',
     Skills = 'skills',
     Actions = 'actions'
 }
