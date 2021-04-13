@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons';
 
 import CONST from 'Constants';
-import { Team, User } from 'Utils/types';
+import { Team } from 'Utils/types';
 import { InviteStatus } from 'Utils/enums';
 import { ButtonType } from 'antd/lib/button';
 import { lettersForAvatar } from 'Utils/utils';
@@ -20,10 +20,15 @@ import { getText, MapOfTextMeta, texts } from 'Components/Invite/List/ItemAction
 import { IProps, TeamListItemAction, TeamListItemActions } from 'Components/Teams/List/interface';
 
 
-// only pending invites
 const TeamList = (props:IProps):JSX.Element => {
     const [loadings, setLoadings] = React.useState({});
-    const [replied, setReplied] = React.useState<MapOfTextMeta>({});
+    const [replied, setReplied] = React.useState<MapOfTextMeta>(parseInvitesToTextMeta());
+
+    function parseInvitesToTextMeta():MapOfTextMeta {
+        return props.invites
+            ? props.invites.reduce((acc, curr) => ({ ...acc, [curr.team_id]:texts[curr.state] }), {})
+            : {};
+    }
 
     async function onClick(key:string, handler:() => Promise<void>) {
         setLoadings(prev => ({ ...prev, [key]:true }));

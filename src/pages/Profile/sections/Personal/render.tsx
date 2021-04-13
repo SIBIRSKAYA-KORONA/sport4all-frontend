@@ -33,7 +33,7 @@ const PersonalProfileSection = (props:IProps):JSX.Element => {
             </Tabs.TabPane>
             {canEdit && <>
                 <Tabs.TabPane tab='Приглашения' key={ProfilePersonalSections.Invites}>
-                    <ProfilePersonalInvites user={props.user}/>
+                    <ProfilePersonalInvites {...props} user={props.user}/>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab='Информация' key={ProfilePersonalSections.Information}>
                     <ProfilePersonalInfo user={props.user}/>

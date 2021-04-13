@@ -1,10 +1,10 @@
 import Network from 'Core/network';
 import HttpStatusCode from 'Utils/httpErrors';
-import { Invite, Team, User } from 'Utils/types';
+import { Invite, InviteForUser, Team, User } from 'Utils/types';
 import { InviteStatus } from 'Utils/enums';
 
 class InvitesModel {
-    static async getInvites():Promise<HttpStatusCode | Invite[]> {
+    static async getInvites():Promise<HttpStatusCode | InviteForUser[]> {
         return Network.fetchGet(Network.paths.invites.base)
             .then(response => {
                 if (response.status >= 400) throw response.status;
@@ -47,6 +47,13 @@ class InvitesModel {
             type:           'indirect'
         }
         return Network.fetchPost(Network.paths.invites.base, body)
+            .then(res => {
+                if (res.status >= 400) throw res.status;
+            });
+    }
+
+    static async replyToInvite(inviteID:number, reply:InviteStatus.Rejected | InviteStatus.Accepted):Promise<HttpStatusCode|void> {
+        return Network.fetchPost(Network.paths.invites.reply(inviteID), { state:reply })
             .then(res => {
                 if (res.status >= 400) throw res.status;
             });

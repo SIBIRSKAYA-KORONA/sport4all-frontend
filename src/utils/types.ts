@@ -111,5 +111,10 @@ export interface Invite {
     invited_id: number,
     assigned_id: number,
     team_id: number,
-    state: InviteStatus
+    state: InviteStatus,
+    type: 'direct' | 'indirect'
+}
+
+export interface InviteForUser extends Invite {
+    team: Team
 }

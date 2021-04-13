@@ -40,6 +40,7 @@ export default class Network {
         invites: {
             base: '/invites' as s,
             forTeam: (tid:number, type:InviteStatus):s => `/invites/teams/${tid}?state=${getInviteState(type)}`,
+            reply: (iid:number):s => `/invites/${iid}`
         }
     };
 

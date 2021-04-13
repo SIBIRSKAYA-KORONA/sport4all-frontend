@@ -1,94 +1,78 @@
 import * as React from 'react';
 
-import { List, message, Typography } from 'antd';
-const { Text } = Typography;
+import { Divider, Empty, message, Spin } from 'antd';
 
 import { InviteStatus } from 'Utils/enums';
-import { Invite, User } from 'Utils/types';
 import InvitesModel from 'Models/InvitesModel';
-import InviteAcceptButton from 'Pages/Profile/sections/Personal/sections/Invites/Components/AcceptButton';
-import InviteRejectButton from 'Pages/Profile/sections/Personal/sections/Invites/Components/RejectButton';
+import TeamList from 'Components/Teams/List/render';
+import { findPendingInvite } from 'Utils/structUtils';
+import { RouteComponentProps } from 'react-router-dom';
+import { Invite, InviteForUser, Team, User } from 'Utils/types';
+import { TeamListItemActions } from 'Components/Teams/List/interface';
 
 
-interface IProps {
+interface IProps extends RouteComponentProps {
     user: User
 }
 
 const ProfilePersonalInvites = (props:IProps):JSX.Element => {
-    const [loading, setLoading] = React.useState(false);
-    const [invites, setInvites] = React.useState([]);
-    const [loadings, setLoadings] = React.useState({});
+    const [loading, setLoading] = React.useState(true);
+    const [invitesToMe, setInvitesToMe] = React.useState<InviteForUser[]>([]);
+    const [invitesFromMe, setInvitesFromMe] = React.useState<InviteForUser[]>([]);
 
-    async function acceptInvite() {
-        return;
-    }
-
-    async function rejectInvite() {
-        return;
-    }
-
-    function onClick(key:string, handler:()=>Promise<void>) {
-        setLoadings(prev => ({ ...prev, [key]:true }));
-        handler().finally(() => setLoadings(prev => ({ ...prev, [key]:false })));
+    async function replyToInvite(invite:Invite|undefined, state:InviteStatus.Accepted | InviteStatus.Rejected):Promise<void> {
+        if (!invite) {
+            message.error('Приглашение не найдено');
+            return;
+        }
+        return InvitesModel.replyToInvite(invite.id, state)
+            .then(() => { message.success('Приглашение отправлено') })
+            .catch(e => { message.error(e.toString()) });
     }
 
     React.useEffect(() => {
         InvitesModel.getInvites()
-            .then((invites:Invite[]) => setInvites(invites))
+            .then((invites:InviteForUser[]) => {
+                setInvitesFromMe(invites.filter(invite => invite.type === 'indirect'))
+                setInvitesToMe(invites.filter(invite => invite.type === 'direct'))
+            })
             .catch(e => { message.error(e) })
             .finally(() => setLoading(false));
     }, []);
 
-    function createAction(status:InviteStatus) {
-        const actions = [];
-        switch (status) {
-        case InviteStatus.Pending:
-            {
-                const key = 'accept'+new Date().toString();
-                actions.push(
-                    <InviteAcceptButton
-                        key={key}
-                        loading={loadings[key]}
-                        onClick={() => onClick(key, acceptInvite.bind(this, key))}
-                    />);
-            }
-            {
-                const key = 'reject'+new Date().toString();
-                actions.push(
-                    <InviteRejectButton
-                        key={key}
-                        loading={loadings[key]}
-                        onClick={() => onClick(key, rejectInvite.bind(this, key))}
-                    />);
-            }
-            break;
-        case InviteStatus.Accepted: actions.push(<Text type='success'>Принято</Text>); break;
-        case InviteStatus.Rejected: actions.push(<Text type='secondary'>Отклонено</Text>); break;
-        default: actions.push(<></>);
-        }
-        return actions;
-    }
-
-    return (
-        <List
-            loading={loading}
-            style={{ margin: 10 }}
-            itemLayout="horizontal"
-            dataSource={invites}
-            locale={{ emptyText:'Нет приглашений' }}
-            renderItem={item => (
-                <List.Item
-                    style={{ paddingLeft: 10 }}
-                    className={'row'}
-                    actions={createAction(item.status)}
-                >
-                    <List.Item.Meta
-                        title={'От кого-то'}
-                        description={'Вам выслали приглашение'}
+    return (loading
+        ? <Spin/>
+        : invitesToMe.length + invitesFromMe.length > 0
+            ? <>
+                {invitesToMe.length > 0 && <>
+                    <Divider orientation={'left'}>Вам</Divider>
+                    <TeamList
+                        {...props}
+                        teams={invitesToMe.map(invite => invite.team)}
+                        invites={invitesToMe}
+                        loading={false}
+                        actions={[{
+                            type:       TeamListItemActions.accept,
+                            handler:    (team:Team) => replyToInvite(findPendingInvite(invitesToMe, team), InviteStatus.Accepted)
+                        },{
+                            type:       TeamListItemActions.reject,
+                            handler:    (team:Team) => replyToInvite(findPendingInvite(invitesToMe, team), InviteStatus.Rejected)
+                        }
+                        ]}
                     />
-                </List.Item>
-            )}
-        />
+                </>}
+                <Divider orientation={'left'}>От вас</Divider>
+                <TeamList
+                    {...props}
+                    teams={invitesFromMe.map(invite => invite.team)}
+                    invites={invitesFromMe}
+                    loading={false}
+                    actions={[]}
+                />
+            </>
+            : <Empty description={
+                <span>Приглашений нет<br/>Отправьте заявку в команду или<br/>подождите пока кто-нибудь пригласит вас</span>
+            }/>
     );
 };
 

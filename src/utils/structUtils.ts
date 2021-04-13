@@ -1,5 +1,6 @@
-import { EventStatus, Stats, Team, User } from 'Utils/types';
+import { EventStatus, Invite, Stats, Team, User } from 'Utils/types';
 import { lettersForAvatar } from 'Utils/utils';
+import { InviteStatus } from 'Utils/enums';
 
 // Statuses
 export function getStatusShortTitle(status: EventStatus): string {
@@ -51,4 +52,9 @@ export function lettersForUserAvatar(user: User):string {
 export function allEventStatuses(withError: boolean): Array<EventStatus> {
     const all = Object.keys(EventStatus).filter(key => isNaN(+key) && +key !== EventStatus.UnknownEvent).map(key => EventStatus[key]);
     return withError ? all : all.filter(s => s !== EventStatus.UnknownEvent);
+}
+
+// Invite
+export function findPendingInvite(invites:Invite[], team:Team):Invite|undefined {
+    return invites.find(invite => invite.team_id === team.id && invite.state === InviteStatus.Pending);
 }

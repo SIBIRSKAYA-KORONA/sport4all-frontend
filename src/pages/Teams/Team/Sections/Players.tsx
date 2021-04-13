@@ -47,6 +47,10 @@ function TeamPlayers(props: IProps): JSX.Element {
             .then(() => props.reload());
     }
 
+    // async function onReplyToPlayer() {
+    //     return InvitesModel.
+    // }
+
     // render
     return (
         <Col>
@@ -65,7 +69,19 @@ function TeamPlayers(props: IProps): JSX.Element {
             {props.canEdit && <>
                 {invites.length > 0 && <>
                     <Divider orientation={'left'}>Приглашения</Divider>
-
+                    <TeamPlayersList
+                        {...props}
+                        players={[]}
+                        loading={false}
+                        actions={[]}
+                        // actions={[{
+                        //     type: TeamPlayerListItemActions.accept,
+                        //     handler: onPlayerInvite,
+                        // },{
+                        //     type: TeamPlayerListItemActions.reject,
+                        //     handler: onPlayerInvite,
+                        // }]}
+                    />
                 </>}
 
                 <Divider orientation={'left'}>Добавить игроков</Divider>
