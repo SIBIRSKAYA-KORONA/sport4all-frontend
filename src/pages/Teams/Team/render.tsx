@@ -36,9 +36,9 @@ const TeamPageRender = (props: IProps):JSX.Element => {
             <Tabs className='full-width'>
                 <Tabs.TabPane tab='Игроки' key={TeamSections.Players}>
                     <TeamPlayers {...props}
+                        team={props.team}
                         reload={props.reload}
                         canEdit={props.canEdit}
-                        players={props.team.players}
                     />
                 </Tabs.TabPane>
                 {props.canEdit && props.team &&

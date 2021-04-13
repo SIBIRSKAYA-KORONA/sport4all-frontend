@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { Col, Avatar, Button, List, Divider, Input, message } from 'antd';
+import { Col, Divider, Input, message } from 'antd';
 
-import { User } from 'Utils/types';
+import { Team, User } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
-import { lettersForAvatar } from 'Utils/utils';
+import TeamPlayersList from 'Components/Teams/PlayersList/render';
+import { TeamPlayerListItemActions } from 'Components/Teams/PlayersList/interface';
+import InvitesModel from 'Models/InvitesModel';
 
 
 interface IProps extends RouteComponentProps {
-    players: Array<User>,
+    team: Team,
     canEdit: boolean,
     reload: () => void,
 }
@@ -21,12 +22,12 @@ function TeamPlayers(props: IProps): JSX.Element {
     const [playersToAdd, setPlayersToAdd] = React.useState<Array<User>>([]);
 
     // Handlers
-    const onPlayerDelete = (pid) => {
+    async function onPlayerDelete(player:User) {
         if (!confirm('Уверены, что хотите исключить игрока из команды?')) return;
-        TeamModel.instance.removePlayerFromTheTeam(teamId, pid)
+        TeamModel.instance.removePlayerFromTheTeam(teamId, player.id)
             .then(() => props.reload())
-            .catch(e => message.error(e));
-    };
+            .catch(e => { message.error(e); });
+    }
 
     const onPlayersSearch = (searchText) => {
         if (!searchText) return;
@@ -35,11 +36,9 @@ function TeamPlayers(props: IProps): JSX.Element {
             .finally(() => setLoadingPlayers(false));
     };
 
-    const onPlayerAdd = async (pid:number) => {
-        return TeamModel.instance.addPlayerToTheTeam(teamId, pid)
-            .then(() => setPlayersToAdd(playersToAdd.filter(player => player.id !== pid)))
-            .then(() => props.reload())
-            .catch(e => message.error(e));
+    async function onPlayerInvite(player:User) {
+        return InvitesModel.inviteToTheTeam(props.team, player)
+            .then(() => props.reload());
     }
 
     // render
@@ -47,28 +46,14 @@ function TeamPlayers(props: IProps): JSX.Element {
         <Col>
             <Divider orientation={'left'}>Игроки</Divider>
 
-            <List
-                itemLayout="horizontal"
-                dataSource={props.players}
-                renderItem={player => (
-                    <List.Item
-                        actions={props.canEdit ? [
-                            <Button
-                                danger
-                                key={'delete' + player.id}
-                                icon={<MinusOutlined/>}
-                                onClick={() => onPlayerDelete(player.id)}
-                            >
-                                Исключить
-                            </Button>
-                        ] : []}>
-                        <List.Item.Meta
-                            avatar={<Avatar>{lettersForAvatar(player.name)}</Avatar>}
-                            title={`${player.name} ${player.surname}`}
-                            description={'@'+ player.nickname}
-                        />
-                    </List.Item>
-                )}
+            <TeamPlayersList
+                {...props}
+                players={props.team.players}
+                loading={false}
+                actions={props.canEdit && [{
+                    type: TeamPlayerListItemActions.remove,
+                    handler: onPlayerDelete,
+                }]}
             />
 
             {props.canEdit && <>
@@ -79,28 +64,15 @@ function TeamPlayers(props: IProps): JSX.Element {
                     placeholder={'Введите никнейм игрока'}
                     onSearch={onPlayersSearch}/>
 
-                <List
-                    itemLayout="horizontal"
-                    dataSource={playersToAdd}
-                    renderItem={player => (
-                        <List.Item
-                            actions={[
-                                <Button
-                                    key={'add' + player.id}
-                                    type="primary"
-                                    icon={<PlusOutlined/>}
-                                    onClick={() => onPlayerAdd(player.id)}
-                                >
-                                    Добавить
-                                </Button>
-                            ]}>
-                            <List.Item.Meta
-                                avatar={<Avatar>{lettersForAvatar(player.name)}</Avatar>}
-                                title={`${player.name} ${player.surname}`}
-                                description={'@'+ player.nickname}
-                            />
-                        </List.Item>
-                    )}
+                <TeamPlayersList
+                    {...props}
+                    players={playersToAdd}
+                    loading={loadingPlayers}
+                    hideEmpty
+                    actions={[{
+                        type: TeamPlayerListItemActions.invite,
+                        handler: onPlayerInvite,
+                    }]}
                 />
             </>}
         </Col>
