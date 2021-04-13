@@ -55,6 +55,10 @@ export function allEventStatuses(withError: boolean): Array<EventStatus> {
 }
 
 // Invite
-export function findPendingInvite(invites:Invite[], team:Team):Invite|undefined {
+export function findPendingTeamInvite(invites:Invite[], team:Team):Invite|undefined {
     return invites.find(invite => invite.team_id === team.id && invite.state === InviteStatus.Pending);
+}
+
+export function findPendingUserInvite(invites:Invite[], user:User):Invite|undefined {
+    return invites.find(invite => invite.invited_id === user.id && invite.state === InviteStatus.Pending);
 }

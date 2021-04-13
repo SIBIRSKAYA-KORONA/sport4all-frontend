@@ -5,7 +5,7 @@ import { Divider, Empty, message, Spin } from 'antd';
 import { InviteStatus } from 'Utils/enums';
 import InvitesModel from 'Models/InvitesModel';
 import TeamList from 'Components/Teams/List/render';
-import { findPendingInvite } from 'Utils/structUtils';
+import { findPendingTeamInvite } from 'Utils/structUtils';
 import { RouteComponentProps } from 'react-router-dom';
 import { Invite, InviteForUser, Team, User } from 'Utils/types';
 import { TeamListItemActions } from 'Components/Teams/List/interface';
@@ -53,22 +53,24 @@ const ProfilePersonalInvites = (props:IProps):JSX.Element => {
                         loading={false}
                         actions={[{
                             type:       TeamListItemActions.accept,
-                            handler:    (team:Team) => replyToInvite(findPendingInvite(invitesToMe, team), InviteStatus.Accepted)
+                            handler:    (team:Team) => replyToInvite(findPendingTeamInvite(invitesToMe, team), InviteStatus.Accepted)
                         },{
                             type:       TeamListItemActions.reject,
-                            handler:    (team:Team) => replyToInvite(findPendingInvite(invitesToMe, team), InviteStatus.Rejected)
+                            handler:    (team:Team) => replyToInvite(findPendingTeamInvite(invitesToMe, team), InviteStatus.Rejected)
                         }
                         ]}
                     />
                 </>}
-                <Divider orientation={'left'}>От вас</Divider>
-                <TeamList
-                    {...props}
-                    teams={invitesFromMe.map(invite => invite.team)}
-                    invites={invitesFromMe}
-                    loading={false}
-                    actions={[]}
-                />
+                {invitesFromMe.length > 0 && <>
+                    <Divider orientation={'left'}>От вас</Divider>
+                    <TeamList
+                        {...props}
+                        teams={invitesFromMe.map(invite => invite.team)}
+                        invites={invitesFromMe}
+                        loading={false}
+                        actions={[]}
+                    />
+                </>}
             </>
             : <Empty description={
                 <span>Приглашений нет<br/>Отправьте заявку в команду или<br/>подождите пока кто-нибудь пригласит вас</span>

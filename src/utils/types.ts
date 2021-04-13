@@ -118,3 +118,7 @@ export interface Invite {
 export interface InviteForUser extends Invite {
     team: Team
 }
+
+export interface InviteFromTeam extends Invite {
+    user: User
+}

@@ -27,8 +27,9 @@ const TeamPlayersList = (props:IProps):JSX.Element => {
     const [invited, setInvited] = React.useState<MapOfTextMeta>(parseInvitesToTextMeta());
 
     function parseInvitesToTextMeta():MapOfTextMeta {
+        const check = props.actions && props.actions.some(action => [TeamPlayerListItemActions.accept, TeamPlayerListItemActions.reject].includes(action.type));
         return props.invites
-            ? props.invites.reduce((acc, curr) => ({ ...acc, [curr.invited_id]:texts[curr.state] }), {})
+            ? props.invites.reduce((acc, curr) => ((curr.state === InviteStatus.Pending && check) ? acc : { ...acc, [curr.invited_id]:texts[curr.state] }), {})
             : {};
     }
 
@@ -61,7 +62,7 @@ const TeamPlayersList = (props:IProps):JSX.Element => {
         },
         [TeamPlayerListItemActions.reject]: {
             key:        'reject',
-            title:      'Отказать',
+            title:      'Отклонить',
             icon:       <MinusCircleOutlined/>,
             otherProps: { danger:true },
             afterClick: afterClickCreator(InviteStatus.Rejected)

@@ -2,7 +2,7 @@ import './style.scss';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Avatar, List, Button } from 'antd';
+import { Avatar, Button, List } from 'antd';
 import {
     CheckCircleOutlined,
     MinusCircleOutlined,
@@ -25,8 +25,9 @@ const TeamList = (props:IProps):JSX.Element => {
     const [replied, setReplied] = React.useState<MapOfTextMeta>(parseInvitesToTextMeta());
 
     function parseInvitesToTextMeta():MapOfTextMeta {
+        const check = props.actions && props.actions.some(action => [TeamListItemActions.accept, TeamListItemActions.reject].includes(action.type));
         return props.invites
-            ? props.invites.reduce((acc, curr) => ({ ...acc, [curr.team_id]:texts[curr.state] }), {})
+            ? props.invites.reduce((acc, curr) => ((curr.state === InviteStatus.Pending && check) ? acc : { ...acc, [curr.team_id]:texts[curr.state] }), {})
             : {};
     }
 
@@ -72,7 +73,7 @@ const TeamList = (props:IProps):JSX.Element => {
         },
         [TeamListItemActions.reject]: {
             key:        'reject',
-            title:      'Отказать',
+            title:      'Отклонить',
             icon:       <MinusCircleOutlined/>,
             otherProps: { danger:true },
             afterClick: afterClickCreator(InviteStatus.Rejected)

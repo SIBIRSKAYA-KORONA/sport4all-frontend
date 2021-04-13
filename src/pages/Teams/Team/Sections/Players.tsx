@@ -3,12 +3,13 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Col, Divider, Input, message } from 'antd';
 
-import { Invite, Team, User } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
+import { InviteStatus } from 'Utils/enums';
+import InvitesModel from 'Models/InvitesModel';
+import { findPendingUserInvite } from 'Utils/structUtils';
+import { Invite, InviteFromTeam, Team, User } from 'Utils/types';
 import TeamPlayersList from 'Components/Teams/PlayersList/render';
 import { TeamPlayerListItemActions } from 'Components/Teams/PlayersList/interface';
-import InvitesModel from 'Models/InvitesModel';
-import { InviteStatus } from 'Utils/enums';
 
 
 interface IProps extends RouteComponentProps {
@@ -20,11 +21,11 @@ interface IProps extends RouteComponentProps {
 function TeamPlayers(props: IProps): JSX.Element {
     const [loadingPlayers, setLoadingPlayers] = React.useState(false);
     const [playersToAdd, setPlayersToAdd] = React.useState<Array<User>>([]);
-    const [invites, setInvites] = React.useState<Invite[]>([]);
+    const [invites, setInvites] = React.useState<InviteFromTeam[]>([]);
 
     React.useEffect(() => {
         InvitesModel.loadInvitesToTheTeam(props.team, InviteStatus.Pending)
-            .then((invites: Invite[]) => setInvites(invites));
+            .then((invites: InviteFromTeam[]) => setInvites(invites));
     }, []);
 
     // Handlers
@@ -47,9 +48,20 @@ function TeamPlayers(props: IProps): JSX.Element {
             .then(() => props.reload());
     }
 
-    // async function onReplyToPlayer() {
-    //     return InvitesModel.
-    // }
+    async function replyToInvite(invite:Invite|undefined, state:InviteStatus.Accepted | InviteStatus.Rejected):Promise<void> {
+        if (!invite) {
+            message.error('Приглашение не найдено');
+            return;
+        }
+        return InvitesModel.replyToInvite(invite.id, state)
+            .then(() => {
+                if (state === InviteStatus.Accepted) {
+                    props.reload();
+                    setInvites(invites.filter(i => i.id !== invite.id))
+                }
+            })
+            .catch(e => { message.error(e.toString()) });
+    }
 
     // render
     return (
@@ -71,16 +83,16 @@ function TeamPlayers(props: IProps): JSX.Element {
                     <Divider orientation={'left'}>Приглашения</Divider>
                     <TeamPlayersList
                         {...props}
-                        players={[]}
+                        players={invites.map(i => i.user)}
+                        invites={invites}
                         loading={false}
-                        actions={[]}
-                        // actions={[{
-                        //     type: TeamPlayerListItemActions.accept,
-                        //     handler: onPlayerInvite,
-                        // },{
-                        //     type: TeamPlayerListItemActions.reject,
-                        //     handler: onPlayerInvite,
-                        // }]}
+                        actions={[{
+                            type: TeamPlayerListItemActions.accept,
+                            handler: (player:User) => replyToInvite(findPendingUserInvite(invites, player), InviteStatus.Accepted),
+                        },{
+                            type: TeamPlayerListItemActions.reject,
+                            handler: (player:User) => replyToInvite(findPendingUserInvite(invites, player), InviteStatus.Accepted),
+                        }]}
                     />
                 </>}
 
