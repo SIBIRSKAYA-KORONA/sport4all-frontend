@@ -20,9 +20,9 @@ function ParticipantsLogic(props) {
         }
     }
 
-    const addTeam = async (teamId) => {
+    const addTeam = async (team) => {
         try {
-            await TournamentModel.addTeam(props.tournamentData.id, teamId);
+            await TournamentModel.addTeam(props.tournamentData.id, team.id);
         } catch (e) {
             console.error(e);
             message.error('Не удалось добавить команду');
@@ -30,12 +30,12 @@ function ParticipantsLogic(props) {
         }
 
         await updateTeams();
-        setSearchResults(searchResults.filter((team)=>team.id !== teamId))
+        setSearchResults(searchResults.filter((team)=>team.id !== team.id))
     }
 
-    const deleteTeam = async (teamId) => {
+    const deleteTeam = async (team) => {
         try {
-            await TournamentModel.removeTeam(props.tournamentData.id, teamId);
+            await TournamentModel.removeTeam(props.tournamentData.id, team.id);
         } catch (e) {
             console.error(e);
             message.error('Не удалось убрать команду');

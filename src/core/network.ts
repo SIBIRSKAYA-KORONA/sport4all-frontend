@@ -2,6 +2,14 @@ import { InviteStatus } from 'Utils/enums';
 
 type s = string;
 
+function getInviteState(type:InviteStatus):string {
+    switch (type) {
+    case InviteStatus.Accepted: return 'accepted';
+    case InviteStatus.Pending:  return 'opened';
+    case InviteStatus.Rejected: return 'rejected';
+    }
+}
+
 export default class Network {
     static url:s = 'https://sport4all.tech/api';
     static paths = {
@@ -31,15 +39,7 @@ export default class Network {
         notifications: '/messages' as s,
         invites: {
             base: '/invites' as s,
-            forTeam: (tid:number, type:InviteStatus):s => {
-                let state = '';
-                switch (type) {
-                case InviteStatus.Accepted: state = 'accepted'; break;
-                case InviteStatus.Pending:  state = 'opened';   break;
-                case InviteStatus.Rejected: state = 'rejected'; break;
-                }
-                return `/invites/team/${tid}?state=${state}`;
-            }
+            forTeam: (tid:number, type:InviteStatus):s => `/invites/teams/${tid}?state=${getInviteState(type)}`,
         }
     };
 

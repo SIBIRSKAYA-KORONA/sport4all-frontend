@@ -12,7 +12,8 @@ class InvitesModel {
             });
     }
 
-    static async inviteToTheTeam(team:Team, newPlayer:User):Promise<HttpStatusCode|void> {
+    // from team to user
+    static async fromTeamToPlayer(team:Team, newPlayer:User):Promise<HttpStatusCode|void> {
         const body = {
             creator_id:     team.ownerId,
             assigned_id:    newPlayer.id,
@@ -32,6 +33,22 @@ class InvitesModel {
             .then(res => {
                 if (res.status >= 400) throw res.status;
                 return res.json();
+            });
+    }
+
+    // from user to the team
+    static async fromPlayerToTeam(team:Team, newPlayer:User):Promise<HttpStatusCode|void> {
+        const body = {
+            creator_id:     newPlayer.id,
+            assigned_id:    team.ownerId,
+            invited_id:     newPlayer.id,
+            state:          0,
+            team_id:        team.id,
+            type:           'indirect'
+        }
+        return Network.fetchPost(Network.paths.invites.base, body)
+            .then(res => {
+                if (res.status >= 400) throw res.status;
             });
     }
 }

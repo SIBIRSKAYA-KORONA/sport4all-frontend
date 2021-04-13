@@ -43,7 +43,7 @@ function TeamPlayers(props: IProps): JSX.Element {
     };
 
     async function onPlayerInvite(player:User) {
-        return InvitesModel.inviteToTheTeam(props.team, player)
+        return InvitesModel.fromTeamToPlayer(props.team, player)
             .then(() => props.reload());
     }
 
