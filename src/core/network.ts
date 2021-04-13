@@ -1,3 +1,5 @@
+import { InviteStatus } from 'Utils/enums';
+
 type s = string;
 
 export default class Network {
@@ -28,7 +30,16 @@ export default class Network {
         sports: '/sports' as s,
         notifications: '/messages' as s,
         invites: {
-            base: '/invites' as s
+            base: '/invites' as s,
+            forTeam: (tid:number, type:InviteStatus):s => {
+                let state = '';
+                switch (type) {
+                case InviteStatus.Accepted: state = 'accepted'; break;
+                case InviteStatus.Pending:  state = 'opened';   break;
+                case InviteStatus.Rejected: state = 'rejected'; break;
+                }
+                return `/invites/team/${tid}?state=${state}`;
+            }
         }
     };
 

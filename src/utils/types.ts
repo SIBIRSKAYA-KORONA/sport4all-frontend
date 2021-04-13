@@ -1,3 +1,5 @@
+import { InviteStatus } from 'Utils/enums';
+
 export interface Team {
     id: number,
     name: string,
@@ -110,10 +112,4 @@ export interface Invite {
     assigned_id: number,
     team_id: number,
     state: InviteStatus
-}
-
-export enum InviteStatus {
-    Pending,
-    Rejected,
-    Accepted
 }

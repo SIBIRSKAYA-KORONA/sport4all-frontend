@@ -3,7 +3,8 @@ import * as React from 'react';
 import { List, message, Typography } from 'antd';
 const { Text } = Typography;
 
-import { Invite, InviteStatus, User } from 'Utils/types';
+import { InviteStatus } from 'Utils/enums';
+import { Invite, User } from 'Utils/types';
 import InvitesModel from 'Models/InvitesModel';
 import InviteAcceptButton from 'Pages/Profile/sections/Personal/sections/Invites/Components/AcceptButton';
 import InviteRejectButton from 'Pages/Profile/sections/Personal/sections/Invites/Components/RejectButton';

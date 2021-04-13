@@ -15,3 +15,9 @@ export enum TeamSections {
     Players = 'players',
     PublicInfo = 'public-info'
 }
+
+export enum InviteStatus {
+    Pending,
+    Rejected,
+    Accepted
+}

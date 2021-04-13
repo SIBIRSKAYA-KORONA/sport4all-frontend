@@ -3,11 +3,12 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Col, Divider, Input, message } from 'antd';
 
-import { Team, User } from 'Utils/types';
+import { Invite, Team, User } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
 import TeamPlayersList from 'Components/Teams/PlayersList/render';
 import { TeamPlayerListItemActions } from 'Components/Teams/PlayersList/interface';
 import InvitesModel from 'Models/InvitesModel';
+import { InviteStatus } from 'Utils/enums';
 
 
 interface IProps extends RouteComponentProps {
@@ -17,21 +18,26 @@ interface IProps extends RouteComponentProps {
 }
 
 function TeamPlayers(props: IProps): JSX.Element {
-    const teamId = props.match.params['id'];
     const [loadingPlayers, setLoadingPlayers] = React.useState(false);
     const [playersToAdd, setPlayersToAdd] = React.useState<Array<User>>([]);
+    const [invites, setInvites] = React.useState<Invite[]>([]);
+
+    React.useEffect(() => {
+        InvitesModel.loadInvitesToTheTeam(props.team, InviteStatus.Pending)
+            .then((invites: Invite[]) => setInvites(invites));
+    }, []);
 
     // Handlers
     async function onPlayerDelete(player:User) {
         if (!confirm('Уверены, что хотите исключить игрока из команды?')) return;
-        TeamModel.instance.removePlayerFromTheTeam(teamId, player.id)
+        TeamModel.instance.removePlayerFromTheTeam(props.team.id, player.id)
             .then(() => props.reload())
             .catch(e => { message.error(e); });
     }
 
     const onPlayersSearch = (searchText) => {
         if (!searchText) return;
-        TeamModel.instance.loadPlayersToAdd(teamId, searchText, 5)
+        TeamModel.instance.loadPlayersToAdd(props.team.id, searchText, 5)
             .then(players => setPlayersToAdd(players))
             .finally(() => setLoadingPlayers(false));
     };
@@ -57,6 +63,11 @@ function TeamPlayers(props: IProps): JSX.Element {
             />
 
             {props.canEdit && <>
+                {invites.length > 0 && <>
+                    <Divider orientation={'left'}>Приглашения</Divider>
+
+                </>}
+
                 <Divider orientation={'left'}>Добавить игроков</Divider>
 
                 <Input.Search

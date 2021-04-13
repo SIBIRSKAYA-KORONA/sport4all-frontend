@@ -12,28 +12,34 @@ import {
 
 import CONST from 'Constants';
 import { User } from 'Utils/types';
+import { InviteStatus } from 'Utils/enums';
 import { lettersForUserAvatar } from 'Utils/structUtils';
 import {
     IProps,
     TeamPlayerListItemAction,
     TeamPlayerListItemActions,
-    TeamPlayerListItemTexts,
 } from './interface';
-import { getText, TextMeta, texts } from 'Components/Invite/List/ItemActions';
+import { getText, MapOfTextMeta, texts } from 'Components/Invite/List/ItemActions';
 
 
 const TeamPlayersList = (props:IProps):JSX.Element => {
     const [loadings, setLoadings] = React.useState({});
-    const [clicked, setClicked] = React.useState<{ [key:number]:TextMeta }>({});
+    const [invited, setInvited] = React.useState<MapOfTextMeta>(parseInvitesToTextMeta());
+
+    function parseInvitesToTextMeta():MapOfTextMeta {
+        return props.invites
+            ? props.invites.reduce((acc, curr) => ({ ...acc, [curr.invited_id]:texts[curr.state] }), {})
+            : {};
+    }
 
     async function onClick(key:string, handler:() => Promise<void>) {
         setLoadings(prev => ({ ...prev, [key]:true }));
         return handler().finally(() => setLoadings(prev => ({ ...prev, [key]:false })));
     }
 
-    function afterClickCreator(type:TeamPlayerListItemTexts) {
+    function afterClickCreator(type:InviteStatus) {
         return function(playerID:number) {
-            setClicked(prev => ({ ...prev, [playerID]:texts[type] }));
+            setInvited(prev => ({ ...prev, [playerID]:texts[type] }));
         }
     }
 
@@ -44,21 +50,21 @@ const TeamPlayersList = (props:IProps):JSX.Element => {
             title:      'Пригласить',
             icon:       <PlusOutlined/>,
             otherProps: { type:'primary' as ButtonType },
-            afterClick: afterClickCreator(TeamPlayerListItemTexts.pending)
+            afterClick: afterClickCreator(InviteStatus.Pending)
         },
         [TeamPlayerListItemActions.accept]: {
             key:        'accept',
             title:      'Принять',
             icon:       <CheckCircleOutlined/>,
             otherProps: { type:'primary' as ButtonType },
-            afterClick: afterClickCreator(TeamPlayerListItemTexts.accepted)
+            afterClick: afterClickCreator(InviteStatus.Accepted)
         },
         [TeamPlayerListItemActions.reject]: {
             key:        'reject',
             title:      'Отказать',
             icon:       <MinusCircleOutlined/>,
             otherProps: { danger:true },
-            afterClick: afterClickCreator(TeamPlayerListItemTexts.rejected)
+            afterClick: afterClickCreator(InviteStatus.Rejected)
         },
         [TeamPlayerListItemActions.remove]: {
             key:        'remove',
@@ -90,7 +96,6 @@ const TeamPlayersList = (props:IProps):JSX.Element => {
         ? props.actions.map(action => getActionCreator(action))
         : [];
 
-
     return (props.hideEmpty && !props.loading && props.players?.length === 0
         ? <></>
         : <List
@@ -103,8 +108,8 @@ const TeamPlayersList = (props:IProps):JSX.Element => {
                 <List.Item
                     style={{ paddingLeft: 10 }}
                     className={'row'}
-                    actions={clicked[player.id]
-                        ? [getText(clicked[player.id])]
+                    actions={invited[player.id]
+                        ? [getText(invited[player.id])]
                         : actionCreators.map(ac => ac(player))
                     }
                 >
