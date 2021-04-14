@@ -85,11 +85,9 @@ const ProfilePage = (props:IProps):JSX.Element => {
                 onChange={redirect}
                 className='full-width'
             >
-                {canEdit &&
-                    <TabPane tab='Команды' key={ProfileSections.Teams}>
-                        <TeamsSubPage {...props}/>
-                    </TabPane>
-                }
+                <TabPane tab='Команды' key={ProfileSections.Teams}>
+                    <TeamsSubPage profile={profile} {...props}/>
+                </TabPane>
                 <TabPane tab='Турниры' key={ProfileSections.Tournaments}>
                     <TournamentsProfileSection profile={profile} {...props}/>
                 </TabPane>
