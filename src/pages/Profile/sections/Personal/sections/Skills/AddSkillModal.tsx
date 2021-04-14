@@ -5,6 +5,7 @@ import { Button, Modal, Input, List } from 'antd';
 import { Skill } from 'Utils/types';
 import SkillsModel from 'Models/SkillsModel';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 
 interface IProps {
@@ -20,18 +21,24 @@ const AddSkillsModal = (props:IProps):JSX.Element => {
     const [skillsToAdd, setSkillsToAdd] = React.useState<Skill[]>([]);
     const [searchText, setSearchText] = React.useState('');
 
-    const onSkillsSearch = (searchText) => {
-        if (!searchText) return;
+    const debouncedSearch = AwesomeDebouncePromise(SkillsModel.searchSkills, 500);
+
+    function handleSearch(text) {
+        setSearchText(text);
+        if (!text) {
+            setLoadedSkills([]);
+            return;
+        }
         setLoadingSkills(true);
-        SkillsModel.searchSkills(searchText)
+        debouncedSearch(text)
             .then((skills: Skill[]) => {
                 setLoadedSkills(skills && skills.length > 0
                     ? skills.filter(skill => !props.addedSkills.find(addedSkill => addedSkill.id === skill.id))
-                    : [{ id:0, name:searchText, approvals:[] }]
+                    : [{ id:0, name:text, approvals:[] }]
                 );
             })
             .finally(() => setLoadingSkills(false));
-    };
+    }
 
     const onSkillAdd = (skill:Skill) => {
         setSkillsToAdd(prev => [...prev, skill]);
@@ -78,9 +85,8 @@ const AddSkillsModal = (props:IProps):JSX.Element => {
             <Input.Search
                 loading={loadingSkills}
                 placeholder={'Введите название навыка'}
-                onSearch={onSkillsSearch}
                 value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
+                onChange={(e) => handleSearch(e.target.value)}
             />
 
             {loadedSkills && loadedSkills.length > 0 &&
