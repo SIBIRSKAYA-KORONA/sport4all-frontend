@@ -5,16 +5,16 @@ import { Button, Modal, Input, message } from 'antd';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 import TeamModel from 'Models/TeamModel';
-import { Team, User } from 'Utils/types';
+import { Team } from 'Utils/types';
 import InvitesModel from 'Models/InvitesModel';
 import TeamList from 'Components/Teams/List/render';
-import { TeamListItemActions } from 'Components/Teams/List/interface';
+import { TeamListItemAction, TeamListItemActions } from 'Components/Teams/List/interface';
 
 
 interface IProps extends RouteComponentProps {
     visible: boolean,
     close: () => void,
-    user: User
+    actions?: TeamListItemAction[]
 }
 
 const FindTeamModal = (props:IProps):JSX.Element => {
@@ -31,18 +31,13 @@ const FindTeamModal = (props:IProps):JSX.Element => {
             .finally(() => setIsSearching(false));
     }
 
-    async function onSendInvite(team:Team) {
-        return InvitesModel.fromPlayerToTeam(team, props.user)
-            .then(() => { message.success('Приглашение выслано') })
-            .catch(e => { message.error(e.toString()); });
-    }
-
     return (
         <Modal
             width='760px'
             title='Вступить в команду'
             visible={props.visible}
             destroyOnClose
+            onCancel={props.close}
             footer={<Button type='primary' onClick={props.close}>Готово</Button>}
         >
             <Input.Search
@@ -56,10 +51,7 @@ const FindTeamModal = (props:IProps):JSX.Element => {
                 hideEmpty
                 loading={isSearching}
                 teams={teams}
-                actions={[{
-                    type:       TeamListItemActions.sendInvite,
-                    handler:    onSendInvite
-                }]}
+                actions={props.actions}
             />
         </Modal>
     );

@@ -2,13 +2,15 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { Divider, Button, Space } from 'antd';
+import { Divider, Button, Space, message } from 'antd';
 
 import CONST from 'Constants';
 import { Team, User } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
 import TeamList from 'Components/Teams/List/render';
-import FindTeamModal from 'Pages/Profile/sections/Teams/FindTeamModal';
+import FindTeamModal from 'Components/Teams/FindTeamModal/FindTeamModal';
+import { TeamListItemActions } from 'Components/Teams/List/interface';
+import InvitesModel from 'Models/InvitesModel';
 
 
 const initTeams: [Team?] = [];
@@ -40,6 +42,12 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
         load();
     }, [props.match.params['nickname']]);
 
+    async function onSendInvite(team:Team) {
+        return InvitesModel.fromPlayerToTeam(team, props.user)
+            .then(() => { message.success('Приглашение выслано') })
+            .catch(e => { message.error(e.toString()); });
+    }
+
     return (<>
         <Divider orientation={'left'}>
             <Space direction='horizontal' size='small' align='baseline'>
@@ -58,8 +66,11 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
                 <FindTeamModal
                     {...props}
                     visible={modalVisible}
-                    user={props.user}
                     close={() => setModalVisible(false)}
+                    actions={[{
+                        type:       TeamListItemActions.sendInvite,
+                        handler:    onSendInvite
+                    }]}
                 />
             </Space>
         </Divider>
