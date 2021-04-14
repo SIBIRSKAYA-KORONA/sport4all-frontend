@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 
-import { AutoComplete, Input } from 'antd';
+import { AutoComplete, Input, Typography } from 'antd';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
-import { Team, Tournament, User } from 'Utils/types';
-import TeamModel from 'Models/TeamModel';
 import CONST from 'Constants';
+import TeamModel from 'Models/TeamModel';
+import ProfileModel from 'Models/ProfileModel';
+import TournamentModel from 'Models/TournamentModel';
+import { Team, Tournament, User } from 'Utils/types';
 
 
 type CombinedResult = {
@@ -24,7 +26,9 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
 
     const debouncedSearch = AwesomeDebouncePromise((text:string) => {
         return Promise.all([
-            TeamModel.searchTeams(text, 3)
+            TeamModel.searchTeams(text, 3),
+            ProfileModel.searchUsers(text, 3),
+            TournamentModel.searchTournaments(text, 3)
         ]);
     }, 500);
 
@@ -35,28 +39,32 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
         }
         setSearching(true);
         return debouncedSearch(text)
-            .then(arr => setResult({ teams:arr[0] as Team[], users:[], tournaments:[] }))
+            .then(arr => setResult({
+                teams:arr[0] as Team[],
+                users:arr[1] as User[],
+                tournaments:arr[2] as Tournament[]
+            }))
             .finally(() => setSearching(false));
     }
 
     function renderTeam(t:Team) {
         return {
-            value: t.id,
+            value: 'team'+t.id,
             label: <Link to={CONST.PATHS.teams.id(t.id)}>{t.name}</Link>
         };
     }
 
     function renderTournament(t:Tournament) {
         return {
-            value: t.id,
+            value: 'tournament'+t.id,
             label: <Link to={CONST.PATHS.tournaments.id(t.id)}>{t.name}</Link>
         };
     }
 
     function renderUser(u:User) {
         return {
-            value: u.nickname,
-            label: <Link to={CONST.PATHS.profile.nickname(u.nickname)}>{u.name} {u.surname}</Link>
+            value: 'user'+u.nickname,
+            label: <Link to={CONST.PATHS.profile.nickname(u.nickname)}>{u.name} {u.surname} <Typography.Text type='secondary'>@{u.nickname}</Typography.Text></Link>
         };
     }
 
@@ -74,7 +82,7 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
     }, [result]);
 
     return (<AutoComplete
-        dropdownMatchSelectWidth={500}
+        dropdownMatchSelectWidth={400}
         style={{ width: 250 }}
         options={options}
         onSelect={value => console.log(value)}

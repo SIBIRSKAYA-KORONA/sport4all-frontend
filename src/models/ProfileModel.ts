@@ -1,5 +1,5 @@
 import Network from 'Core/network';
-import { Skill, Stats } from 'Utils/types';
+import { Skill, Stats, User } from 'Utils/types';
 import HttpStatusCode from 'Utils/httpErrors';
 
 class ProfileModel {
@@ -19,6 +19,14 @@ class ProfileModel {
                 return res.json();
             })
             .then(stats => Array.isArray(stats) ? stats : []);
+    }
+
+    static async searchUsers(namePart:string, limit:number):Promise<HttpStatusCode|User[]> {
+        return Network.fetchGet(Network.paths.profile.search(namePart, limit))
+            .then(res => {
+                if (res.status >= 400) throw res.status;
+                return res.json();
+            });
     }
 }
 

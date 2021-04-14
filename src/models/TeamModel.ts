@@ -64,7 +64,6 @@ class TeamModel {
                 return res.json();
             });
     }
-
 }
 
 export default TeamModel;

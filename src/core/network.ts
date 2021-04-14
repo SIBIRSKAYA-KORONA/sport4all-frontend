@@ -23,7 +23,15 @@ export default class Network {
             player: (tid:number, uid:number):s => `/teams/${tid}/members/${uid}`,
             search: (name:string, limit:number):s => `/teams/search?name=${name}&limit=${limit}`
         },
-        tournaments: '/tournaments' as s,
+        tournaments: {
+            create: '/tournaments' as s,
+            id: (tid:number):s => `/tournaments/${tid}`,
+            search: (name:string, limit:number):s => `/tournaments/search?name=${name}&limit=${limit}`,
+            meetings: (tid:number):s => `/tournaments/${tid}/meetings`,
+            teams: (tid:number):s => `/tournaments/${tid}/teams`,
+            team: (tid:number, teamID:number):s => `/tournaments/${tid}/teams/${teamID}`,
+            forUser: (uid:number):s => `/tournaments?userId=${uid}`,
+        },
         tournamentsFeed: (offset:number):s => `/tournaments/feeds?offset=${offset}`,
         sessions: '/sessions' as s,
         meetings: {
@@ -38,6 +46,7 @@ export default class Network {
             nickname: (nickname:string):s => `/profile/${nickname}`,
             skills: (pid:number):s => `/profile/${pid}/skills`,
             stats: (pid:number):s => `/profile/${pid}/stats`,
+            search: (nick:string, limit:number):s => `/profile/search?name=${nick}&limit=${limit}`,
         },
         skills: {
             search: (text:string):s => `/skills/search?name=${text}&limit=10`,
