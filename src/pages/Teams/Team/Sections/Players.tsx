@@ -38,8 +38,8 @@ function TeamPlayers(props: IProps): JSX.Element {
 
     const onPlayersSearch = (searchText) => {
         if (!searchText) return;
-        TeamModel.loadPlayersToAdd(props.team.id, searchText, 5)
-            .then(players => setPlayersToAdd(players))
+        TeamModel.loadPlayersToAdd(props.team.id, searchText)
+            .then((players:User[]) => setPlayersToAdd(players))
             .finally(() => setLoadingPlayers(false));
     };
 

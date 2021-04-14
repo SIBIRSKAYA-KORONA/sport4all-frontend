@@ -31,7 +31,7 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
         if (!text) return;
         setSearching(true);
         return debouncedSearch(text)
-            .then(arr => setResult({ teams:arr[0], users:[], tournaments:[] }))
+            .then(arr => setResult({ teams:arr[0] as Team[], users:[], tournaments:[] }))
             .finally(() => setSearching(false));
     }
 

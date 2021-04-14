@@ -21,3 +21,8 @@ export enum InviteStatus {
     Rejected,
     Accepted
 }
+
+export enum TeamPlayerRoles {
+    owner = 'owner',
+    player = 'player'
+}

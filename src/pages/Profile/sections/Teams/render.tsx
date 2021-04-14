@@ -7,13 +7,14 @@ import { Divider, Button, Space, message } from 'antd';
 import CONST from 'Constants';
 import { Team, User } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
-import TeamList from 'Components/Teams/List/render';
-import FindTeamModal from 'Components/Teams/FindTeamModal/FindTeamModal';
-import { TeamListItemActions } from 'Components/Teams/List/interface';
 import InvitesModel from 'Models/InvitesModel';
+import TeamList from 'Components/Teams/List/render';
+import { TeamListItemActions } from 'Components/Teams/List/interface';
+import FindTeamModal from 'Components/Teams/FindTeamModal/FindTeamModal';
+import { TeamPlayerRoles } from 'Utils/enums';
 
 
-const initTeams: [Team?] = [];
+const initTeams: Team[] = [];
 
 interface IProps extends RouteComponentProps {
     user: User
@@ -30,11 +31,11 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
 
     useEffect(() => {
         const load = () => {
-            TeamModel.loadTeams('owner').then(teams => {
+            TeamModel.loadTeams(TeamPlayerRoles.owner, props.user.id).then((teams:Team[]) => {
                 setTeamsOwned(teams);
                 setLoadingOwnTeams(false);
             });
-            TeamModel.loadTeams('player').then(teams => {
+            TeamModel.loadTeams(TeamPlayerRoles.player, props.user.id).then((teams:Team[]) => {
                 setTeamsPlayer(teams);
                 setLoadingTeamsPlayed(false);
             });

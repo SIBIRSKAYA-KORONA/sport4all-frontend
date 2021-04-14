@@ -1,4 +1,4 @@
-import { InviteStatus } from 'Utils/enums';
+import { InviteStatus, TeamPlayerRoles } from 'Utils/enums';
 
 type s = string;
 
@@ -14,7 +14,10 @@ export default class Network {
     static url:s = 'https://sport4all.tech/api';
     static paths = {
         settings: '/settings' as s,
-        teams: '/teams' as s,
+        teams: {
+            base: '/teams' as s,
+            forUser: (role:TeamPlayerRoles, uid:number):s => `/teams?role=${role}&userId=${uid}`
+        },
         tournaments: '/tournaments' as s,
         tournamentsFeed: (offset:number):s => `/tournaments/feeds?offset=${offset}`,
         sessions: '/sessions' as s,
