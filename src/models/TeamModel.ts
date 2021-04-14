@@ -5,7 +5,7 @@ import { TeamPlayerRoles } from 'Utils/enums';
 
 class TeamModel {
     static async createTeam(team:Team):Promise<HttpStatusCode|Team> {
-        return Network.fetchPost(Network.paths.teams.base, team)
+        return Network.fetchPost(Network.paths.teams.create, team)
             .then(res => {
                 if (res.status >= 400) throw res.status;
                 return res.json();
@@ -17,7 +17,7 @@ class TeamModel {
     }
 
     static async loadTeam(tid:number):Promise<HttpStatusCode|Team> {
-        return Network.fetchGet(Network.paths.teams + `/${tid}`)
+        return Network.fetchGet(Network.paths.teams.id(tid))
             .then(res => {
                 if (res.status >= 400) throw res.status;
                 return res.json();
@@ -33,7 +33,7 @@ class TeamModel {
     }
 
     static async loadPlayersToAdd(tid:number, nicknamePart:string):Promise<HttpStatusCode|User[]> {
-        return Network.fetchGet(Network.paths.teams + `/${tid}/members/search?nickname=${nicknamePart}&limit=${10}`)
+        return Network.fetchGet(Network.paths.teams.searchUsers(tid, nicknamePart, 10))
             .then(res => {
                 if (res.status === HttpStatusCode.NOT_FOUND) return [];
                 if (res.status >= 400 && res.status !== HttpStatusCode.NOT_FOUND) throw res.status;
@@ -42,7 +42,7 @@ class TeamModel {
     }
 
     static async addPlayerToTheTeam(tid:number, uid:number):Promise<HttpStatusCode|void> {
-        return Network.fetchPost(Network.paths.teams + `/${tid}/members/${uid}?role=player`, { body: 'hello there' })
+        return Network.fetchPost(Network.paths.teams.addPlayer(tid, uid), { body: 'hello there' })
             .then(res => {
                 if (res.status >= 400) throw res.status;
                 return;
@@ -50,7 +50,7 @@ class TeamModel {
     }
 
     static async removePlayerFromTheTeam(tid:number, uid:number):Promise<HttpStatusCode|void> {
-        return Network.fetchDelete(`${Network.paths.teams}/${tid}/members/${uid}`, {})
+        return Network.fetchDelete(Network.paths.teams.player(tid, uid), {})
             .then(res => {
                 if (res.status >= 400) throw res.status;
                 return;
@@ -58,8 +58,7 @@ class TeamModel {
     }
 
     static async searchTeams(namePart:string, limit:number):Promise<HttpStatusCode|Team[]> {
-        const encodedNamePart = encodeURIComponent(namePart);
-        return Network.fetchGet(Network.paths.teams + `/search?name=${encodedNamePart}&limit=${limit}`)
+        return Network.fetchGet(Network.paths.teams.search(namePart, limit))
             .then(res => {
                 if (res.status >= 400) throw res.status;
                 return res.json();

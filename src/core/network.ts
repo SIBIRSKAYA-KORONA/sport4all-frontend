@@ -15,8 +15,13 @@ export default class Network {
     static paths = {
         settings: '/settings' as s,
         teams: {
-            base: '/teams' as s,
-            forUser: (role:TeamPlayerRoles, uid:number):s => `/teams?role=${role}&userId=${uid}`
+            create: '/teams' as s,
+            id: (tid:number):s => `/teams/${tid}`,
+            forUser: (role:TeamPlayerRoles, uid:number):s => `/teams?role=${role}&userId=${uid}`,
+            searchUsers: (tid:number, nick:string, limit:number):s => `/teams/${tid}/members/search?nickname=${nick}&limit=${limit}`,
+            addPlayer: (tid:number, uid:number):s => `/teams/${tid}/members/${uid}?role=player`,
+            player: (tid:number, uid:number):s => `/teams/${tid}/members/${uid}`,
+            search: (name:string, limit:number):s => `/teams/search?name=${name}&limit=${limit}`
         },
         tournaments: '/tournaments' as s,
         tournamentsFeed: (offset:number):s => `/tournaments/feeds?offset=${offset}`,
@@ -32,6 +37,7 @@ export default class Network {
         profile: {
             nickname: (nickname:string):s => `/profile/${nickname}`,
             skills: (pid:number):s => `/profile/${pid}/skills`,
+            stats: (pid:number):s => `/profile/${pid}/stats`,
         },
         skills: {
             search: (text:string):s => `/skills/search?name=${text}&limit=10`,
