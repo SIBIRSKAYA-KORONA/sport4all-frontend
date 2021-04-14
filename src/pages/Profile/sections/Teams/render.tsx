@@ -28,11 +28,11 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
 
     useEffect(() => {
         const load = () => {
-            TeamModel.instance.loadTeams('owner').then(teams => {
+            TeamModel.loadTeams('owner').then(teams => {
                 setTeamsOwned(teams);
                 setLoadingOwnTeams(false);
             });
-            TeamModel.instance.loadTeams('player').then(teams => {
+            TeamModel.loadTeams('player').then(teams => {
                 setTeamsPlayer(teams);
                 setLoadingTeamsPlayed(false);
             });

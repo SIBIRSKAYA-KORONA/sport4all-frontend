@@ -23,7 +23,7 @@ const FindTeamModal = (props:IProps):JSX.Element => {
     async function onSearchTeams(searchText) {
         if (!searchText) return;
         setIsSearching(true);
-        return TeamModel.instance.searchTeams(searchText, 10)
+        return TeamModel.searchTeams(searchText, 10)
             .then((teams: Team[]) => setTeams(teams))
             .finally(() => setIsSearching(false));
     }

@@ -28,7 +28,7 @@ class TeamPage extends React.Component {
     }
 
     async load() {
-        return TeamModel.instance.loadTeam(this.teamId)
+        return TeamModel.loadTeam(this.teamId)
             .then(team => {
                 if (!team.players) team.players = [];
                 this.setState(prevState => ({

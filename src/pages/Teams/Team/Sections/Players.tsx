@@ -31,14 +31,14 @@ function TeamPlayers(props: IProps): JSX.Element {
     // Handlers
     async function onPlayerDelete(player:User) {
         if (!confirm('Уверены, что хотите исключить игрока из команды?')) return;
-        TeamModel.instance.removePlayerFromTheTeam(props.team.id, player.id)
+        TeamModel.removePlayerFromTheTeam(props.team.id, player.id)
             .then(() => props.reload())
             .catch(e => { message.error(e); });
     }
 
     const onPlayersSearch = (searchText) => {
         if (!searchText) return;
-        TeamModel.instance.loadPlayersToAdd(props.team.id, searchText, 5)
+        TeamModel.loadPlayersToAdd(props.team.id, searchText, 5)
             .then(players => setPlayersToAdd(players))
             .finally(() => setLoadingPlayers(false));
     };
