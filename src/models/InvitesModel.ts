@@ -15,10 +15,7 @@ class InvitesModel {
     // from team to user
     static async fromTeamToPlayer(team:Team, newPlayer:User):Promise<HttpStatusCode|void> {
         const body = {
-            creator_id:     team.ownerId,
-            assigned_id:    newPlayer.id,
             invited_id:     newPlayer.id,
-            state:          0,
             team_id:        team.id,
             type:           'direct'
         }
@@ -39,10 +36,7 @@ class InvitesModel {
     // from user to the team
     static async fromPlayerToTeam(team:Team, newPlayer:User):Promise<HttpStatusCode|void> {
         const body = {
-            creator_id:     newPlayer.id,
-            assigned_id:    team.ownerId,
             invited_id:     newPlayer.id,
-            state:          0,
             team_id:        team.id,
             type:           'indirect'
         }
@@ -61,11 +55,9 @@ class InvitesModel {
 
     static async fromTournamentToTeam(tournament:Tournament, team:Team):Promise<HttpStatusCode|void> {
         const body = {
-            creator_id:     tournament.ownerId,
-            assigned_id:    team.ownerId,
             invited_id:     team.ownerId,
-            state:          0,
             team_id:        team.id,
+            tournament_id:  tournament.id,
             type:           'direct'
         }
         return Network.fetchPost(Network.paths.invites.tournaments, body)
@@ -76,11 +68,9 @@ class InvitesModel {
 
     static async fromTeamToTournament(tournament:Tournament, team:Team):Promise<HttpStatusCode|void> {
         const body = {
-            creator_id:     team.ownerId,
-            assigned_id:    tournament.ownerId,
             invited_id:     team.ownerId,
-            state:          0,
             team_id:        team.id,
+            tournament_id:  tournament.id,
             type:           'indirect'
         }
         return Network.fetchPost(Network.paths.invites.tournaments, body)

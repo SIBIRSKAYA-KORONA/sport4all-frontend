@@ -75,8 +75,7 @@ function ParticipantsLogic(props) {
     return (
         <ParticipantsRender
             {...props}
-            teams={props.tournamentData.teams}
-            status={props.tournamentData.status}
+            tournament={props.tournamentData}
             isSearching={isSearching}
             searchResults={searchResults}
             onTeamAdd={addTeam}

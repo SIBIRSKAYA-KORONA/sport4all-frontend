@@ -59,7 +59,7 @@ const TeamList = (props:IProps):JSX.Element => {
         },
         [TeamListItemActions.sendInvite]: {
             key:        'sendInvite',
-            title:      'Вступить',
+            title:      'Выслать приглашение',
             icon:       <PlusCircleOutlined/>,
             otherProps: { type:'primary' as ButtonType },
             afterClick: afterClickCreator(TextMetas.pending)

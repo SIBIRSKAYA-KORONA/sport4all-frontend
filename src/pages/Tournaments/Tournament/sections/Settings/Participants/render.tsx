@@ -12,14 +12,11 @@ import InvitesModel from 'Models/InvitesModel';
 
 interface IProps extends RouteComponentProps {
     tournament: Tournament,
-    teams: Team[],
-    status: EventStatus,
     isSearching: boolean,
     searchResults: any[],
     onTeamAdd: (team: Team) => Promise<void>,
     onTeamDelete: (team: Team) => Promise<void>,
     onSearchTeams: (teamName: string) => Promise<any>,
-    reload: () => Promise<void>
 }
 
 // todo: add canEdit
@@ -27,17 +24,15 @@ function ParticipantsRender(props:IProps):JSX.Element {
     const [modalVisible, setModalVisible] = React.useState(false);
 
     async function onTeamInvite(team:Team):Promise<void> {
-        return InvitesModel.fromTournamentToTeam(props.tournament, team)
-            .then(() => props.reload());
+        return InvitesModel.fromTournamentToTeam(props.tournament, team).then(() => void 0);
     }
 
-    return (props.status >= EventStatus.RegistrationEvent
+    return (props.tournament.status >= EventStatus.RegistrationEvent
         ? <Col>
             <Divider orientation={'left'}>
                 <Space direction='horizontal' size='small' align='baseline'>
                     <h4>Участники</h4>
-                    {props.status <= EventStatus.RegistrationEvent && <>
-                        not working!!
+                    {props.tournament.status <= EventStatus.RegistrationEvent && <>
                         <Button type='link' onClick={() => setModalVisible(true)}>Пригласить</Button>
                         <FindTeamModal
                             {...props}
@@ -55,8 +50,8 @@ function ParticipantsRender(props:IProps):JSX.Element {
             <TeamList
                 {...props}
                 loading={false}
-                teams={props.teams}
-                actions={props.status <= EventStatus.RegistrationEvent && [{
+                teams={props.tournament.teams}
+                actions={props.tournament.status <= EventStatus.RegistrationEvent && [{
                     type:       TeamListItemActions.delete,
                     handler:    props.onTeamDelete
                 }]}
