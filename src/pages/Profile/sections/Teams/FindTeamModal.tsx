@@ -2,6 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { Button, Modal, Input, message } from 'antd';
+import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 import TeamModel from 'Models/TeamModel';
 import { Team, User } from 'Utils/types';
@@ -20,10 +21,12 @@ const FindTeamModal = (props:IProps):JSX.Element => {
     const [isSearching, setIsSearching] = React.useState(false);
     const [teams, setTeams] = React.useState<Team[]>([]);
 
-    async function onSearchTeams(searchText) {
+    const debouncedSearch = AwesomeDebouncePromise(TeamModel.searchTeams, 500);
+
+    async function handleInputChange(searchText) {
         if (!searchText) return;
         setIsSearching(true);
-        return TeamModel.searchTeams(searchText, 10)
+        return debouncedSearch(searchText, 10)
             .then((teams: Team[]) => setTeams(teams))
             .finally(() => setIsSearching(false));
     }
@@ -45,7 +48,8 @@ const FindTeamModal = (props:IProps):JSX.Element => {
             <Input.Search
                 loading={isSearching}
                 placeholder={'Введите название команды'}
-                onSearch={onSearchTeams}/>
+                onChange={e => handleInputChange(e.target.value)}
+            />
 
             <TeamList
                 {...props}
