@@ -7,7 +7,7 @@ interface IProps {
     loading: boolean,
     empty?: {
         check: boolean,
-        message: string
+        message: React.ReactNode
     }
 }
 

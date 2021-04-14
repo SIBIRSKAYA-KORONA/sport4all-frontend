@@ -1,7 +1,8 @@
 export enum ProfileSections {
     Teams = 'teams',
     Tournaments = 'tournaments',
-    Personal = 'personal'
+    Personal = 'personal',
+    History = 'history'
 }
 
 export enum ProfilePersonalSections {

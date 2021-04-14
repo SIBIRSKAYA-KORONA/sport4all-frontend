@@ -15,6 +15,7 @@ import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
 import { ProfileSections, ProfilePersonalSections } from 'Utils/enums';
 import PersonalProfileSection from 'Pages/Profile/sections/Personal/render';
 import TournamentsProfileSection from 'Pages/Profile/sections/Tournaments/render';
+import HistorySubPage from 'Pages/Profile/sections/History/render';
 
 const { Title, Paragraph } = Typography;
 const { TabPane } = Tabs;
@@ -85,6 +86,9 @@ const ProfilePage = (props:IProps):JSX.Element => {
                 onChange={redirect}
                 className='full-width'
             >
+                <TabPane tab='История' key={ProfileSections.History}>
+                    <HistorySubPage profile={profile} {...props}/>
+                </TabPane>
                 <TabPane tab='Команды' key={ProfileSections.Teams}>
                     <TeamsSubPage profile={profile} {...props}/>
                 </TabPane>
