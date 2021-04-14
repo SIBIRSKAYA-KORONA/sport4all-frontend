@@ -49,9 +49,10 @@ const ProfilePersonalInvites = (props:IProps):JSX.Element => {
     return (<LoadingContainer
         loading={loading}
         empty={{
-            check:invitesToMe.length + invitesFromMe.length > 0,
+            check:invitesToMe.length + invitesFromMe.length === 0,
             message:(<Space direction='vertical' align='center' size='middle'>
-                <span>Приглашений нет<br/><br/>Приглашения в ваши команды находятся<br/>в кабинете соответствующей команды</span>
+                <span>Приглашений нет</span>
+                <span>Приглашения в ваши команды находятся<br/>в кабинете соответствующей команды</span>
                 <Button onClick={() => reload()}>Обновить</Button>
             </Space>)
         }}
