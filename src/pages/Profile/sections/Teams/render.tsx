@@ -46,7 +46,7 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
             });
         }
         load();
-    }, [props.match.params['nickname']]);
+    }, [props.profile]);
 
     async function onSendInvite(team:Team) {
         return InvitesModel.fromPlayerToTeam(team, props.user)

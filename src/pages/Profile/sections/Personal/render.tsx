@@ -29,11 +29,11 @@ const PersonalProfileSection = (props:IProps):JSX.Element => {
             }}
         >
             <Tabs.TabPane tab='Навыки' key={ProfilePersonalSections.Skills}>
-                <ProfilePersonalSkills canEdit={canEdit} profile={props.profile} {...props}/>
+                <ProfilePersonalSkills canEdit={canEdit} {...props}/>
             </Tabs.TabPane>
             {canEdit && <>
                 <Tabs.TabPane tab='Приглашения' key={ProfilePersonalSections.Invites}>
-                    <ProfilePersonalInvites {...props} user={props.user}/>
+                    <ProfilePersonalInvites {...props}/>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab='Информация' key={ProfilePersonalSections.Information}>
                     <ProfilePersonalInfo user={props.user}/>

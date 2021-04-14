@@ -2,6 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 
 import { AutoComplete, Input, Typography } from 'antd';
+const { Text } = Typography;
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 import CONST from 'Constants';
@@ -23,6 +24,7 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
     const [searching, setSearching] = React.useState(false);
     const [result, setResult] = React.useState<CombinedResult>(initResult);
     const [options, setOptions] = React.useState([]);
+    const [searchText, setSearchText] = React.useState('');
 
     const debouncedSearch = AwesomeDebouncePromise((text:string) => {
         return Promise.all([
@@ -47,26 +49,23 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
             .finally(() => setSearching(false));
     }
 
-    function renderTeam(t:Team) {
-        return {
-            value: 'team'+t.id,
-            label: <Link to={CONST.PATHS.teams.id(t.id)}>{t.name}</Link>
-        };
-    }
+    const renderTeam = (t:Team) => ({
+        ket: 'team'+t.id,
+        value: CONST.PATHS.teams.id(t.id),
+        label: <Text>{t.name}</Text>
+    });
 
-    function renderTournament(t:Tournament) {
-        return {
-            value: 'tournament'+t.id,
-            label: <Link to={CONST.PATHS.tournaments.id(t.id)}>{t.name}</Link>
-        };
-    }
+    const renderTournament = (t:Tournament) => ({
+        key: 'tournament'+t.id,
+        value: CONST.PATHS.tournaments.id(t.id),
+        label: <Text>{t.name}</Text>
+    });
 
-    function renderUser(u:User) {
-        return {
-            value: 'user'+u.nickname,
-            label: <Link to={CONST.PATHS.profile.nickname(u.nickname)}>{u.name} {u.surname} <Typography.Text type='secondary'>@{u.nickname}</Typography.Text></Link>
-        };
-    }
+    const renderUser = (u:User) => ({
+        key: 'user'+u.nickname,
+        value: CONST.PATHS.profile.nickname(u.nickname),
+        label: <><Text>{u.name} {u.surname}</Text><Text type='secondary'>@{u.nickname}</Text></>,
+    });
 
     React.useEffect(() => {
         const options = [];
@@ -85,7 +84,13 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
         dropdownMatchSelectWidth={400}
         style={{ width: 250 }}
         options={options}
-        onSelect={value => console.log(value)}
+        onSelect={link => {
+            props.history.push(link);
+            setSearchText('');
+            setResult(initResult);
+        }}
+        value={searchText}
+        onChange={e => setSearchText(e)}
     >
         <Input.Search
             loading={searching}

@@ -4,17 +4,17 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { BellOutlined } from '@ant-design/icons/lib';
-import { Layout, Input, Button, Avatar, Badge, AutoComplete } from 'antd';
+import { Layout, Button, Avatar, Badge } from 'antd';
 const AntHeader = Layout.Header;
 
 import CONST from 'Constants';
 import logo from '/static/images/logo.svg';
-import { Notification, Team } from 'Utils/types';
+import { Notification } from 'Utils/types';
 import { lettersForAvatar } from 'Utils/utils';
+import SearchAll from 'Components/Inputs/searchAll';
 import NotificationsModel from 'Models/NotificationsModel'
 import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
 import NotificationsPopover from 'Components/NotificationsPopover/render';
-import SearchAll from 'Components/Inputs/searchAll';
 
 
 interface IProps extends RouteComponentProps {

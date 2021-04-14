@@ -2,13 +2,13 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { Spin, Button, Empty } from 'antd';
+import { Button } from 'antd';
 
 import CONST from 'Constants';
 import { Tournament, User } from 'Utils/types';
 import TournamentModel from 'Models/TournamentModel';
-import TournamentsFeedWithFilters from 'Components/Tournaments/FeedWithFilters/render';
 import LoadingContainer from 'Components/Loading/render';
+import TournamentsFeedWithFilters from 'Components/Tournaments/FeedWithFilters/render';
 
 
 interface IProps extends RouteComponentProps {
@@ -26,14 +26,11 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
     }, [props.profile, props.user]);
 
     useEffect(() => {
-        const load = () => {
-            TournamentModel.getTournaments(props.profile.id).then(tours => {
-                setTournamentsOwned(tours.owner.sort((a, b) => a.status - b.status));
-                setLoadingOwnTournaments(false);
-            });
-        }
-        load();
-    }, [props.match.params['nickname']]);
+        TournamentModel.getTournaments(props.profile.id).then(tours => {
+            setTournamentsOwned(tours.owner.unify('id').sort((a, b) => a.status - b.status));
+            setLoadingOwnTournaments(false);
+        });
+    }, [props.profile]);
 
     return (<>
         {canEdit &&

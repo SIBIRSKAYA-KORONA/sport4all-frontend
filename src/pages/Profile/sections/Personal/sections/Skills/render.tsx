@@ -1,6 +1,5 @@
 import './style.scss';
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { message, List, Space, Row, Col, Typography } from 'antd';
@@ -45,7 +44,7 @@ const ProfilePersonalSkills = (props:IProps):JSX.Element => {
 
     React.useEffect(() => {
         if (props.profile) loadSkills();
-    }, [props.match.params['nickname']]);
+    }, [props.profile]);
 
     function addSkills(skillsToAdd: Skill[]) {
         const arr = [];
@@ -93,8 +92,4 @@ const ProfilePersonalSkills = (props:IProps):JSX.Element => {
     }</div>);
 };
 
-const mapStateToProps = state => ({
-    user: state.user.user
-});
-
-export default connect(mapStateToProps)(ProfilePersonalSkills);
+export default ProfilePersonalSkills;
