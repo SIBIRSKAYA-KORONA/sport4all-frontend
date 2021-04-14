@@ -27,7 +27,7 @@ const TournamentsProfileSection = (props:IProps):JSX.Element => {
 
     useEffect(() => {
         TournamentModel.getTournaments(props.profile.id).then(tours => {
-            setTournamentsOwned(tours.owner.unify('id').sort((a, b) => a.status - b.status));
+            setTournamentsOwned(tours.owner.sort((a, b) => a.status - b.status));
             setLoadingOwnTournaments(false);
         });
     }, [props.profile]);
