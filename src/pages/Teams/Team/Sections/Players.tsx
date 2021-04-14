@@ -6,10 +6,12 @@ import { Col, Divider, Input, message } from 'antd';
 import TeamModel from 'Models/TeamModel';
 import { InviteStatus } from 'Utils/enums';
 import InvitesModel from 'Models/InvitesModel';
-import { findPendingUserInvite } from 'Utils/structUtils';
-import { Invite, InviteWithUser, Team, User } from 'Utils/types';
+import { findPendingTournamentInvite, findPendingUserInvite } from 'Utils/structUtils';
+import { Invite, InviteWithUser, InviteWithTournament, Team, User, Tournament } from 'Utils/types';
 import TeamPlayersList from 'Components/Teams/PlayersList/render';
 import { TeamPlayerListItemActions } from 'Components/Teams/PlayersList/interface';
+import TournamentInviteList from 'Components/Invite/TournamentList/render';
+import { TournamentInviteListItemActions } from 'Components/Invite/TournamentList/interface';
 
 
 interface IProps extends RouteComponentProps {
@@ -21,11 +23,15 @@ interface IProps extends RouteComponentProps {
 function TeamPlayers(props: IProps): JSX.Element {
     const [loadingPlayers, setLoadingPlayers] = React.useState(false);
     const [playersToAdd, setPlayersToAdd] = React.useState<Array<User>>([]);
-    const [invites, setInvites] = React.useState<InviteWithUser[]>([]);
+    const [invitesFromUsers, setInvitesFromUsers] = React.useState<InviteWithUser[]>([]);
+    const [invitesToTournaments, setInvitesToTournaments] = React.useState<InviteWithTournament[]>([]);
 
     React.useEffect(() => {
         InvitesModel.loadInvitesToTheTeam(props.team, InviteStatus.Pending)
-            .then((invites: InviteWithUser[]) => setInvites(invites));
+            .then((invites: Invite[]) => {
+                setInvitesFromUsers(invites.filter(i => !Object.prototype.hasOwnProperty.call(i, 'tournament')) as InviteWithUser[]);
+                setInvitesToTournaments(invites.filter(i => Object.prototype.hasOwnProperty.call(i, 'tournament')) as InviteWithTournament[]);
+            });
     }, []);
 
     // Handlers
@@ -57,7 +63,9 @@ function TeamPlayers(props: IProps): JSX.Element {
             .then(() => {
                 if (state === InviteStatus.Accepted) {
                     props.reload();
-                    setInvites(invites.filter(i => i.id !== invite.id))
+                    if (!Object.prototype.hasOwnProperty.call(invite, 'tournament')) {
+                        setInvitesFromUsers(invitesFromUsers.filter(i => i.id !== invite.id));
+                    }
                 }
             })
             .catch(e => { message.error(e.toString()) });
@@ -79,19 +87,36 @@ function TeamPlayers(props: IProps): JSX.Element {
             />
 
             {props.canEdit && <>
-                {invites.length > 0 && <>
-                    <Divider orientation={'left'}>Приглашения</Divider>
+                {invitesFromUsers.length > 0 && <>
+                    <Divider orientation={'left'}>Приглашения игроков</Divider>
                     <TeamPlayersList
                         {...props}
-                        players={invites.map(i => i.user)}
-                        invites={invites}
+                        players={invitesFromUsers.map(i => i.user)}
+                        invites={invitesFromUsers}
                         loading={false}
                         actions={[{
                             type: TeamPlayerListItemActions.accept,
-                            handler: (player:User) => replyToInvite(findPendingUserInvite(invites, player), InviteStatus.Accepted),
+                            handler: (player:User) => replyToInvite(findPendingUserInvite(invitesFromUsers, player), InviteStatus.Accepted),
                         },{
                             type: TeamPlayerListItemActions.reject,
-                            handler: (player:User) => replyToInvite(findPendingUserInvite(invites, player), InviteStatus.Rejected),
+                            handler: (player:User) => replyToInvite(findPendingUserInvite(invitesFromUsers, player), InviteStatus.Rejected),
+                        }]}
+                    />
+                </>}
+
+                {invitesToTournaments.length > 0 && <>
+                    <Divider orientation={'left'}>Приглашения в турниры</Divider>
+                    <TournamentInviteList
+                        {...props}
+                        tournaments={invitesToTournaments.map(i => i.tournament)}
+                        invites={invitesToTournaments}
+                        loading={false}
+                        actions={[{
+                            type: TournamentInviteListItemActions.accept,
+                            handler: (t:Tournament) => replyToInvite(findPendingTournamentInvite(invitesToTournaments, t), InviteStatus.Accepted),
+                        },{
+                            type: TournamentInviteListItemActions.reject,
+                            handler: (t:Tournament) => replyToInvite(findPendingTournamentInvite(invitesToTournaments, t), InviteStatus.Rejected),
                         }]}
                     />
                 </>}

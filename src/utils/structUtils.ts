@@ -1,4 +1,4 @@
-import { EventStatus, Invite, Stats, Team, User } from 'Utils/types';
+import { EventStatus, Invite, InviteWithTournament, Stats, Team, Tournament, User } from 'Utils/types';
 import { lettersForAvatar } from 'Utils/utils';
 import { InviteStatus } from 'Utils/enums';
 
@@ -61,4 +61,8 @@ export function findPendingTeamInvite(invites:Invite[], team:Team):Invite|undefi
 
 export function findPendingUserInvite(invites:Invite[], user:User):Invite|undefined {
     return invites.find(invite => invite.invited_id === user.id && invite.state === InviteStatus.Pending);
+}
+
+export function findPendingTournamentInvite(invites:InviteWithTournament[], t:Tournament):InviteWithTournament|undefined {
+    return invites.find(invite => invite.tournament_id === t.id && invite.state === InviteStatus.Pending);
 }

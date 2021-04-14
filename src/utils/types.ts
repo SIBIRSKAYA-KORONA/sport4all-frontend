@@ -124,6 +124,7 @@ export interface InviteWithUser extends Invite {
     user: User
 }
 
-export interface TeamInvitesToTournaments extends Invite {
-    tournament: Tournament
+export interface InviteWithTournament extends Invite {
+    tournament: Tournament,
+    tournament_id: number
 }

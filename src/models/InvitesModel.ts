@@ -1,7 +1,7 @@
 import Network from 'Core/network';
 import { InviteStatus } from 'Utils/enums';
 import HttpStatusCode from 'Utils/httpErrors';
-import { InviteWithTeam, InviteWithUser, Team, Tournament, User } from 'Utils/types';
+import { Invite, InviteWithTeam, InviteWithUser, Team, Tournament, User } from 'Utils/types';
 
 class InvitesModel {
     static async getInvites():Promise<HttpStatusCode | InviteWithTeam[]> {
@@ -25,7 +25,7 @@ class InvitesModel {
             });
     }
 
-    static async loadInvitesToTheTeam(team:Team, type:InviteStatus):Promise<HttpStatusCode|InviteWithUser[]> {
+    static async loadInvitesToTheTeam(team:Team, type:InviteStatus):Promise<HttpStatusCode|Invite[]> {
         return Network.fetchGet(Network.paths.invites.forTeam(team.id, type))
             .then(res => {
                 if (res.status >= 400) throw res.status;
