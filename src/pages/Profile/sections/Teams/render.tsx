@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
-import { Divider, Button, Space, message, Empty } from 'antd';
+import { Divider, Button, Space, message } from 'antd';
 
 import CONST from 'Constants';
 import { Team, User } from 'Utils/types';
@@ -11,9 +10,9 @@ import TeamModel from 'Models/TeamModel';
 import { TeamPlayerRoles } from 'Utils/enums';
 import InvitesModel from 'Models/InvitesModel';
 import TeamList from 'Components/Teams/List/render';
+import LoadingContainer from 'Components/Loading/render';
 import { TeamListItemActions } from 'Components/Teams/List/interface';
 import FindTeamModal from 'Components/Teams/FindTeamModal/FindTeamModal';
-import LoadingContainer from 'Components/Loading/render';
 
 
 interface IProps extends RouteComponentProps {
@@ -59,7 +58,7 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
         loading={loadingOwnTeams || loadingTeamsPlayed}
         empty={{ check:(!canEdit && teamsOwned.length + teamsPlayed.length === 0), message:'Нет команд'}}
     >
-        {canEdit || teamsOwned.length > 0 && <>
+        {(canEdit || teamsOwned.length > 0) && <>
             <Divider orientation={'left'}>
                 <Space direction='horizontal' size='small' align='baseline'>
                     <h4>{canEdit ? 'Тренирую' : 'Тренирует'}</h4>
@@ -73,7 +72,7 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
             <TeamList teams={teamsOwned} actions={null} loading={loadingOwnTeams} {...props}/>
         </>}
 
-        {canEdit || teamsPlayed.length > 0 && <>
+        {(canEdit || teamsPlayed.length > 0) && <>
             <Divider orientation={'left'}>
                 <Space direction='horizontal' size='small' align='baseline'>
                     <h4>{canEdit ? 'Играю' : 'Играет'}</h4>
@@ -96,8 +95,4 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
     </LoadingContainer>
 };
 
-const mapStateToProps = state => ({
-    user: state.user.user
-});
-
-export default connect(mapStateToProps)(TeamsSubPage);
+export default TeamsSubPage;
