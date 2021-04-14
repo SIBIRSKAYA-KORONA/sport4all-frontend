@@ -14,7 +14,8 @@ interface IProps extends RouteComponentProps {
     visible: boolean,
     close: () => void,
     actions?: TeamListItemAction[],
-    invites?: Invite[]
+    invites?: Invite[],
+    title: string
 }
 
 const FindTeamModal = (props:IProps):JSX.Element => {
@@ -34,7 +35,7 @@ const FindTeamModal = (props:IProps):JSX.Element => {
     return (
         <Modal
             width='760px'
-            title='Вступить в команду'
+            title={props.title}
             visible={props.visible}
             destroyOnClose
             onCancel={props.close}

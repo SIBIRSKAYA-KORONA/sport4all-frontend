@@ -7,7 +7,7 @@ import TeamModel from 'Models/TeamModel';
 import { InviteStatus } from 'Utils/enums';
 import InvitesModel from 'Models/InvitesModel';
 import { findPendingUserInvite } from 'Utils/structUtils';
-import { Invite, InviteFromTeam, Team, User } from 'Utils/types';
+import { Invite, InviteWithUser, Team, User } from 'Utils/types';
 import TeamPlayersList from 'Components/Teams/PlayersList/render';
 import { TeamPlayerListItemActions } from 'Components/Teams/PlayersList/interface';
 
@@ -21,11 +21,11 @@ interface IProps extends RouteComponentProps {
 function TeamPlayers(props: IProps): JSX.Element {
     const [loadingPlayers, setLoadingPlayers] = React.useState(false);
     const [playersToAdd, setPlayersToAdd] = React.useState<Array<User>>([]);
-    const [invites, setInvites] = React.useState<InviteFromTeam[]>([]);
+    const [invites, setInvites] = React.useState<InviteWithUser[]>([]);
 
     React.useEffect(() => {
         InvitesModel.loadInvitesToTheTeam(props.team, InviteStatus.Pending)
-            .then((invites: InviteFromTeam[]) => setInvites(invites));
+            .then((invites: InviteWithUser[]) => setInvites(invites));
     }, []);
 
     // Handlers
@@ -91,7 +91,7 @@ function TeamPlayers(props: IProps): JSX.Element {
                             handler: (player:User) => replyToInvite(findPendingUserInvite(invites, player), InviteStatus.Accepted),
                         },{
                             type: TeamPlayerListItemActions.reject,
-                            handler: (player:User) => replyToInvite(findPendingUserInvite(invites, player), InviteStatus.Accepted),
+                            handler: (player:User) => replyToInvite(findPendingUserInvite(invites, player), InviteStatus.Rejected),
                         }]}
                     />
                 </>}

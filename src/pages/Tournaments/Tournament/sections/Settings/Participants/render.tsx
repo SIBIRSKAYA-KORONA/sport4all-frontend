@@ -36,6 +36,7 @@ function ParticipantsRender(props:IProps):JSX.Element {
                         <Button type='link' onClick={() => setModalVisible(true)}>Пригласить</Button>
                         <FindTeamModal
                             {...props}
+                            title='Пригласить команду'
                             visible={modalVisible}
                             close={() => setModalVisible(false)}
                             actions={[{

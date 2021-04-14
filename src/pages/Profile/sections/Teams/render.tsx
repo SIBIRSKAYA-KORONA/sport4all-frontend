@@ -80,6 +80,7 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
                         <Button type='link' onClick={() => setModalVisible(true)}>Вступить</Button>
                         <FindTeamModal
                             {...props}
+                            title='Выслать приглашение команде'
                             visible={modalVisible}
                             close={() => setModalVisible(false)}
                             actions={[{

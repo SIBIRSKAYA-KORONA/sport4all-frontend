@@ -1,10 +1,10 @@
 import Network from 'Core/network';
 import { InviteStatus } from 'Utils/enums';
 import HttpStatusCode from 'Utils/httpErrors';
-import { InviteForUser, InviteFromTeam, Team, Tournament, User } from 'Utils/types';
+import { InviteWithTeam, InviteWithUser, Team, Tournament, User } from 'Utils/types';
 
 class InvitesModel {
-    static async getInvites():Promise<HttpStatusCode | InviteForUser[]> {
+    static async getInvites():Promise<HttpStatusCode | InviteWithTeam[]> {
         return Network.fetchGet(Network.paths.invites.base)
             .then(response => {
                 if (response.status >= 400) throw response.status;
@@ -25,8 +25,16 @@ class InvitesModel {
             });
     }
 
-    static async loadInvitesToTheTeam(team:Team, type:InviteStatus):Promise<HttpStatusCode|InviteFromTeam[]> {
+    static async loadInvitesToTheTeam(team:Team, type:InviteStatus):Promise<HttpStatusCode|InviteWithUser[]> {
         return Network.fetchGet(Network.paths.invites.forTeam(team.id, type))
+            .then(res => {
+                if (res.status >= 400) throw res.status;
+                return res.json();
+            });
+    }
+
+    static async loadInvitesToTheTournament(tournament:Tournament, type:InviteStatus):Promise<HttpStatusCode|InviteWithTeam[]> {
+        return Network.fetchGet(Network.paths.invites.forTournaments(tournament.id, type))
             .then(res => {
                 if (res.status >= 400) throw res.status;
                 return res.json();

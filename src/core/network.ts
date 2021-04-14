@@ -61,6 +61,7 @@ export default class Network {
             reply: (iid:number):s => `/invites/${iid}`,
             tournaments: '/invites/tournaments',
             teams: '/invites/teams',
+            forTournaments: (tid:number, type:InviteStatus):s => `/invites/tournaments/${tid}?state=${getInviteState(type)}`,
         }
     };
 

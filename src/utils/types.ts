@@ -116,10 +116,10 @@ export interface Invite {
     type: 'direct' | 'indirect'
 }
 
-export interface InviteForUser extends Invite {
+export interface InviteWithTeam extends Invite {
     team: Team
 }
 
-export interface InviteFromTeam extends Invite {
+export interface InviteWithUser extends Invite {
     user: User
 }

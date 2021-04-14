@@ -8,7 +8,7 @@ import TeamList from 'Components/Teams/List/render';
 import { RouteComponentProps } from 'react-router-dom';
 import LoadingContainer from 'Components/Loading/render';
 import { findPendingTeamInvite } from 'Utils/structUtils';
-import { Invite, InviteForUser, Team, User } from 'Utils/types';
+import { Invite, InviteWithTeam, Team, User } from 'Utils/types';
 import { TeamListItemActions } from 'Components/Teams/List/interface';
 
 
@@ -18,8 +18,8 @@ interface IProps extends RouteComponentProps {
 
 const ProfilePersonalInvites = (props:IProps):JSX.Element => {
     const [loading, setLoading] = React.useState(true);
-    const [invitesToMe, setInvitesToMe] = React.useState<InviteForUser[]>([]);
-    const [invitesFromMe, setInvitesFromMe] = React.useState<InviteForUser[]>([]);
+    const [invitesToMe, setInvitesToMe] = React.useState<InviteWithTeam[]>([]);
+    const [invitesFromMe, setInvitesFromMe] = React.useState<InviteWithTeam[]>([]);
 
     async function replyToInvite(invite:Invite|undefined, state:InviteStatus.Accepted | InviteStatus.Rejected):Promise<void> {
         if (!invite) {
@@ -34,7 +34,7 @@ const ProfilePersonalInvites = (props:IProps):JSX.Element => {
     async function reload() {
         setLoading(true);
         return InvitesModel.getInvites()
-            .then((invites:InviteForUser[]) => {
+            .then((invites:InviteWithTeam[]) => {
                 setInvitesFromMe(invites.filter(invite => invite.type === 'indirect'))
                 setInvitesToMe(invites.filter(invite => invite.type === 'direct'))
             })
