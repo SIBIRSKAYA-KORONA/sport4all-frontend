@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 
 import { List, Typography } from 'antd';
 const { Text } = Typography;
 
+import CONST from 'Constants';
 import { Stats, User } from 'Utils/types';
 import { parseSeconds } from 'Utils/utils';
 import ProfileModel from 'Models/ProfileModel';
 import LoadingContainer from 'Components/Loading/render';
+import { ClockCircleOutlined } from '@ant-design/icons';
 
 
 interface IProps extends RouteComponentProps {
@@ -38,7 +40,9 @@ const HistorySubPage = (props:IProps):JSX.Element => {
                 >
                     <List.Item.Meta
                         title={<Text>Очков: {stats.score}</Text>}
-                        description={parseSeconds(stats.created)}
+                        description={<>
+                            <ClockCircleOutlined/> {parseSeconds(stats.created)} <Link to={CONST.PATHS.meetings.id(stats.meetingId)}>Встреча</Link>
+                        </>}
                     />
                 </List.Item>
             )}
