@@ -26,7 +26,7 @@ const ProfilePersonalInvites = (props:IProps):JSX.Element => {
             return;
         }
         return InvitesModel.replyToInvite(invite.id, state)
-            .then(() => { message.success('Приглашение отправлено') })
+            .then(() => void 0)
             .catch(e => { message.error(e.toString()) });
     }
 
