@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 
-import { AutoComplete, Button, Input, message, Typography } from 'antd';
-const { Text } = Typography;
+import { AutoComplete, Input } from 'antd';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 import { Team, Tournament, User } from 'Utils/types';
@@ -16,9 +15,11 @@ type CombinedResult = {
     tournaments: Tournament[]
 }
 
+const initResult = { teams: [], users: [], tournaments: [] };
+
 function SearchAll(props: RouteComponentProps): JSX.Element {
     const [searching, setSearching] = React.useState(false);
-    const [result, setResult] = React.useState<CombinedResult>({ teams: [], users: [], tournaments: [] });
+    const [result, setResult] = React.useState<CombinedResult>(initResult);
     const [options, setOptions] = React.useState([]);
 
     const debouncedSearch = AwesomeDebouncePromise((text:string) => {
@@ -28,7 +29,10 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
     }, 500);
 
     async function handleInputChange(text) {
-        if (!text) return;
+        if (!text) {
+            setResult(initResult);
+            return;
+        }
         setSearching(true);
         return debouncedSearch(text)
             .then(arr => setResult({ teams:arr[0] as Team[], users:[], tournaments:[] }))
