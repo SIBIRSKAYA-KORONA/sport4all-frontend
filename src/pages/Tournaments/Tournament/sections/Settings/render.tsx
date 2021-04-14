@@ -10,7 +10,8 @@ import { RouteComponentProps } from 'react-router-dom';
 
 interface IProps extends RouteComponentProps {
     tournamentData: Tournament,
-    setTournamentData: (t:Tournament) => void
+    setTournamentData: (t:Tournament) => void,
+    isOwner: boolean
 }
 
 function TournamentSettingsRender(props:IProps):JSX.Element {
@@ -28,7 +29,7 @@ function TournamentSettingsRender(props:IProps):JSX.Element {
                     setTournamentData={props.setTournamentData}
                 />
             </Tabs.TabPane>
-            {props.tournamentData.status === EventStatus.RegistrationEvent &&
+            {props.isOwner && props.tournamentData.status === EventStatus.RegistrationEvent &&
                 <Tabs.TabPane tab={'Приглашения'} key={'3'}>
                     <TournamentInvites {...props} tournament={props.tournamentData}/>
                 </Tabs.TabPane>

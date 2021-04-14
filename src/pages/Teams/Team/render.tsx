@@ -41,11 +41,11 @@ const TeamPageRender = (props: IProps):JSX.Element => {
                         canEdit={props.canEdit}
                     />
                 </Tabs.TabPane>
-                {props.canEdit && props.team &&
+                {props.canEdit && props.team && <>
                     <Tabs.TabPane tab='Настройки' key={TeamSections.PublicInfo}>
                         <TeamPublicInfo teamId={props.team.id} reload={props.reload}/>
                     </Tabs.TabPane>
-                }
+                </>}
             </Tabs>
         </>}</BasePage>
     )

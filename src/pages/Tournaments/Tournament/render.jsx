@@ -62,6 +62,7 @@ function TournamentPageRender(props) {
                     <Tabs.TabPane tab={'Настройки'} key={TournamentPageRender.sections[3]}>
                         {props.isLoading ? <Spin/> :
                             <TournamentSettingsRender {...props}
+                                isOwner={props.isOwner}
                                 tournamentData={props.tournamentData}
                                 setTournamentData={props.setTournamentData}
                             />}

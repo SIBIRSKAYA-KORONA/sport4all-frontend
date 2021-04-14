@@ -123,3 +123,7 @@ export interface InviteWithTeam extends Invite {
 export interface InviteWithUser extends Invite {
     user: User
 }
+
+export interface TeamInvitesToTournaments extends Invite {
+    tournament: Tournament
+}
