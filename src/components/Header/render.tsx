@@ -4,16 +4,17 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { BellOutlined } from '@ant-design/icons/lib';
-import { Layout, Input, Button, Avatar, Badge } from 'antd';
+import { Layout, Input, Button, Avatar, Badge, AutoComplete } from 'antd';
 const AntHeader = Layout.Header;
 
 import CONST from 'Constants';
 import logo from '/static/images/logo.svg';
-import { Notification } from 'Utils/types';
+import { Notification, Team } from 'Utils/types';
 import { lettersForAvatar } from 'Utils/utils';
 import NotificationsModel from 'Models/NotificationsModel'
 import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
 import NotificationsPopover from 'Components/NotificationsPopover/render';
+import SearchAll from 'Components/Inputs/searchAll';
 
 
 interface IProps extends RouteComponentProps {
@@ -32,7 +33,7 @@ const Header = (props: IProps) => {
                 </Link>
                 <Link to={CONST.PATHS.feed} className={'header__link'}>Лента</Link>
 
-                <Input.Search disabled className={'header__search'}/>
+                <SearchAll {...props}/>
 
                 <div className={'header__side_content'}>
                     {props.isAuthenticated !== null && props.isAuthenticated && props.user
