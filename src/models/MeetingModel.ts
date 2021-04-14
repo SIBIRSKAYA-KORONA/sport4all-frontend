@@ -1,4 +1,4 @@
-import Network from '../core/network';
+import Network from 'Core/network';
 import HttpStatusCode from 'Utils/httpErrors';
 import {EventStatus, Meeting, Stats} from 'Utils/types';
 
@@ -18,41 +18,31 @@ class MeetingModel {
             .catch(e => { throw e; });
     }
 
-    static async changeStatus(mid: number, status: EventStatus):Promise<HttpStatusCode | Meeting> {
+    static async changeStatus(mid: number, status: EventStatus):Promise<HttpStatusCode | void> {
         return Network.fetchPut(Network.paths.meetings.id(mid), { status:status })
             .then(response => {
                 if (response.status >= 400) throw response.status;
-                return;
-            })
-            .catch(e => { throw e; });
+            });
     }
 
-    static async addTeam(mid:number, tid:number):Promise<HttpStatusCode | null> {
+    static async addTeam(mid:number, tid:number):Promise<HttpStatusCode | void> {
         return Network.fetchPost(Network.paths.meetings.addTeam(mid, tid), {})
             .then(response => {
                 if (response.status === HttpStatusCode.NOT_ACCEPTABLE) throw new Error ('Start the match first');
-                return;
-            })
-            .catch(e => { throw e; })
+            });
     }
 
-    static async addTeamResults(stats: Stats):Promise<HttpStatusCode | null> {
+    static async addTeamResults(stats: Stats):Promise<HttpStatusCode | void> {
         return Network.fetchPut(Network.paths.meetings.addResultsForTeam(stats.meetingId, stats.teamId), stats)
             .then(response => {
                 if (response.status >= HttpStatusCode.BAD_REQUEST) throw HttpStatusCode[response.status];
-                return;
-            })
-            .catch(e => {
-                console.error(e);
-                throw e;
-            })
+            });
     }
 
-    static async addPlayerResults(stats: Stats):Promise<HttpStatusCode | null> {
+    static async addPlayerResults(stats: Stats):Promise<HttpStatusCode | void> {
         return Network.fetchPut(Network.paths.meetings.addResultsForPlayer(stats.meetingId, stats.teamId, stats.playerId), stats)
             .then(response => {
                 if (response.status >= HttpStatusCode.BAD_REQUEST) throw response.status;
-                return;
             });
     }
 
@@ -61,11 +51,7 @@ class MeetingModel {
             .then(response => {
                 if (response.status >= HttpStatusCode.BAD_REQUEST && response.status !== HttpStatusCode.NOT_FOUND) throw HttpStatusCode[response.status];
                 return response.json();
-            })
-            .catch(e => {
-                console.error(e);
-                throw e;
-            })
+            });
     }
 }
 

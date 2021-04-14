@@ -1,3 +1,5 @@
+import { InviteStatus } from 'Utils/enums';
+
 export interface Team {
     id: number,
     name: string,
@@ -102,5 +104,21 @@ export interface Notification {
     meeting_id: number,
     team_id: number,
     isRead: boolean,
+}
 
+export interface Invite {
+    id: number,
+    invited_id: number,
+    assigned_id: number,
+    team_id: number,
+    state: InviteStatus,
+    type: 'direct' | 'indirect'
+}
+
+export interface InviteForUser extends Invite {
+    team: Team
+}
+
+export interface InviteFromTeam extends Invite {
+    user: User
 }

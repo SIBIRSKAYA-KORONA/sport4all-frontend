@@ -1,45 +1,66 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { Col, Avatar, Button, List, Divider, Input, message } from 'antd';
+import { Col, Divider, Input, message } from 'antd';
 
-import { User } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
-import { lettersForAvatar } from 'Utils/utils';
+import { InviteStatus } from 'Utils/enums';
+import InvitesModel from 'Models/InvitesModel';
+import { findPendingUserInvite } from 'Utils/structUtils';
+import { Invite, InviteFromTeam, Team, User } from 'Utils/types';
+import TeamPlayersList from 'Components/Teams/PlayersList/render';
+import { TeamPlayerListItemActions } from 'Components/Teams/PlayersList/interface';
 
 
 interface IProps extends RouteComponentProps {
-    players: Array<User>,
+    team: Team,
     canEdit: boolean,
     reload: () => void,
 }
 
 function TeamPlayers(props: IProps): JSX.Element {
-    const teamId = props.match.params['id'];
     const [loadingPlayers, setLoadingPlayers] = React.useState(false);
     const [playersToAdd, setPlayersToAdd] = React.useState<Array<User>>([]);
+    const [invites, setInvites] = React.useState<InviteFromTeam[]>([]);
+
+    React.useEffect(() => {
+        InvitesModel.loadInvitesToTheTeam(props.team, InviteStatus.Pending)
+            .then((invites: InviteFromTeam[]) => setInvites(invites));
+    }, []);
 
     // Handlers
-    const onPlayerDelete = (pid) => {
+    async function onPlayerDelete(player:User) {
         if (!confirm('Уверены, что хотите исключить игрока из команды?')) return;
-        TeamModel.instance.removePlayerFromTheTeam(teamId, pid)
+        TeamModel.instance.removePlayerFromTheTeam(props.team.id, player.id)
             .then(() => props.reload())
-            .catch(e => message.error(e));
-    };
+            .catch(e => { message.error(e); });
+    }
 
     const onPlayersSearch = (searchText) => {
         if (!searchText) return;
-        TeamModel.instance.loadPlayersToAdd(teamId, searchText, 5)
+        TeamModel.instance.loadPlayersToAdd(props.team.id, searchText, 5)
             .then(players => setPlayersToAdd(players))
             .finally(() => setLoadingPlayers(false));
     };
 
-    const onPlayerAdd = async (pid:number) => {
-        return TeamModel.instance.addPlayerToTheTeam(teamId, pid)
-            .then(() => setPlayersToAdd(playersToAdd.filter(player => player.id !== pid)))
-            .then(() => props.reload())
-            .catch(e => message.error(e));
+    async function onPlayerInvite(player:User) {
+        return InvitesModel.fromTeamToPlayer(props.team, player)
+            .then(() => props.reload());
+    }
+
+    async function replyToInvite(invite:Invite|undefined, state:InviteStatus.Accepted | InviteStatus.Rejected):Promise<void> {
+        if (!invite) {
+            message.error('Приглашение не найдено');
+            return;
+        }
+        return InvitesModel.replyToInvite(invite.id, state)
+            .then(() => {
+                if (state === InviteStatus.Accepted) {
+                    props.reload();
+                    setInvites(invites.filter(i => i.id !== invite.id))
+                }
+            })
+            .catch(e => { message.error(e.toString()) });
     }
 
     // render
@@ -47,31 +68,34 @@ function TeamPlayers(props: IProps): JSX.Element {
         <Col>
             <Divider orientation={'left'}>Игроки</Divider>
 
-            <List
-                itemLayout="horizontal"
-                dataSource={props.players}
-                renderItem={player => (
-                    <List.Item
-                        actions={props.canEdit ? [
-                            <Button
-                                danger
-                                key={'delete' + player.id}
-                                icon={<MinusOutlined/>}
-                                onClick={() => onPlayerDelete(player.id)}
-                            >
-                                Исключить
-                            </Button>
-                        ] : []}>
-                        <List.Item.Meta
-                            avatar={<Avatar>{lettersForAvatar(player.name)}</Avatar>}
-                            title={`${player.name} ${player.surname}`}
-                            description={'@'+ player.nickname}
-                        />
-                    </List.Item>
-                )}
+            <TeamPlayersList
+                {...props}
+                players={props.team.players}
+                loading={false}
+                actions={props.canEdit && [{
+                    type: TeamPlayerListItemActions.remove,
+                    handler: onPlayerDelete,
+                }]}
             />
 
             {props.canEdit && <>
+                {invites.length > 0 && <>
+                    <Divider orientation={'left'}>Приглашения</Divider>
+                    <TeamPlayersList
+                        {...props}
+                        players={invites.map(i => i.user)}
+                        invites={invites}
+                        loading={false}
+                        actions={[{
+                            type: TeamPlayerListItemActions.accept,
+                            handler: (player:User) => replyToInvite(findPendingUserInvite(invites, player), InviteStatus.Accepted),
+                        },{
+                            type: TeamPlayerListItemActions.reject,
+                            handler: (player:User) => replyToInvite(findPendingUserInvite(invites, player), InviteStatus.Accepted),
+                        }]}
+                    />
+                </>}
+
                 <Divider orientation={'left'}>Добавить игроков</Divider>
 
                 <Input.Search
@@ -79,28 +103,15 @@ function TeamPlayers(props: IProps): JSX.Element {
                     placeholder={'Введите никнейм игрока'}
                     onSearch={onPlayersSearch}/>
 
-                <List
-                    itemLayout="horizontal"
-                    dataSource={playersToAdd}
-                    renderItem={player => (
-                        <List.Item
-                            actions={[
-                                <Button
-                                    key={'add' + player.id}
-                                    type="primary"
-                                    icon={<PlusOutlined/>}
-                                    onClick={() => onPlayerAdd(player.id)}
-                                >
-                                    Добавить
-                                </Button>
-                            ]}>
-                            <List.Item.Meta
-                                avatar={<Avatar>{lettersForAvatar(player.name)}</Avatar>}
-                                title={`${player.name} ${player.surname}`}
-                                description={'@'+ player.nickname}
-                            />
-                        </List.Item>
-                    )}
+                <TeamPlayersList
+                    {...props}
+                    players={playersToAdd}
+                    loading={loadingPlayers}
+                    hideEmpty
+                    actions={[{
+                        type: TeamPlayerListItemActions.invite,
+                        handler: onPlayerInvite,
+                    }]}
                 />
             </>}
         </Col>

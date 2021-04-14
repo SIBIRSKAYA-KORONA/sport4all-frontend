@@ -12,8 +12,8 @@ import { RouteComponentProps } from 'react-router-dom';
 import { lettersForUserAvatar } from 'Utils/structUtils';
 import TeamsSubPage from 'Pages/Profile/sections/Teams/render';
 import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
-import { ProfileSections, ProfileSettingsSections } from 'Utils/enums';
-import SettingsProfileSection from 'Pages/Profile/sections/Settings/render';
+import { ProfileSections, ProfilePersonalSections } from 'Utils/enums';
+import PersonalProfileSection from 'Pages/Profile/sections/Personal/render';
 import TournamentsProfileSection from 'Pages/Profile/sections/Tournaments/render';
 
 const { Title, Paragraph } = Typography;
@@ -61,8 +61,8 @@ const ProfilePage = (props:IProps):JSX.Element => {
     }, [props.user]);
 
     function redirect(key:ProfileSections) {
-        props.history.push(key === ProfileSections.Settings
-            ? CONST.PATHS.profile.settings.section(profile.nickname, ProfileSettingsSections.Skills)
+        props.history.push(key === ProfileSections.Personal
+            ? CONST.PATHS.profile.personal.section(profile.nickname, ProfilePersonalSections.Skills)
             : CONST.PATHS.profile.section(profile.nickname, key)
         )
     }
@@ -93,8 +93,8 @@ const ProfilePage = (props:IProps):JSX.Element => {
                 <TabPane tab='Турниры' key={ProfileSections.Tournaments}>
                     <TournamentsProfileSection profile={profile} {...props}/>
                 </TabPane>
-                <TabPane tab='Настройки' key={ProfileSections.Settings}>
-                    <SettingsProfileSection profile={profile} {...props}/>
+                <TabPane tab='Личное' key={ProfileSections.Personal}>
+                    <PersonalProfileSection profile={profile} {...props}/>
                 </TabPane>
             </Tabs>
         </Row>

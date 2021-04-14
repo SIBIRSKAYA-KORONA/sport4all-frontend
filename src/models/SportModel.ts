@@ -9,8 +9,7 @@ class SportsModel {
                 if (res.status >= 400) throw res.status;
                 return res.json();
             })
-            .then(sports => Array.isArray(sports) ? sports : [])
-            .catch(e => console.error(e));
+            .then(sports => Array.isArray(sports) ? sports : []);
     }
 }
 

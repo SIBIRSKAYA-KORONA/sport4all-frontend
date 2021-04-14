@@ -2,51 +2,104 @@ import './style.scss';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Avatar, List, Button } from 'antd';
+import { Avatar, Button, List } from 'antd';
+import {
+    CheckCircleOutlined,
+    MinusCircleOutlined,
+    MinusOutlined,
+    PlusCircleOutlined,
+    PlusOutlined
+} from '@ant-design/icons';
 
 import CONST from 'Constants';
+import { Team } from 'Utils/types';
+import { InviteStatus } from 'Utils/enums';
+import { ButtonType } from 'antd/lib/button';
 import { lettersForAvatar } from 'Utils/utils';
-import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { IProps, TeamListItemAction } from 'Components/Teams/List/interface';
+import { getText, MapOfTextMeta, texts } from 'Components/Invite/List/ItemActions';
+import { IProps, TeamListItemAction, TeamListItemActions } from 'Components/Teams/List/interface';
 
 
 const TeamList = (props:IProps):JSX.Element => {
     const [loadings, setLoadings] = React.useState({});
+    const [replied, setReplied] = React.useState<MapOfTextMeta>(parseInvitesToTextMeta());
 
-    function onClick(key:string, handler:()=>Promise<void>) {
-        setLoadings(prev => ({ ...prev, [key]:true }));
-        handler().finally(() => setLoadings(prev => ({ ...prev, [key]:false })));
+    function parseInvitesToTextMeta():MapOfTextMeta {
+        const check = props.actions && props.actions.some(action => [TeamListItemActions.accept, TeamListItemActions.reject].includes(action.type));
+        return props.invites
+            ? props.invites.reduce((acc, curr) => ((curr.state === InviteStatus.Pending && check) ? acc : { ...acc, [curr.team_id]:texts[curr.state] }), {})
+            : {};
     }
 
-    let actionCreator;
-    if (props.action) {
-        switch (props.action.type) {
-        case TeamListItemAction.add:
-            actionCreator = function action(teamID:number) {
-                const key = 'add'+teamID;
-                return (<Button
-                    type='primary'
-                    loading={loadings[key]}
-                    key={key}
-                    icon={<PlusOutlined/>}
-                    onClick={() => onClick(key, props.action.handler.bind(null, teamID))}
-                >Добавить</Button>)
-            }
-            break
-        case TeamListItemAction.delete:
-            actionCreator = function action(teamID:number) {
-                const key = 'delete'+teamID;
-                return (<Button
-                    danger
-                    loading={loadings[key]}
-                    key={key}
-                    icon={<MinusOutlined/>}
-                    onClick={() => onClick(key, props.action.handler.bind(null, teamID))}
-                >Удалить</Button>)
-            }
-            break;
+    async function onClick(key:string, handler:() => Promise<void>) {
+        setLoadings(prev => ({ ...prev, [key]:true }));
+        return handler().finally(() => setLoadings(prev => ({ ...prev, [key]:false })));
+    }
+
+    function afterClickCreator(type:InviteStatus) {
+        return function(teamID:number) {
+            setReplied(prev => ({ ...prev, [teamID]:texts[type] }));
         }
     }
+
+    const buttons = {
+        [TeamListItemActions.add]: {
+            key:        'add',
+            title:      'Добавить',
+            icon:       <PlusOutlined/>,
+            otherProps: { type:'primary' as ButtonType },
+            afterClick: null
+        },
+        [TeamListItemActions.delete]: {
+            key:        'delete',
+            title:      'Удалить',
+            icon:       <MinusOutlined/>,
+            otherProps: { danger:true },
+            afterClick: null
+        },
+        [TeamListItemActions.sendInvite]: {
+            key:        'sendInvite',
+            title:      'Вступить',
+            icon:       <PlusCircleOutlined/>,
+            otherProps: { type:'primary' as ButtonType },
+            afterClick: afterClickCreator(InviteStatus.Pending)
+        },
+        [TeamListItemActions.accept]: {
+            key:        'accept',
+            title:      'Принять',
+            icon:       <CheckCircleOutlined/>,
+            otherProps: { type:'primary' as ButtonType },
+            afterClick: afterClickCreator(InviteStatus.Accepted)
+        },
+        [TeamListItemActions.reject]: {
+            key:        'reject',
+            title:      'Отклонить',
+            icon:       <MinusCircleOutlined/>,
+            otherProps: { danger:true },
+            afterClick: afterClickCreator(InviteStatus.Rejected)
+        },
+    };
+
+    function getActionCreator(action:TeamListItemAction) {
+        const d = buttons[action.type];
+        return function actionCreator(team:Team) {
+            const dd = { ...d, key:d.key+team.id };
+            return <Button
+                {...dd.otherProps}
+                loading={loadings[dd.key]}
+                key={dd.key}
+                icon={dd.icon}
+                onClick={() => {
+                    onClick(dd.key, action.handler.bind(null, team))
+                        .then(() => dd.afterClick && dd.afterClick(team.id))
+                }}
+            >{dd.title}</Button>
+        }
+    }
+
+    const actionCreators = props.actions
+        ? props.actions.map(action => getActionCreator(action))
+        : [];
 
     return (props.hideEmpty && !props.loading && props.teams?.length === 0
         ? <></>
@@ -60,7 +113,10 @@ const TeamList = (props:IProps):JSX.Element => {
                 <List.Item
                     style={{ paddingLeft: 10 }}
                     className={'row'}
-                    actions={actionCreator ? [actionCreator(team.id)] : []}
+                    actions={replied[team.id]
+                        ? [getText(replied[team.id])]
+                        : actionCreators.map(ac => ac(team))
+                    }
                 >
                     <List.Item.Meta
                         avatar={(

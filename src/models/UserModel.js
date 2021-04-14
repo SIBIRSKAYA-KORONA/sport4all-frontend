@@ -1,5 +1,5 @@
 import store from 'Store/store';
-import Network from '../core/network';
+import Network from 'Core/network';
 import { loginUser, logoutUser, setUser } from 'Store/User/UserActions';
 
 class UserModel {

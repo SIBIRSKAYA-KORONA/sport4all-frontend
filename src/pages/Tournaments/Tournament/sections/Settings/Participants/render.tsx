@@ -5,7 +5,7 @@ import { Col, Divider, Empty, Input } from 'antd';
 
 import { EventStatus, Team } from 'Utils/types';
 import TeamList from 'Components/Teams/List/render';
-import { TeamListItemAction } from 'Components/Teams/List/interface';
+import { TeamListItemActions } from 'Components/Teams/List/interface';
 
 
 interface IProps extends RouteComponentProps {
@@ -13,11 +13,12 @@ interface IProps extends RouteComponentProps {
     status: EventStatus,
     isSearching: boolean,
     searchResults: any[],
-    onTeamAdd: (teamID:number) => Promise<void>,
-    onTeamDelete: (teamID:number) => Promise<void>,
+    onTeamAdd: (team:Team) => Promise<void>,
+    onTeamDelete: (team:Team) => Promise<void>,
     onSearchTeams: (teamName:string) => Promise<any>,
 }
 
+// todo: add canEdit
 function ParticipantsRender(props:IProps):JSX.Element {
     return (props.status >= EventStatus.RegistrationEvent
         ? <Col>
@@ -27,10 +28,10 @@ function ParticipantsRender(props:IProps):JSX.Element {
                 {...props}
                 loading={false}
                 teams={props.teams}
-                action={props.status <= EventStatus.RegistrationEvent && {
-                    type:TeamListItemAction.delete,
-                    handler:(teamID) => props.onTeamDelete(teamID)
-                }}
+                actions={props.status <= EventStatus.RegistrationEvent && [{
+                    type:       TeamListItemActions.delete,
+                    handler:    props.onTeamDelete
+                }]}
             />
 
             {props.status <= EventStatus.RegistrationEvent && <>
@@ -46,10 +47,10 @@ function ParticipantsRender(props:IProps):JSX.Element {
                     hideEmpty={true}
                     loading={props.isSearching}
                     teams={props.searchResults}
-                    action={{
-                        type:TeamListItemAction.add,
-                        handler:(teamID) => props.onTeamAdd(teamID)
-                    }}
+                    actions={[{
+                        type:       TeamListItemActions.add,
+                        handler:    props.onTeamAdd
+                    }]}
                 />
             </>}
         </Col>

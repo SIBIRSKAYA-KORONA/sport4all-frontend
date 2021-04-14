@@ -12,7 +12,7 @@ interface IProps {
     user: User
 }
 
-const ProfileSettingsPersonal = (props:IProps):JSX.Element => {
+const ProfilePersonalInfo = (props:IProps):JSX.Element => {
     const [loading, setLoading] = React.useState(false);
     const [uploading, setUploading] = React.useState(false);
 
@@ -74,4 +74,4 @@ const ProfileSettingsPersonal = (props:IProps):JSX.Element => {
     }</>);
 };
 
-export default ProfileSettingsPersonal;
+export default ProfilePersonalInfo;

@@ -20,7 +20,7 @@ import ProfilePage from 'Pages/Profile/render';
 import AuthedRoute from 'Utils/AuthedRoute';
 import MeetingPage from 'Pages/Meeting/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
-import {ProfileSections, ProfileSettingsSections} from 'Utils/enums';
+import {ProfileSections, ProfilePersonalSections} from 'Utils/enums';
 import UserModel from 'Models/UserModel';
 import NotificationsModel from 'Models/NotificationsModel'
 
@@ -79,8 +79,8 @@ render(
                 <Route path={CONST.PATHS.meetings.id(null)} component={MeetingPage}/>
 
                 {/* Profile */}
-                <Route exact path={CONST.PATHS.profile.settings.base} render={props => (
-                    <Redirect exact to={CONST.PATHS.profile.settings.section(props.match.params['nickname'], ProfileSettingsSections.Personal)}/>
+                <Route exact path={CONST.PATHS.profile.personal.base} render={props => (
+                    <Redirect exact to={CONST.PATHS.profile.personal.section(props.match.params['nickname'], ProfilePersonalSections.Information)}/>
                 )}/>
                 <Route exact path={CONST.PATHS.profile.id__config} render={props => (
                     <Redirect exact to={CONST.PATHS.profile.section(props.match.params['nickname'], ProfileSections.Tournaments)}/>
