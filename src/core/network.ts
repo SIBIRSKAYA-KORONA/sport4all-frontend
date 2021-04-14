@@ -1,4 +1,4 @@
-import { InviteStatus } from 'Utils/enums';
+import { InviteStatus, TeamPlayerRoles } from 'Utils/enums';
 
 type s = string;
 
@@ -14,8 +14,24 @@ export default class Network {
     static url:s = 'https://sport4all.tech/api';
     static paths = {
         settings: '/settings' as s,
-        teams: '/teams' as s,
-        tournaments: '/tournaments' as s,
+        teams: {
+            create: '/teams' as s,
+            id: (tid:number):s => `/teams/${tid}`,
+            forUser: (role:TeamPlayerRoles, uid:number):s => `/teams?role=${role}&userId=${uid}`,
+            searchUsers: (tid:number, nick:string, limit:number):s => `/teams/${tid}/members/search?nickname=${nick}&limit=${limit}`,
+            addPlayer: (tid:number, uid:number):s => `/teams/${tid}/members/${uid}?role=player`,
+            player: (tid:number, uid:number):s => `/teams/${tid}/members/${uid}`,
+            search: (name:string, limit:number):s => `/teams/search?name=${name}&limit=${limit}`
+        },
+        tournaments: {
+            create: '/tournaments' as s,
+            id: (tid:number):s => `/tournaments/${tid}`,
+            search: (name:string, limit:number):s => `/tournaments/search?name=${name}&limit=${limit}`,
+            meetings: (tid:number):s => `/tournaments/${tid}/meetings`,
+            teams: (tid:number):s => `/tournaments/${tid}/teams`,
+            team: (tid:number, teamID:number):s => `/tournaments/${tid}/teams/${teamID}`,
+            forUser: (uid:number):s => `/tournaments?userId=${uid}`,
+        },
         tournamentsFeed: (offset:number):s => `/tournaments/feeds?offset=${offset}`,
         sessions: '/sessions' as s,
         meetings: {
@@ -29,6 +45,8 @@ export default class Network {
         profile: {
             nickname: (nickname:string):s => `/profile/${nickname}`,
             skills: (pid:number):s => `/profile/${pid}/skills`,
+            stats: (pid:number):s => `/profile/${pid}/stats`,
+            search: (nick:string, limit:number):s => `/profile/search?name=${nick}&limit=${limit}`,
         },
         skills: {
             search: (text:string):s => `/skills/search?name=${text}&limit=10`,

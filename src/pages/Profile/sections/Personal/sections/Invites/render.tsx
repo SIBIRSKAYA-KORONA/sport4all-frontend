@@ -1,12 +1,13 @@
 import * as React from 'react';
 
-import { Divider, Empty, message, Spin } from 'antd';
+import { Button, Divider, Empty, message, Space, Spin } from 'antd';
 
 import { InviteStatus } from 'Utils/enums';
 import InvitesModel from 'Models/InvitesModel';
 import TeamList from 'Components/Teams/List/render';
-import { findPendingTeamInvite } from 'Utils/structUtils';
 import { RouteComponentProps } from 'react-router-dom';
+import LoadingContainer from 'Components/Loading/render';
+import { findPendingTeamInvite } from 'Utils/structUtils';
 import { Invite, InviteForUser, Team, User } from 'Utils/types';
 import { TeamListItemActions } from 'Components/Teams/List/interface';
 
@@ -26,56 +27,64 @@ const ProfilePersonalInvites = (props:IProps):JSX.Element => {
             return;
         }
         return InvitesModel.replyToInvite(invite.id, state)
-            .then(() => { message.success('Приглашение отправлено') })
+            .then(() => void 0)
             .catch(e => { message.error(e.toString()) });
     }
 
-    React.useEffect(() => {
-        InvitesModel.getInvites()
+    async function reload() {
+        setLoading(true);
+        return InvitesModel.getInvites()
             .then((invites:InviteForUser[]) => {
                 setInvitesFromMe(invites.filter(invite => invite.type === 'indirect'))
                 setInvitesToMe(invites.filter(invite => invite.type === 'direct'))
             })
             .catch(e => { message.error(e) })
-            .finally(() => setLoading(false));
+            .finally(() => setTimeout(() => setLoading(false), 500));
+    }
+
+    React.useEffect(() => {
+        reload();
     }, []);
 
-    return (loading
-        ? <Spin/>
-        : invitesToMe.length + invitesFromMe.length > 0
-            ? <>
-                {invitesToMe.length > 0 && <>
-                    <Divider orientation={'left'}>Вам</Divider>
-                    <TeamList
-                        {...props}
-                        teams={invitesToMe.map(invite => invite.team)}
-                        invites={invitesToMe}
-                        loading={false}
-                        actions={[{
-                            type:       TeamListItemActions.accept,
-                            handler:    (team:Team) => replyToInvite(findPendingTeamInvite(invitesToMe, team), InviteStatus.Accepted)
-                        },{
-                            type:       TeamListItemActions.reject,
-                            handler:    (team:Team) => replyToInvite(findPendingTeamInvite(invitesToMe, team), InviteStatus.Rejected)
-                        }
-                        ]}
-                    />
-                </>}
-                {invitesFromMe.length > 0 && <>
-                    <Divider orientation={'left'}>От вас</Divider>
-                    <TeamList
-                        {...props}
-                        teams={invitesFromMe.map(invite => invite.team)}
-                        invites={invitesFromMe}
-                        loading={false}
-                        actions={[]}
-                    />
-                </>}
-            </>
-            : <Empty description={
-                <span>Приглашений нет<br/>Отправьте заявку в команду или<br/>подождите пока кто-нибудь пригласит вас</span>
-            }/>
-    );
+    return (<LoadingContainer
+        loading={loading}
+        empty={{
+            check:invitesToMe.length + invitesFromMe.length > 0,
+            message:(<Space direction='vertical' align='center' size='middle'>
+                <span>Приглашений нет<br/><br/>Приглашения в ваши команды находятся<br/>в кабинете соответствующей команды</span>
+                <Button onClick={() => reload()}>Обновить</Button>
+            </Space>)
+        }}
+    >
+        <Button onClick={() => reload()}>Обновить</Button>
+        {invitesToMe.length > 0 && <>
+            <Divider orientation={'left'}>Вам</Divider>
+            <TeamList
+                {...props}
+                teams={invitesToMe.map(invite => invite.team)}
+                invites={invitesToMe}
+                loading={false}
+                actions={[{
+                    type:       TeamListItemActions.accept,
+                    handler:    (team:Team) => replyToInvite(findPendingTeamInvite(invitesToMe, team), InviteStatus.Accepted)
+                },{
+                    type:       TeamListItemActions.reject,
+                    handler:    (team:Team) => replyToInvite(findPendingTeamInvite(invitesToMe, team), InviteStatus.Rejected)
+                }
+                ]}
+            />
+        </>}
+        {invitesFromMe.length > 0 && <>
+            <Divider orientation={'left'}>От вас</Divider>
+            <TeamList
+                {...props}
+                teams={invitesFromMe.map(invite => invite.team)}
+                invites={invitesFromMe}
+                loading={false}
+                actions={[]}
+            />
+        </>}
+    </LoadingContainer>);
 };
 
 export default ProfilePersonalInvites;

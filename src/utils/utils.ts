@@ -16,3 +16,7 @@ export function lettersForAvatar(name?:string): string {
 export function formatDate(date: Date):string {
     return `${date.getDate()}, ${date.getUTCFullYear()}`;
 }
+
+export function parseSeconds(secs:number):string {
+    return formatDate(new Date(secs*1000));
+}

@@ -54,7 +54,7 @@ function ParticipantsLogic(props) {
         try {
             // TODO: remove limit, add pagination or something idk
             const limit = 100;
-            const gotTeams = await TeamModel.instance.searchTeams(teamName, limit);
+            const gotTeams = await TeamModel.searchTeams(teamName, limit);
             const currentTeamIds = props.tournamentData.teams.map((team) => team.id);
             const teamsForAdding = [];
             for (const team of gotTeams) {

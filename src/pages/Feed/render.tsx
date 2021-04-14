@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Form, Input, Button, message } from 'antd';
+import { Button, message } from 'antd';
 
 import BasePage from 'Components/BasePage/render';
 import TournamentModel from 'Models/TournamentModel';
@@ -11,14 +11,14 @@ import TournamentsFeedRow from 'Components/Tournaments/Feed/render';
 const FeedPage = (props: RouteComponentProps):JSX.Element => {
     const [tournaments, setTournaments] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
-    const load = () => {
-        TournamentModel.loadFeed(tournaments.length + 10)
+    const load = (offset = 10) => {
+        TournamentModel.loadFeed(tournaments.length + offset)
             .then(ts => setTournaments(prev => prev.concat(ts)))
             .catch(e => message.error(e))
             .finally(() => setLoading(false));
     };
 
-    React.useEffect(() => { load() }, []);
+    React.useEffect(() => { load(0) }, []);
 
     return (
         <BasePage {...props}>

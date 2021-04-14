@@ -15,7 +15,7 @@ const TeamCreatePage = (props:RouteComponentProps):JSX.Element => {
     const handleSubmit = (values) => {
         if (!values.name) return;
         // todo: handle 409 error
-        TeamModel.instance.createTeam(values)
+        TeamModel.createTeam(values)
             .then((team:Team) => props.history.push(CONST.PATHS.teams.id(team.id)))
             .catch(e => {
                 message.error(e);

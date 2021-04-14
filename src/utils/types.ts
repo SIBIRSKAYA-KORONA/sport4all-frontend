@@ -85,7 +85,8 @@ export interface Stats {
     score: number,
     meetingId: number,
     teamId: number,
-    playerId?: number
+    playerId?: number,
+    created?: number
 }
 
 export interface Sport {
