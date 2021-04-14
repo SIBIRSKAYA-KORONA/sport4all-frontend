@@ -16,7 +16,7 @@ import { Team } from 'Utils/types';
 import { InviteStatus } from 'Utils/enums';
 import { ButtonType } from 'antd/lib/button';
 import { lettersForAvatar } from 'Utils/utils';
-import { getText, MapOfTextMeta, texts } from 'Components/Invite/List/ItemActions';
+import { getText, MapOfTextMeta, TextMetas, texts } from 'Components/Invite/List/ItemActions';
 import { IProps, TeamListItemAction, TeamListItemActions } from 'Components/Teams/List/interface';
 
 
@@ -36,7 +36,7 @@ const TeamList = (props:IProps):JSX.Element => {
         return handler().finally(() => setLoadings(prev => ({ ...prev, [key]:false })));
     }
 
-    function afterClickCreator(type:InviteStatus) {
+    function afterClickCreator(type:TextMetas) {
         return function(teamID:number) {
             setReplied(prev => ({ ...prev, [teamID]:texts[type] }));
         }
@@ -48,7 +48,7 @@ const TeamList = (props:IProps):JSX.Element => {
             title:      'Добавить',
             icon:       <PlusOutlined/>,
             otherProps: { type:'primary' as ButtonType },
-            afterClick: null
+            afterClick: afterClickCreator(TextMetas.added)
         },
         [TeamListItemActions.delete]: {
             key:        'delete',
@@ -62,21 +62,21 @@ const TeamList = (props:IProps):JSX.Element => {
             title:      'Вступить',
             icon:       <PlusCircleOutlined/>,
             otherProps: { type:'primary' as ButtonType },
-            afterClick: afterClickCreator(InviteStatus.Pending)
+            afterClick: afterClickCreator(TextMetas.pending)
         },
         [TeamListItemActions.accept]: {
             key:        'accept',
             title:      'Принять',
             icon:       <CheckCircleOutlined/>,
             otherProps: { type:'primary' as ButtonType },
-            afterClick: afterClickCreator(InviteStatus.Accepted)
+            afterClick: afterClickCreator(TextMetas.accepted)
         },
         [TeamListItemActions.reject]: {
             key:        'reject',
             title:      'Отклонить',
             icon:       <MinusCircleOutlined/>,
             otherProps: { danger:true },
-            afterClick: afterClickCreator(InviteStatus.Rejected)
+            afterClick: afterClickCreator(TextMetas.rejected)
         },
     };
 

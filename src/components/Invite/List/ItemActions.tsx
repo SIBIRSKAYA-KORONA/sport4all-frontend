@@ -14,28 +14,41 @@ export interface TextMeta {
 }
 
 export type MapOfTextMeta = {
-    [key: number]: TextMeta
+    [key in TextMetas]: TextMeta
+}
+
+export enum TextMetas {
+    pending = InviteStatus.Pending,
+    accepted = InviteStatus.Accepted,
+    rejected = InviteStatus.Rejected,
+    added = 3
 }
 
 const texts:MapOfTextMeta = {
-    [InviteStatus.Pending]: {
+    [TextMetas.pending]: {
         key:        'pending',
         title:      'Ждём ответа',
         type:       'warning' as BaseType,
         icon:       <ClockCircleOutlined/>
     },
-    [InviteStatus.Accepted]: {
+    [TextMetas.accepted]: {
         key:        'accepted',
         title:      'Принято',
         type:       'success' as BaseType,
         icon:       <CheckCircleOutlined/>
     },
-    [InviteStatus.Rejected]: {
+    [TextMetas.rejected]: {
         key:        'rejected',
         title:      'Отклонено',
         type:       'secondary' as BaseType,
         icon:       <CloseCircleOutlined/>
     },
+    [TextMetas.added]: {
+        key:        'added',
+        title:      'Добавлена',
+        type:       'success' as BaseType,
+        icon:       <CheckCircleOutlined/>
+    }
 };
 export { texts };
 
