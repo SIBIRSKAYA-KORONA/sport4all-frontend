@@ -3,7 +3,8 @@ import { RouteComponentProps } from 'react-router-dom';
 
 export enum TournamentInviteListItemActions {
     accept,
-    reject
+    reject,
+    sendInvite
 }
 
 export interface TournamentInviteListItemAction {

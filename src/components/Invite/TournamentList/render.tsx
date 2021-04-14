@@ -5,7 +5,7 @@ import { Avatar, Button, List } from 'antd';
 import { ButtonType } from 'antd/lib/button';
 import {
     CheckCircleOutlined,
-    MinusCircleOutlined,
+    MinusCircleOutlined, PlusCircleOutlined,
 } from '@ant-design/icons';
 
 import CONST from 'Constants';
@@ -53,6 +53,13 @@ const TournamentInviteList = (props:IProps):JSX.Element => {
             icon:       <MinusCircleOutlined/>,
             otherProps: { danger:true },
             afterClick: afterClickCreator(InviteStatus.Rejected)
+        },
+        [TournamentInviteListItemActions.sendInvite]: {
+            key:        'sendInvite',
+            title:      'Выслать приглашение',
+            icon:       <PlusCircleOutlined/>,
+            otherProps: { type:'primary' as ButtonType },
+            afterClick: afterClickCreator(InviteStatus.Pending)
         },
     };
 

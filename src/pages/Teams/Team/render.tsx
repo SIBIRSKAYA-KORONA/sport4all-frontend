@@ -2,15 +2,18 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Avatar, Col, Row, Tabs, Typography } from 'antd';
+import { Avatar, Button, Col, message, Row, Tabs, Typography } from 'antd';
 const { Title, Paragraph } = Typography;
 
-import { Team } from 'Utils/types';
+import { Team, Tournament } from 'Utils/types';
 import { TeamSections } from 'Utils/enums';
 import { lettersForAvatar } from 'Utils/utils';
+import InvitesModel from 'Models/InvitesModel';
 import BasePage from 'Components/BasePage/render';
 import TeamPlayers from 'Pages/Teams/Team/Sections/Players';
 import TeamPublicInfo from 'Pages/Teams/Team/Sections/PublicInfo';
+import FindTournamentModal from 'Components/Tournaments/FindTournamentModal/FindTeamModal';
+import { TournamentInviteListItemActions } from 'Components/Invite/TournamentList/interface';
 
 
 interface IProps extends RouteComponentProps {
@@ -21,6 +24,14 @@ interface IProps extends RouteComponentProps {
 }
 
 const TeamPageRender = (props: IProps):JSX.Element => {
+    const [modalVisible, setModalVisible] = React.useState(false);
+
+    async function onSendInvite(t:Tournament) {
+        return InvitesModel.fromTeamToTournament(t, props.team)
+            .then(() => { message.success('Приглашение выслано') })
+            .catch(e => { message.error(e.toString()); });
+    }
+
     return (
         <BasePage {...props} loading={props.loading}>{props.team && <>
             <Row>
@@ -32,6 +43,17 @@ const TeamPageRender = (props: IProps):JSX.Element => {
                     {props.team.about && <Paragraph>{props.team.about}</Paragraph>}
                     {props.team.location && <Paragraph>{props.team.location}</Paragraph>}
                 </Col>
+                <Button type='primary' onClick={() => setModalVisible(true)}>Найти турнир</Button>
+                <FindTournamentModal
+                    {...props}
+                    title='Найти турнир'
+                    visible={modalVisible}
+                    actions={[{
+                        type: TournamentInviteListItemActions.sendInvite,
+                        handler: onSendInvite,
+                    }]}
+                    close={() => setModalVisible(false)}
+                />
             </Row>
             <Tabs className='full-width'>
                 <Tabs.TabPane tab='Игроки' key={TeamSections.Players}>
