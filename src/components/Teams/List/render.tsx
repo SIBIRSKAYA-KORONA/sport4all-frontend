@@ -1,82 +1,29 @@
 import './style.scss';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 
-import { Avatar, Button, List } from 'antd';
-import {
-    CheckCircleOutlined,
-    MinusCircleOutlined,
-    MinusOutlined,
-    PlusCircleOutlined,
-    PlusOutlined
-} from '@ant-design/icons';
+import { Button, List } from 'antd';
+import { MinusOutlined } from '@ant-design/icons';
 
-import CONST from 'Constants';
 import { Team } from 'Utils/types';
-import { InviteStatus } from 'Utils/enums';
-import { ButtonType } from 'antd/lib/button';
-import { lettersForAvatar } from 'Utils/utils';
-import { getText, MapOfTextMeta, TextMetas, texts } from 'Components/Invite/List/ItemActions';
+import { teamMeta } from 'Components/Invite/List/metas';
 import { IProps, TeamListItemAction, TeamListItemActions } from 'Components/Teams/List/interface';
 
 
 const TeamList = (props:IProps):JSX.Element => {
     const [loadings, setLoadings] = React.useState({});
-    const [replied, setReplied] = React.useState<MapOfTextMeta>(parseInvitesToTextMeta());
-
-    function parseInvitesToTextMeta():MapOfTextMeta {
-        const check = props.actions && props.actions.some(action => [TeamListItemActions.accept, TeamListItemActions.reject].includes(action.type));
-        return props.invites
-            ? props.invites.reduce((acc, curr) => ((curr.state === InviteStatus.Pending && check) ? acc : { ...acc, [curr.team_id]:texts[curr.state] }), {})
-            : {};
-    }
 
     async function onClick(key:string, handler:() => Promise<void>) {
         setLoadings(prev => ({ ...prev, [key]:true }));
-        return handler().finally(() => setLoadings(prev => ({ ...prev, [key]:false })));
-    }
-
-    function afterClickCreator(type:TextMetas) {
-        return function(teamID:number) {
-            setReplied(prev => ({ ...prev, [teamID]:texts[type] }));
-        }
+        handler().finally(() => setLoadings(prev => ({ ...prev, [key]:false })));
     }
 
     const buttons = {
-        [TeamListItemActions.add]: {
-            key:        'add',
-            title:      'Добавить',
-            icon:       <PlusOutlined/>,
-            otherProps: { type:'primary' as ButtonType },
-            afterClick: afterClickCreator(TextMetas.added)
-        },
         [TeamListItemActions.delete]: {
             key:        'delete',
             title:      'Удалить',
             icon:       <MinusOutlined/>,
             otherProps: { danger:true },
             afterClick: null
-        },
-        [TeamListItemActions.sendInvite]: {
-            key:        'sendInvite',
-            title:      'Выслать приглашение',
-            icon:       <PlusCircleOutlined/>,
-            otherProps: { type:'primary' as ButtonType },
-            afterClick: afterClickCreator(TextMetas.pending)
-        },
-        [TeamListItemActions.accept]: {
-            key:        'accept',
-            title:      'Принять',
-            icon:       <CheckCircleOutlined/>,
-            otherProps: { type:'primary' as ButtonType },
-            afterClick: afterClickCreator(TextMetas.accepted)
-        },
-        [TeamListItemActions.reject]: {
-            key:        'reject',
-            title:      'Отклонить',
-            icon:       <MinusCircleOutlined/>,
-            otherProps: { danger:true },
-            afterClick: afterClickCreator(TextMetas.rejected)
         },
     };
 
@@ -89,10 +36,7 @@ const TeamList = (props:IProps):JSX.Element => {
                 loading={loadings[dd.key]}
                 key={dd.key}
                 icon={dd.icon}
-                onClick={() => {
-                    onClick(dd.key, action.handler.bind(null, team))
-                        .then(() => dd.afterClick && dd.afterClick(team.id))
-                }}
+                onClick={() => onClick(dd.key, action.handler.bind(null, team))}
             >{dd.title}</Button>
         }
     }
@@ -113,20 +57,9 @@ const TeamList = (props:IProps):JSX.Element => {
                 <List.Item
                     style={{ paddingLeft: 10 }}
                     className={'row'}
-                    actions={replied[team.id]
-                        ? [getText(replied[team.id])]
-                        : actionCreators.map(ac => ac(team))
-                    }
+                    actions={actionCreators.map(ac => ac(team))}
                 >
-                    <List.Item.Meta
-                        avatar={(
-                            <Link to={CONST.PATHS.teams.id(team.id)}>
-                                <Avatar src={team.avatar.url}>{lettersForAvatar(team.name)}</Avatar>
-                            </Link>
-                        )}
-                        title={<Link to={CONST.PATHS.teams.id(team.id)}>{team.name}</Link>}
-                        description={team.about}
-                    />
+                    <List.Item.Meta {...teamMeta(team)}/>
                 </List.Item>
             )}
         />

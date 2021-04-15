@@ -1,12 +1,8 @@
-import { Invite, Team } from 'Utils/types';
+import { Team } from 'Utils/types';
 import { RouteComponentProps } from 'react-router-dom';
 
 export enum TeamListItemActions {
     delete,
-    add,
-    sendInvite,
-    accept,
-    reject
 }
 
 export interface TeamListItemAction {
@@ -16,7 +12,6 @@ export interface TeamListItemAction {
 
 export interface IProps extends RouteComponentProps {
     teams: Team[],
-    invites?: Invite[],
     loading: boolean,
     hideEmpty?: boolean,
     actions: TeamListItemAction[] | null

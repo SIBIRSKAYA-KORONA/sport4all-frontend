@@ -3,11 +3,12 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Button, Col, Divider, Empty, Space } from 'antd';
 
-import { EventStatus, Team, Tournament } from 'Utils/types';
+import InvitesModel from 'Models/InvitesModel';
 import TeamList from 'Components/Teams/List/render';
+import { EventStatus, Team, Tournament } from 'Utils/types';
+import { InviteActions } from 'Components/Invite/List/interface';
 import { TeamListItemActions } from 'Components/Teams/List/interface';
 import FindTeamModal from 'Components/Teams/FindTeamModal/FindTeamModal';
-import InvitesModel from 'Models/InvitesModel';
 
 
 interface IProps extends RouteComponentProps {
@@ -40,7 +41,7 @@ function ParticipantsRender(props:IProps):JSX.Element {
                             visible={modalVisible}
                             close={() => setModalVisible(false)}
                             actions={[{
-                                type:       TeamListItemActions.sendInvite,
+                                type:       InviteActions.invite,
                                 handler:    onTeamInvite
                             }]}
                         />

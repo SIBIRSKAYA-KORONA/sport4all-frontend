@@ -13,6 +13,7 @@ import TeamList from 'Components/Teams/List/render';
 import LoadingContainer from 'Components/Loading/render';
 import { TeamListItemActions } from 'Components/Teams/List/interface';
 import FindTeamModal from 'Components/Teams/FindTeamModal/FindTeamModal';
+import { InviteActions } from 'Components/Invite/List/interface';
 
 
 interface IProps extends RouteComponentProps {
@@ -84,7 +85,7 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
                             visible={modalVisible}
                             close={() => setModalVisible(false)}
                             actions={[{
-                                type: TeamListItemActions.sendInvite,
+                                type: InviteActions.invite,
                                 handler: onSendInvite
                             }]}
                         />

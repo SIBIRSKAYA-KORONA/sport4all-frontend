@@ -4,16 +4,17 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Button, Modal, Input } from 'antd';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
-import { Invite, Team } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
-import TeamList from 'Components/Teams/List/render';
-import { TeamListItemAction } from 'Components/Teams/List/interface';
+import { Invite, Team } from 'Utils/types';
+import InviteList from 'Components/Invite/List/render';
+import { teamMeta } from 'Components/Invite/List/metas';
+import { InviteAction } from 'Components/Invite/List/interface';
 
 
 interface IProps extends RouteComponentProps {
     visible: boolean,
     close: () => void,
-    actions?: TeamListItemAction[],
+    actions?: InviteAction[],
     invites?: Invite[],
     title: string
 }
@@ -47,13 +48,13 @@ const FindTeamModal = (props:IProps):JSX.Element => {
                 onChange={e => handleInputChange(e.target.value)}
             />
 
-            <TeamList
-                {...props}
+            <InviteList
                 hideEmpty
+                keyToCheck='invited_id'
+                items={teams}
                 loading={isSearching}
-                invites={props.invites}
-                teams={teams}
                 actions={props.actions}
+                meta={teamMeta}
             />
         </Modal>
     );

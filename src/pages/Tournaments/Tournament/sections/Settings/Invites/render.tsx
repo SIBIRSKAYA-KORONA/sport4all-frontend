@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Divider, message } from 'antd';
+import { Button, Divider, message } from 'antd';
 
 import { InviteStatus } from 'Utils/enums';
 import InvitesModel from 'Models/InvitesModel';
-import { findPendingTeamInvite } from 'Utils/structUtils';
-import { Invite, InviteWithTeam, Team, Tournament } from 'Utils/types';
+import InviteList from 'Components/Invite/List/render';
+import { teamMeta } from 'Components/Invite/List/metas';
 import LoadingContainer from 'Components/Loading/render';
-import TeamList from 'Components/Teams/List/render';
-import { TeamListItemActions } from 'Components/Teams/List/interface';
+import { findPendingTeamInvite } from 'Utils/structUtils';
+import { InviteActions } from 'Components/Invite/List/interface';
+import { Invite, InviteWithTeam, Team, Tournament } from 'Utils/types';
 
 
 interface IProps extends RouteComponentProps {
@@ -53,29 +54,32 @@ function TournamentInvites(props: IProps): JSX.Element {
             message: 'Ещё нет приглашений'
         }}
     >
+        <Button onClick={() => reload()}>Обновить</Button>
         {invitesFromUs.length > 0 && <>
             <Divider orientation='left' type='horizontal'>Приглашения от нас</Divider>
-            <TeamList
-                {...props}
-                teams={invitesFromUs.map(i => i.team)}
+            <InviteList
+                items={invitesFromUs.map(i => i.team)}
+                keyToCheck={'team_id'}
                 invites={invitesFromUs}
                 loading={false}
                 actions={[]}
+                meta={teamMeta}
             />
         </>}
 
         {invitesToUs.length > 0 && <>
             <Divider orientation='left' type='horizontal'>Приглашения нам</Divider>
-            <TeamList
-                {...props}
-                teams={invitesToUs.map(i => i.team)}
+            <InviteList
+                items={invitesToUs.map(i => i.team)}
+                keyToCheck={'team_id'}
                 invites={invitesToUs}
+                meta={teamMeta}
                 loading={false}
                 actions={[{
-                    type: TeamListItemActions.accept,
+                    type: InviteActions.accept,
                     handler: (team:Team) => replyToInvite(findPendingTeamInvite(invitesToUs, team), InviteStatus.Accepted),
                 },{
-                    type: TeamListItemActions.reject,
+                    type: InviteActions.reject,
                     handler: (team:Team) => replyToInvite(findPendingTeamInvite(invitesToUs, team), InviteStatus.Rejected),
                 }]}
             />

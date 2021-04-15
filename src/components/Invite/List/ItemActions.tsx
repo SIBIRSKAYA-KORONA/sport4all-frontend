@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { Typography } from 'antd';
+const { Text } = Typography;
 import { BaseType } from 'antd/lib/typography/Base';
 import { CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { Typography } from 'antd';
 import { InviteStatus } from 'Utils/enums';
-const { Text } = Typography;
 
 
 export interface TextMeta {
@@ -21,7 +21,6 @@ export enum TextMetas {
     pending = InviteStatus.Pending,
     accepted = InviteStatus.Accepted,
     rejected = InviteStatus.Rejected,
-    added = 3
 }
 
 const texts:MapOfTextMeta = {
@@ -43,12 +42,6 @@ const texts:MapOfTextMeta = {
         type:       'secondary' as BaseType,
         icon:       <CloseCircleOutlined/>
     },
-    [TextMetas.added]: {
-        key:        'added',
-        title:      'Добавлена',
-        type:       'success' as BaseType,
-        icon:       <CheckCircleOutlined/>
-    }
 };
 export { texts };
 

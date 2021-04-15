@@ -10,6 +10,9 @@ import LoadingContainer from 'Components/Loading/render';
 import { findPendingTeamInvite } from 'Utils/structUtils';
 import { Invite, InviteWithTeam, Team, User } from 'Utils/types';
 import { TeamListItemActions } from 'Components/Teams/List/interface';
+import InviteList from 'Components/Invite/List/render';
+import { teamMeta } from 'Components/Invite/List/metas';
+import { InviteActions } from 'Components/Invite/List/interface';
 
 
 interface IProps extends RouteComponentProps {
@@ -60,29 +63,30 @@ const ProfilePersonalInvites = (props:IProps):JSX.Element => {
         <Button onClick={() => reload()}>Обновить</Button>
         {invitesToMe.length > 0 && <>
             <Divider orientation={'left'}>Вам</Divider>
-            <TeamList
-                {...props}
-                teams={invitesToMe.map(invite => invite.team)}
+            <InviteList
+                keyToCheck='team_id'
+                items={invitesToMe.map(invite => invite.team)}
                 invites={invitesToMe}
                 loading={false}
+                meta={teamMeta}
                 actions={[{
-                    type:       TeamListItemActions.accept,
+                    type:       InviteActions.accept,
                     handler:    (team:Team) => replyToInvite(findPendingTeamInvite(invitesToMe, team), InviteStatus.Accepted)
                 },{
-                    type:       TeamListItemActions.reject,
+                    type:       InviteActions.reject,
                     handler:    (team:Team) => replyToInvite(findPendingTeamInvite(invitesToMe, team), InviteStatus.Rejected)
-                }
-                ]}
+                }]}
             />
         </>}
         {invitesFromMe.length > 0 && <>
             <Divider orientation={'left'}>От вас</Divider>
-            <TeamList
-                {...props}
-                teams={invitesFromMe.map(invite => invite.team)}
+            <InviteList
+                keyToCheck='team_id'
+                items={invitesFromMe.map(invite => invite.team)}
                 invites={invitesFromMe}
                 loading={false}
                 actions={[]}
+                meta={teamMeta}
             />
         </>}
     </LoadingContainer>);
