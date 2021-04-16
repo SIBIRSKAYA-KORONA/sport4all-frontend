@@ -4,14 +4,13 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { Divider, Button, Space, message } from 'antd';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import { Team, User } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
 import { TeamPlayerRoles } from 'Utils/enums';
 import InvitesModel from 'Models/InvitesModel';
 import TeamList from 'Components/Teams/List/render';
 import LoadingContainer from 'Components/Loading/render';
-import { TeamListItemActions } from 'Components/Teams/List/interface';
 import FindTeamModal from 'Components/Teams/FindTeamModal/FindTeamModal';
 import { InviteActions } from 'Components/Invite/List/interface';
 
@@ -65,7 +64,7 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
                     <h4>{canEdit ? 'Тренирую' : 'Тренирует'}</h4>
                     {canEdit &&
                     <Button type='link'>
-                        <Link to={CONST.PATHS.teams.create}>Создать</Link>
+                        <Link to={PATHS.teams.create}>Создать</Link>
                     </Button>
                     }
                 </Space>

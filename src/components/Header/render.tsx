@@ -7,7 +7,7 @@ import { BellOutlined } from '@ant-design/icons/lib';
 import { Layout, Button, Avatar, Badge } from 'antd';
 const AntHeader = Layout.Header;
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import logo from '/static/images/logo.svg';
 import { Notification } from 'Utils/types';
 import { lettersForAvatar } from 'Utils/utils';
@@ -31,7 +31,7 @@ const Header = (props: IProps) => {
                 <Link to='/' className={'header__link'}>
                     <img src={logo} className={'header__logo'} alt={'Logo'}/>
                 </Link>
-                <Link to={CONST.PATHS.feed} className={'header__link'}>Лента</Link>
+                <Link to={PATHS.feed} className={'header__link'}>Лента</Link>
 
                 <SearchAll {...props}/>
 
@@ -48,7 +48,7 @@ const Header = (props: IProps) => {
                                     </Badge>
                                 </div>
                             </NotificationsPopover>
-                            <Link to={CONST.PATHS.profile.nickname(props.user.nickname)}>
+                            <Link to={PATHS.profile.nickname(props.user.nickname)}>
                                 <Avatar size='large' src={props.user.avatar?.url}>
                                     {lettersForAvatar(props.user?.name ? props.user?.name + props.user?.surname : props.user?.nickname)}
                                 </Avatar>

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {Form, Input, Select, message} from 'antd';
 
-import CONST from 'Constants';
+import { CONST } from 'Constants';
 import SportModel from 'Models/SportModel';
 
 

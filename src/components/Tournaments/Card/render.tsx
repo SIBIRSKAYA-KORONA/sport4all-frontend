@@ -6,7 +6,7 @@ import { Image, Space, Typography } from 'antd';
 const { Text } = Typography;
 import { TeamOutlined, ClockCircleOutlined } from '@ant-design/icons';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import { parseSeconds } from 'Utils/utils';
 import { Tournament } from 'Utils/types';
 import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
@@ -20,7 +20,7 @@ function TournamentCard(props: IProps): JSX.Element {
     const t = props.tournament;
     return (<div
         className='tournament-card'
-        onClick={() => props.history.push(CONST.PATHS.tournaments.id(props.tournament.id))}
+        onClick={() => props.history.push(PATHS.tournaments.id(props.tournament.id))}
     >
         {t.avatar.url &&
             <Image className='tournament-card__img' src={t.avatar.url} alt={t.avatar.filename}/>

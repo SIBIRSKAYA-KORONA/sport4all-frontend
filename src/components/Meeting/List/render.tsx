@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Table } from 'antd';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import { Meeting } from 'Utils/types';
 import { meetingResult } from 'Utils/structUtils';
 import { RouteComponentProps } from 'react-router-dom';
@@ -39,7 +39,7 @@ function MeetingsList(props: IProps): JSX.Element {
             columns={columns}
             rowClassName={() => 'row'}
             onRow={meeting => ({
-                onClick: () => { props.history.push(CONST.PATHS.meetings.id(meeting.id)); }
+                onClick: () => { props.history.push(PATHS.meetings.id(meeting.id)); }
             })}/>
     );
 }

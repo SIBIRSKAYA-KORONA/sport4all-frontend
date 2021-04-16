@@ -10,7 +10,7 @@ import {
     PlusOutlined
 } from '@ant-design/icons';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import { User } from 'Utils/types';
 import { InviteStatus } from 'Utils/enums';
 import { lettersForUserAvatar } from 'Utils/structUtils';
@@ -116,11 +116,11 @@ const TeamPlayersList = (props:IProps):JSX.Element => {
                 >
                     <List.Item.Meta
                         avatar={(
-                            <Link to={CONST.PATHS.profile.nickname(player.nickname)}>
+                            <Link to={PATHS.profile.nickname(player.nickname)}>
                                 <Avatar src={player.avatar.url}>{lettersForUserAvatar(player)}</Avatar>
                             </Link>
                         )}
-                        title={<Link to={CONST.PATHS.profile.nickname(player.nickname)}>{`${player.name} ${player.surname}`}</Link>}
+                        title={<Link to={PATHS.profile.nickname(player.nickname)}>{`${player.name} ${player.surname}`}</Link>}
                         description={'@'+player.nickname}
                     />
                 </List.Item>

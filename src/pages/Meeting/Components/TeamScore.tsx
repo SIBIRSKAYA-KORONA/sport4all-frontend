@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Space, Avatar, Typography } from 'antd';
 const { Title } = Typography;
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import { Stats, Team } from 'Utils/types';
 import { lettersForAvatar } from 'Utils/utils';
 import MeetingScoredPlayers from 'Pages/Meeting/Components/ScoredPlayers';
@@ -20,7 +20,7 @@ function MeetingTeamScore(props: IProps): JSX.Element {
         props.stats.filter(stata => stata.teamId === props.team.id && props.team.players.find(player => player.id === stata.playerId));
     return (
         <Space direction='vertical' size='middle' align='center'>
-            <div className='cursor-pointer' onClick={() => { props.history.push(CONST.PATHS.teams.id(props.team.id)) }}>
+            <div className='cursor-pointer' onClick={() => { props.history.push(PATHS.teams.id(props.team.id)) }}>
                 <Avatar size={100} src={props.team.avatar.url}>{lettersForAvatar(props.team.name)}</Avatar>
             </div>
             <Title level={5} className='meeting__title'>{props.team.name}</Title>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './BracketsViewer/style.scss';
 import {BracketsViewer} from 'Components/TournamentGrid/BracketsViewer/main.ts';
 import {EventStatus} from 'Utils/types';
-import CONST from 'Constants';
+import { CONST } from 'Constants';
 
 class TournamentGrid extends React.Component {
     static get systems() {

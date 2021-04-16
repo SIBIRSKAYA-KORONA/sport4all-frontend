@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { Avatar, Col, message, Row, Tabs, Tag, Typography } from 'antd';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import { User } from 'Utils/types';
 import UserModel from 'Models/UserModel';
 import BasePage from 'Components/BasePage/render';
@@ -63,8 +63,8 @@ const ProfilePage = (props:IProps):JSX.Element => {
 
     function redirect(key:ProfileSections) {
         props.history.push(key === ProfileSections.Personal
-            ? CONST.PATHS.profile.personal.section(profile.nickname, ProfilePersonalSections.Skills)
-            : CONST.PATHS.profile.section(profile.nickname, key)
+            ? PATHS.profile.personal.section(profile.nickname, ProfilePersonalSections.Skills)
+            : PATHS.profile.section(profile.nickname, key)
         )
     }
 

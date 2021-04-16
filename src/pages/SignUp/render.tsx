@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Form, Input, Button } from 'antd';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import UserModel from 'Models/UserModel';
 import { ProfileSections } from 'Utils/enums';
 import BasePage from 'Components/BasePage/render';
@@ -34,7 +34,7 @@ const SignUpPage = (props:IProps):JSX.Element => {
         if (!user.password || !user.nickname) return; // todo:check error
         UserModel.signUp(user)
             .then(() => UserModel.getProfile())
-            .then(() => props.history.push(CONST.PATHS.profile.section(user.nickname, ProfileSections.Personal)))
+            .then(() => props.history.push(PATHS.profile.section(user.nickname, ProfileSections.Personal)))
             .catch(error => setError(error));
     }
     return (

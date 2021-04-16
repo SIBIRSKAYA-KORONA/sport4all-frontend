@@ -5,8 +5,9 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Avatar, Button, Col, message, Row, Tabs, Typography } from 'antd';
 const { Title, Paragraph } = Typography;
 
+import { URL_PARAMS, PATHS } from 'Constants';
+import { TeamSections, TeamSettingsSections } from 'Utils/enums';
 import { Team, Tournament } from 'Utils/types';
-import { TeamSections } from 'Utils/enums';
 import { lettersForAvatar } from 'Utils/utils';
 import InvitesModel from 'Models/InvitesModel';
 import BasePage from 'Components/BasePage/render';
@@ -32,6 +33,13 @@ const TeamPageRender = (props: IProps):JSX.Element => {
             .catch(e => { message.error(e.toString()); });
     }
 
+    function redirect(key:TeamSections) {
+        props.history.push(key === TeamSections.Settings
+            ? PATHS.teams.settings.section(props.team.id, TeamSettingsSections.Info)
+            : PATHS.teams.id(props.team.id)
+        )
+    }
+
     return (
         <BasePage {...props} loading={props.loading}>{props.team && <>
             <Row>
@@ -55,7 +63,12 @@ const TeamPageRender = (props: IProps):JSX.Element => {
                     close={() => setModalVisible(false)}
                 />
             </Row>
-            <Tabs className='full-width'>
+            <Tabs
+                activeKey={props.match.params[URL_PARAMS.team.section]}
+                defaultActiveKey={TeamSections.Players}
+                onChange={redirect}
+                className='full-width'
+            >
                 <Tabs.TabPane tab='Игроки' key={TeamSections.Players}>
                     <TeamPlayers {...props}
                         team={props.team}
@@ -63,11 +76,11 @@ const TeamPageRender = (props: IProps):JSX.Element => {
                         canEdit={props.canEdit}
                     />
                 </Tabs.TabPane>
-                {props.canEdit && props.team && <>
-                    <Tabs.TabPane tab='Настройки' key={TeamSections.PublicInfo}>
+                {props.canEdit &&
+                    <Tabs.TabPane tab='Настройки' key={TeamSections.Settings}>
                         <TeamPublicInfo teamId={props.team.id} reload={props.reload}/>
                     </Tabs.TabPane>
-                </>}
+                }
             </Tabs>
         </>}</BasePage>
     )

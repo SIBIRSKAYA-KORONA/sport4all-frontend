@@ -9,7 +9,7 @@ import FeedPage from 'Pages/Feed/render';
 import HomePage from 'Pages/Home/render';
 import SignUpPage from 'Pages/SignUp/render';
 import TestGrid from 'Pages/TestGrid/render';
-import { CONST, URL_PARAMS } from 'Utils/constants';
+import { CONST, PATHS, URL_PARAMS } from 'Utils/constants';
 import TeamCreatePage from 'Pages/Teams/Create/render';
 import TeamPage from 'Pages/Teams/Team/logic';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
@@ -60,39 +60,39 @@ render(
         <BrowserRouter>
             <Switch>
                 <Route exact path='/' component={HomePage}/>
-                <Route exact path={CONST.PATHS.feed} component={FeedPage}/>
+                <Route exact path={PATHS.feed} component={FeedPage}/>
 
                 {/* Teams */}
-                <AuthedRoute exact path={CONST.PATHS.teams.create} component={TeamCreatePage} mustBeLogged='in'/>
-                <Route exact path={CONST.PATHS.teams.id__config} render={props => (
-                    <Redirect to={CONST.PATHS.teams.id(+props.match.params[URL_PARAMS.team.id])} />
+                <AuthedRoute exact path={PATHS.teams.create} component={TeamCreatePage} mustBeLogged='in'/>
+                <Route exact path={PATHS.teams.id__config} render={props => (
+                    <Redirect to={PATHS.teams.id(+props.match.params[URL_PARAMS.team.id])} />
                 )}/>
-                <Route exact path={CONST.PATHS.teams.settings.config} render={props => (
-                    <Redirect to={CONST.PATHS.teams.settings.section(+props.match.params[URL_PARAMS.team.id], TeamSettingsSections.Info)} />
+                <Route exact path={PATHS.teams.settings.config} render={props => (
+                    <Redirect to={PATHS.teams.settings.section(+props.match.params[URL_PARAMS.team.id], TeamSettingsSections.Info)} />
                 )}/>
-                <Route exact path={CONST.PATHS.teams.__config} component={TeamPage}/>
+                <Route exact path={PATHS.teams.__config} component={TeamPage}/>
 
                 {/* Tournaments */}
-                <AuthedRoute path={CONST.PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
-                <Route path={CONST.PATHS.tournaments.list} component={TournamentsListPage}/>
-                <Route path={CONST.PATHS.tournaments.meetings(null)} exact component={TournamentMeetingsListPage}/>
+                <AuthedRoute path={PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
+                <Route path={PATHS.tournaments.list} component={TournamentsListPage}/>
+                <Route path={PATHS.tournaments.meetings(null)} exact component={TournamentMeetingsListPage}/>
                 <Route path='/tournaments/:tournamentId' component={TournamentsPage}/>
 
                 {/* Meetings */}
-                <Route path={CONST.PATHS.meetings.id(null)} component={MeetingPage}/>
+                <Route path={PATHS.meetings.id(null)} component={MeetingPage}/>
 
                 {/* Profile */}
-                <Route exact path={CONST.PATHS.profile.personal.base} render={props => (
-                    <Redirect exact to={CONST.PATHS.profile.personal.section(props.match.params['nickname'], ProfilePersonalSections.Information)}/>
+                <Route exact path={PATHS.profile.personal.base} render={props => (
+                    <Redirect exact to={PATHS.profile.personal.section(props.match.params['nickname'], ProfilePersonalSections.Information)}/>
                 )}/>
-                <Route exact path={CONST.PATHS.profile.id__config} render={props => (
-                    <Redirect exact to={CONST.PATHS.profile.section(props.match.params['nickname'], ProfileSections.Tournaments)}/>
+                <Route exact path={PATHS.profile.id__config} render={props => (
+                    <Redirect exact to={PATHS.profile.section(props.match.params['nickname'], ProfileSections.Tournaments)}/>
                 )}/>
-                <AuthedRoute exact path={CONST.PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
+                <AuthedRoute exact path={PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
 
                 {/* Auth */}
-                <AuthedRoute path={CONST.PATHS.signup} component={SignUpPage} mustBeLogged='out'/>
-                <AuthedRoute path={CONST.PATHS.login} component={LoginPage} mustBeLogged='out'/>
+                <AuthedRoute path={PATHS.signup} component={SignUpPage} mustBeLogged='out'/>
+                <AuthedRoute path={PATHS.login} component={LoginPage} mustBeLogged='out'/>
 
                 {/* Test */}
                 <Route path='/test-grid' component={TestGrid}/>

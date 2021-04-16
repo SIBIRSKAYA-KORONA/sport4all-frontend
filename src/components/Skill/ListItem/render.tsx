@@ -5,7 +5,7 @@ import { Typography, Avatar, Row, Col, Button, message, Space } from 'antd';
 const { Text } = Typography;
 import { CheckOutlined, MinusOutlined } from '@ant-design/icons';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import { Skill, User } from 'Utils/types';
 import SkillsModel from 'Models/SkillsModel';
 import { lettersForAvatar } from 'Utils/utils';
@@ -49,7 +49,7 @@ const SkillListItem = (props:IProps):JSX.Element => {
                         size='small'
                     >
                         {props.skill.approvals.map(approval => <Avatar key={approval.id}>
-                            <Link to={CONST.PATHS.profile.nickname(approval.fromUser.nickname)}>{lettersForAvatar(approval.fromUser.name)}</Link>
+                            <Link to={PATHS.profile.nickname(approval.fromUser.nickname)}>{lettersForAvatar(approval.fromUser.name)}</Link>
                         </Avatar>)}
                     </Avatar.Group>
                     <Text type='secondary'>подтвердили</Text>

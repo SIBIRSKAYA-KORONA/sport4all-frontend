@@ -8,7 +8,7 @@ import {
     MinusCircleOutlined, PlusCircleOutlined,
 } from '@ant-design/icons';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import { Tournament } from 'Utils/types';
 import { InviteStatus } from 'Utils/enums';
 import { lettersForAvatar } from 'Utils/utils';
@@ -103,11 +103,11 @@ const TournamentInviteList = (props:IProps):JSX.Element => {
                 >
                     <List.Item.Meta
                         avatar={(
-                            <Link to={CONST.PATHS.tournaments.id(tournament.id)}>
+                            <Link to={PATHS.tournaments.id(tournament.id)}>
                                 <Avatar src={tournament.avatar.url}>{lettersForAvatar(tournament.name)}</Avatar>
                             </Link>
                         )}
-                        title={<Link to={CONST.PATHS.tournaments.id(tournament.id)}>{tournament.name}</Link>}
+                        title={<Link to={PATHS.tournaments.id(tournament.id)}>{tournament.name}</Link>}
                         description={tournament.about}
                     />
                 </List.Item>

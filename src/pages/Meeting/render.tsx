@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button, Col, Empty, Row, Space, Typography } from 'antd';
 const { Title } = Typography;
 
+import { PATHS } from 'Constants';
 import { EventStatus } from 'Utils/types';
 import { meetingResult } from 'Utils/structUtils';
 import BasePage from 'Components/BasePage/render';
@@ -14,7 +15,6 @@ import AddResultsModal from 'Pages/Meeting/modals/addResults';
 import MeetingTeamScore from 'Pages/Meeting/Components/TeamScore';
 import MeetingPictureWall from 'Pages/Meeting/Components/PictureWall';
 import { IProps, visibleModals, visibleModalsKey } from './interface';
-import CONST from 'Constants';
 
 
 const MeetingPageRender = (props:IProps):JSX.Element => {
@@ -44,7 +44,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                             </Col>
                         </Row>
                         <Button type='link'>
-                            <Link to={CONST.PATHS.tournaments.id(props.meeting.tournamentId)}>Турнир</Link>
+                            <Link to={PATHS.tournaments.id(props.meeting.tournamentId)}>Турнир</Link>
                         </Button>
                     </Space>
                 }

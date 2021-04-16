@@ -4,7 +4,7 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { List, Typography } from 'antd';
 const { Text } = Typography;
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import { Stats, User } from 'Utils/types';
 import { parseSeconds } from 'Utils/utils';
 import ProfileModel from 'Models/ProfileModel';
@@ -41,7 +41,7 @@ const HistorySubPage = (props:IProps):JSX.Element => {
                     <List.Item.Meta
                         title={<Text>Очков: {stats.score}</Text>}
                         description={<>
-                            <ClockCircleOutlined/> {parseSeconds(stats.created)} <Link to={CONST.PATHS.meetings.id(stats.meetingId)}>Встреча</Link>
+                            <ClockCircleOutlined/> {parseSeconds(stats.created)} <Link to={PATHS.meetings.id(stats.meetingId)}>Встреча</Link>
                         </>}
                     />
                 </List.Item>

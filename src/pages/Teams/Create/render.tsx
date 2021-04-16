@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Form, Input, Button, message } from 'antd';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import { Team } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
 import { ProfileSections } from 'Utils/enums';
@@ -16,10 +16,10 @@ const TeamCreatePage = (props:RouteComponentProps):JSX.Element => {
         if (!values.name) return;
         // todo: handle 409 error
         TeamModel.createTeam(values)
-            .then((team:Team) => props.history.push(CONST.PATHS.teams.id(team.id)))
+            .then((team:Team) => props.history.push(PATHS.teams.id(team.id)))
             .catch(e => {
                 message.error(e);
-                props.history.push(CONST.PATHS.profile.section(ProfileSections.Teams));
+                props.history.push(PATHS.profile.section(ProfileSections.Teams));
             });
     }
     const layout = {

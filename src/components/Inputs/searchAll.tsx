@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { RouteComponentProps, Link } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { AutoComplete, Input, Typography } from 'antd';
 const { Text } = Typography;
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import TeamModel from 'Models/TeamModel';
 import ProfileModel from 'Models/ProfileModel';
 import TournamentModel from 'Models/TournamentModel';
@@ -51,19 +51,19 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
 
     const renderTeam = (t:Team) => ({
         ket: 'team'+t.id,
-        value: CONST.PATHS.teams.id(t.id),
+        value: PATHS.teams.id(t.id),
         label: <Text>{t.name}</Text>
     });
 
     const renderTournament = (t:Tournament) => ({
         key: 'tournament'+t.id,
-        value: CONST.PATHS.tournaments.id(t.id),
+        value: PATHS.tournaments.id(t.id),
         label: <Text>{t.name}</Text>
     });
 
     const renderUser = (u:User) => ({
         key: 'user'+u.nickname,
-        value: CONST.PATHS.profile.nickname(u.nickname),
+        value: PATHS.profile.nickname(u.nickname),
         label: <><Text>{u.name} {u.surname}</Text><Text type='secondary'>@{u.nickname}</Text></>,
     });
 
