@@ -20,7 +20,7 @@ interface IProps extends RouteComponentProps {
     reload: () => void,
 }
 
-function TeamPlayers(props: IProps): JSX.Element {
+function TeamPlayersSection(props: IProps): JSX.Element {
     const [loadingPlayers, setLoadingPlayers] = React.useState(false);
     const [playersToAdd, setPlayersToAdd] = React.useState<Array<User>>([]);
     const [invitesFromUsers, setInvitesFromUsers] = React.useState<InviteWithUser[]>([]);
@@ -143,4 +143,4 @@ function TeamPlayers(props: IProps): JSX.Element {
     );
 }
 
-export default TeamPlayers;
+export default TeamPlayersSection;

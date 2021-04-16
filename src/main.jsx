@@ -1,28 +1,28 @@
+import './main.scss';
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import './main.scss';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import store from 'Store/store';
+import UserModel from 'Models/UserModel';
 import FeedPage from 'Pages/Feed/render';
 import HomePage from 'Pages/Home/render';
+import LoginPage from 'Pages/Login/render';
+import AuthedRoute from 'Utils/AuthedRoute';
 import SignUpPage from 'Pages/SignUp/render';
 import TestGrid from 'Pages/TestGrid/render';
-import { CONST, PATHS, URL_PARAMS } from 'Utils/constants';
-import TeamCreatePage from 'Pages/Teams/Create/render';
-import TeamPage from 'Pages/Teams/Team/logic';
-import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
-import TournamentsPage from 'Pages/Tournaments/Tournament/logic';
-import TournamentsListPage from 'Pages/Tournaments/List/render';
-import LoginPage from 'Pages/Login/render';
-import ProfilePage from 'Pages/Profile/render';
-import AuthedRoute from 'Utils/AuthedRoute';
+import TeamPage from 'Pages/Teams/Team/render';
 import MeetingPage from 'Pages/Meeting/logic';
+import ProfilePage from 'Pages/Profile/render';
+import TeamCreatePage from 'Pages/Teams/Create/render';
+import NotificationsModel from 'Models/NotificationsModel';
+import { CONST, PATHS, URL_PARAMS } from 'Utils/constants';
+import TournamentsListPage from 'Pages/Tournaments/List/render';
+import TournamentPage from 'Pages/Tournaments/Tournament/logic';
+import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
-import {ProfileSections, ProfilePersonalSections, TeamSettingsSections} from 'Utils/enums';
-import UserModel from 'Models/UserModel';
-import NotificationsModel from 'Models/NotificationsModel'
+import { ProfileSections, ProfilePersonalSections, TeamSettingsSections } from 'Utils/enums';
 
 
 // PREPARE APP
@@ -59,7 +59,7 @@ render(
     <Provider store={store}>
         <BrowserRouter>
             <Switch>
-                <Route exact path='/' component={HomePage}/>
+                <Route exact path={PATHS.root} component={HomePage}/>
                 <Route exact path={PATHS.feed} component={FeedPage}/>
 
                 {/* Teams */}
@@ -73,20 +73,20 @@ render(
                 <Route exact path={PATHS.teams.__config} component={TeamPage}/>
 
                 {/* Tournaments */}
-                <AuthedRoute path={PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
+                <Route exact path={PATHS.tournaments.id__config} component={TournamentPage}/>
+                <Route exact path={PATHS.tournaments.meetings__config} component={TournamentMeetingsListPage}/>
+                <AuthedRoute exact path={PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
                 <Route path={PATHS.tournaments.list} component={TournamentsListPage}/>
-                <Route path={PATHS.tournaments.meetings(null)} exact component={TournamentMeetingsListPage}/>
-                <Route path='/tournaments/:tournamentId' component={TournamentsPage}/>
 
                 {/* Meetings */}
-                <Route path={PATHS.meetings.id(null)} component={MeetingPage}/>
+                <Route path={PATHS.meetings.id__config} component={MeetingPage}/>
 
                 {/* Profile */}
                 <Route exact path={PATHS.profile.personal.base} render={props => (
-                    <Redirect exact to={PATHS.profile.personal.section(props.match.params['nickname'], ProfilePersonalSections.Information)}/>
+                    <Redirect exact to={PATHS.profile.personal.section(props.match.params[URL_PARAMS.profile.nickname], ProfilePersonalSections.Information)}/>
                 )}/>
                 <Route exact path={PATHS.profile.id__config} render={props => (
-                    <Redirect exact to={PATHS.profile.section(props.match.params['nickname'], ProfileSections.Tournaments)}/>
+                    <Redirect exact to={PATHS.profile.section(props.match.params[URL_PARAMS.profile.nickname], ProfileSections.Tournaments)}/>
                 )}/>
                 <AuthedRoute exact path={PATHS.profile.__config} component={ProfilePage} mustBeLogged='in'/>
 

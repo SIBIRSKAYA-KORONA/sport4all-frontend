@@ -21,6 +21,10 @@ class TeamModel {
             .then(res => {
                 if (res.status >= 400) throw res.status;
                 return res.json();
+            })
+            .then((team:Team) => {
+                if (!team.players) team.players = [];
+                return team;
             });
     }
 

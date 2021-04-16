@@ -1,55 +1,71 @@
 import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { Avatar, Button, Col, message, Row, Tabs, Typography } from 'antd';
 const { Title, Paragraph } = Typography;
 
+import TeamModel from 'Models/TeamModel';
 import { URL_PARAMS, PATHS } from 'Constants';
-import { TeamSections, TeamSettingsSections } from 'Utils/enums';
 import { Team, Tournament } from 'Utils/types';
 import { lettersForAvatar } from 'Utils/utils';
 import InvitesModel from 'Models/InvitesModel';
+import { UserType } from 'Store/User/UserState';
 import BasePage from 'Components/BasePage/render';
-import TeamPlayers from 'Pages/Teams/Team/Sections/Players';
-import TeamPublicInfo from 'Pages/Teams/Team/Sections/PublicInfo';
+import TeamPlayersSection from 'Pages/Teams/Team/Players/render';
+import { TeamSections, TeamSettingsSections } from 'Utils/enums';
+import TeamSettingsInfoSection from 'Pages/Teams/Team/Sections/PublicInfo';
 import FindTournamentModal from 'Components/Tournaments/FindTournamentModal/FindTeamModal';
 import { TournamentInviteListItemActions } from 'Components/Invite/TournamentList/interface';
 
 
 interface IProps extends RouteComponentProps {
-    loading: boolean,
-    canEdit: boolean,
-    team: Team | null,
-    reload: () => void
+    user: UserType
 }
 
-const TeamPageRender = (props: IProps):JSX.Element => {
+const TeamPage = (props: IProps):JSX.Element => {
+    const [loading, setLoading] = React.useState(true);
     const [modalVisible, setModalVisible] = React.useState(false);
+    const [team, setTeam] = React.useState<Team>(null);
+    const [canEdit, setCanEdit] = React.useState(false);
+
+    async function reload() {
+        setLoading(true);
+        return TeamModel.loadTeam(props.match.params[URL_PARAMS.team.id])
+            .then((team:Team) => setTeam(team))
+            .catch(e => { message.error(e.toString()) })
+            .finally(() => setLoading(false));
+    }
+
+    React.useEffect(() => { reload() }, [props.match.params[URL_PARAMS.team.id]]);
+    React.useEffect(() => {
+        setCanEdit(props.user && team && props.user.id === team.ownerId);
+    }, [props.user, team]);
 
     async function onSendInvite(t:Tournament) {
-        return InvitesModel.fromTeamToTournament(t, props.team)
+        return InvitesModel.fromTeamToTournament(t, team)
             .then(() => { message.success('Приглашение выслано') })
             .catch(e => { message.error(e.toString()); });
     }
 
     function redirect(key:TeamSections) {
         props.history.push(key === TeamSections.Settings
-            ? PATHS.teams.settings.section(props.team.id, TeamSettingsSections.Info)
-            : PATHS.teams.id(props.team.id)
+            ? PATHS.teams.settings.section(team.id, TeamSettingsSections.Info)
+            : PATHS.teams.id(team.id)
         )
     }
 
     return (
-        <BasePage {...props} loading={props.loading}>{props.team && <>
+        <BasePage {...props} loading={loading}>{team && <>
             <Row>
                 <Col flex='100px'>
-                    <Avatar size={90} src={props.team.avatar.url}>{lettersForAvatar(props.team.name)}</Avatar>
+                    <Avatar size={90} src={team.avatar.url}>{lettersForAvatar(team.name)}</Avatar>
                 </Col>
                 <Col flex='auto'>
-                    <Title level={2}>{props.team.name}</Title>
-                    {props.team.about && <Paragraph>{props.team.about}</Paragraph>}
-                    {props.team.location && <Paragraph>{props.team.location}</Paragraph>}
+                    <Title level={2}>{team.name}</Title>
+                    {team.about && <Paragraph>{team.about}</Paragraph>}
+                    {team.location && <Paragraph>{team.location}</Paragraph>}
                 </Col>
                 <Button type='primary' onClick={() => setModalVisible(true)}>Найти турнир</Button>
                 <FindTournamentModal
@@ -70,15 +86,16 @@ const TeamPageRender = (props: IProps):JSX.Element => {
                 className='full-width'
             >
                 <Tabs.TabPane tab='Игроки' key={TeamSections.Players}>
-                    <TeamPlayers {...props}
-                        team={props.team}
-                        reload={props.reload}
-                        canEdit={props.canEdit}
+                    <TeamPlayersSection
+                        {...props}
+                        team={team}
+                        reload={reload}
+                        canEdit={canEdit}
                     />
                 </Tabs.TabPane>
-                {props.canEdit &&
+                {canEdit &&
                     <Tabs.TabPane tab='Настройки' key={TeamSections.Settings}>
-                        <TeamPublicInfo teamId={props.team.id} reload={props.reload}/>
+                        <TeamSettingsInfoSection reload={reload} team={team} user={props.user}/>
                     </Tabs.TabPane>
                 }
             </Tabs>
@@ -86,4 +103,8 @@ const TeamPageRender = (props: IProps):JSX.Element => {
     )
 }
 
-export default TeamPageRender;
+const mapStateToProps = state => ({
+    user: state.user.user
+});
+
+export default connect(mapStateToProps)(TeamPage);

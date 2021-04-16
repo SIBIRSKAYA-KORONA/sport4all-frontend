@@ -5,10 +5,11 @@ import TournamentPageRender from './render';
 import TournamentModel from 'Models/TournamentModel';
 import {message} from 'antd';
 import {connect} from 'react-redux';
+import {URL_PARAMS} from 'Constants';
 
 
 function TournamentPage(props) {
-    const tournamentId = Number(props.match.params.tournamentId);
+    const tournamentId = Number(props.match.params[URL_PARAMS.tournament.id]);
     const [isLoading, setIsLoading] = useState(true);
     const [tournamentData, setTournamentData] = useState({})
     const [isOwner, setIsOwner] = useState(false);
@@ -38,7 +39,7 @@ function TournamentPage(props) {
 
         setIsLoading(false);
 
-    }, [props.match.params.tournamentId])
+    }, [props.match.params[URL_PARAMS.tournament.id]])
 
 
     return (
@@ -58,9 +59,7 @@ TournamentPage.propTypes = {
     user: PropTypes.object,
     history: PropTypes.object.isRequired,
     match: PropTypes.shape({
-        params: PropTypes.shape({
-            tournamentId: PropTypes.string.isRequired,
-        }).isRequired
+        params: PropTypes.object.isRequired
     }).isRequired,
 }
 

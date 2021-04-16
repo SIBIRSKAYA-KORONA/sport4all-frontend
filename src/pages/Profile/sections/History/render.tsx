@@ -4,7 +4,7 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { List, Typography } from 'antd';
 const { Text } = Typography;
 
-import { PATHS } from 'Constants';
+import { PATHS, URL_PARAMS } from 'Constants';
 import { Stats, User } from 'Utils/types';
 import { parseSeconds } from 'Utils/utils';
 import ProfileModel from 'Models/ProfileModel';
@@ -25,7 +25,7 @@ const HistorySubPage = (props:IProps):JSX.Element => {
         ProfileModel.loadStats(props.profile.id)
             .then((stats:Stats[]) => setStats(stats))
             .finally(() => setLoading(false));
-    }, [props.match.params['nickname']]);
+    }, [props.match.params[URL_PARAMS.profile.nickname]]);
 
     return <LoadingContainer loading={loading} empty={{ check:stats.length === 0, message:'Нет истории выступлений' }}>
         <h3>Результаты выступлений</h3>

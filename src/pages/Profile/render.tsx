@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { Avatar, Col, message, Row, Tabs, Tag, Typography } from 'antd';
 
-import { PATHS } from 'Constants';
+import { PATHS, URL_PARAMS } from 'Constants';
 import { User } from 'Utils/types';
 import UserModel from 'Models/UserModel';
 import BasePage from 'Components/BasePage/render';
@@ -32,7 +32,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
     const [loading, setLoading] = React.useState(true);
 
     function isCurrentUserProfile():boolean {
-        return props.user && props.user.nickname === props.match.params['nickname'];
+        return props.user && props.user.nickname === props.match.params[URL_PARAMS.profile.nickname];
     }
 
     async function reload() {
@@ -40,7 +40,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
             setProfile(props.user);
             setCanEdit(true);
         } else {
-            UserModel.getProfileByNickname(props.match.params['nickname'])
+            UserModel.getProfileByNickname(props.match.params[URL_PARAMS.profile.nickname])
                 .then((profile:User) => {
                     if (props.user && props.user.id === profile.id) setCanEdit(true);
                     setProfile(profile);
@@ -52,7 +52,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
     React.useEffect(() => {
         setLoading(true);
         reload().finally(() => setLoading(false));
-    }, [props.match.params['nickname']]);
+    }, [props.match.params[URL_PARAMS.profile.nickname]]);
 
     React.useEffect(() => {
         if (isCurrentUserProfile()) {
@@ -81,7 +81,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
         </Row>
         <Row>
             <Tabs
-                activeKey={props.match.params['section']}
+                activeKey={props.match.params[URL_PARAMS.profile.section]}
                 defaultActiveKey={ProfileSections.Tournaments}
                 onChange={redirect}
                 className='full-width'

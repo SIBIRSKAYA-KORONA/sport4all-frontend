@@ -4,20 +4,22 @@ import { Button, Col, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import Network from 'Core/network';
+import { Team, User } from 'Utils/types';
 
 
 interface IProps {
-    teamId: number,
-    reload: () => void
+    team: Team,
+    user: User,
+    reload: () => void,
 }
 
-function TeamPublicInfo(props: IProps):JSX.Element {
+function TeamSettingsInfoSection(props: IProps):JSX.Element {
     return (<Col>
         <Upload
             showUploadList={false}
             customRequest={async (fileData) => {
                 const formData = new FormData();
-                formData.append('teamId', String(props.teamId));
+                formData.append('teamId', String(props.team.id));
                 formData.append('attach', fileData.file);
                 await Network.uploadFile(formData);
                 props.reload();
@@ -28,4 +30,4 @@ function TeamPublicInfo(props: IProps):JSX.Element {
     </Col>);
 }
 
-export default TeamPublicInfo;
+export default TeamSettingsInfoSection;

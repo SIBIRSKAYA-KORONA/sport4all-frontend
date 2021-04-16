@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Empty } from 'antd';
+import { PATHS } from 'Constants';
 import TournamentGrid from 'Components/TournamentGrid/render';
 
 
@@ -18,7 +19,7 @@ function TournamentGridRender(props:IProps):JSX.Element {
                     participants={props.tournamentData.teams}
                     matches={props.tournamentData.matches}
                     participantOnClick={(match) => {
-                        props.history.push(`/meetings/${match.id}`);
+                        props.history.push(PATHS.meetings.id(match.id));
                     }}
                 />
             </div>

@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Tabs } from 'antd';
 
-import { PATHS } from 'Constants';
+import { PATHS, URL_PARAMS } from 'Constants';
 import { User } from 'Utils/types';
 import { ProfilePersonalSections } from 'Utils/enums';
 import ProfilePersonalSkills from 'Pages/Profile/sections/Personal/sections/Skills/render';
@@ -22,7 +22,7 @@ const PersonalProfileSection = (props:IProps):JSX.Element => {
     return (
         <Tabs
             tabPosition='left'
-            activeKey={props.match.params['settingsSection']}
+            activeKey={props.match.params[URL_PARAMS.profile.personalSection]}
             defaultActiveKey={ProfilePersonalSections.Skills}
             onChange={(key) => {
                 props.history.push(PATHS.profile.personal.section(props.profile.nickname, key as ProfilePersonalSections))

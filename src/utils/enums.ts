@@ -14,7 +14,6 @@ export enum ProfilePersonalSections {
 
 export enum TeamSections {
     Players = 'players',
-    PublicInfo = 'public-info',
     Settings = 'settings',
 }
 

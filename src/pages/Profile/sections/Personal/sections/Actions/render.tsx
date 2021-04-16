@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Button, Space } from 'antd';
 
+import { PATHS } from 'Constants';
 import UserModel from 'Models/UserModel';
 
 
@@ -11,7 +12,7 @@ const ProfilePersonalActions = (props:RouteComponentProps):JSX.Element => {
     const logout = () => {
         setLogoutLoading(true);
         UserModel.logout()
-            .then(() => { props.history.push('/'); })
+            .then(() => { props.history.push(PATHS.root); })
             .catch(e => {
                 console.error(e);
                 setLogoutLoading(false);

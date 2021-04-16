@@ -47,44 +47,46 @@ function TournamentInvites(props: IProps): JSX.Element {
             .catch(e => { message.error(e.toString()) });
     }
 
-    return (<LoadingContainer
-        loading={loading}
-        empty={{
-            check: invitesToUs.length + invitesFromUs.length === 0,
-            message: 'Ещё нет приглашений'
-        }}
-    >
+    return (<>
         <Button onClick={() => reload()}>Обновить</Button>
-        {invitesFromUs.length > 0 && <>
-            <Divider orientation='left' type='horizontal'>Приглашения от нас</Divider>
-            <InviteList
-                items={invitesFromUs.map(i => i.team)}
-                keyToCheck={'team_id'}
-                invites={invitesFromUs}
-                loading={false}
-                actions={[]}
-                meta={teamMeta}
-            />
-        </>}
+        <LoadingContainer
+            loading={loading}
+            empty={{
+                check: invitesToUs.length + invitesFromUs.length === 0,
+                message: 'Ещё нет приглашений'
+            }}
+        >
+            {invitesFromUs.length > 0 && <>
+                <Divider orientation='left' type='horizontal'>Приглашения от нас</Divider>
+                <InviteList
+                    items={invitesFromUs.map(i => i.team)}
+                    keyToCheck={'team_id'}
+                    invites={invitesFromUs}
+                    loading={false}
+                    actions={[]}
+                    meta={teamMeta}
+                />
+            </>}
 
-        {invitesToUs.length > 0 && <>
-            <Divider orientation='left' type='horizontal'>Приглашения нам</Divider>
-            <InviteList
-                items={invitesToUs.map(i => i.team)}
-                keyToCheck={'team_id'}
-                invites={invitesToUs}
-                meta={teamMeta}
-                loading={false}
-                actions={[{
-                    type: InviteActions.accept,
-                    handler: (team:Team) => replyToInvite(findPendingTeamInvite(invitesToUs, team), InviteStatus.Accepted),
-                },{
-                    type: InviteActions.reject,
-                    handler: (team:Team) => replyToInvite(findPendingTeamInvite(invitesToUs, team), InviteStatus.Rejected),
-                }]}
-            />
-        </>}
-    </LoadingContainer>);
+            {invitesToUs.length > 0 && <>
+                <Divider orientation='left' type='horizontal'>Приглашения нам</Divider>
+                <InviteList
+                    items={invitesToUs.map(i => i.team)}
+                    keyToCheck={'team_id'}
+                    invites={invitesToUs}
+                    meta={teamMeta}
+                    loading={false}
+                    actions={[{
+                        type: InviteActions.accept,
+                        handler: (team:Team) => replyToInvite(findPendingTeamInvite(invitesToUs, team), InviteStatus.Accepted),
+                    },{
+                        type: InviteActions.reject,
+                        handler: (team:Team) => replyToInvite(findPendingTeamInvite(invitesToUs, team), InviteStatus.Rejected),
+                    }]}
+                />
+            </>}
+        </LoadingContainer>
+    </>);
 }
 
 export default TournamentInvites;
