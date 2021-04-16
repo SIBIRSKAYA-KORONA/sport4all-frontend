@@ -15,7 +15,7 @@ import { UserType } from 'Store/User/UserState';
 import BasePage from 'Components/BasePage/render';
 import TeamPlayersSection from 'Pages/Teams/Team/Players/render';
 import { TeamSections, TeamSettingsSections } from 'Utils/enums';
-import TeamSettingsInfoSection from 'Pages/Teams/Team/Sections/PublicInfo';
+import TeamSettingsSection from 'Pages/Teams/Team/Settings/render';
 import FindTournamentModal from 'Components/Tournaments/FindTournamentModal/FindTeamModal';
 import { TournamentInviteListItemActions } from 'Components/Invite/TournamentList/interface';
 
@@ -95,7 +95,7 @@ const TeamPage = (props: IProps):JSX.Element => {
                 </Tabs.TabPane>
                 {canEdit &&
                     <Tabs.TabPane tab='Настройки' key={TeamSections.Settings}>
-                        <TeamSettingsInfoSection reload={reload} team={team} user={props.user}/>
+                        <TeamSettingsSection reload={reload} team={team} user={props.user} {...props}/>
                     </Tabs.TabPane>
                 }
             </Tabs>
