@@ -1,10 +1,8 @@
-import { InviteWithTournament, Tournament, User } from 'Utils/types';
+import { Tournament } from 'Utils/types';
 import { RouteComponentProps } from 'react-router-dom';
 
 export enum TournamentInviteListItemActions {
-    accept,
-    reject,
-    sendInvite
+
 }
 
 export interface TournamentInviteListItemAction {
@@ -14,7 +12,6 @@ export interface TournamentInviteListItemAction {
 
 export interface IProps extends RouteComponentProps {
     tournaments: Tournament[],
-    invites?: InviteWithTournament[],
     loading: boolean,
     hideEmpty?: boolean,
     actions: TournamentInviteListItemAction[] | null

@@ -43,7 +43,7 @@ const FindTournamentModal = (props:IProps):JSX.Element => {
         >
             <Input.Search
                 loading={isSearching}
-                placeholder={'Введите название команды'}
+                placeholder={'Введите название турнира'}
                 onChange={e => handleInputChange(e.target.value)}
             />
 
@@ -51,7 +51,6 @@ const FindTournamentModal = (props:IProps):JSX.Element => {
                 {...props}
                 hideEmpty
                 loading={isSearching}
-                invites={props.invites}
                 tournaments={tournaments}
                 actions={props.actions}
             />
