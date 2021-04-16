@@ -11,7 +11,6 @@ import { TeamPlayerRoles } from 'Utils/enums';
 import InvitesModel from 'Models/InvitesModel';
 import TeamList from 'Components/Teams/List/render';
 import LoadingContainer from 'Components/Loading/render';
-import { InviteActions } from 'Components/Invite/List/interface';
 import FindTeamToInvite from 'Components/Invite/Modals/Wrappers/teams';
 
 
