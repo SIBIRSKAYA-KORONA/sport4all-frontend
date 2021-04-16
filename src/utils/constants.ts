@@ -1,4 +1,12 @@
-import { ProfileSections, ProfilePersonalSections, TeamSections } from 'Utils/enums';
+import { ProfileSections, ProfilePersonalSections, TeamSections, TeamSettingsSections } from 'Utils/enums';
+
+const URL_PARAMS = {
+    team: {
+        id: 'teamID',
+        section: 'teamSection',
+        settingsSection: 'teamSettingsSection',
+    },
+};
 
 const CONST = {
     PATHS: {
@@ -16,11 +24,15 @@ const CONST = {
             }
         },
         teams: {
-            __config: '/teams/:id?/:section?',
-            base: '/teams',
+            __config: `/teams/:${URL_PARAMS.team.id}?/:${URL_PARAMS.team.section}?/:${URL_PARAMS.team.settingsSection}?`,
+            id__config: '/teams/:id',
             create: '/teams/create',
             id: (id: number):string => `/teams/${id}/${TeamSections.Players}`,
-            id_config: '/teams/:id',
+            section: (id:number, section:TeamSections):string => `/teams/${id}/${section}`,
+            settings: {
+                config: `/teams/${URL_PARAMS.team.id}/${TeamSections.Settings}/:${URL_PARAMS.team.settingsSection}`,
+                section: (id:number, section:TeamSettingsSections):string => `/teams/${URL_PARAMS.team.id}/${TeamSections.Settings}/${section}`
+            }
         },
         meetings: {
             id: (id: string | number | null):string => '/meetings/'+(id ? id : ':id'),
@@ -44,4 +56,4 @@ const CONST = {
     }
 };
 
-export default CONST;
+export { CONST, URL_PARAMS };

@@ -9,7 +9,7 @@ import FeedPage from 'Pages/Feed/render';
 import HomePage from 'Pages/Home/render';
 import SignUpPage from 'Pages/SignUp/render';
 import TestGrid from 'Pages/TestGrid/render';
-import CONST from 'Utils/constants';
+import { CONST, URL_PARAMS } from 'Utils/constants';
 import TeamCreatePage from 'Pages/Teams/Create/render';
 import TeamPage from 'Pages/Teams/Team/logic';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
@@ -20,7 +20,7 @@ import ProfilePage from 'Pages/Profile/render';
 import AuthedRoute from 'Utils/AuthedRoute';
 import MeetingPage from 'Pages/Meeting/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
-import {ProfileSections, ProfilePersonalSections} from 'Utils/enums';
+import {ProfileSections, ProfilePersonalSections, TeamSettingsSections} from 'Utils/enums';
 import UserModel from 'Models/UserModel';
 import NotificationsModel from 'Models/NotificationsModel'
 
@@ -64,10 +64,13 @@ render(
 
                 {/* Teams */}
                 <AuthedRoute exact path={CONST.PATHS.teams.create} component={TeamCreatePage} mustBeLogged='in'/>
-                <Route exact path={CONST.PATHS.teams.id_config} render={props => (
-                    <Redirect to={CONST.PATHS.teams.id(+props.match.params['id'])} />
+                <Route exact path={CONST.PATHS.teams.id__config} render={props => (
+                    <Redirect to={CONST.PATHS.teams.id(+props.match.params[URL_PARAMS.team.id])} />
                 )}/>
-                <Route path={CONST.PATHS.teams.__config} component={TeamPage}/>
+                <Route exact path={CONST.PATHS.teams.settings.config} render={props => (
+                    <Redirect to={CONST.PATHS.teams.settings.section(+props.match.params[URL_PARAMS.team.id], TeamSettingsSections.Info)} />
+                )}/>
+                <Route exact path={CONST.PATHS.teams.__config} component={TeamPage}/>
 
                 {/* Tournaments */}
                 <AuthedRoute path={CONST.PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
