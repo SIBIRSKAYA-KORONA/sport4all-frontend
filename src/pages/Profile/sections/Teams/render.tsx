@@ -11,8 +11,8 @@ import { TeamPlayerRoles } from 'Utils/enums';
 import InvitesModel from 'Models/InvitesModel';
 import TeamList from 'Components/Teams/List/render';
 import LoadingContainer from 'Components/Loading/render';
-import FindTeamModal from 'Components/Teams/FindTeamModal/FindTeamModal';
 import { InviteActions } from 'Components/Invite/List/interface';
+import FindTeamToInvite from 'Components/Invite/Modals/Wrappers/teams';
 
 
 interface IProps extends RouteComponentProps {
@@ -78,15 +78,10 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
                     <h4>{canEdit ? 'Играю' : 'Играет'}</h4>
                     {canEdit && <>
                         <Button type='link' onClick={() => setModalVisible(true)}>Вступить</Button>
-                        <FindTeamModal
-                            {...props}
-                            title='Выслать приглашение команде'
+                        <FindTeamToInvite
                             visible={modalVisible}
                             close={() => setModalVisible(false)}
-                            actions={[{
-                                type: InviteActions.invite,
-                                handler: onSendInvite
-                            }]}
+                            onInvite={onSendInvite}
                         />
                     </>}
                 </Space>

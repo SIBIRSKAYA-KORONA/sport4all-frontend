@@ -3,21 +3,18 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { Avatar, Button, Col, message, Row, Tabs, Typography } from 'antd';
+import { Avatar, Col, message, Row, Tabs, Typography } from 'antd';
 const { Title, Paragraph } = Typography;
 
+import { Team } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
 import { URL_PARAMS, PATHS } from 'Constants';
-import { Team, Tournament } from 'Utils/types';
 import { lettersForAvatar } from 'Utils/utils';
-import InvitesModel from 'Models/InvitesModel';
 import { UserType } from 'Store/User/UserState';
 import BasePage from 'Components/BasePage/render';
 import TeamPlayersSection from 'Pages/Teams/Team/Players/render';
 import { TeamSections, TeamSettingsSections } from 'Utils/enums';
 import TeamSettingsSection from 'Pages/Teams/Team/Settings/render';
-import FindTournamentModal from 'Components/Tournaments/FindTournamentModal/FindTeamModal';
-import { TournamentInviteListItemActions } from 'Components/Invite/TournamentList/interface';
 
 
 interface IProps extends RouteComponentProps {
@@ -26,7 +23,6 @@ interface IProps extends RouteComponentProps {
 
 const TeamPage = (props: IProps):JSX.Element => {
     const [loading, setLoading] = React.useState(true);
-    const [modalVisible, setModalVisible] = React.useState(false);
     const [team, setTeam] = React.useState<Team>(null);
     const [canEdit, setCanEdit] = React.useState(false);
 
@@ -42,12 +38,6 @@ const TeamPage = (props: IProps):JSX.Element => {
     React.useEffect(() => {
         setCanEdit(props.user && team && props.user.id === team.ownerId);
     }, [props.user, team]);
-
-    async function onSendInvite(t:Tournament) {
-        return InvitesModel.fromTeamToTournament(t, team)
-            .then(() => { message.success('Приглашение выслано') })
-            .catch(e => { message.error(e.toString()); });
-    }
 
     function redirect(key:TeamSections) {
         props.history.push(key === TeamSections.Settings
@@ -67,17 +57,6 @@ const TeamPage = (props: IProps):JSX.Element => {
                     {team.about && <Paragraph>{team.about}</Paragraph>}
                     {team.location && <Paragraph>{team.location}</Paragraph>}
                 </Col>
-                <Button type='primary' onClick={() => setModalVisible(true)}>Найти турнир</Button>
-                <FindTournamentModal
-                    {...props}
-                    title='Найти турнир'
-                    visible={modalVisible}
-                    actions={[{
-                        type: TournamentInviteListItemActions.sendInvite,
-                        handler: onSendInvite,
-                    }]}
-                    close={() => setModalVisible(false)}
-                />
             </Row>
             <Tabs
                 activeKey={props.match.params[URL_PARAMS.team.section]}

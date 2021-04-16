@@ -7,6 +7,7 @@ import { Team, User } from 'Utils/types';
 import { PATHS, URL_PARAMS } from 'Constants';
 import { TeamSettingsSections } from 'Utils/enums';
 import TeamSettingsInfoSection from 'Pages/Teams/Team/Settings/Info/render';
+import TeamSettingsInvitesSection from 'Pages/Teams/Team/Settings/Invites/render';
 
 
 interface IProps extends RouteComponentProps {
@@ -29,7 +30,7 @@ const TeamSettingsSection = (props:IProps):JSX.Element => {
                 <TeamSettingsInfoSection user={props.user} team={props.team} reload={props.reload}/>
             </Tabs.TabPane>
             <Tabs.TabPane tab='Приглашения' key={TeamSettingsSections.Invites}>
-                <></>
+                <TeamSettingsInvitesSection team={props.team} user={props.user}/>
             </Tabs.TabPane>
         </Tabs>
     );

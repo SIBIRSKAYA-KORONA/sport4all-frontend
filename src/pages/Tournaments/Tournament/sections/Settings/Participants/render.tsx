@@ -6,9 +6,8 @@ import { Button, Col, Divider, Empty, Space } from 'antd';
 import InvitesModel from 'Models/InvitesModel';
 import TeamList from 'Components/Teams/List/render';
 import { EventStatus, Team, Tournament } from 'Utils/types';
-import { InviteActions } from 'Components/Invite/List/interface';
 import { TeamListItemActions } from 'Components/Teams/List/interface';
-import FindTeamModal from 'Components/Teams/FindTeamModal/FindTeamModal';
+import FindTeamToInvite from 'Components/Invite/Modals/Wrappers/teams';
 
 
 interface IProps extends RouteComponentProps {
@@ -35,15 +34,10 @@ function ParticipantsRender(props:IProps):JSX.Element {
                     <h4>Участники</h4>
                     {props.tournament.status <= EventStatus.RegistrationEvent && <>
                         <Button type='link' onClick={() => setModalVisible(true)}>Пригласить</Button>
-                        <FindTeamModal
-                            {...props}
-                            title='Пригласить команду'
+                        <FindTeamToInvite
                             visible={modalVisible}
                             close={() => setModalVisible(false)}
-                            actions={[{
-                                type:       InviteActions.invite,
-                                handler:    onTeamInvite
-                            }]}
+                            onInvite={onTeamInvite}
                         />
                     </>}
                 </Space>

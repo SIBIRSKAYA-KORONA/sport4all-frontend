@@ -35,7 +35,7 @@ const InviteList = (props:IProps):JSX.Element => {
     const buttons = {
         [InviteActions.invite]: {
             key:        'invite',
-            title:      'Пригласить',
+            title:      'Выслать приглашение',
             icon:       <PlusOutlined/>,
             otherProps: { type:'primary' as ButtonType },
             afterClick: afterClickCreator(InviteStatus.Pending)

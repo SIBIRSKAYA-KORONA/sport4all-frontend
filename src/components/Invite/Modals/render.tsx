@@ -1,35 +1,36 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
 import { Button, Modal, Input } from 'antd';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
-import TeamModel from 'Models/TeamModel';
-import { Invite, Team } from 'Utils/types';
+import { Invite } from 'Utils/types';
+import HttpStatusCode from 'Utils/httpErrors';
 import InviteList from 'Components/Invite/List/render';
-import { teamMeta } from 'Components/Invite/List/metas';
-import { InviteAction } from 'Components/Invite/List/interface';
+import { Invitable, InviteAction, MetaProps } from 'Components/Invite/List/interface';
 
 
-interface IProps extends RouteComponentProps {
+interface IProps {
     visible: boolean,
     close: () => void,
     actions?: InviteAction[],
     invites?: Invite[],
-    title: string
+    title: string,
+    keyToCheck: string,
+    meta: (item:Invitable) => MetaProps,
+    api: (searchText:string, limit:number) => Promise<HttpStatusCode|Invitable[]>
 }
 
-const FindTeamModal = (props:IProps):JSX.Element => {
+const FindSomethingToInvite = (props:IProps):JSX.Element => {
     const [isSearching, setIsSearching] = React.useState(false);
-    const [teams, setTeams] = React.useState<Team[]>([]);
+    const [items, setItems] = React.useState<Invitable[]>([]);
 
-    const debouncedSearch = AwesomeDebouncePromise(TeamModel.searchTeams, 500);
+    const debouncedSearch = AwesomeDebouncePromise(props.api, 500);
 
     async function handleInputChange(searchText) {
         if (!searchText) return;
         setIsSearching(true);
         return debouncedSearch(searchText, 10)
-            .then((teams: Team[]) => setTeams(teams))
+            .then((items: Invitable[]) => setItems(items))
             .finally(() => setIsSearching(false));
     }
 
@@ -44,20 +45,20 @@ const FindTeamModal = (props:IProps):JSX.Element => {
         >
             <Input.Search
                 loading={isSearching}
-                placeholder={'Введите название команды'}
+                placeholder={'Название или имя'}
                 onChange={e => handleInputChange(e.target.value)}
             />
 
             <InviteList
                 hideEmpty
-                keyToCheck='invited_id'
-                items={teams}
+                keyToCheck={props.keyToCheck}
+                items={items}
                 loading={isSearching}
                 actions={props.actions}
-                meta={teamMeta}
+                meta={props.meta}
             />
         </Modal>
     );
 };
 
-export default FindTeamModal;
+export default FindSomethingToInvite;

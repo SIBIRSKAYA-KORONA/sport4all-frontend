@@ -9,9 +9,11 @@ export enum InviteActions {
 
 export type Invitable = any;
 
+export type InviteActionHandler = (item:Invitable) => Promise<void>;
+
 export interface InviteAction {
     type: InviteActions,
-    handler: (item:Invitable) => Promise<void>
+    handler: InviteActionHandler,
 }
 
 export interface MetaProps {
