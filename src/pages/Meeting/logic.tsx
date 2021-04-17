@@ -44,7 +44,7 @@ class MeetingPage extends React.Component<IProps, IState> {
     parseMeeting():void {
         this.setState(prev => ({ ...prev, loadingMeets:true }) );
         Promise.all([
-            MeetingModel.getMeeting(this.props.match.params[URL_PARAMS.team.id]),
+            MeetingModel.getMeeting(this.props.match.params[URL_PARAMS.meeting.id]),
             this.props.user ? Promise.resolve(this.props.user) : UserModel.getProfile()
         ]).then(results => {
             const castedMeeting = results[0] as Meeting;
@@ -57,7 +57,7 @@ class MeetingPage extends React.Component<IProps, IState> {
         }).catch(e => {
             console.error(e);
         }).finally(() => { this.setState(prev => ({ ...prev, loadingMeeting:false }) ); });
-        MeetingModel.getStats(this.props.match.params[URL_PARAMS.team.id])
+        MeetingModel.getStats(this.props.match.params[URL_PARAMS.meeting.id])
             .then(stats => { this.setState(prev => ({ ...prev, stats:stats as Array<Stats> })); })
             .catch(e => { if (e !== 404) message.error(e); });
     }
