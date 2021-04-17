@@ -21,6 +21,10 @@
 
   &__result {
     width: 20%;
+    height: 140px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
   }
 
   &__title {

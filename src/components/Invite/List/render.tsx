@@ -4,7 +4,6 @@ import { Button, List } from 'antd';
 import { ButtonType } from 'antd/lib/button';
 import { CheckCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
-import { User } from 'Utils/types';
 import { InviteStatus } from 'Utils/enums';
 import { Invitable, InviteAction, InviteActions, IProps } from './interface';
 import { getText, MapOfTextMeta, texts } from 'Components/Invite/List/ItemActions';
