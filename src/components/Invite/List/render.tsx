@@ -34,7 +34,7 @@ const InviteList = (props:IProps):JSX.Element => {
 
     React.useEffect(() => {
         setInvited(parseInvitesToTextMeta());
-    }, [props.items]);
+    }, [props.items, props.invites]);
 
     const buttons = {
         [InviteActions.invite]: {
