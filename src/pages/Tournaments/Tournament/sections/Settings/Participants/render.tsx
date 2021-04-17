@@ -8,6 +8,7 @@ import TeamList from 'Components/Teams/List/render';
 import { EventStatus, Team, Tournament } from 'Utils/types';
 import { TeamListItemActions } from 'Components/Teams/List/interface';
 import FindTeamToInvite from 'Components/Invite/Modals/Wrappers/teams';
+import { InviteStatus } from 'Utils/enums';
 
 
 interface IProps extends RouteComponentProps {
@@ -35,6 +36,7 @@ function ParticipantsRender(props:IProps):JSX.Element {
                     {props.tournament.status <= EventStatus.RegistrationEvent && <>
                         <Button type='link' onClick={() => setModalVisible(true)}>Пригласить</Button>
                         <FindTeamToInvite
+                            api={InvitesModel.loadInvitesToTheTournament.bind(null, props.tournament, InviteStatus.Pending)}
                             visible={modalVisible}
                             close={() => setModalVisible(false)}
                             onInvite={onTeamInvite}

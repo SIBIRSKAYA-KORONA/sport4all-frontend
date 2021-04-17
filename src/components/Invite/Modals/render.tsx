@@ -7,6 +7,7 @@ import { Invite } from 'Utils/types';
 import HttpStatusCode from 'Utils/httpErrors';
 import InviteList from 'Components/Invite/List/render';
 import { Invitable, InviteAction, MetaProps } from 'Components/Invite/List/interface';
+import LoadingContainer from 'Components/Loading/render';
 
 
 interface IProps {
@@ -17,7 +18,8 @@ interface IProps {
     title: string,
     keyToCheck: string,
     meta: (item:Invitable) => MetaProps,
-    api: (searchText:string, limit:number) => Promise<HttpStatusCode|Invitable[]>
+    api: (searchText:string, limit:number) => Promise<HttpStatusCode|Invitable[]>,
+    loading: boolean
 }
 
 const FindSomethingToInvite = (props:IProps):JSX.Element => {
@@ -34,29 +36,38 @@ const FindSomethingToInvite = (props:IProps):JSX.Element => {
             .finally(() => setIsSearching(false));
     }
 
+    function close() {
+        setItems([]);
+        setIsSearching(false);
+        props.close();
+    }
+
     return (
         <Modal
             width='760px'
             title={props.title}
             visible={props.visible}
             destroyOnClose
-            onCancel={props.close}
-            footer={<Button type='primary' onClick={props.close}>Готово</Button>}
+            onCancel={close}
+            footer={<Button type='primary' onClick={close}>Готово</Button>}
         >
-            <Input.Search
-                loading={isSearching}
-                placeholder={'Название или имя'}
-                onChange={e => handleInputChange(e.target.value)}
-            />
+            <LoadingContainer loading={props.loading}>
+                <Input.Search
+                    loading={isSearching}
+                    placeholder={'Название или имя'}
+                    onChange={e => handleInputChange(e.target.value)}
+                />
 
-            <InviteList
-                hideEmpty
-                keyToCheck={props.keyToCheck}
-                items={items}
-                loading={isSearching}
-                actions={props.actions}
-                meta={props.meta}
-            />
+                <InviteList
+                    hideEmpty
+                    invites={props.invites}
+                    keyToCheck={props.keyToCheck}
+                    items={items}
+                    loading={isSearching}
+                    actions={props.actions}
+                    meta={props.meta}
+                />
+            </LoadingContainer>
         </Modal>
     );
 };

@@ -66,3 +66,7 @@ export function findPendingUserInvite(invites:Invite[], user:User):Invite|undefi
 export function findPendingTournamentInvite(invites:InviteWithTournament[], t:Tournament):InviteWithTournament|undefined {
     return invites.find(invite => invite.tournament_id === t.id && invite.state === InviteStatus.Pending);
 }
+
+export function isTournamentInvite(invite:Invite):boolean {
+    return Object.prototype.hasOwnProperty.call(invite, 'tournament');
+}

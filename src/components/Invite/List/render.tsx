@@ -32,6 +32,10 @@ const InviteList = (props:IProps):JSX.Element => {
         }
     }
 
+    React.useEffect(() => {
+        setInvited(parseInvitesToTextMeta());
+    }, [props.items]);
+
     const buttons = {
         [InviteActions.invite]: {
             key:        'invite',

@@ -42,6 +42,7 @@ function TeamPlayersSection(props: IProps): JSX.Element {
                             <Button type='link' onClick={() => setModalVisible(true)}>Пригласить</Button>
                         }
                         <FindUserToInvite
+                            team={props.team}
                             visible={modalVisible}
                             close={() => setModalVisible(false)}
                             onInvite={onPlayerInvite}

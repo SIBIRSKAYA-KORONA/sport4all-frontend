@@ -73,9 +73,9 @@ render(
                 <Route exact path={PATHS.teams.__config} component={TeamPage}/>
 
                 {/* Tournaments */}
+                <AuthedRoute exact path={PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
                 <Route exact path={PATHS.tournaments.id__config} component={TournamentPage}/>
                 <Route exact path={PATHS.tournaments.meetings__config} component={TournamentMeetingsListPage}/>
-                <AuthedRoute exact path={PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
                 <Route path={PATHS.tournaments.list} component={TournamentsListPage}/>
 
                 {/* Meetings */}

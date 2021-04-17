@@ -78,6 +78,7 @@ const TeamsSubPage = (props:IProps):JSX.Element => {
                     {canEdit && <>
                         <Button type='link' onClick={() => setModalVisible(true)}>Вступить</Button>
                         <FindTeamToInvite
+                            api={InvitesModel.getInvites}
                             visible={modalVisible}
                             close={() => setModalVisible(false)}
                             onInvite={onSendInvite}

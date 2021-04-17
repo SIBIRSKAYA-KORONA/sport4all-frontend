@@ -59,8 +59,8 @@ const TeamSettingsInvitesSection = (props:IProps):JSX.Element => {
                 <Button type='link' onClick={() => toggleModal('tournaments')}>Участвовать</Button>
             }
             <FindTournamentToInvite
+                team={props.team}
                 onInvite={(t:Tournament) => InvitesModel.fromTeamToTournament(t, props.team).then(() => void 0)}
-                invites={tournamentInvitesToMe.concat(tournamentInvitesFromMe)}
                 visible={modalVisibles.tournaments}
                 close={() => toggleModal('tournaments')}
             />
@@ -111,8 +111,8 @@ const TeamSettingsInvitesSection = (props:IProps):JSX.Element => {
                 <Button type='link' onClick={() => toggleModal('users')}>Пригласить</Button>
             }
             <FindUserToInvite
+                team={props.team}
                 onInvite={(u:User) => InvitesModel.fromTeamToPlayer(props.team, u).then(() => void 0)}
-                invites={userInvitesToMe.concat(userInvitesFromMe)}
                 visible={modalVisibles.users}
                 close={() => toggleModal('users')}
             />
