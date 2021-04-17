@@ -6,18 +6,30 @@
       width: 100%;
       display: flex;
       flex-flow: column;
-      justify-content: center;
+      justify-content: stretch;
       align-items: center;
     }
   }
 
-  &__result {
+  &__results {
+    width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-flow: row;
+    align-items: flex-start;
+    justify-content: stretch;
+  }
+
+  &__result {
+    width: 20%;
   }
 
   &__title {
     text-align: center;
+  }
+
+  &__score {
+    width: 40%;
+    display: flex;
+    justify-content: center;
   }
 }

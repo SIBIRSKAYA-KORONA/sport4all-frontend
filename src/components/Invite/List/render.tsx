@@ -6,7 +6,7 @@ import { CheckCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-des
 
 import { User } from 'Utils/types';
 import { InviteStatus } from 'Utils/enums';
-import { InviteAction, InviteActions, IProps } from './interface';
+import { Invitable, InviteAction, InviteActions, IProps } from './interface';
 import { getText, MapOfTextMeta, texts } from 'Components/Invite/List/ItemActions';
 
 
@@ -27,8 +27,8 @@ const InviteList = (props:IProps):JSX.Element => {
     }
 
     function afterClickCreator(type:InviteStatus) {
-        return function(playerID:number) {
-            setInvited(prev => ({ ...prev, [playerID]:texts[type] }));
+        return function(id:number) {
+            setInvited(prev => ({ ...prev, [id]:texts[type] }));
         }
     }
 
@@ -62,15 +62,15 @@ const InviteList = (props:IProps):JSX.Element => {
 
     function getActionCreator(action:InviteAction) {
         const d = buttons[action.type];
-        return function actionCreator(player:User) {
-            const dd = { ...d, key:d.key+player.id };
+        return function actionCreator(item:Invitable) {
+            const dd = { ...d, key:d.key+item.id };
             return <Button
                 {...dd.otherProps}
                 loading={loadings[dd.key]}
                 key={dd.key}
                 icon={dd.icon}
-                onClick={() => showLoading(dd.key, action.handler.bind(null, player))
-                    .then(() => dd.afterClick && dd.afterClick(player.id))}
+                onClick={() => showLoading(dd.key, action.handler.bind(null, item))
+                    .then(() => dd.afterClick && dd.afterClick(item.id))}
             >{dd.title}</Button>
         }
     }

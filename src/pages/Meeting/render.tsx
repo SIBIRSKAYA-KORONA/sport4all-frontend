@@ -26,27 +26,27 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
 
     return (
         <BasePage {...props} loading={props.loadingMeeting}>{props.meeting
-            ? <Space direction='vertical' size='large'>
+            ? <Space direction='vertical' size='large' className='full-width'>
                 {props.meeting.status >= EventStatus.RegistrationEvent && props.meeting.teams.length === 2 &&
-                    <Space direction='vertical' size='small' align='center' className='meeting__section meeting__section-center'>
+                    <div className='meeting__section meeting__section-center'>
                         <Title level={2}>Результаты встречи</Title>
-                        <Row justify='center'>
-                            <Col span={8}>
+                        <div className='meeting__results'>
+                            <div className='meeting__score'>
                                 <MeetingTeamScore team={props.meeting.teams[0]} stats={props.stats} {...props}/>
-                            </Col>
-                            <Col span={8} className='meeting__result'>
+                            </div>
+                            <div className='meeting__result'>
                                 <Title level={4} className='meeting__title'>
                                     {meetingResult(props.stats, props.meeting.teams)}
                                 </Title>
-                            </Col>
-                            <Col span={8}>
+                                <Button type='link'>
+                                    <Link to={PATHS.tournaments.id(props.meeting.tournamentId)}>Турнир</Link>
+                                </Button>
+                            </div>
+                            <div className='meeting__score'>
                                 <MeetingTeamScore team={props.meeting.teams[1]} stats={props.stats} {...props}/>
-                            </Col>
-                        </Row>
-                        <Button type='link'>
-                            <Link to={PATHS.tournaments.id(props.meeting.tournamentId)}>Турнир</Link>
-                        </Button>
-                    </Space>
+                            </div>
+                        </div>
+                    </div>
                 }
                 <Space direction='vertical' size='small'>
                     <Title level={3}>Статус встречи</Title>

@@ -89,14 +89,6 @@ const SignUpPage = (props:IProps):JSX.Element => {
                         }]}>
                         <Input/>
                     </Form.Item>
-                    <Form.Item
-                        label='О себе'
-                        name='about'
-                        rules={[{
-                            message: 'Заслуженный тренер РФ и Олимпийский чемпион по литрболу'
-                        }]}>
-                        <Input.TextArea />
-                    </Form.Item>
                     <Form.Item {...tailLayout}>
                         <Button type="primary" htmlType="submit">Создать</Button>
                     </Form.Item>
