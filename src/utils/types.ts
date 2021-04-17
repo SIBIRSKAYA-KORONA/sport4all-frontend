@@ -1,4 +1,4 @@
-import { InviteStatus } from 'Utils/enums';
+import { InviteStatus, Notifications } from 'Utils/enums';
 
 export interface Team {
     id: number,
@@ -97,7 +97,7 @@ export interface Sport {
 }
 
 export interface Notification {
-    type: 'added_to_team' | 'tournament_started' | 'tournament_finished'| 'meeting_started' | 'meeting_finished',
+    type: Notifications,
     createAt: number,
     source_uid: number,
     target_uid: number,

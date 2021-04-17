@@ -32,3 +32,11 @@ export enum TeamPlayerRoles {
     owner = 'owner',
     player = 'player'
 }
+
+export enum Notifications {
+    addedToTeam = 'added_to_team',
+    tournamentStarted = 'tournament_started',
+    tournamentFinished = 'tournament_finished',
+    meetingStarted = 'meeting_started',
+    meetingFinished = 'meeting_finished',
+}

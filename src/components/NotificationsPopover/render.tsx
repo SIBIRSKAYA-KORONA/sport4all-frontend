@@ -1,13 +1,15 @@
 import './style.scss';
-import {connect} from 'react-redux';
-import NotificationsModel from 'Models/NotificationsModel'
-import Network from 'Core/network';
-import { RouteComponentProps } from 'react-router-dom';
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import {Button, Col, List, Popover, Spin} from 'antd';
-import {Notification} from 'Utils/types';
+import { Button, Col, List, Popover, Spin } from 'antd';
+
+import { PATHS } from 'Constants';
+import { Notification } from 'Utils/types';
+import { Notifications } from 'Utils/enums';
+import NotificationsModel from 'Models/NotificationsModel'
 
 interface IProps {
     children: React.ReactNode,
@@ -42,33 +44,33 @@ const NotificationsPopover = (props: IProps) => {
             parsedNotification.description = new Date(notification.createAt * 1000).toLocaleString('ru-RU');
 
             switch (notification.type) {
-                case 'added_to_team':
-                    parsedNotification.title = `Вас добавили в команду`;
-                    parsedNotification.href = `${Network.paths.teams}/${notification.team_id}`;
-                    break;
+            case Notifications.addedToTeam:
+                parsedNotification.title = 'Вас добавили в команду';
+                parsedNotification.href = PATHS.teams.id(notification.team_id);
+                break;
 
-                case 'tournament_started':
-                    parsedNotification.title = 'Турнир начался'
-                    parsedNotification.href = `${Network.paths.tournaments}/${notification.tournament_id}`;
-                    break;
+            case Notifications.tournamentStarted:
+                parsedNotification.title = 'Турнир начался'
+                parsedNotification.href = PATHS.tournaments.id(notification.tournament_id);
+                break;
 
-                case 'tournament_finished':
-                    parsedNotification.title = 'Турнир завершился';
-                    parsedNotification.href = `${Network.paths.tournaments}/${notification.tournament_id}`;
-                    break;
+            case Notifications.tournamentFinished:
+                parsedNotification.title = 'Турнир завершился';
+                parsedNotification.href = PATHS.tournaments.id(notification.tournament_id);
+                break;
 
-                case 'meeting_started':
-                    parsedNotification.title = 'Матч начался';
-                    parsedNotification.href = `${Network.paths.meetings.id(notification.meeting_id)}`;
-                    break;
+            case Notifications.meetingStarted:
+                parsedNotification.title = 'Матч начался';
+                parsedNotification.href = PATHS.meetings.id(notification.meeting_id);
+                break;
 
-                case 'meeting_finished':
-                    parsedNotification.title = 'Матч завершился';
-                    parsedNotification.href = `${Network.paths.meetings.id(notification.meeting_id)}`;
-                    break;
+            case Notifications.meetingFinished:
+                parsedNotification.title = 'Матч завершился';
+                parsedNotification.href = PATHS.meetings.id(notification.meeting_id);
+                break;
 
-                default:
-                    parsedNotification.title = 'Неизвестное уведомление';
+            default:
+                parsedNotification.title = 'Неизвестное уведомление';
             }
 
             newParsedNotifications.push(parsedNotification);
@@ -115,8 +117,7 @@ const NotificationsPopover = (props: IProps) => {
                             <div className={'notifications_popover__controls'}>
                                 <Button type='primary' disabled onClick={() => NotificationsModel.markAsRead()}>Всё
                                     прочитано</Button>
-                                <Button danger
-                                        onClick={() => NotificationsModel.deleteNotifications()}>Очистить</Button>
+                                <Button danger onClick={() => NotificationsModel.deleteNotifications()}>Очистить</Button>
                             </div>
                         </>
                     }
