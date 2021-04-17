@@ -38,7 +38,7 @@ const FindTeamToInvite = (props:IProps):JSX.Element => {
         visible={props.visible}
         close={props.close}
         api={TeamModel.searchTeams}
-        keyToCheck='invited_id'
+        keyToCheck={'team_id'}
         meta={teamMeta}
         title='Выслать приглашение команде'
         actions={[{
