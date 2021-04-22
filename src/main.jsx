@@ -22,7 +22,7 @@ import TournamentsListPage from 'Pages/Tournaments/List/render';
 import TournamentPage from 'Pages/Tournaments/Tournament/logic';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
-import { ProfileSections, ProfilePersonalSections, TeamSettingsSections } from 'Utils/enums';
+import { ProfileSections, ProfilePersonalSections, TeamSettingsSections, TournamentSettingsSection } from 'Utils/enums';
 
 
 // PREPARE APP
@@ -74,9 +74,15 @@ render(
 
                 {/* Tournaments */}
                 <AuthedRoute exact path={PATHS.tournaments.create} component={TournamentCreatePage} mustBeLogged='in'/>
-                <Route exact path={PATHS.tournaments.id__config} component={TournamentPage}/>
+                <Route exact path={PATHS.tournaments.id__config} render={props => (
+                    <Redirect to={PATHS.tournaments.id(props.match.params[URL_PARAMS.tournament.id])}/>
+                )}/>
+                <Route exact path={PATHS.tournaments.settings.config} render={props => (
+                    <Redirect to={PATHS.tournaments.settings.section(+props.match.params[URL_PARAMS.tournament.id], TournamentSettingsSection.Info)}/>
+                )}/>
+                <Route exact path={PATHS.tournaments.__config} component={TournamentPage}/>
                 <Route exact path={PATHS.tournaments.meetings__config} component={TournamentMeetingsListPage}/>
-                <Route path={PATHS.tournaments.list} component={TournamentsListPage}/>
+                <Route exact path={PATHS.tournaments.list} component={TournamentsListPage}/>
 
                 {/* Meetings */}
                 <Route path={PATHS.meetings.id__config} component={MeetingPage}/>

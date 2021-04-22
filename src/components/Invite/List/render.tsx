@@ -22,7 +22,7 @@ const InviteList = (props:IProps):JSX.Element => {
 
     async function showLoading(key:string, handler:() => Promise<void>) {
         setLoadings(prev => ({ ...prev, [key]:true }));
-        return handler().finally(() => setLoadings(prev => ({ ...prev, [key]:false })));
+        return handler();
     }
 
     function afterClickCreator(type:InviteStatus) {
@@ -69,7 +69,7 @@ const InviteList = (props:IProps):JSX.Element => {
                 key={dd.key}
                 icon={dd.icon}
                 onClick={() => showLoading(dd.key, action.handler.bind(null, item))
-                    .then(() => dd.afterClick && dd.afterClick(item.id))}
+                    .then(() => dd.afterClick(item.id))}
             >{dd.title}</Button>
         }
     }

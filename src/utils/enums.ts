@@ -22,6 +22,17 @@ export enum TeamSettingsSections {
     Invites = 'invites'
 }
 
+export enum TournamentSections {
+    Grid = 'grid',
+    Settings = 'settings'
+}
+
+export enum TournamentSettingsSection {
+    Info = 'info',
+    Invites = 'invites',
+    Members = 'members',
+}
+
 export enum InviteStatus {
     Pending,
     Rejected,

@@ -1,4 +1,10 @@
-import { ProfileSections, ProfilePersonalSections, TeamSections, TeamSettingsSections } from 'Utils/enums';
+import {
+    ProfilePersonalSections,
+    ProfileSections,
+    TeamSections,
+    TeamSettingsSections,
+    TournamentSections, TournamentSettingsSection
+} from 'Utils/enums';
 
 const URL_PARAMS = {
     meeting: {
@@ -6,6 +12,8 @@ const URL_PARAMS = {
     },
     tournament: {
         id: 'tournamentID',
+        section: 'tournamentSection',
+        settingsSection: 'tournamentSettingsSection',
     },
     team: {
         id: 'teamID',
@@ -50,13 +58,19 @@ const PATHS = {
         id: (id: number):string => `/meetings/${id}`,
     },
     tournaments: {
+        __config: `/tournaments/:${URL_PARAMS.tournament.id}?/:${URL_PARAMS.tournament.section}?/:${URL_PARAMS.tournament.settingsSection}?`,
         base: '/tournaments',
         create: '/tournaments/create',
         list: '/tournaments/feed',
         meetings: (id: number):string => `/tournaments/${id}/meetings`,
         meetings__config: `/tournaments/:${URL_PARAMS.tournament.id}/meetings`,
-        id: (id: string | number | null):string => '/tournaments/'+(id ? id : `:${URL_PARAMS.tournament.id}`),
+        id: (id: string | number | null):string => '/tournaments/'+(id ? id : `:${URL_PARAMS.tournament.id}`) + `/${TournamentSections.Grid}`,
         id__config: `/tournaments/:${URL_PARAMS.tournament.id}`,
+        section: (id:number, section:TournamentSections):string => `/tournaments/${id}/${section === TournamentSections.Settings ? `${TournamentSections.Settings}/${TournamentSettingsSection.Info}` : section}`,
+        settings: {
+            config: `/tournaments/${URL_PARAMS.tournament.id}/${TournamentSections.Settings}/${URL_PARAMS.tournament.settingsSection}`,
+            section: (id:number, section: TournamentSettingsSection):string => `/tournaments/${id}/${TournamentSections.Settings}/${section}`,
+        }
     }
 };
 

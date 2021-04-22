@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Form, Modal, Input, Tabs, Row, Col, Table, message } from 'antd';
+import { Form, Modal, InputNumber, Tabs, Row, Col, Table, message } from 'antd';
 const { Item } = Form;
 const { TabPane } = Tabs;
 
@@ -63,11 +63,11 @@ function AddResultsModal(props: IProps): JSX.Element {
                     return saveTeamsStats(values);
                 })
                 .then(() => props.handleOk())
-                .catch(e => message.error(e));
+                .catch(e => { message.error(e) });
         } else {
             savePlayersStats(stats)
                 .then(() => props.handleOk())
-                .catch(e => message.error(e));
+                .catch(e => { message.error(e) });
         }
     };
     const leftTeam = props.teams[0].players && props.teams[0].players.map(player => ({ ...player, key:player.id }));
@@ -78,9 +78,9 @@ function AddResultsModal(props: IProps): JSX.Element {
             title:'Очки',
             key:'points',
             render: function InputCell(text, player) {
-                return (<Input
+                return (<InputNumber
                     value={stats[player.id]}
-                    onChange={(e) => { setStats(prev => ({ ...prev, [player.id]:isNaN(+e.target.value) ? null : +e.target.value })); }}
+                    onChange={(num) => { setStats(prev => ({ ...prev, [player.id]:num })); }}
                 />);
             }
         }
@@ -101,7 +101,7 @@ function AddResultsModal(props: IProps): JSX.Element {
                 <TabPane key={TEAMS_TAB} tab='По командам'>
                     <Form form={form} layout='vertical'>
                         {props.teams.map(team => <Item key={team.id} label={team.name} name={team.id}>
-                            <Input/>
+                            <InputNumber/>
                         </Item>)}
                     </Form>
                 </TabPane>

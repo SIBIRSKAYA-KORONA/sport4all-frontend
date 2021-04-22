@@ -8,6 +8,7 @@ import TournamentGridRender from 'Pages/Tournaments/Tournament/sections/Grid/ren
 // import TournamentHistoryRender from 'Pages/Tournaments/Tournament/sections/History/render';
 import TournamentSettingsRender from 'Pages/Tournaments/Tournament/sections/Settings/render';
 import PropTypes from 'prop-types'
+import {PATHS, URL_PARAMS} from 'Constants';
 
 const {Title, Paragraph} = Typography;
 
@@ -42,8 +43,15 @@ function TournamentPageRender(props) {
                 </Typography>
             }
 
-            <Tabs tabBarStyle={{marginBottom: 32}}>
-                <Tabs.TabPane tab={'Сетка'} key={TournamentPageRender.sections[0]}>
+            <Tabs
+                tabBarStyle={{marginBottom: 32}}
+                activeKey={props.match.params[URL_PARAMS.tournament.section]}
+                defaultActiveKey='grid'
+                onChange={(key) => {
+                    props.history.push(PATHS.tournaments.section(props.tournamentData.id, key))
+                }}
+            >
+                <Tabs.TabPane tab={'Сетка'} key='grid'>
                     {props.isLoading ? <Spin/> : <TournamentGridRender
                         history={props.history}
                         tournamentData={props.tournamentData}
@@ -59,7 +67,7 @@ function TournamentPageRender(props) {
                 {/*    {props.isLoading ? <Spin/> : <TournamentHistoryRender/>}*/}
                 {/*</Tabs.TabPane>*/}
                 {props.isOwner ?
-                    <Tabs.TabPane tab={'Настройки'} key={TournamentPageRender.sections[3]}>
+                    <Tabs.TabPane tab={'Настройки'} key='settings'>
                         {props.isLoading ? <Spin/> :
                             <TournamentSettingsRender {...props}
                                 isOwner={props.isOwner}
@@ -81,8 +89,7 @@ TournamentPageRender.propTypes = {
     isOwner: PropTypes.bool.isRequired,
     tournamentData: PropTypes.object.isRequired,
     setTournamentData: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
 }
-
-TournamentPageRender.sections = ['grid', 'table', 'history', 'settings']
 
 export default TournamentPageRender;
