@@ -14,7 +14,7 @@ export default function notificationsReducer(state: INotificationsState = initia
             return {...state, notifications: action.notifications};
 
         case ADD_NOTIFICATION:
-            return {...state, notifications: [...state.notifications, action.notification]};
+            return {...state, notifications: [action.notification, ...state.notifications]};
 
         case MARK_AS_READ:
             const notificationsRead = state.notifications.map(
