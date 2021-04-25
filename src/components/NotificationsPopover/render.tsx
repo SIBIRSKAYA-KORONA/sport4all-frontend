@@ -8,10 +8,19 @@ import { Button, Col, List, Popover, Spin } from 'antd';
 
 import { PATHS } from 'Constants';
 import { Notification } from 'Utils/types';
-import { Notifications } from 'Utils/enums';
+import {
+    Notifications,
+    InviteStatus,
+    ProfilePersonalSections,
+    TeamSections,
+    TeamSettingsSections,
+    TournamentSettingsSection
+} from 'Utils/enums';
 import NotificationsModel from 'Models/NotificationsModel'
+import {UserType} from "Store/User/UserState";
 
 interface IProps {
+    user: UserType,
     children: React.ReactNode,
     notifications: Notification[],
     isLoading: boolean,
@@ -68,6 +77,89 @@ const NotificationsPopover = (props: IProps) => {
                 parsedNotification.title = 'Матч завершился';
                 parsedNotification.href = PATHS.meetings.id(notification.meeting_id);
                 break;
+
+
+            case Notifications.teamDirectInviteCreated:
+                parsedNotification.title = 'Вас пригласили в команду';
+                parsedNotification.href = PATHS.profile.personal.section(props.user.nickname, ProfilePersonalSections.Invites);
+                break;
+
+            case Notifications.teamDirectInviteUpdated:
+                switch (notification.invite_state) {
+                    case InviteStatus.Accepted:
+                        parsedNotification.title = 'Игрок принял ваше приглашение в команду';
+                        break;
+                    case InviteStatus.Rejected:
+                        parsedNotification.title = 'Игрок отклонил ваше приглашение в команду';
+                        break;
+                    default:
+                        parsedNotification.title = 'Игрок ответил на ваше приглашение в команду';
+                        break;
+                }
+                parsedNotification.href = PATHS.teams.section(notification.team_id, TeamSections.Players);
+                break;
+
+            case Notifications.teamIndirectInviteCreated:
+                parsedNotification.title = 'Игрок хочет вступить в вашу команду';
+                parsedNotification.href = PATHS.teams.settings.section(notification.team_id, TeamSettingsSections.Invites);
+                break;
+
+            case Notifications.teamIndirectInviteUpdated:
+                switch (notification.invite_state) {
+                    case InviteStatus.Accepted:
+                        parsedNotification.title = 'Вашу заявку на вступление в команду приняли';
+                        break;
+                    case InviteStatus.Rejected:
+                        parsedNotification.title = 'Вашу заявку на вступление в команду отклонили';
+                        break;
+                    default:
+                        parsedNotification.title = 'Вашу заявку на вступление в команду рассмотрели';
+                        break;
+                }
+                parsedNotification.href = PATHS.teams.section(notification.team_id, TeamSections.Players);
+                break;
+
+
+            case Notifications.tournamentDirectInviteCreated:
+                parsedNotification.title = 'Вашу команду пригласили принять участие в турнире';
+                parsedNotification.href = PATHS.teams.settings.section(notification.team_id, TeamSettingsSections.Invites);
+                break;
+
+            case Notifications.tournamentDirectInviteUpdated:
+                switch (notification.invite_state) {
+                    case InviteStatus.Accepted:
+                        parsedNotification.title = 'Команда приняла ваше приглашение на участие в турнире';
+                        break;
+                    case InviteStatus.Rejected:
+                        parsedNotification.title = 'Команда отклонила ваше приглашение на участие в турнире';
+                        break;
+                    default:
+                        parsedNotification.title = 'Команда ответила на ваше приглашение на участие в турнире';
+                        break;
+                }
+                parsedNotification.href = PATHS.tournaments.settings.section(notification.team_id, TournamentSettingsSection.Members);
+                break;
+
+            case Notifications.tournamentIndirectInviteCreated:
+                parsedNotification.title = 'Команда хочет принять участие в вашем турнире';
+                parsedNotification.href = PATHS.tournaments.settings.section(notification.tournament_id, TournamentSettingsSection.Invites);
+                break;
+
+            case Notifications.tournamentIndirectInviteUpdated:
+                switch (notification.invite_state) {
+                    case InviteStatus.Accepted:
+                        parsedNotification.title = 'Вашу заявку на участие в турнире приняли';
+                        break;
+                    case InviteStatus.Rejected:
+                        parsedNotification.title = 'Вашу заявку на участие в турнире отклонили';
+                        break;
+                    default:
+                        parsedNotification.title = 'Вашу заявку на участие в турнире рассмотрели';
+                        break;
+                }
+                parsedNotification.href = PATHS.tournaments.id(notification.tournament_id);
+                break;
+
 
             default:
                 parsedNotification.title = 'Неизвестное уведомление';
@@ -132,6 +224,7 @@ const NotificationsPopover = (props: IProps) => {
 }
 
 const mapStateToProps = state => ({
+    user: state.user.user,
     notifications: state.notifications.notifications,
     isLoading: state.notifications.isLoading
 });

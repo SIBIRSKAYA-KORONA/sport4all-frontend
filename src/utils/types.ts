@@ -105,6 +105,7 @@ export interface Notification {
     meeting_id: number,
     team_id: number,
     isRead: boolean,
+    invite_state: InviteStatus
 }
 
 export interface Invite {

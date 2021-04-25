@@ -50,4 +50,14 @@ export enum Notifications {
     tournamentFinished = 'tournament_finished',
     meetingStarted = 'meeting_started',
     meetingFinished = 'meeting_finished',
+
+    teamDirectInviteCreated = 'team_direct_invite_created',
+    teamDirectInviteUpdated = 'team_direct_invite_updated',
+    teamIndirectInviteCreated = 'team_indirect_invite_created',
+    teamIndirectInviteUpdated = 'team_indirect_invite_updated',
+
+    tournamentDirectInviteCreated = 'tournament_direct_invite_created',
+    tournamentDirectInviteUpdated = 'tournament_direct_invite_updated',
+    tournamentIndirectInviteCreated = 'tournament_indirect_invite_created',
+    tournamentIndirectInviteUpdated = 'tournament_indirect_invite_updated',
 }
