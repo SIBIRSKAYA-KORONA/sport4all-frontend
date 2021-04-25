@@ -137,7 +137,7 @@ const NotificationsPopover = (props: IProps) => {
                         parsedNotification.title = 'Команда ответила на ваше приглашение на участие в турнире';
                         break;
                 }
-                parsedNotification.href = PATHS.tournaments.settings.section(notification.team_id, TournamentSettingsSection.Members);
+                parsedNotification.href = PATHS.tournaments.settings.section(notification.tournament_id, TournamentSettingsSection.Members);
                 break;
 
             case Notifications.tournamentIndirectInviteCreated:
