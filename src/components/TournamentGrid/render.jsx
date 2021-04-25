@@ -89,14 +89,16 @@ class TournamentGrid extends React.Component {
 
 
     static parseMatches(matches, system) {
+        const matchesCopy = JSON.parse(JSON.stringify(matches));
+
         switch (system) {
         case CONST.TOURNAMENTS.systems.roundRobin:
-            return this.parseMatchesAsRoundRobin(matches);
+            return this.parseMatchesAsRoundRobin(matchesCopy);
         case CONST.TOURNAMENTS.systems.doubleElimination:
             console.error(`Unsupported tournament system "${system}". Unable to render grid`)
             return [];
         case CONST.TOURNAMENTS.systems.singleElimination:
-            return this.parseMatchesAsSingleElimination(matches);
+            return this.parseMatchesAsSingleElimination(matchesCopy);
         default:
             console.error(`Unknown tournament system "${system}". Unable to render grid`);
             return [];
@@ -108,9 +110,8 @@ class TournamentGrid extends React.Component {
             return [];
         }
 
-        const matchesCopy = [...matches];
         const matchesLastNumbers = {};
-        const parsedMatches = matchesCopy.map((match) => {
+        const parsedMatches = matches.map((match) => {
             if (!(match.round in matchesLastNumbers)) {
                 matchesLastNumbers[match.round] = 0;
             }
@@ -130,15 +131,14 @@ class TournamentGrid extends React.Component {
             return [];
         }
 
-        const matchesCopy = [...matches];
-        const matchesById = matchesCopy.reduce((map, match) => {
+        const matchesById = matches.reduce((map, match) => {
             map[match.id] = match;
             return map
         }, {})
 
         // building matches tree
         let matchesTree;
-        for (const match of matchesCopy) {
+        for (const match of matches) {
             const nextMatch = matchesById[match.nextMeetingID];
             if (!nextMatch) {
                 matchesTree = match;
