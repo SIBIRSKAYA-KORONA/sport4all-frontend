@@ -8,8 +8,8 @@ import { Layout, Button, Avatar, Badge } from 'antd';
 const AntHeader = Layout.Header;
 
 import { PATHS } from 'Constants';
-import logo from '/static/images/logo.svg';
 import { Notification } from 'Utils/types';
+import BearLogo from '/static/images/bear.jpg';
 import { lettersForAvatar } from 'Utils/utils';
 import SearchAll from 'Components/Inputs/searchAll';
 import NotificationsModel from 'Models/NotificationsModel'
@@ -29,7 +29,7 @@ const Header = (props: IProps) => {
 
             <div className={'header__content'}>
                 <Link to='/' className={'header__link'}>
-                    <img src={logo} className={'header__logo'} alt={'Logo'}/>
+                    <Avatar src={BearLogo} className={'header__logo'} size='large'/>
                 </Link>
                 <Link to={PATHS.feed} className={'header__link'}>Лента</Link>
 
