@@ -5,9 +5,10 @@ import { RouteComponentProps } from 'react-router-dom';
 import { message } from 'antd';
 
 import UserModel from 'Models/UserModel';
-import { Meeting, Stats, User } from 'Utils/types';
+import { Meeting, Stats, Tournament, User } from 'Utils/types';
 import HttpStatusCode from 'Utils/httpErrors';
 import MeetingModel from 'Models/MeetingModel';
+import TournamentModel from 'Models/TournamentModel';
 import { UserType } from 'Store/User/UserState';
 import MeetingPageRender from 'Pages/Meeting/render';
 import { URL_PARAMS } from 'Constants';
@@ -41,22 +42,32 @@ class MeetingPage extends React.Component<IProps, IState> {
         this.parseMeeting();
     }
 
-    parseMeeting():void {
-        this.setState(prev => ({ ...prev, loadingMeets:true }) );
+    checkRights():void {
+        if (!this.state.meeting) return;
         Promise.all([
-            MeetingModel.getMeeting(this.props.match.params[URL_PARAMS.meeting.id]),
-            this.props.user ? Promise.resolve(this.props.user) : UserModel.getProfile()
+            this.props.user ? Promise.resolve(this.props.user) : UserModel.getProfile(),
+            TournamentModel.getTournament(this.state.meeting.tournamentId),
         ]).then(results => {
-            const castedMeeting = results[0] as Meeting;
-            const user = results[1] as User; // TODO: check tournament.ownerId === user.id
+            const user = results[0] as User;
+            const tournament = results[1] as Tournament;
             this.setState(prev => ({
                 ...prev,
-                meeting: castedMeeting,
-                canEdit: true
+                canEdit: user?.id === tournament.ownerId,
             }));
-        }).catch(e => {
-            console.error(e);
-        }).finally(() => { this.setState(prev => ({ ...prev, loadingMeeting:false }) ); });
+        });
+    }
+
+    parseMeeting():void {
+        this.setState(prev => ({ ...prev, loadingMeets:true }) );
+        MeetingModel.getMeeting(this.props.match.params[URL_PARAMS.meeting.id])
+            .then((meeting:Meeting) => {
+                this.setState(prev => ({
+                    ...prev,
+                    meeting: meeting,
+                }), () => { this.checkRights(); });
+            })
+            .catch(e => console.error(e))
+            .finally(() => { this.setState(prev => ({ ...prev, loadingMeeting:false }) ); });
         MeetingModel.getStats(this.props.match.params[URL_PARAMS.meeting.id])
             .then(stats => { this.setState(prev => ({ ...prev, stats:stats as Array<Stats> })); })
             .catch(e => { if (e !== 404) message.error(e); });
