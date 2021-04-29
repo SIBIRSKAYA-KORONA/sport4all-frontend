@@ -82,7 +82,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
         <Row>
             <Tabs
                 activeKey={props.match.params[URL_PARAMS.profile.section]}
-                defaultActiveKey={ProfileSections.Tournaments}
+                defaultActiveKey={ProfileSections.History}
                 onChange={redirect}
                 className='full-width'
             >

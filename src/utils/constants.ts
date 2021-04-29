@@ -35,7 +35,7 @@ const PATHS = {
     profile: {
         __config: `/profile/:${URL_PARAMS.profile.nickname}/:${URL_PARAMS.profile.section}?/:${URL_PARAMS.profile.personalSection}?`,
         id__config: `/profile/:${URL_PARAMS.profile.nickname}`,
-        nickname: (nickname:string):string => `/profile/${nickname}/${ProfileSections.Tournaments}`,
+        nickname: (nickname:string):string => `/profile/${nickname}/${ProfileSections.History}`,
         section: (nickname:string, section?:ProfileSections):string => `/profile/${nickname}/${section || `:${URL_PARAMS.profile.section}`}`,
         personal: {
             base: `/profile/:${URL_PARAMS.profile.nickname}/${ProfileSections.Personal}`,
