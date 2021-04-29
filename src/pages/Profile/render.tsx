@@ -50,7 +50,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
     }
 
     React.useEffect(() => {
-        setLoading(true);
+        setLoading(true)
         reload().finally(() => setLoading(false));
     }, [props.match.params[URL_PARAMS.profile.nickname]]);
 
