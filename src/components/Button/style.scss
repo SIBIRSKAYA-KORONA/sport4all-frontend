@@ -1,0 +1,36 @@
+@import '../../utils/scss/variables';
+@import '../../utils/scss/mixins';
+
+.button {
+  height: 40px;
+  padding: 4px 15px;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 1.5715;
+  white-space: nowrap;
+  text-align: center;
+  touch-action: manipulation;
+  cursor: pointer;
+  border: none;
+  @include transition(0.3s, ease-in-out);
+
+  &__white {
+    @extend .button;
+    background-color: white;
+    color: $purple;
+
+    &:hover {
+      color: $purple-dark;
+    }
+  }
+
+  &__purple {
+    @extend .button;
+    background: $blue-light;
+    color: white;
+  }
+
+  &__secondary {
+    @extend .button;
+  }
+}
