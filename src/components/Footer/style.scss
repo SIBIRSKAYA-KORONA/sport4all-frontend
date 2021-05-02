@@ -22,8 +22,18 @@
     width: 33%;
   }
 
+  &__form {
+    display: flex;
+    flex-flow: column;
+
+    &__item {
+      margin: 20px 0 0 0;
+    }
+  }
+
   &__title {
     color: white;
+    margin: 0;
   }
 
   &__input {
@@ -44,6 +54,5 @@
   &__helper {
     @extend %subtext;
     color: white;
-    margin-top: 10px;
   }
 }

@@ -12,11 +12,11 @@ function Footer() {
         <div className='footer'>
             <div className="footer__container">
                 <section className='footer__item'></section>
-                <section className='footer__item'>
+                <section className='footer__item footer__form'>
                     <h3 className='footer__title'>У вас возникли вопросы?</h3>
-                    <p className='footer__helper'>Заполните форму и мы свяжемся с вами</p>
+                    <p className='footer__helper footer__form__item'>Заполните форму и мы свяжемся с вами</p>
                     <Form>
-                        <Form.Item
+                        <Form.Item className='footer__form__item'
                             name='name'
                             rules={[{
                                 required: true,
@@ -24,7 +24,7 @@ function Footer() {
                             }]}>
                             <Input placeholder='Введите ваше имя' className='footer__input'/>
                         </Form.Item>
-                        <Form.Item
+                        <Form.Item className='footer__form__item'
                             name='email'
                             rules={[{
                                 required: true,
@@ -32,7 +32,7 @@ function Footer() {
                             }]}>
                             <Input placeholder='Введите ваш email' className='footer__input'/>
                         </Form.Item>
-                        <Form.Item>
+                        <Form.Item className='footer__form__item'>
                             <Button text='Отправить' type='white' className='full-width'/>
                         </Form.Item>
                     </Form>
