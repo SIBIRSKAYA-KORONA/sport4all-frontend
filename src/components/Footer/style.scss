@@ -19,7 +19,39 @@
   }
 
   &__item {
-    width: 33%;
+    flex: 1;
+
+    &_main {
+      margin: 0 40px;
+      flex: 2;
+      display: flex;
+      flex-flow: row;
+    }
+  }
+
+  &__links {
+    display: flex;
+    flex-flow: column;
+    margin-left: 30px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  &__link {
+    color: $dark-gray;
+    margin-bottom: 10px;
+
+    &_header {
+      color: $light-gray;
+      margin-bottom: 20px;
+      font-weight: 100;
+    }
+
+    &:hover {
+      color: $middle-gray;
+    }
   }
 
   &__form {
