@@ -1,10 +1,11 @@
 import './style.scss';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Form, Input } from 'antd';
+import { Form } from 'antd';
 
 import { Link } from 'react-router-dom';
 import Button from 'Components/Button/render';
+import Input from 'Components/Inputs/input';
 
 function Footer() {
     return (

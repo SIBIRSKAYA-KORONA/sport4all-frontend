@@ -1,0 +1,12 @@
+@import "../../utils/scss/variables";
+@import "../../utils/scss/mixins";
+
+.input {
+  width: 100%;
+  min-width: 0;
+  padding: 4px 11px;
+  height: 38px;
+  border-radius: 6px;
+  outline: 0;
+  @include transition(0.3s, ease-in-out);
+}
