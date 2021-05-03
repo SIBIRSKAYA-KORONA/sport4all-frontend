@@ -1,0 +1,13 @@
+@import 'variables';
+
+%container {
+  width: 100%;
+  max-width: $breakpoint-desktop;
+}
+
+%subtext {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 19px;
+}

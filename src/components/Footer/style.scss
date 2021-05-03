@@ -1,33 +1,127 @@
-@import "../../utils/variables";
+@import "../../utils/scss/variables";
+@import "../../utils/scss/extends";
+@import '../Inputs/style';
 
 .footer {
+  width: 100%;
   display: flex;
   align-items: center;
-  margin: 25px 0;
+  justify-content: center;
+  background: $gradient-purple;
+  padding: 50px 0;
 
-  &__link {
-    margin: 0 10px;
-    color: $middle-gray;
-    text-decoration: none;
-    font-size: 10px;
-    @include transition(0.2s, ease-in-out);
+  &__container {
+    @extend %container;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
 
-    &:hover {
-      color: $dark-gray;
-    }
-
-    &:active {
-      color: $dark-gray;
+  &__item {
+    &_main {
+      margin: 0 40px;
+      display: flex;
+      flex-flow: row;
     }
   }
 
-  &__avatar {
-    height: 35px;
-    margin: 0 35px;
+  &__links {
+    width: 25%;
+    display: flex;
+    flex-flow: column;
+    margin-left: 30px;
 
-    & img {
-      width: 35px;
-      border-radius: 50%;
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  &__link {
+    color: rgba(255, 255, 255, 0.7);;
+    margin-bottom: 12px;
+    line-height: normal;
+    font-weight: 400;
+
+    &_header {
+      color: $light-gray;
+      margin-bottom: 18px;
+      font-weight: 400;
+    }
+
+    &:hover {
+      color: $middle-gray;
+    }
+  }
+
+  &__form {
+    width: 260px;
+    display: flex;
+    flex-flow: column;
+
+    &__item {
+      margin: 10px 0 0 0;
+    }
+  }
+
+  &__title {
+    color: white;
+    margin: 0;
+  }
+
+  &__input {
+    @extend .input;
+    background-color: transparent;
+    border: 0.5px solid grey;
+    color: white;
+    font-size: 12px;
+
+    &.input__filled {
+      border-color: white;
+    }
+
+    &:hover {
+      border-color: white;
+    }
+  }
+
+  &__helper {
+    @extend %subtext;
+    color: white;
+  }
+
+//  Contacts
+  &__logo {
+    height: 92px;
+    width: auto;
+  }
+
+  &__contact {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &_container {
+      margin-top: 40px;
+      display: flex;
+      flex-flow: column;
+    }
+
+    &_icon {
+      height: 23px;
+      width: auto;
+    }
+
+    &_text {
+      font-size: 12px;
+      margin: 0 0 0 10px;
+      color: white;
     }
   }
 }
