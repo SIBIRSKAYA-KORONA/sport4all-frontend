@@ -30,6 +30,7 @@
   }
 
   &__links {
+    width: 25%;
     display: flex;
     flex-flow: column;
     margin-left: 30px;
@@ -41,7 +42,8 @@
 
   &__link {
     color: $dark-gray;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    line-height: normal;
 
     &_header {
       color: $light-gray;
@@ -59,7 +61,7 @@
     flex-flow: column;
 
     &__item {
-      margin: 20px 0 0 0;
+      margin: 10px 0 0 0;
     }
   }
 
