@@ -4,3 +4,7 @@
     -o-transition: all $duration $timing;
     transition: all $duration $timing;
 }
+
+@mixin gradient_purple($transparency) {
+    background: linear-gradient(98deg, rgba(15, 6, 50, $transparency) 0%, rgba(32, 14, 102, $transparency) 100%);
+}
