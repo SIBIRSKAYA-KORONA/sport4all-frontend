@@ -49,7 +49,7 @@ function Footer() {
                         <Link to={PATHS.root} className='footer__link'>Игроки</Link>
                     </div>
                 </section>
-                <section className='footer__item footer__form'>
+                <section className='footer__item_form footer__form'>
                     <h3 className='footer__title'>У вас возникли вопросы?</h3>
                     <p className='footer__helper footer__form__item'>Заполните форму и мы свяжемся с вами</p>
                     <Form>

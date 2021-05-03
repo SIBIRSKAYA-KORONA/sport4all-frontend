@@ -19,11 +19,8 @@
   }
 
   &__item {
-    flex: 1;
-
     &_main {
       margin: 0 40px;
-      flex: 2;
       display: flex;
       flex-flow: row;
     }
@@ -41,14 +38,15 @@
   }
 
   &__link {
-    color: $dark-gray;
+    color: rgba(255, 255, 255, 0.7);;
     margin-bottom: 12px;
     line-height: normal;
+    font-weight: 400;
 
     &_header {
       color: $light-gray;
-      margin-bottom: 20px;
-      font-weight: 100;
+      margin-bottom: 18px;
+      font-weight: 400;
     }
 
     &:hover {
@@ -57,6 +55,7 @@
   }
 
   &__form {
+    width: 260px;
     display: flex;
     flex-flow: column;
 
@@ -75,6 +74,7 @@
     background-color: transparent;
     border: 0.5px solid grey;
     color: white;
+    font-size: 12px;
 
     &.input__filled {
       border-color: white;
