@@ -1,18 +1,28 @@
 import './style.scss';
+import { Form, Image } from 'antd';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Form } from 'antd';
-
 import { Link } from 'react-router-dom';
+
+import { PATHS } from 'Constants';
+import PinIcon from 'Static/icons/pin.svg';
+import Logo from 'Static/images/bear.jpg';
 import Button from 'Components/Button/render';
 import Input from 'Components/Inputs/input';
-import { CONST, PATHS } from 'Constants';
 
 function Footer() {
     return (
         <div className='footer'>
             <div className="footer__container">
-                <section className='footer__item'></section>
+                <section className='footer__item'>
+                    <Image src={Logo} className='footer__logo' preview={false}/>
+                    <div className='footer__contact_container'>
+                        <div className='footer__contact'>
+                            <Image src={PinIcon} className='footer__contact_icon' preview={false}/>
+                            <p className='footer__contact_text'>Москва, Россия</p>
+                        </div>
+                    </div>
+                </section>
                 <section className='footer__item_main'>
                     <div className="footer__links">
                         <h2 className='footer__link_header'>Команды</h2>

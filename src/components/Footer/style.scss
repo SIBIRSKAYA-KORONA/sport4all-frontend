@@ -89,4 +89,39 @@
     @extend %subtext;
     color: white;
   }
+
+//  Contacts
+  &__logo {
+    height: 92px;
+    width: auto;
+  }
+
+  &__contact {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &_container {
+      margin-top: 40px;
+      display: flex;
+      flex-flow: column;
+    }
+
+    &_icon {
+      height: 23px;
+      width: auto;
+    }
+
+    &_text {
+      font-size: 12px;
+      margin: 0 0 0 10px;
+      color: white;
+    }
+  }
 }
