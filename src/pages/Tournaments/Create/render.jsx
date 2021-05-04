@@ -36,7 +36,6 @@ function TournamentCreatePageRender(props) {
                     </Form.Item>
                 </Form>
             </Col>
-            <Footer/>
         </BasePage>
     )
 }

@@ -1,6 +1,6 @@
 import './style.scss';
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import Glide from '@glidejs/glide'
 
 import Button from 'Components/Button/render';
@@ -16,9 +16,15 @@ import Arrow from 'Static/icons/arrow_circled.svg';
 import HandsIcon from 'Static/icons/hands.svg';
 import CupIcon from 'Static/icons/cup.svg';
 import PrizeIcon from 'Static/icons/prize.svg';
+import { connect } from 'react-redux';
+import { PATHS } from 'Constants';
 
 
-const LandingPage = (props:RouteComponentProps):JSX.Element => {
+interface IProps extends RouteComponentProps {
+    authed: boolean,
+}
+
+const LandingPage = (props:IProps):JSX.Element => {
     const sports = [{
         name: 'Баскетбол',
         img: BasketballTall,
@@ -46,10 +52,14 @@ const LandingPage = (props:RouteComponentProps):JSX.Element => {
         title: 'Спортсменам',
         text: 'Ornare arcu at vel libero faucibus eu aenean. Magna facilisi cras interdum hac neque, nunc, massa amet. Sollicitudin adipiscing quisque quam pharetra dui placerat justo. Magna viverra ut tortor magna gravida cras a integer. Vitae proin sed nisl id imperdiet porta vitae.',
         button: 'Участвовать',
+        authedLink: PATHS.root,
+        unAuthedLink: PATHS.signup,
     },{
         title: 'Организаторам',
         text: 'A mi nunc, fringilla varius ac. Non enim sed volutpat felis porta urna et urna, hendrerit. In integer in turpis nunc viverra risus amet facilisis semper. Ac nisi venenatis tempor tempus, velit molestie. Sit turpis feugiat amet, elementum.',
         button: 'Создать соревнование',
+        authedLink: PATHS.tournaments.create,
+        unAuthedLink: PATHS.signup,
     }];
     React.useEffect(() => {
         new Glide('.glide', {
@@ -106,7 +116,9 @@ const LandingPage = (props:RouteComponentProps):JSX.Element => {
                 {whom.map((w,i) => <div key={i} className='whom__item'>
                     <h2>{w.title}</h2>
                     <p>{w.text}</p>
-                    <Button type='purple' text={w.button} className='whom__item_button'/>
+                    <Link to={props.authed ? w.authedLink : w.unAuthedLink}>
+                        <Button type='purple' text={w.button} className='whom__item_button'/>
+                    </Link>
                 </div>)}
             </div>
         </section>
@@ -114,4 +126,8 @@ const LandingPage = (props:RouteComponentProps):JSX.Element => {
     </>);
 };
 
-export default LandingPage;
+const mapStateToProps = state => ({
+    authed: state.user.isAuthenticated,
+});
+
+export default connect(mapStateToProps)(LandingPage);
