@@ -13,6 +13,10 @@ import RunningTall from 'Static/images/running_tall.png';
 import VolleyballTall from 'Static/images/volleyball_tall.png';
 import Arrow from 'Static/icons/arrow_circled.svg';
 
+import HandsIcon from 'Static/icons/hands.svg';
+import CupIcon from 'Static/icons/cup.svg';
+import PrizeIcon from 'Static/icons/prize.svg';
+
 
 const LandingPage = (props:RouteComponentProps):JSX.Element => {
     const sports = [{
@@ -27,6 +31,16 @@ const LandingPage = (props:RouteComponentProps):JSX.Element => {
     },{
         name: 'Воллейбол',
         img: VolleyballTall,
+    }];
+    const options = [{
+        text: 'Cоздать свою спортивную команду',
+        img: HandsIcon,
+    },{
+        text: 'Создать спортивные мероприятия и турниры',
+        img: CupIcon,
+    },{
+        text: 'Участвовать в соревнованиях',
+        img: PrizeIcon,
     }];
     React.useEffect(() => {
         new Glide('.glide', {
@@ -64,6 +78,17 @@ const LandingPage = (props:RouteComponentProps):JSX.Element => {
                             </li>)}
                         </ul>
                     </div>
+                </div>
+            </div>
+        </section>
+        <section className='options'>
+            <div className="options__container">
+                <h3 className='options__title'>С помощью нашего сервиса, вы имеете возможность</h3>
+                <div className='options__body'>
+                    {options.map((o,i) => <div className="options__body_item" key={i}>
+                        <img src={o.img} alt={`${i}`}/>
+                        <p>{o.text}</p>
+                    </div>)}
                 </div>
             </div>
         </section>

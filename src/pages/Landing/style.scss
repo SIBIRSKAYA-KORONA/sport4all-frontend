@@ -138,3 +138,46 @@
     }
   }
 }
+
+.options {
+  width: 100%;
+  background-color: $purple-light-light;
+  padding: 50px 0;
+  margin-top: 30px;
+
+  &__container {
+    margin: auto;
+    @extend %container;
+  }
+
+  &__title {
+    text-transform: none;
+    margin-bottom: 70px;
+  }
+
+  &__body {
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+
+    &_item {
+      width: 27%;
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+
+      & img {
+        height: 100px;
+        margin-bottom: 20px;
+      }
+
+      & p {
+        color: black;
+        font-size: 14px;
+        line-height: 18px;
+        text-align: center;
+      }
+    }
+  }
+}
