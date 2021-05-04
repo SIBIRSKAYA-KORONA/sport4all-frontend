@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@glidejs/glide": "^3.4.1",
     "antd": "^4.13.1",
     "awesome-debounce-promise": "^2.1.0",
     "i18next": "^19.9.2",
