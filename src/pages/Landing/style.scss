@@ -181,9 +181,10 @@
   &::after {
     position: absolute;
     content: '';
-    width: 208px;
     bottom: 0;
     right: 0;
+    width: 132px;
+    height: 142px;
     background-image: url("../../../static/icons/whistle.svg");
     object-fit: cover;
   }
@@ -222,6 +223,38 @@
 
     &_button {
       width: 242px;
+    }
+  }
+}
+
+.recent_tours {
+  background-color: $purple-light-light;
+  padding: 25px 0;
+  position: relative;
+
+  &__title {
+    margin: 20px 0 30px;
+  }
+
+  &__container {
+    @extend %container;
+  }
+
+  & .glide__arrows {
+    position: absolute;
+    left: -60px;
+    right: -60px;
+    top: 115px; // half of card height
+    display: flex;
+    justify-content: space-between;
+
+    & .glide__arrow {
+      width: 30px;
+      cursor: pointer;
+    }
+
+    & .glide__arrow--right {
+      transform: rotate(180deg);
     }
   }
 }

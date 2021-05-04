@@ -17,6 +17,10 @@ export function formatDate(date: Date):string {
     return `${date.getDate()}, ${date.getUTCFullYear()}`;
 }
 
+export function dateWithSlashes(date: Date):string {
+    return `${date.getDate()}/${date.getMonth()}/${date.getUTCFullYear()}`;
+}
+
 export function parseSeconds(secs:number):string {
     return formatDate(new Date(secs*1000));
 }

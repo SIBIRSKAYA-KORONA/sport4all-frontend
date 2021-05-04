@@ -3,6 +3,8 @@ import * as React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import Glide from '@glidejs/glide'
 
+import TournamentModel from 'Models/TournamentModel';
+
 import Button from 'Components/Button/render';
 import Header from 'Components/Header/render';
 import Footer from 'Components/Footer/render';
@@ -18,6 +20,9 @@ import CupIcon from 'Static/icons/cup.svg';
 import PrizeIcon from 'Static/icons/prize.svg';
 import { connect } from 'react-redux';
 import { PATHS } from 'Constants';
+import LoadingContainer from 'Components/Loading/render';
+import { Tournament } from 'Utils/types';
+import TournamentCardNew from 'Components/Tournaments/Card/New/render';
 
 
 interface IProps extends RouteComponentProps {
@@ -25,6 +30,8 @@ interface IProps extends RouteComponentProps {
 }
 
 const LandingPage = (props:IProps):JSX.Element => {
+    const [tours, setTours] = React.useState<Tournament[]>([]);
+    const [loadingTours, setLoadingTours] = React.useState(true);
     const sports = [{
         name: 'Баскетбол',
         img: BasketballTall,
@@ -62,12 +69,25 @@ const LandingPage = (props:IProps):JSX.Element => {
         unAuthedLink: PATHS.signup,
     }];
     React.useEffect(() => {
-        new Glide('.glide', {
+        TournamentModel.loadFeed(0)
+            .then(tours => setTours(tours))
+            .finally(() => setLoadingTours(false));
+        new Glide('.sports .glide', {
             type: 'carousel',
             startAt: 0,
             perView: 4,
         }).mount();
     }, []);
+
+    React.useEffect(() => {
+        if (!loadingTours) {
+            new Glide('.recent_tours .glide', {
+                type: 'carousel',
+                startAt: 0,
+                perView: 4,
+            }).mount();
+        }
+    }, [loadingTours]);
     return (<>
         <Header {...props}/>
         <section className='first'>
@@ -120,6 +140,26 @@ const LandingPage = (props:IProps):JSX.Element => {
                         <Button type='purple' text={w.button} className='whom__item_button'/>
                     </Link>
                 </div>)}
+            </div>
+        </section>
+        <section className='recent_tours'>
+            <div className='recent_tours__container'>
+                <h2 className='recent_tours__title'>Недавние турниры</h2>
+                <LoadingContainer loading={loadingTours}>
+                    <div className="glide">
+                        <div className="glide__arrows" data-glide-el="controls">
+                            <img className="glide__arrow glide__arrow--left" data-glide-dir="<" src={Arrow} alt="prev"/>
+                            <img className="glide__arrow glide__arrow--right" data-glide-dir=">" src={Arrow} alt="next"/>
+                        </div>
+                        <div className="glide__track" data-glide-el="track">
+                            <ul className="glide__slides">
+                                {tours.map((t,i) => <li key={i} className='glide_slide'>
+                                    <TournamentCardNew tournament={t} {...props}/>
+                                </li>)}
+                            </ul>
+                        </div>
+                    </div>
+                </LoadingContainer>
             </div>
         </section>
         <Footer/>

@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import Footer from 'Components/Footer/render';
 import {Button, Col, Form} from 'antd';
 import BasePage from 'Components/BasePage/render';
 import PropTypes from 'prop-types'
