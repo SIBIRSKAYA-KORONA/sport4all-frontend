@@ -7,7 +7,7 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import store from 'Store/store';
 import UserModel from 'Models/UserModel';
 import FeedPage from 'Pages/Feed/render';
-import HomePage from 'Pages/Home/render';
+import LandingPage from 'Pages/Landing/render';
 import LoginPage from 'Pages/Login/render';
 import AuthedRoute from 'Utils/AuthedRoute';
 import SignUpPage from 'Pages/SignUp/render';
@@ -59,7 +59,7 @@ render(
     <Provider store={store}>
         <BrowserRouter>
             <Switch>
-                <Route exact path={PATHS.root} component={HomePage}/>
+                <Route exact path={PATHS.root} component={LandingPage}/>
                 <Route exact path={PATHS.feed} component={FeedPage}/>
 
                 {/* Teams */}

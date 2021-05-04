@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,700');
 @import '~antd/dist/antd.css';
+@import "../node_modules/@glidejs/glide/src/assets/sass/glide.core";
+@import "./utils/scss/variables";
 
 * {
   box-sizing: border-box;
@@ -44,13 +46,21 @@ a, area, button, [role='button'], input:not([type='range']), label, select, summ
 }
 
 h2 {
+  color: $purple;
+  font-weight: 700;
+  font-size: 27px;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
+h3 {
   font-weight: 500;
   font-size: 17px;
   line-height: 20px;
   text-transform: uppercase;
 }
 
-h3 {
+h4 {
   font-weight: 500;
   font-size: 18px;
   line-height: 18px;

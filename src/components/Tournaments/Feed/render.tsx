@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Row, Col } from 'antd';
 
 import { Tournament } from 'Utils/types';
-import TournamentCard from 'Components/Tournaments/Card/render';
+import TournamentCard from 'Components/Tournaments/Card/New/render';
 
 
 interface IProps extends RouteComponentProps {
