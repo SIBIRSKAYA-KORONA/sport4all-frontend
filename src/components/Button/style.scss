@@ -5,7 +5,7 @@
   height: 38px;
   padding: 4px 15px;
   border-radius: 6px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.5715;
   white-space: nowrap;
@@ -27,7 +27,7 @@
 
   &__purple {
     @extend .button;
-    background: $blue-light;
+    background: $purple;
     color: white;
   }
 

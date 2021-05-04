@@ -42,6 +42,15 @@ const LandingPage = (props:RouteComponentProps):JSX.Element => {
         text: 'Участвовать в соревнованиях',
         img: PrizeIcon,
     }];
+    const whom = [{
+        title: 'Спортсменам',
+        text: 'Ornare arcu at vel libero faucibus eu aenean. Magna facilisi cras interdum hac neque, nunc, massa amet. Sollicitudin adipiscing quisque quam pharetra dui placerat justo. Magna viverra ut tortor magna gravida cras a integer. Vitae proin sed nisl id imperdiet porta vitae.',
+        button: 'Участвовать',
+    },{
+        title: 'Организаторам',
+        text: 'A mi nunc, fringilla varius ac. Non enim sed volutpat felis porta urna et urna, hendrerit. In integer in turpis nunc viverra risus amet facilisis semper. Ac nisi venenatis tempor tempus, velit molestie. Sit turpis feugiat amet, elementum.',
+        button: 'Создать соревнование',
+    }];
     React.useEffect(() => {
         new Glide('.glide', {
             type: 'carousel',
@@ -90,6 +99,15 @@ const LandingPage = (props:RouteComponentProps):JSX.Element => {
                         <p>{o.text}</p>
                     </div>)}
                 </div>
+            </div>
+        </section>
+        <section className='whom'>
+            <div className="whom__container">
+                {whom.map((w,i) => <div key={i} className='whom__item'>
+                    <h2>{w.title}</h2>
+                    <p>{w.text}</p>
+                    <Button type='purple' text={w.button} className='whom__item_button'/>
+                </div>)}
             </div>
         </section>
         <Footer/>

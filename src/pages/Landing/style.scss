@@ -74,12 +74,6 @@
 
   &__container {
     @extend %container;
-    margin: auto;
-  }
-
-  &__title {
-    font-size: 29px;
-    color: $purple;
   }
 
   &__ul {
@@ -146,7 +140,6 @@
   margin-top: 30px;
 
   &__container {
-    margin: auto;
     @extend %container;
   }
 
@@ -178,6 +171,57 @@
         line-height: 18px;
         text-align: center;
       }
+    }
+  }
+}
+
+.whom {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    content: '';
+    width: 208px;
+    bottom: 0;
+    right: 0;
+    background-image: url("../../../static/icons/whistle.svg");
+    object-fit: cover;
+  }
+
+  &__container {
+    @extend %container;
+    margin: 50px auto;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+  }
+
+  &__item {
+    display: flex;
+    flex-flow: column;
+    width: 32%;
+
+    & h2 {
+      position: relative;
+
+      &::after {
+        position: absolute;
+        content: '';
+        width: 77px;
+        height: 3px;
+        bottom: -13px;
+        left: 0;
+        background-color: $blue;
+        margin-top: 10px;
+      }
+    }
+
+    & p {
+      margin: 20px 0;
+    }
+
+    &_button {
+      width: 242px;
     }
   }
 }
