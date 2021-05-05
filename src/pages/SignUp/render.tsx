@@ -1,6 +1,5 @@
 import './style.scss';
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { Form, Input, Button } from 'antd';
@@ -9,7 +8,6 @@ import { PATHS } from 'Constants';
 import UserModel from 'Models/UserModel';
 import { ProfileSections } from 'Utils/enums';
 import BasePage from 'Components/BasePage/render';
-import { setUser } from 'Store/User/UserActions';
 
 
 const layout = {
@@ -23,11 +21,7 @@ const tailLayout = {
     },
 };
 
-interface IProps extends RouteComponentProps {
-    setUser: () => void
-}
-
-const SignUpPage = (props:IProps):JSX.Element => {
+const SignUpPage = (props:RouteComponentProps):JSX.Element => {
     const [error, setError] = React.useState('');
     function onSubmit(values) {
         const user = values;
@@ -98,4 +92,4 @@ const SignUpPage = (props:IProps):JSX.Element => {
     );
 }
 
-export default connect(null, { setUser })(SignUpPage);
+export default SignUpPage;
