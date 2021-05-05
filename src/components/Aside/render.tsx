@@ -11,7 +11,7 @@ import ShirtIcon from 'Static/icons/shirt.svg';
 import TrophyIcon from 'Static/icons/trophy.svg';
 import TeamworkIcon from 'Static/icons/teamwork.svg';
 import { Avatarable } from 'Utils/types';
-import { Avatar, Image } from 'antd';
+import { Avatar } from 'antd';
 import { lettersForAvatar } from 'Utils/utils';
 import { lettersForUserAvatar } from 'Utils/structUtils';
 
@@ -55,7 +55,6 @@ const Aside = (props:IProps):JSX.Element => (
                 <h5 className='aside__title'>Спортсмены</h5>
                 <div className="aside__recents">
                     {props.recent.users.slice(0,3).map(u => <div key={u.id} className='aside__entity' onClick={() => props.history.push(PATHS.profile.nickname(u.nickname))}>
-                        {console.log(u)}
                         <Avatar className='aside__entity_img' src={u.avatar?.url} alt={u.avatar.filename}>{lettersForUserAvatar(u)}</Avatar>
                         <p>{u.name}</p>
                     </div>)}
