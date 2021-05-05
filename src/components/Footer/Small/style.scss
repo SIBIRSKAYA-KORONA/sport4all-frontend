@@ -1,0 +1,29 @@
+@import "../../../utils/scss/variables";
+@import "../../../utils/scss/extends";
+@import '../../Inputs/style';
+
+.footer-small {
+  width: 100%;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+
+  &__container {
+    @extend %container;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__logo {
+    height: 35px;
+  }
+
+  &__rights {
+    color: black;
+    font-size: 12px;
+    margin: 0;
+  }
+}
