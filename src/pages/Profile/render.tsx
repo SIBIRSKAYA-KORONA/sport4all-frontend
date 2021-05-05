@@ -4,18 +4,20 @@ import { connect } from 'react-redux';
 
 import { Avatar, Col, message, Row, Tabs, Tag, Typography } from 'antd';
 
-import { PATHS, URL_PARAMS } from 'Constants';
+import store from 'Store/store';
 import { User } from 'Utils/types';
 import UserModel from 'Models/UserModel';
+import { PATHS, URL_PARAMS } from 'Constants';
 import BasePage from 'Components/BasePage/render';
 import { RouteComponentProps } from 'react-router-dom';
 import { lettersForUserAvatar } from 'Utils/structUtils';
+import { addRecentUser } from 'Store/Recent/RecentActions';
 import TeamsSubPage from 'Pages/Profile/sections/Teams/render';
+import HistorySubPage from 'Pages/Profile/sections/History/render';
 import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
 import { ProfileSections, ProfilePersonalSections } from 'Utils/enums';
 import PersonalProfileSection from 'Pages/Profile/sections/Personal/render';
 import TournamentsProfileSection from 'Pages/Profile/sections/Tournaments/render';
-import HistorySubPage from 'Pages/Profile/sections/History/render';
 
 const { Title, Paragraph } = Typography;
 const { TabPane } = Tabs;
@@ -43,6 +45,7 @@ const ProfilePage = (props:IProps):JSX.Element => {
             UserModel.getProfileByNickname(props.match.params[URL_PARAMS.profile.nickname])
                 .then((profile:User) => {
                     if (props.user && props.user.id === profile.id) setCanEdit(true);
+                    else store.dispatch(addRecentUser(profile));
                     setProfile(profile);
                 })
                 .catch(e => message.error(e));
@@ -108,4 +111,4 @@ const mapStateToProps = state => ({
     user: state.user.user
 });
 
-export default connect(mapStateToProps)(ProfilePage);
+export default connect(mapStateToProps, { addRecentUser })(ProfilePage);

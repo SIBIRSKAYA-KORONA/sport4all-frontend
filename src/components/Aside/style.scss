@@ -34,6 +34,20 @@
     margin-bottom: 12px;
   }
 
+  &__recents {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+
+    .aside__entity {
+      margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
   &__section {
     width: 100%;
     margin-top: 20px;
@@ -52,6 +66,29 @@
 
     &_recent-tours {
       @extend .aside__section;
+    }
+  }
+
+  &__entity {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+
+    &_img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+    }
+
+    & p {
+      color: $blue-light;
+      font-size: 12px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      margin-top: 8px;
+      width: 100%;
+      text-align: center;
     }
   }
 }
