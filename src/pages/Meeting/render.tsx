@@ -1,6 +1,5 @@
 import './style.scss';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 
 import { Button, Empty, Space, Typography } from 'antd';
 const { Title } = Typography;
@@ -16,7 +15,7 @@ import MeetingResult from 'Pages/Meeting/Components/Result/Result';
 import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
 import MeetingPictureWall from 'Pages/Meeting/Components/PictureWall';
 import { IProps, visibleModals, visibleModalsKey } from './interface';
-import MeetingTeamScore from 'Pages/Meeting/Components/TeamScore/render';
+import MeetingTeamScore from 'Pages/Meeting/Components/TeamInTop/render';
 
 import EditIcon from 'Static/icons/edit.svg';
 
