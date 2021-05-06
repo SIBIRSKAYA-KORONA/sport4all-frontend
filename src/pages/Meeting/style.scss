@@ -14,7 +14,7 @@
     }
   }
 
-  &__results {
+  &__header {
     @extend %block;
     @include gradient_purple(1);
     position: relative;
@@ -22,10 +22,18 @@
     height: 250px;
 
     &_bg {
-      object-fit: cover;
+      position: relative;
       width: 100%;
       height: 100%;
-      @include gradient_purple(0.8);
+      object-fit: cover;
+
+      &_overlay {
+        top: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        @include gradient_purple(0.8);
+      }
     }
 
     &_status {
@@ -89,5 +97,12 @@
     width: 40%;
     display: flex;
     justify-content: center;
+  }
+
+  &__scores {
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
   }
 }

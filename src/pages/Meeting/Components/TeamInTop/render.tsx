@@ -14,9 +14,9 @@ interface IProps extends RouteComponentProps {
 
 function MeetingTeamScore(props: IProps): JSX.Element {
     return (
-        <div className='meeting__results_team'>
+        <div className='meeting__header_team'>
             <div onClick={() => { props.history.push(PATHS.teams.id(props.team.id)) }}>
-                <Avatar className='meeting__results_team_img' src={props.team.avatar?.url} alt={props.team.avatar?.filename}>{lettersForAvatar(props.team.name)}</Avatar>
+                <Avatar className='meeting__header_team_img' src={props.team.avatar?.url} alt={props.team.avatar?.filename}>{lettersForAvatar(props.team.name)}</Avatar>
             </div>
             <p>{props.team.name}</p>
         </div>

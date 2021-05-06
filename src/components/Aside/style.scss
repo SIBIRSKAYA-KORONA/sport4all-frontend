@@ -84,9 +84,7 @@
     & p {
       color: $blue-light;
       font-size: 12px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
+      @extend %text_cut;
       margin-top: 8px;
       width: 100%;
       text-align: center;
