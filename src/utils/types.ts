@@ -126,3 +126,8 @@ export interface InviteWithTournament extends Invite {
     tournament: Tournament,
     tournament_id: number
 }
+
+export interface MeetingResult {
+    left: number,
+    right: number,
+}

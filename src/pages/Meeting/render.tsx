@@ -1,8 +1,7 @@
 import './style.scss';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 
-import { Button, Col, Empty, Row, Space, Typography } from 'antd';
+import { Button, Empty, Space, Typography } from 'antd';
 const { Title } = Typography;
 
 import { PATHS } from 'Constants';
@@ -12,9 +11,13 @@ import BasePage from 'Components/BasePage/render';
 import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
 import MeetingSteps from 'Components/Meeting/Steps/render';
 import AddResultsModal from 'Pages/Meeting/modals/addResults';
-import MeetingTeamScore from 'Pages/Meeting/Components/TeamScore';
+import MeetingTeamScore from 'Pages/Meeting/Components/TeamScore/render';
 import MeetingPictureWall from 'Pages/Meeting/Components/PictureWall';
 import { IProps, visibleModals, visibleModalsKey } from './interface';
+import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
+
+import EditIcon from 'Static/icons/edit.svg';
+import MeetingResult from 'Pages/Meeting/Components/Result/Result';
 
 
 const MeetingPageRender = (props:IProps):JSX.Element => {
@@ -25,29 +28,23 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
     const handleCancel = (key:visibleModalsKey) => setIsModalVisible(prev => ({ ...prev, [key]:false }));
 
     return (
-        <BasePage {...props} loading={props.loadingMeeting}>{props.meeting
-            ? <Space direction='vertical' size='large' className='full-width'>
-                {props.meeting.status >= EventStatus.RegistrationEvent && props.meeting.teams.length === 2 &&
-                    <div className='meeting__section meeting__section-center'>
-                        <Title level={2}>Результаты встречи</Title>
-                        <div className='meeting__results'>
-                            <div className='meeting__score'>
-                                <MeetingTeamScore team={props.meeting.teams[0]} stats={props.stats} {...props}/>
-                            </div>
-                            <div className='meeting__result'>
-                                <Title level={4} className='meeting__title'>
-                                    {meetingResult(props.stats, props.meeting.teams)}
-                                </Title>
-                                <Button type='link'>
-                                    <Link to={PATHS.tournaments.id(props.meeting.tournamentId)}>Турнир</Link>
-                                </Button>
-                            </div>
-                            <div className='meeting__score'>
-                                <MeetingTeamScore team={props.meeting.teams[1]} stats={props.stats} {...props}/>
-                            </div>
-                        </div>
+        <BasePage {...props} loading={props.loadingMeeting}>{props.meeting && <>
+            {props.meeting.status >= EventStatus.RegistrationEvent && props.meeting.teams.length === 2 &&
+                <div className='meeting__results'>
+                    {props.meeting.attachments && props.meeting.attachments[0] &&
+                        <img className='meeting__results_bg' src={props.meeting.attachments[0].url} alt={props.meeting.attachments[0].filename}/>
+                    }
+                    <MeetingStatusTag status={props.meeting.status} className='meeting__results_status'/>
+                    <h3 className='meeting__results_tournament'>Название турнира</h3>
+                    <img className='meeting__results_edit' src={EditIcon} alt={EditIcon}/>
+                    <div className="meeting__results_container">
+                        <MeetingTeamScore team={props.meeting.teams[0]} {...props}/>
+                        <MeetingResult result={meetingResult(props.stats, props.meeting.teams)}/>
+                        <MeetingTeamScore team={props.meeting.teams[1]} {...props}/>
                     </div>
-                }
+                </div>
+            }
+            <Space direction='vertical' size='large' className='full-width'>
                 <Space direction='vertical' size='small'>
                     <Title level={3}>Статус встречи</Title>
                     <MeetingSteps current={props.meeting.status} />
@@ -97,8 +94,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                     />
                 </>}
             </Space>
-            : <p>Not found</p>
-        }</BasePage>
+        </>}</BasePage>
     )
 }
 
