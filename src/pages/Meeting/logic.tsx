@@ -22,21 +22,14 @@ interface IState {
     stats?: Array<Stats>,
     canEdit: boolean,
     loadingMeeting: boolean,
+    tournament?: Tournament,
 }
 
 class MeetingPage extends React.Component<IProps, IState> {
-    constructor(props:IProps) {
-        super(props);
-        this.state = {
-            loadingMeeting: true,
-            canEdit: false,
-        };
-
-        this.handlePointsSave = this.handlePointsSave.bind(this);
-        this.handleTeamsAdd = this.handleTeamsAdd.bind(this);
-        this.changeStatus = this.changeStatus.bind(this);
-        this.parseMeeting = this.parseMeeting.bind(this);
-    }
+    state:IState = {
+        loadingMeeting: true,
+        canEdit: false,
+    };
 
     componentDidMount():void {
         this.parseMeeting();
@@ -53,6 +46,7 @@ class MeetingPage extends React.Component<IProps, IState> {
             this.setState(prev => ({
                 ...prev,
                 canEdit: user?.id === tournament.ownerId,
+                tournament: tournament,
             }));
         });
     }
@@ -67,7 +61,9 @@ class MeetingPage extends React.Component<IProps, IState> {
                 }), () => { this.checkRights(); });
             })
             .catch(e => console.error(e))
-            .finally(() => { this.setState(prev => ({ ...prev, loadingMeeting:false }) ); });
+            .finally(() => {
+                this.setState(prev => ({ ...prev, loadingMeeting:false }) );
+            });
         MeetingModel.getStats(this.props.match.params[URL_PARAMS.meeting.id])
             .then(stats => { this.setState(prev => ({ ...prev, stats:stats as Array<Stats> })); })
             .catch(e => { if (e !== 404) message.error(e); });

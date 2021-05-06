@@ -47,6 +47,12 @@
       text-transform: uppercase;
       font-weight: 600;
       line-height: 20px;
+      cursor: pointer;
+      @include transition(0.3s, ease-in-out);
+
+      &:hover {
+        color: $blue-light;
+      }
     }
 
     &_edit {

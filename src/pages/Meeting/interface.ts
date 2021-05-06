@@ -1,4 +1,4 @@
-import { Meeting, Stats } from 'Utils/types';
+import { Meeting, Stats, Tournament } from 'Utils/types';
 import { RouteComponentProps } from 'react-router-dom';
 
 export interface IProps extends RouteComponentProps {
@@ -9,7 +9,8 @@ export interface IProps extends RouteComponentProps {
     changeStatus: () => void,
     loadingMeeting: boolean,
     canEdit: boolean,
-    reload: () => void
+    reload: () => void,
+    tournament?: Tournament,
 }
 
 export type visibleModals = {

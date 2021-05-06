@@ -1,5 +1,6 @@
 import './style.scss';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Button, Empty, Space, Typography } from 'antd';
 const { Title } = Typography;
@@ -11,13 +12,13 @@ import BasePage from 'Components/BasePage/render';
 import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
 import MeetingSteps from 'Components/Meeting/Steps/render';
 import AddResultsModal from 'Pages/Meeting/modals/addResults';
-import MeetingTeamScore from 'Pages/Meeting/Components/TeamScore/render';
+import MeetingResult from 'Pages/Meeting/Components/Result/Result';
+import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
 import MeetingPictureWall from 'Pages/Meeting/Components/PictureWall';
 import { IProps, visibleModals, visibleModalsKey } from './interface';
-import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
+import MeetingTeamScore from 'Pages/Meeting/Components/TeamScore/render';
 
 import EditIcon from 'Static/icons/edit.svg';
-import MeetingResult from 'Pages/Meeting/Components/Result/Result';
 
 
 const MeetingPageRender = (props:IProps):JSX.Element => {
@@ -35,7 +36,9 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                         <img className='meeting__results_bg' src={props.meeting.attachments[0].url} alt={props.meeting.attachments[0].filename}/>
                     }
                     <MeetingStatusTag status={props.meeting.status} className='meeting__results_status'/>
-                    <h3 className='meeting__results_tournament'>Название турнира</h3>
+                    <h3 className='meeting__results_tournament' onClick={() => props.tournament && props.history.push(PATHS.tournaments.id(props.tournament.id))}>
+                        {props.tournament ? props.tournament.name : 'Название турнира'}
+                    </h3>
                     <img className='meeting__results_edit' src={EditIcon} alt={EditIcon}/>
                     <div className="meeting__results_container">
                         <MeetingTeamScore team={props.meeting.teams[0]} {...props}/>
