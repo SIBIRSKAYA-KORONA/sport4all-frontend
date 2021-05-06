@@ -124,16 +124,6 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                         />
                     </Space>
                 }
-                <Space direction='vertical' size='small'>
-                    <Title level={3}>Фотографии</Title>
-                    {props.meeting.attachments
-                        ? <Space size={[8, 16]} wrap>
-                            {props.meeting.attachments.map(attach => <img key={attach.id} height={100} alt={attach.filename} src={attach.url} />)}
-                        </Space>
-                        : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                    }
-                    {props.canEdit && <MeetingPictureWall meetingId={props.meeting.id} reload={props.reload}/>}
-                </Space>
                 {props.canEdit && props.meeting.status === EventStatus.RegistrationEvent && props.meeting.teams.length !== 2 && <>
                     <Button type='primary' onClick={() => { showModal('addTeams'); }}>Добавить команды</Button>
                     <AddTeamsModal
