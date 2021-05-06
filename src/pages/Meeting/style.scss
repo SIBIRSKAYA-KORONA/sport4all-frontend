@@ -105,4 +105,49 @@
     flex-flow: row;
     justify-content: space-between;
   }
+
+  // Pictures section
+  &__pics {
+    margin-top: 20px;
+    @extend %block;
+    width: 100%;
+    padding: 20px;
+
+    &_title {
+      @extend %h3_bold;
+    }
+
+    &_pic {
+      width: 23%;
+      height: 100px;
+      object-fit: cover;
+    }
+
+    & .glide {
+      padding: 20px;
+      position: relative;
+    }
+
+    & .glide__arrows {
+      position: absolute;
+      left: -10px;
+      right: -10px;
+      top: 60px; // half of card height
+      display: flex;
+      justify-content: space-between;
+
+      & .glide__arrow {
+        width: 20px;
+        cursor: pointer;
+      }
+
+      & .glide__arrow--right {
+        transform: rotate(180deg);
+      }
+    }
+
+    & .glide__slides {
+      margin-bottom: 0;
+    }
+  }
 }

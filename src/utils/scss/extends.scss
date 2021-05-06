@@ -24,3 +24,10 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+%h3_bold {
+  font-size: 16px;
+  font-weight: 700;
+  color: $purple;
+  line-height: 16px;
+}
