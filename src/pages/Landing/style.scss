@@ -64,7 +64,10 @@
 
   &:after {
     content: '';
-    background-image: url("../../../static/icons/soccer_ball_half.svg");
+    background-color: $blue-light;
+    opacity: 0.3;
+    -webkit-mask-image: url("../../../static/icons/soccer_ball_half.svg");
+    mask-image: url("../../../static/icons/soccer_ball_half.svg");
     position: absolute;
     bottom: 0;
     left: 0;
@@ -111,24 +114,6 @@
         margin-right: 5px;
         font-size: 30px;
       }
-    }
-  }
-
-  & .glide__arrows {
-    position: absolute;
-    left: -60px;
-    right: -60px;
-    top: 225px; // half of img height
-    display: flex;
-    justify-content: space-between;
-
-    & .glide__arrow {
-      width: 30px;
-      cursor: pointer;
-    }
-
-    & .glide__arrow--right {
-      transform: rotate(180deg);
     }
   }
 }
@@ -238,23 +223,5 @@
 
   &__container {
     @extend %container;
-  }
-
-  & .glide__arrows {
-    position: absolute;
-    left: -60px;
-    right: -60px;
-    top: 62px; // half of card height
-    display: flex;
-    justify-content: space-between;
-
-    & .glide__arrow {
-      width: 30px;
-      cursor: pointer;
-    }
-
-    & .glide__arrow--right {
-      transform: rotate(180deg);
-    }
   }
 }

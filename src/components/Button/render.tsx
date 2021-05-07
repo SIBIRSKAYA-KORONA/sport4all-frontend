@@ -11,7 +11,7 @@ interface IProps {
 
 const Button = (props:IProps):JSX.Element => (
     <button className={`button_${props.color} button_${props.type} ${props.className || ''}`}>
-        <div className='button__icon'>{props.icon}</div>
+        {props.icon && <div className='button__icon'>{props.icon}</div>}
         <span className='button__text'>{props.text}</span>
     </button>
 );

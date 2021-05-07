@@ -1,17 +1,14 @@
 import './style.scss';
 import * as React from 'react';
 
-import { Button, Space, Typography } from 'antd';
-const { Title } = Typography;
+import { Button, Space } from 'antd';
 
 import { PATHS } from 'Constants';
-import { EventStatus, Stats } from 'Utils/types';
+import { EventStatus, Meeting, Stats } from 'Utils/types';
 import { meetingResult } from 'Utils/structUtils';
 import BasePage from 'Components/BasePage/render';
 import Carousel from 'Components/Carousel/render';
 import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
-import MeetingSteps from 'Components/Meeting/Steps/render';
-import AddResultsModal from 'Pages/Meeting/modals/addResults';
 import MeetingResult from 'Pages/Meeting/Components/Result/render';
 import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
 import TeamScores from 'Pages/Meeting/Components/TeamScores/render';
@@ -19,6 +16,8 @@ import { IProps, visibleModals, visibleModalsKey } from './interface';
 import MeetingTeamScore from 'Pages/Meeting/Components/TeamInTop/render';
 
 import { ReactComponent as EditIcon } from 'Static/icons/edit.svg';
+import MeetingEditModal from 'Pages/Meeting/modals/edit';
+import MeetingPics from 'Pages/Meeting/Components/Pics/render';
 
 
 const MeetingPageRender = (props:IProps):JSX.Element => {
@@ -52,14 +51,12 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                     </h3>
                     {props.canEdit && <>
                         <EditIcon className='meeting__header_edit' onClick={showModal.bind(this, 'edit')}/>
-                        <AddResultsModal
-                            meetingId={props.meeting.id}
-                            teams={props.meeting.teams}
-                            visible={isModalVisible['stats']}
-                            onCancel={() => { handleCancel('stats') }}
-                            handleOk={() => {
-                                props.handlePointsSave();
-                                handleOk('stats');
+                        <MeetingEditModal
+                            meeting={props.meeting}
+                            visible={isModalVisible['edit']}
+                            onClose={(meeting:Meeting) => {
+                                props.reload(meeting);
+                                handleOk('edit');
                             }}
                         />
                     </>}
@@ -76,13 +73,6 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                 </section>
             }
             <Space direction='vertical' size='large' className='full-width'>
-                <Space direction='vertical' size='small'>
-                    <Title level={3}>Статус встречи</Title>
-                    <MeetingSteps current={props.meeting.status} />
-                    {props.canEdit && (props.meeting.status !== EventStatus.FinishedEvent) &&
-                        <Button type='primary' onClick={props.changeStatus}>Следующий этап</Button>
-                    }
-                </Space>
                 {props.canEdit && props.meeting.status === EventStatus.RegistrationEvent && props.meeting.teams.length !== 2 && <>
                     <Button type='primary' onClick={() => { showModal('addTeams'); }}>Добавить команды</Button>
                     <AddTeamsModal
@@ -99,17 +89,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
             {props.meeting?.attachments?.length > 0 &&
                 <section className='meeting__pics'>
                     <h3 className='meeting__pics_title'>Галерея</h3>
-                    <Carousel
-                        className='meeting__pics_glide'
-                        options={{ startAt:0, perView:4, type:'carousel' }}
-                        withArrows
-                    >
-                        {props.meeting.attachments.map((a, i) => (
-                            <li key={i}>
-                                <img src={a.url} alt={a.filename} className='meeting__pics_pic'/>
-                            </li>
-                        ))}
-                    </Carousel>
+                    <MeetingPics attaches={props.meeting.attachments} perView={4} imgClass='meeting__pics_pic' carouselClass='meeting__pics_glide'/>
                 </section>
             }
         </>}</BasePage>

@@ -118,7 +118,15 @@ const LandingPage = (props:IProps):JSX.Element => {
             <section className='recent_tours'>
                 <div className='recent_tours__container'>
                     <h2 className='recent_tours__title'>Недавние турниры</h2>
-                    <Carousel className='recent_tours__glide' options={{type: 'carousel', startAt: 0, perView: 4}} withArrows>
+                    <Carousel
+                        className='recent_tours__glide'
+                        options={{ type: 'carousel', perView: 4 }}
+                        withArrows
+                        arrowStyle={{
+                            offset: -60,
+                            width: 30,
+                        }}
+                    >
                         {tours.map((t,i) => <li key={i}>
                             <TournamentCardNew tournament={t} {...props}/>
                         </li>)}

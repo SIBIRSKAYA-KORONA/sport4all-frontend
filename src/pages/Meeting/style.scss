@@ -134,24 +134,6 @@
       position: relative;
     }
 
-    & .glide__arrows {
-      position: absolute;
-      left: -10px;
-      right: -10px;
-      top: 60px; // half of card height
-      display: flex;
-      justify-content: space-between;
-
-      & .glide__arrow {
-        width: 20px;
-        cursor: pointer;
-      }
-
-      & .glide__arrow--right {
-        transform: rotate(180deg);
-      }
-    }
-
     & .glide__slides {
       margin-bottom: 0;
     }

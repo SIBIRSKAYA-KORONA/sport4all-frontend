@@ -31,6 +31,8 @@ class MeetingPage extends React.Component<IProps, IState> {
         canEdit: false,
     };
 
+
+
     componentDidMount():void {
         this.parseMeeting();
     }
@@ -51,19 +53,21 @@ class MeetingPage extends React.Component<IProps, IState> {
         });
     }
 
-    parseMeeting():void {
-        this.setState(prev => ({ ...prev, loadingMeets:true }) );
-        MeetingModel.getMeeting(this.props.match.params[URL_PARAMS.meeting.id])
-            .then((meeting:Meeting) => {
-                this.setState(prev => ({
-                    ...prev,
-                    meeting: meeting,
-                }), () => { this.checkRights(); });
-            })
-            .catch(e => console.error(e))
-            .finally(() => {
-                this.setState(prev => ({ ...prev, loadingMeeting:false }) );
-            });
+    parseMeeting(meeting?:Meeting):void {
+        if (meeting) {
+            this.setState(prev => ({ ...prev, meeting:meeting }));
+        } else {
+            this.setState(prev => ({ ...prev, loadingMeeting:true }) );
+            MeetingModel.getMeeting(this.props.match.params[URL_PARAMS.meeting.id])
+                .then((meeting:Meeting) => {
+                    this.setState(prev => ({
+                        ...prev,
+                        meeting: meeting,
+                    }), () => { this.checkRights(); });
+                })
+                .catch(e => console.error(e))
+                .finally(() => { this.setState(prev => ({ ...prev, loadingMeeting:false }) ); });
+        }
         MeetingModel.getStats(this.props.match.params[URL_PARAMS.meeting.id])
             .then(stats => { this.setState(prev => ({ ...prev, stats:stats as Array<Stats> })); })
             .catch(e => { if (e !== 404) message.error(e); });
@@ -79,26 +83,11 @@ class MeetingPage extends React.Component<IProps, IState> {
             .then(() => { this.parseMeeting(); });
     }
 
-    async changeStatus():Promise<HttpStatusCode | Meeting> {
-        if (!confirm('Изменить статус встречи?')) return;
-        await MeetingModel.changeStatus(this.state.meeting.id, this.state.meeting.status + 1)
-            .then(() => { this.parseMeeting(); })
-            .catch(e => {
-                const error = e as HttpStatusCode;
-                let errorText = 'Ошибка';
-                switch (error) {
-                case HttpStatusCode.FORBIDDEN: errorText = 'У вас нет прав'; break;
-                }
-                message.error(errorText);
-            });
-    }
-
     render(): JSX.Element {
         return (<MeetingPageRender {...this.props} {...this.state}
-            reload={this.parseMeeting}
-            handlePointsSave={this.handlePointsSave}
-            handleTeamsAdd={this.handleTeamsAdd}
-            changeStatus={this.changeStatus}
+            reload={this.parseMeeting.bind(this)}
+            handlePointsSave={this.handlePointsSave.bind(this)}
+            handleTeamsAdd={this.handleTeamsAdd.bind(this)}
         />);
     }
 }

@@ -1,0 +1,58 @@
+@import '../../../utils/scss/extends';
+@import '../../../utils/scss/mixins';
+
+.meeting__modal {
+  &_section-top {
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+  }
+
+  &_section-bottom {
+    width: 100%;
+  }
+
+  &_status {
+    width: 30%;
+  }
+
+  & h3 {
+    @extend %h3_bold;
+  }
+
+  &_title {
+    display: flex;
+
+    & button {
+      padding-bottom: 22px;
+      margin-left: 20px;
+    }
+  }
+
+  &_pics {
+    width: 60%;
+
+    &_glide {
+      height: 200px;
+      padding: 0 20px;
+
+      &.empty {
+        padding: 0;
+        display: flex;
+        overflow: auto;
+        height: 150px;
+
+        & img {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      & img {
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}
