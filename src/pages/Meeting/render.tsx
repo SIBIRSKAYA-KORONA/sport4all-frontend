@@ -14,13 +14,11 @@ import AddResultsModal from 'Pages/Meeting/modals/addResults';
 import MeetingResult from 'Pages/Meeting/Components/Result/render';
 import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
 import TeamScores from 'Pages/Meeting/Components/TeamScores/render';
-import MeetingPictureWall from 'Pages/Meeting/Components/PictureWall';
 import { IProps, visibleModals, visibleModalsKey } from './interface';
 import MeetingTeamScore from 'Pages/Meeting/Components/TeamInTop/render';
 
 import EditIcon from 'Static/icons/edit.svg';
-import ArrowIcon from 'Static/icons/arrow_circled.svg';
-
+import Carousel from 'Components/Carousel/render';
 const { Title } = Typography;
 
 
@@ -77,26 +75,6 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                     {statsPerTeam.map((stats, i) => <TeamScores key={i} team={props.meeting.teams[i]} stats={stats}/>)}
                 </section>
             }
-            <section className='meeting__pics'>
-                <h3 className='meeting__pics_title'>Галерея</h3>
-                <div className="glide">
-                    {props.meeting?.attachments?.length > 4 &&
-                        <div className="glide__arrows" data-glide-el="controls">
-                            <img className="glide__arrow glide__arrow--left" data-glide-dir="<" src={ArrowIcon} alt="prev"/>
-                            <img className="glide__arrow glide__arrow--right" data-glide-dir=">" src={ArrowIcon} alt="next"/>
-                        </div>
-                    }
-                    <div className="glide__track" data-glide-el="track">
-                        <ul className="glide__slides">
-                            {props.meeting.attachments.map((a, i) => (
-                                <li key={i} className='glide_slide'>
-                                    <img src={a.url} alt={a.filename} className='meeting__pics_pic'/>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            </section>
             <Space direction='vertical' size='large' className='full-width'>
                 <Space direction='vertical' size='small'>
                     <Title level={3}>Статус встречи</Title>
@@ -137,6 +115,22 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                     />
                 </>}
             </Space>
+            {props.meeting?.attachments?.length > 0 &&
+                <section className='meeting__pics'>
+                    <h3 className='meeting__pics_title'>Галерея</h3>
+                    <Carousel
+                        className='meeting__pics_glide'
+                        options={{ startAt:0, perView:4, type:'carousel' }}
+                        withArrows
+                    >
+                        {props.meeting.attachments.map((a, i) => (
+                            <li key={i}>
+                                <img src={a.url} alt={a.filename} className='meeting__pics_pic'/>
+                            </li>
+                        ))}
+                    </Carousel>
+                </section>
+            }
         </>}</BasePage>
     )
 }

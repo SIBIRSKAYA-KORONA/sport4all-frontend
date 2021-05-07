@@ -30,7 +30,7 @@ function TeamScores(props: IProps): JSX.Element {
                 </thead>
                 <tbody>
                     {props.stats.map(s => {
-                        const player = props.team.players.find(p => p.id === s.playerId);
+                        const player = props.team.players?.find(p => p.id === s.playerId);
                         if (!player) return;
                         return (<tr key={s.id}>
                             <td className='team-scores__player'>

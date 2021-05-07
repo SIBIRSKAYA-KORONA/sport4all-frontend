@@ -1,28 +1,25 @@
 import './style.scss';
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import Glide from '@glidejs/glide'
 
+import { PATHS } from 'Constants';
+import { Tournament } from 'Utils/types';
+import Carousel from 'Components/Carousel/render';
 import TournamentModel from 'Models/TournamentModel';
+import TournamentCardNew from 'Components/Tournaments/Card/New/render';
 
+import CupIcon from 'Static/icons/cup.svg';
 import Button from 'Components/Button/render';
 import Header from 'Components/Header/render';
 import Footer from 'Components/Footer/render';
+import HandsIcon from 'Static/icons/hands.svg';
+import PrizeIcon from 'Static/icons/prize.svg';
+import RunningTall from 'Static/images/running_tall.png';
+import FootballTall from 'Static/images/football_tall.png';
 import BasketballWide from 'Static/images/basketball_wide.png';
 import BasketballTall from 'Static/images/basketball_tall.png';
-import FootballTall from 'Static/images/football_tall.png';
-import RunningTall from 'Static/images/running_tall.png';
 import VolleyballTall from 'Static/images/volleyball_tall.png';
-import Arrow from 'Static/icons/arrow_circled.svg';
-
-import HandsIcon from 'Static/icons/hands.svg';
-import CupIcon from 'Static/icons/cup.svg';
-import PrizeIcon from 'Static/icons/prize.svg';
-import { connect } from 'react-redux';
-import { PATHS } from 'Constants';
-import LoadingContainer from 'Components/Loading/render';
-import { Tournament } from 'Utils/types';
-import TournamentCardNew from 'Components/Tournaments/Card/New/render';
 
 
 interface IProps extends RouteComponentProps {
@@ -31,7 +28,6 @@ interface IProps extends RouteComponentProps {
 
 const LandingPage = (props:IProps):JSX.Element => {
     const [tours, setTours] = React.useState<Tournament[]>([]);
-    const [loadingTours, setLoadingTours] = React.useState(true);
     const sports = [{
         name: 'Баскетбол',
         img: BasketballTall,
@@ -69,25 +65,9 @@ const LandingPage = (props:IProps):JSX.Element => {
         unAuthedLink: PATHS.signup,
     }];
     React.useEffect(() => {
-        TournamentModel.loadFeed(0)
-            .then(tours => setTours(tours))
-            .finally(() => setLoadingTours(false));
-        new Glide('.sports .glide', {
-            type: 'carousel',
-            startAt: 0,
-            perView: 4,
-        }).mount();
+        TournamentModel.loadFeed(0).then(tours => setTours(tours));
     }, []);
 
-    React.useEffect(() => {
-        if (!loadingTours) {
-            new Glide('.recent_tours .glide', {
-                type: 'carousel',
-                startAt: 0,
-                perView: 4,
-            }).mount();
-        }
-    }, [loadingTours]);
     return (<>
         <Header {...props}/>
         <section className='first'>
@@ -104,20 +84,12 @@ const LandingPage = (props:IProps):JSX.Element => {
         <section className='sports'>
             <div className='sports__container'>
                 <h2 className='sports__title'>Виды спорта</h2>
-                <div className="glide">
-                    <div className="glide__arrows" data-glide-el="controls">
-                        <img className="glide__arrow glide__arrow--left" data-glide-dir="<" src={Arrow} alt="prev"/>
-                        <img className="glide__arrow glide__arrow--right" data-glide-dir=">" src={Arrow} alt="next"/>
-                    </div>
-                    <div className="glide__track" data-glide-el="track">
-                        <ul className="glide__slides sports__ul">
-                            {sports.map((s, i) => <li key={s.name + i} className='glide_slide sports__li'>
-                                <img src={s.img} alt={s.name} className='sports__li_img'/>
-                                <h2 className='sports__li_text'><span className='sports__li_text_line'>|</span>{s.name}</h2>
-                            </li>)}
-                        </ul>
-                    </div>
-                </div>
+                <Carousel className='sports__glide' options={{ type: 'carousel', startAt: 0, perView: 4 }} withArrows>
+                    {sports.map((s, i) => <li key={i} className='sports__li'>
+                        <img src={s.img} alt={s.name} className='sports__li_img'/>
+                        <h2 className='sports__li_text'><span className='sports__li_text_line'>|</span>{s.name}</h2>
+                    </li>)}
+                </Carousel>
             </div>
         </section>
         <section className='options'>
@@ -142,26 +114,18 @@ const LandingPage = (props:IProps):JSX.Element => {
                 </div>)}
             </div>
         </section>
-        <section className='recent_tours'>
-            <div className='recent_tours__container'>
-                <h2 className='recent_tours__title'>Недавние турниры</h2>
-                <LoadingContainer loading={loadingTours}>
-                    <div className="glide">
-                        <div className="glide__arrows" data-glide-el="controls">
-                            <img className="glide__arrow glide__arrow--left" data-glide-dir="<" src={Arrow} alt="prev"/>
-                            <img className="glide__arrow glide__arrow--right" data-glide-dir=">" src={Arrow} alt="next"/>
-                        </div>
-                        <div className="glide__track" data-glide-el="track">
-                            <ul className="glide__slides">
-                                {tours.map((t,i) => <li key={i} className='glide_slide'>
-                                    <TournamentCardNew tournament={t} {...props}/>
-                                </li>)}
-                            </ul>
-                        </div>
-                    </div>
-                </LoadingContainer>
-            </div>
-        </section>
+        {tours.length > 0 &&
+            <section className='recent_tours'>
+                <div className='recent_tours__container'>
+                    <h2 className='recent_tours__title'>Недавние турниры</h2>
+                    <Carousel className='recent_tours__glide' options={{type: 'carousel', startAt: 0, perView: 4}} withArrows>
+                        {tours.map((t,i) => <li key={i}>
+                            <TournamentCardNew tournament={t} {...props}/>
+                        </li>)}
+                    </Carousel>
+                </div>
+            </section>
+        }
         <Footer/>
     </>);
 };

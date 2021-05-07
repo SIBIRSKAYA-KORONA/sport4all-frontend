@@ -76,7 +76,7 @@
     @extend %container;
   }
 
-  &__ul {
+  & ul {
     padding-top: 20px;
   }
 
@@ -244,7 +244,7 @@
     position: absolute;
     left: -60px;
     right: -60px;
-    top: 115px; // half of card height
+    top: 62px; // half of card height
     display: flex;
     justify-content: space-between;
 
