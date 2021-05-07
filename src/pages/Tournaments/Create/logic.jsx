@@ -18,7 +18,7 @@ class TournamentCreatePage extends React.Component {
      * @param {String} tournamentData.name - Name of the tournament
      * @param {String} [tournamentData.about] - Tournament description
      * @param {String} [tournamentData.sport] - Type of sport
-     * @param {String} [tournamentData.systemType] - Tournament system type
+     * @param {String} [tournamentData.systemType] - Tournament system color
      * @param {String} [tournamentData.location] - Tournament location
      */
     handleSubmit(tournamentData) {

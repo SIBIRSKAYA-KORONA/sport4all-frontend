@@ -77,7 +77,7 @@ const LandingPage = (props:IProps):JSX.Element => {
                 <div className='first__texts_container'>
                     <h1 className='first__texts_title'>SPORT FOR ALL</h1>
                     <p className='first__texts_subtext'>Информация о сервисе.Tellus ligula consectetur feugiat nisi, eget adipiscing facilisis nunc elementum. Quam massa mauris facilisi nibh nunc tellus ut. Mauris enim, scelerisque nam sit lobortis tristique. Quam massa mauris facilisi nibh nunc tellus ut.</p>
-                    <Button type='white' text='Присоединиться' className='first__texts_button'/>
+                    <Button color='white' type='filled' text='Присоединиться' className='first__texts_button'/>
                 </div>
             </div>
         </section>
@@ -109,7 +109,7 @@ const LandingPage = (props:IProps):JSX.Element => {
                     <h2>{w.title}</h2>
                     <p>{w.text}</p>
                     <Link to={props.authed ? w.authedLink : w.unAuthedLink}>
-                        <Button type='purple' text={w.button} className='whom__item_button'/>
+                        <Button color='purple' type='filled' text={w.button} className='whom__item_button'/>
                     </Link>
                 </div>)}
             </div>

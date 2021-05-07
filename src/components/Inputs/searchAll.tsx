@@ -76,7 +76,7 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
         if (result.users.length > 0)
             options.push({ label:'Люди', options:result.users.map(u => renderUser(u)) });
         // if (options.length > 0)
-            // options.push({ label:<Text type='secondary'>Показать все результаты</Text> });
+            // options.push({ label:<Text color='secondary'>Показать все результаты</Text> });
         setOptions(options);
     }, [result]);
 
