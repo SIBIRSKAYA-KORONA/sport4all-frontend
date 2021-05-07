@@ -69,6 +69,13 @@
       right: 20px;
       width: 24px;
       height: 24px;
+      fill: $subtext;
+      cursor: pointer;
+      @include transition(0.3s, ease-in-out);
+
+      &:hover {
+        fill: $white;
+      }
     }
 
     &_container {

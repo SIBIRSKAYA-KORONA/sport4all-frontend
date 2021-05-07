@@ -15,7 +15,8 @@ export interface IProps extends RouteComponentProps {
 
 export type visibleModals = {
     stats: boolean,
-    addTeams: boolean
+    addTeams: boolean,
+    edit: boolean,
 };
 
 export type visibleModalsKey = 'stats' | 'addTeams';

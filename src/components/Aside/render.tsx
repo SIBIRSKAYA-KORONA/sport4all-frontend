@@ -7,9 +7,9 @@ import { PATHS } from 'Constants';
 import { UserType } from 'Store/User/UserState';
 import { IRecentState } from 'Store/Recent/RecentState';
 
-import ShirtIcon from 'Static/icons/shirt.svg';
-import TrophyIcon from 'Static/icons/trophy.svg';
-import TeamworkIcon from 'Static/icons/teamwork.svg';
+import { ReactComponent as ShirtIcon } from 'Static/icons/shirt.svg';
+import { ReactComponent as TrophyIcon } from 'Static/icons/trophy.svg';
+import { ReactComponent as TeamworkIcon } from 'Static/icons/teamwork.svg';
 import { Avatarable } from 'Utils/types';
 import { Avatar } from 'antd';
 import { lettersForAvatar } from 'Utils/utils';
@@ -26,18 +26,18 @@ const Aside = (props:IProps):JSX.Element => (
         {props.user && <>
             <section className='aside__section_personal'>
                 <Link className="aside__link" to={PATHS.profile.nickname(props.user.nickname)}>
-                    <img src={ShirtIcon} alt={ShirtIcon}/>
+                    <ShirtIcon/>
                     <p>Профиль</p>
                 </Link>
             </section>
             <section className='aside__section_create'>
                 <h5 className='aside__title'>Создать</h5>
                 <Link className="aside__link" to={PATHS.tournaments.create}>
-                    <img src={TrophyIcon} alt={TrophyIcon}/>
+                    <TrophyIcon/>
                     <p>Турнир</p>
                 </Link>
                 <Link className="aside__link" to={PATHS.teams.create}>
-                    <img src={TeamworkIcon} alt={TeamworkIcon}/>
+                    <TeamworkIcon/>
                     <p>Команда</p>
                 </Link>
             </section>
