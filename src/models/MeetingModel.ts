@@ -61,6 +61,14 @@ class MeetingModel {
                 return response.json();
             });
     }
+
+    static async getStatsFromPhoto(meeting:Meeting, path:string):Promise<HttpStatusCode | Array<Stats>> {
+        return Network.fetchGet(Network.paths.meetings.recognition(meeting.id, 'fiba', path))
+            .then(response => {
+                if (response.status >= HttpStatusCode.BAD_REQUEST && response.status !== HttpStatusCode.NOT_FOUND) throw HttpStatusCode[response.status];
+                return response.json();
+            });
+    }
 }
 
 export default MeetingModel;

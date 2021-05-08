@@ -42,6 +42,7 @@ export default class Network {
             stats: (mid:number):s => `/meetings/${mid}/stat`,
             addResultsForPlayer: (mid:number, tid:number, pid:number):s => `/meetings/${mid}/teams/${tid}/players/${pid}/stat`,
             playerStats: (mid:number):s => `/meetings/${mid}/players/stats`,
+            recognition: (mid:number, protocol:'fiba', path:string):s => `/meetings/${mid}/players/stats?protocol=${protocol}&path=${path}`,
         },
         profile: {
             nickname: (nickname:string):s => `/profile/${nickname}`,

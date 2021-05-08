@@ -26,6 +26,7 @@ function MeetingEditModal(props: IProps): JSX.Element {
     const [stats, setStats] = useState<Stats[]>(props.stats || []);
     const [meeting, setMeeting] = useState(props.meeting);
     const [loadingPhotos, setLoadingPhotos] = useState(false);
+    const [loadingRecognition, setLoadingRecognition] = useState(false);
     const [savingStats, setSavingStats] = useState(false);
 
     async function uploadPics(fileData:any):Promise<void> {
@@ -66,9 +67,22 @@ function MeetingEditModal(props: IProps): JSX.Element {
         })
     }
 
+    function recognizeProtocol(fileData:any):void {
+        setLoadingRecognition(true);
+        // const formData = new FormData();
+        // formData.append('meetingId', String(props.meeting.id));
+        // formData.append('attach', fileData.file);
+        // await Network.uploadFile(formData);
+        MeetingModel.getStatsFromPhoto(meeting, 'DCm8ED3ZAip3AqP3i4Ddt2GCqRAKJpG9')
+            .then(res => console.log(res))
+            .catch(e => { message.error(e) })
+            .finally(() => setLoadingRecognition(false));
+    }
+
     async function saveStats():Promise<void> {
         setSavingStats(true);
         MeetingModel.addPlayersResultsNew(meeting, stats.filter(s => s.score !== 0))
+        // MeetingModel.addPlayersResultsNew(meeting, [])
             .then((newStats:Stats[]) => { props.saveStats(newStats) })
             .catch(e => { message.error(e.toString()) })
             .finally(() => setSavingStats(false));
@@ -108,11 +122,12 @@ function MeetingEditModal(props: IProps): JSX.Element {
                 <section className='meeting__modal_section-bottom'>
                     <div className='meeting__modal_title'>
                         <h3>Результаты спортсменов</h3>
-                        <Upload
-                            fileList={[]}
-                            showUploadList={false}
-                            customRequest={() => { message.error('Пока не работает') }}
-                        ><Button color='blue' text='РАСПОЗНАТЬ ПРОТОКОЛ' type='link' icon={<ClipIcon/>}/></Upload>
+                        {/*<Upload*/}
+                        {/*    fileList={[]}*/}
+                        {/*    showUploadList={false}*/}
+                        {/*    customRequest={recognizeProtocol}*/}
+                        {/*><Button color='blue' text='РАСПОЗНАТЬ ПРОТОКОЛ' type='link' icon={loadingRecognition ? <Spin/> : <ClipIcon/>}/></Upload>*/}
+                        <Button color='blue' text='РАСПОЗНАТЬ ПРОТОКОЛ' type='link' icon={loadingRecognition ? <Spin/> : <ClipIcon/>} onClick={() => recognizeProtocol(null)}/>
                     </div>
                     <div className='meeting__modal_tables'>
                         <MeetingModalAddScoresTable stats={stats} onChange={changeStats} team={meeting.teams[0]}/>
