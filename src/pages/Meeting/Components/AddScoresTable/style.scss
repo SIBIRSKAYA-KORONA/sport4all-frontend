@@ -1,23 +1,29 @@
 @import '../../../../utils/scss/variables';
 @import '../../../../utils/scss/extends';
 
-.team-scores {
-  width: 100%;
-  padding: 20px;
+.meeting__modal_table {
+  width: 48%;
+  display: flex;
+  flex-flow: column;
+  justify-content: stretch;
+  align-items: center;
   margin-right: 20px;
   background-color: white;
-  margin-top: 20px;
-  @extend %block;
 
   &:last-child {
     margin-right: 0;
   }
 
-  &__team {
+  &s {
+    width: 100%;
     display: flex;
-    flex-flow: row;
+  }
+
+  &_team {
+    display: flex;
     align-items: center;
-    margin-bottom: 12px;
+    justify-content: center;
+    margin-bottom: 14px;
 
     &_img {
       @extend %team_avatar;
@@ -31,7 +37,7 @@
     }
   }
 
-  &__table {
+  &_table {
     width: 100%;
 
     & thead {
@@ -43,9 +49,10 @@
 
       & th {
         font-weight: 400;
-        color: #AFAFAF;
+        color: $black;
 
         &:first-child {
+          color: #AFAFAF;
           width: 95%;
         }
 
@@ -53,10 +60,6 @@
           min-width: 5%;
         }
       }
-    }
-
-    & tbody {
-
     }
   }
 

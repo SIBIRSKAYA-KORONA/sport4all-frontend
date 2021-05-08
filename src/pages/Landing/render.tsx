@@ -5,7 +5,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { PATHS } from 'Constants';
 import { Tournament } from 'Utils/types';
-import Carousel from 'Components/Carousel/render';
+import CarouselInner from 'Components/Carousel/render';
 import TournamentModel from 'Models/TournamentModel';
 import TournamentCardNew from 'Components/Tournaments/Card/New/render';
 
@@ -84,12 +84,12 @@ const LandingPage = (props:IProps):JSX.Element => {
         <section className='sports'>
             <div className='sports__container'>
                 <h2 className='sports__title'>Виды спорта</h2>
-                <Carousel className='sports__glide' options={{ type: 'carousel', startAt: 0, perView: 4 }} withArrows>
+                <CarouselInner className='sports__glide' options={{ type: 'carousel', startAt: 0, perView: 4 }} withArrows>
                     {sports.map((s, i) => <li key={i} className='sports__li'>
                         <img src={s.img} alt={s.name} className='sports__li_img'/>
                         <h2 className='sports__li_text'><span className='sports__li_text_line'>|</span>{s.name}</h2>
                     </li>)}
-                </Carousel>
+                </CarouselInner>
             </div>
         </section>
         <section className='options'>
@@ -118,7 +118,7 @@ const LandingPage = (props:IProps):JSX.Element => {
             <section className='recent_tours'>
                 <div className='recent_tours__container'>
                     <h2 className='recent_tours__title'>Недавние турниры</h2>
-                    <Carousel
+                    <CarouselInner
                         className='recent_tours__glide'
                         options={{ type: 'carousel', perView: 4 }}
                         withArrows
@@ -130,7 +130,7 @@ const LandingPage = (props:IProps):JSX.Element => {
                         {tours.map((t,i) => <li key={i}>
                             <TournamentCardNew tournament={t} {...props}/>
                         </li>)}
-                    </Carousel>
+                    </CarouselInner>
                 </div>
             </section>
         }

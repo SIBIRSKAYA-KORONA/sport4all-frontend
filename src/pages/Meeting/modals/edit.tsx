@@ -1,17 +1,17 @@
 import './style.scss';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Button as AButton, message, Modal, Spin, Upload } from 'antd';
-import { Meeting } from 'Utils/types';
+import { EventStatus, Meeting } from 'Utils/types';
 import HttpStatusCode from 'Utils/httpErrors';
 import MeetingModel from 'Models/MeetingModel';
 import MeetingSteps from 'Components/Meeting/Steps/render';
 
 import { ReactComponent as ClipIcon } from 'Static/icons/clip.svg';
 import Button from 'Components/Button/render';
-import Carousel from 'Components/Carousel/render';
 import Network from 'Core/network';
 import MeetingPics from 'Pages/Meeting/Components/Pics/render';
+import MeetingModalAddScoresTable from 'Pages/Meeting/Components/AddScoresTable/render';
 
 
 type IProps = {
@@ -36,7 +36,7 @@ function MeetingEditModal(props: IProps): JSX.Element {
     async function changeStatus():Promise<void> {
         if (!confirm('Вы подтверждаете изменение статуса встречи?\nВернуть его обратно будет невозможно')) return;
         await MeetingModel.changeStatus(meeting.id, meeting.status + 1)
-            .then(() => { this.parseMeeting(); })
+            .then(() => { setMeeting(prev => ({ ...prev, status:meeting.status+1 })) })
             .catch(e => {
                 const error = e as HttpStatusCode;
                 let errorText = 'Ошибка';
@@ -55,14 +55,14 @@ function MeetingEditModal(props: IProps): JSX.Element {
             onCancel={() => props.onClose(meeting)}
             width={900}
             footer={[
-                <AButton key="success" onClick={() => props.onClose(meeting)}>Готово</AButton>,
+                <Button key='success' color='blue' type='filled' text='Готово' onClick={() => props.onClose(meeting)}/>,
             ]}
         >
             <section className='meeting__modal_section-top'>
                 <div className='meeting__modal_status'>
                     <h3>Состояние встречи</h3>
                     <MeetingSteps current={meeting.status} />
-                    <AButton type='primary' onClick={changeStatus}>Следующий этап</AButton>
+                    <Button color='blue' text='Следующий этап' type='filled' onClick={changeStatus} />
                 </div>
                 <div className='meeting__modal_pics'>
                     <div className='meeting__modal_title'>
@@ -74,10 +74,25 @@ function MeetingEditModal(props: IProps): JSX.Element {
                             customRequest={uploadPics}
                         ><Button color='blue' text='ДОБАВИТЬ ФОТО' type='link' icon={loadingPhotos ? <Spin/> : <ClipIcon/>}/></Upload>
                     </div>
-                    <MeetingPics perView={3} attaches={meeting.attachments} carouselClass='meeting__modal_pics_glide'/>
+                    <MeetingPics perView={3} attaches={meeting.attachments || []} carouselClass='meeting__modal_pics_glide'/>
                 </div>
             </section>
-            <section className='meeting__modal_section-bottom'></section>
+            {props.meeting.status === EventStatus.InProgressEvent &&
+                <section className='meeting__modal_section-bottom'>
+                    <div className='meeting__modal_title'>
+                        <h3>Результаты спортсменов</h3>
+                        <Upload
+                            fileList={[]}
+                            showUploadList={false}
+                            customRequest={() => { message.error('Пока не работает') }}
+                        ><Button color='blue' text='РАСПОЗНАТЬ ПРОТОКОЛ' type='link' icon={<ClipIcon/>}/></Upload>
+                    </div>
+                    <div className='meeting__modal_tables'>
+                        <MeetingModalAddScoresTable team={props.meeting.teams[0]}/>
+                        <MeetingModalAddScoresTable team={props.meeting.teams[1]}/>
+                    </div>
+                </section>
+            }
         </Modal>
     )
 }

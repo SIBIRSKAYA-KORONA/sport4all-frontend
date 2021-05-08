@@ -10,6 +10,7 @@
   }
 
   &_section-bottom {
+    margin-top: 30px;
     width: 100%;
   }
 
@@ -19,6 +20,7 @@
 
   & h3 {
     @extend %h3_bold;
+    margin-bottom: 30px;
   }
 
   &_title {
@@ -34,7 +36,7 @@
     width: 60%;
 
     &_glide {
-      height: 200px;
+      height: 150px;
       padding: 0 20px;
 
       &.empty {
@@ -42,14 +44,10 @@
         display: flex;
         overflow: auto;
         height: 150px;
-
-        & img {
-          height: 100%;
-          object-fit: cover;
-        }
       }
 
-      & img {
+      & li img {
+        height: 150px;
         width: 100%;
         object-fit: cover;
       }

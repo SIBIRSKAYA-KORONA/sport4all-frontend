@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { IAvatar } from 'Utils/types';
-import Carousel from 'Components/Carousel/render';
+import Carousel from 'Components/Carousel/wrapper';
 
 
 interface IProps {
-    attaches: IAvatar[] | null,
+    attaches: IAvatar[],
     perView: number,
     carouselClass: string,
     imgClass?: string,
@@ -12,9 +12,9 @@ interface IProps {
 
 function MeetingPics(props: IProps): JSX.Element {
     return (
-        props.attaches?.length >= props.perView
+        props.attaches.length >= props.perView
             ? <Carousel className={props.carouselClass} options={{ type:'carousel', perView:props.perView }} withArrows arrowStyle={{ offset:-15 }}>
-                {props.attaches?.map((a, i) => (
+                {props.attaches.map((a, i) => (
                     <li key={i}>
                         <img src={a.url} alt={a.filename} className={props.imgClass || ''}/>
                     </li>

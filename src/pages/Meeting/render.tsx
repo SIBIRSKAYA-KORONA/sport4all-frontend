@@ -7,7 +7,7 @@ import { PATHS } from 'Constants';
 import { EventStatus, Meeting, Stats } from 'Utils/types';
 import { meetingResult } from 'Utils/structUtils';
 import BasePage from 'Components/BasePage/render';
-import Carousel from 'Components/Carousel/render';
+import CarouselInner from 'Components/Carousel/render';
 import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
 import MeetingResult from 'Pages/Meeting/Components/Result/render';
 import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
@@ -89,7 +89,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
             {props.meeting?.attachments?.length > 0 &&
                 <section className='meeting__pics'>
                     <h3 className='meeting__pics_title'>Галерея</h3>
-                    <MeetingPics attaches={props.meeting.attachments} perView={4} imgClass='meeting__pics_pic' carouselClass='meeting__pics_glide'/>
+                    <MeetingPics attaches={props.meeting.attachments || []} perView={4} imgClass='meeting__pics_pic' carouselClass='meeting__pics_glide'/>
                 </section>
             }
         </>}</BasePage>

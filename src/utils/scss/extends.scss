@@ -31,3 +31,18 @@
   color: $purple;
   line-height: 16px;
 }
+
+// FOR TEAMS
+%team_avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: $white;
+  background-color: $blue-light;
+}
+
+%team_title {
+  font-size: 12px;
+  font-weight: 500;
+  color: $blue;
+}
