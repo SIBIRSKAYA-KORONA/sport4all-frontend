@@ -1,6 +1,5 @@
 @import "../../utils/scss/variables";
 @import "../../utils/scss/extends";
-@import '../Inputs/style';
 
 .footer {
   width: 100%;
@@ -70,7 +69,7 @@
   }
 
   &__input {
-    @extend .input;
+    @extend %input;
     background-color: transparent;
     border: 0.5px solid grey;
     color: white;

@@ -40,7 +40,8 @@ export default class Network {
             addTeam: (id:number, tid:number):s => `/meetings/${id}/teams/${tid}`,
             addResultsForTeam: (mid:number, tid:number):s => `/meetings/${mid}/teams/${tid}/stat`,
             stats: (mid:number):s => `/meetings/${mid}/stat`,
-            addResultsForPlayer: (mid:number, tid:number, pid:number):s => `/meetings/${mid}/teams/${tid}/players/${pid}/stat`
+            addResultsForPlayer: (mid:number, tid:number, pid:number):s => `/meetings/${mid}/teams/${tid}/players/${pid}/stat`,
+            playerStats: (mid:number):s => `/meetings/${mid}/players/stats`,
         },
         profile: {
             nickname: (nickname:string):s => `/profile/${nickname}`,

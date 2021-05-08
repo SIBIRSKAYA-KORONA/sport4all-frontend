@@ -5,8 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { message } from 'antd';
 
 import UserModel from 'Models/UserModel';
-import { Meeting, Stats, Tournament, User } from 'Utils/types';
-import HttpStatusCode from 'Utils/httpErrors';
+import { Meeting, Stats, Team, Tournament, User } from 'Utils/types';
 import MeetingModel from 'Models/MeetingModel';
 import TournamentModel from 'Models/TournamentModel';
 import { UserType } from 'Store/User/UserState';
@@ -69,7 +68,7 @@ class MeetingPage extends React.Component<IProps, IState> {
                 .finally(() => { this.setState(prev => ({ ...prev, loadingMeeting:false }) ); });
         }
         MeetingModel.getStats(this.props.match.params[URL_PARAMS.meeting.id])
-            .then(stats => { this.setState(prev => ({ ...prev, stats:stats as Array<Stats> })); })
+            .then((stats:Stats[]) => { this.saveStats(stats) })
             .catch(e => { if (e !== 404) message.error(e); });
     }
 
@@ -83,8 +82,13 @@ class MeetingPage extends React.Component<IProps, IState> {
             .then(() => { this.parseMeeting(); });
     }
 
+    saveStats(stats:Stats[]):void {
+        this.setState(prev => ({...prev, stats: stats}));
+    }
+
     render(): JSX.Element {
         return (<MeetingPageRender {...this.props} {...this.state}
+            saveStats={this.saveStats.bind(this)}
             reload={this.parseMeeting.bind(this)}
             handlePointsSave={this.handlePointsSave.bind(this)}
             handleTeamsAdd={this.handleTeamsAdd.bind(this)}

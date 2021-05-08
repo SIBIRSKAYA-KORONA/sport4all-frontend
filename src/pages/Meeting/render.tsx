@@ -7,7 +7,6 @@ import { PATHS } from 'Constants';
 import { EventStatus, Meeting, Stats } from 'Utils/types';
 import { meetingResult } from 'Utils/structUtils';
 import BasePage from 'Components/BasePage/render';
-import CarouselInner from 'Components/Carousel/render';
 import AddTeamsModal from 'Pages/Meeting/modals/addTeams';
 import MeetingResult from 'Pages/Meeting/Components/Result/render';
 import MeetingStatusTag from 'Components/Meeting/StatusTag/render';
@@ -58,6 +57,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                                 props.reload(meeting);
                                 handleOk('edit');
                             }}
+                            saveStats={props.saveStats}
                         />
                     </>}
                     <div className="meeting__header_container">

@@ -1,28 +1,33 @@
 import './style.scss';
 import React, { useState } from 'react';
+import { message, Modal, Spin, Upload } from 'antd';
 
-import { Button as AButton, message, Modal, Spin, Upload } from 'antd';
-import { EventStatus, Meeting } from 'Utils/types';
+import Network from 'Core/network';
 import HttpStatusCode from 'Utils/httpErrors';
+import Button from 'Components/Button/render';
 import MeetingModel from 'Models/MeetingModel';
 import MeetingSteps from 'Components/Meeting/Steps/render';
+import MeetingPics from 'Pages/Meeting/Components/Pics/render';
+import { EventStatus, Meeting, Stats, Team, User } from 'Utils/types';
+import MeetingModalAddScoresTable from 'Pages/Meeting/Components/AddScoresTable/render';
 
 import { ReactComponent as ClipIcon } from 'Static/icons/clip.svg';
-import Button from 'Components/Button/render';
-import Network from 'Core/network';
-import MeetingPics from 'Pages/Meeting/Components/Pics/render';
-import MeetingModalAddScoresTable from 'Pages/Meeting/Components/AddScoresTable/render';
 
 
 type IProps = {
     meeting: Meeting,
     visible: boolean,
     onClose: (meeting:Meeting) => void,
+    saveStats: (stats:Stats[]) => void,
+    stats?: Stats[],
 }
 
 function MeetingEditModal(props: IProps): JSX.Element {
+    const [stats, setStats] = useState<Stats[]>(props.stats || []);
     const [meeting, setMeeting] = useState(props.meeting);
     const [loadingPhotos, setLoadingPhotos] = useState(false);
+    const [savingStats, setSavingStats] = useState(false);
+
     async function uploadPics(fileData:any):Promise<void> {
         setLoadingPhotos(true);
         const formData = new FormData();
@@ -45,6 +50,28 @@ function MeetingEditModal(props: IProps): JSX.Element {
                 }
                 message.error(errorText);
             });
+    }
+
+    function changeStats(value:number, player:User, team:Team) {
+        value = +value || null;
+        setStats(prev => {
+            prev = prev.filter(s => s.playerId !== player.id && s.teamId !== team.id);
+            prev.push({
+                meetingId   :meeting.id,
+                score       :value,
+                playerId    :player.id,
+                teamId      :team.id,
+            });
+            return prev;
+        })
+    }
+
+    async function saveStats():Promise<void> {
+        setSavingStats(true);
+        MeetingModel.addPlayersResultsNew(meeting, stats.filter(s => s.score !== 0))
+            .then((newStats:Stats[]) => { props.saveStats(newStats) })
+            .catch(e => { message.error(e.toString()) })
+            .finally(() => setSavingStats(false));
     }
 
     return (
@@ -77,7 +104,7 @@ function MeetingEditModal(props: IProps): JSX.Element {
                     <MeetingPics perView={3} attaches={meeting.attachments || []} carouselClass='meeting__modal_pics_glide'/>
                 </div>
             </section>
-            {props.meeting.status === EventStatus.InProgressEvent &&
+            {meeting.status === EventStatus.InProgressEvent &&
                 <section className='meeting__modal_section-bottom'>
                     <div className='meeting__modal_title'>
                         <h3>Результаты спортсменов</h3>
@@ -88,9 +115,10 @@ function MeetingEditModal(props: IProps): JSX.Element {
                         ><Button color='blue' text='РАСПОЗНАТЬ ПРОТОКОЛ' type='link' icon={<ClipIcon/>}/></Upload>
                     </div>
                     <div className='meeting__modal_tables'>
-                        <MeetingModalAddScoresTable team={props.meeting.teams[0]}/>
-                        <MeetingModalAddScoresTable team={props.meeting.teams[1]}/>
+                        <MeetingModalAddScoresTable stats={stats} onChange={changeStats} team={meeting.teams[0]}/>
+                        <MeetingModalAddScoresTable stats={stats} onChange={changeStats} team={meeting.teams[1]}/>
                     </div>
+                    <Button color='blue' type='filled' text='Сохранить результаты' onClick={saveStats} icon={savingStats && <Spin/>}/>
                 </section>
             }
         </Modal>

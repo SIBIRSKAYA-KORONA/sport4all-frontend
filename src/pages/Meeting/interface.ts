@@ -10,6 +10,7 @@ export interface IProps extends RouteComponentProps {
     canEdit: boolean,
     reload: (meeting?:Meeting) => void,
     tournament?: Tournament,
+    saveStats: (stats:Stats[]) => void,
 }
 
 export type visibleModals = {
