@@ -193,11 +193,11 @@ class TournamentGrid extends React.Component {
 
         if (rawMatch.status === EventStatus.FinishedEvent) {
             const scores = {};
-            scores[rawMatch.stats[0].teamId] = rawMatch.stats[0].score;
-            scores[rawMatch.stats[1].teamId] = rawMatch.stats[1].score;
+            scores[rawMatch?.stats?.[0]?.teamId] = rawMatch.stats?.[0]?.score;
+            scores[rawMatch?.stats?.[1]?.teamId] = rawMatch.stats?.[1]?.score;
 
-            parsedMatch.opponent1.score = scores[parsedMatch.opponent1.id];
-            parsedMatch.opponent2.score = scores[parsedMatch.opponent2.id];
+            parsedMatch.opponent1.score = scores?.[parsedMatch.opponent1.id];
+            parsedMatch.opponent2.score = scores?.[parsedMatch.opponent2.id];
             if (parsedMatch.opponent1.score > parsedMatch.opponent2.score) {
                 parsedMatch.opponent1.result = 'win';
                 parsedMatch.opponent2.result = 'loss';
