@@ -108,7 +108,7 @@ function MeetingEditModal(props: IProps): JSX.Element {
 
     async function saveStats():Promise<void> {
         setSavingStats(true);
-        MeetingModel.addPlayersResultsNew(meeting, stats.filter(s => s.score !== 0))
+        MeetingModel.addPlayersResultsNew(meeting, stats.filter(s => s.score !== 0 && s.playerId !== 0))
             .then((newStats:Stats[]) => { props.saveStats(newStats) })
             .catch(e => { message.error(e.toString()) })
             .finally(() => setSavingStats(false));
