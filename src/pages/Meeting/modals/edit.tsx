@@ -74,7 +74,7 @@ function MeetingEditModal(props: IProps): JSX.Element {
         // formData.append('attach', fileData.file);
         // await Network.uploadFile(formData);
         MeetingModel.getStatsFromPhoto(meeting, 'DCm8ED3ZAip3AqP3i4Ddt2GCqRAKJpG9')
-            .then(res => console.log(res))
+            .then((stats:Stats[]) => setStats(stats))
             .catch(e => { message.error(e) })
             .finally(() => setLoadingRecognition(false));
     }
@@ -82,7 +82,6 @@ function MeetingEditModal(props: IProps): JSX.Element {
     async function saveStats():Promise<void> {
         setSavingStats(true);
         MeetingModel.addPlayersResultsNew(meeting, stats.filter(s => s.score !== 0))
-        // MeetingModel.addPlayersResultsNew(meeting, [])
             .then((newStats:Stats[]) => { props.saveStats(newStats) })
             .catch(e => { message.error(e.toString()) })
             .finally(() => setSavingStats(false));
