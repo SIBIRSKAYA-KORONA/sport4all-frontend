@@ -11,14 +11,14 @@ import TournamentsFeedRow from 'Components/Tournaments/Feed/render';
 const FeedPage = (props: RouteComponentProps):JSX.Element => {
     const [tournaments, setTournaments] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
-    const load = (offset = 10) => {
-        TournamentModel.loadFeed(tournaments.length + offset)
+    const load = () => {
+        TournamentModel.loadFeed(tournaments.length)
             .then(ts => setTournaments(prev => prev.concat(ts)))
             .catch(e => message.error(e))
             .finally(() => setLoading(false));
     };
 
-    React.useEffect(() => { load(0) }, []);
+    React.useEffect(() => { load() }, []);
 
     return (
         <BasePage {...props}>
