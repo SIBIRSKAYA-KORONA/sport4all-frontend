@@ -24,6 +24,10 @@ export function meetingResult(stats: Array<Stats> | null, teams: Array<Team>): M
     return result;
 }
 
+export function teamScore(stats: Stats[], team:Team): number {
+    return stats.reduce((total, stat) => stat.teamId === team.id ? total + stat.score : total, 0);
+}
+
 type initStats = {
     [id:number]: number
 }

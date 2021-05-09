@@ -12,6 +12,7 @@ import { EventStatus, Meeting, Stats, Team, User } from 'Utils/types';
 import MeetingModalAddScoresTable from 'Pages/Meeting/Components/AddScoresTable/render';
 
 import { ReactComponent as ClipIcon } from 'Static/icons/clip.svg';
+import { meetingResult, teamScore } from 'Utils/structUtils';
 
 
 type IProps = {
@@ -129,6 +130,7 @@ function MeetingEditModal(props: IProps): JSX.Element {
                         <Button color='blue' text='РАСПОЗНАТЬ ПРОТОКОЛ' type='link' icon={loadingRecognition ? <Spin/> : <ClipIcon/>} onClick={() => recognizeProtocol(null)}/>
                     </div>
                     <div className='meeting__modal_tables'>
+                        <span className='meeting__modal_table_score'>{teamScore(stats, meeting.teams[0])}:{teamScore(stats, meeting.teams[1])}</span>
                         <MeetingModalAddScoresTable stats={stats} onChange={changeStats} team={meeting.teams[0]}/>
                         <MeetingModalAddScoresTable stats={stats} onChange={changeStats} team={meeting.teams[1]}/>
                     </div>
