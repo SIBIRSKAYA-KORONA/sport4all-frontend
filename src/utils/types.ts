@@ -131,3 +131,10 @@ export interface MeetingResult {
     left: number,
     right: number,
 }
+
+export interface AWSFile {
+    filename: string,
+    id: number,
+    key: string,
+    url: string,
+}

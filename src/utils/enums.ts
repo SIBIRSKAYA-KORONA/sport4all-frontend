@@ -61,3 +61,9 @@ export enum Notifications {
     tournamentIndirectInviteCreated = 'tournament_indirect_invite_created',
     tournamentIndirectInviteUpdated = 'tournament_indirect_invite_updated',
 }
+
+export enum BasketballProtocols {
+    fiba = 'fiba',
+    classic = 'classic',
+    // custom = 'custom',
+}

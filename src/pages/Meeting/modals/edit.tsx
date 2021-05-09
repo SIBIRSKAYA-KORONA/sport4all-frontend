@@ -8,11 +8,13 @@ import Button from 'Components/Button/render';
 import MeetingModel from 'Models/MeetingModel';
 import MeetingSteps from 'Components/Meeting/Steps/render';
 import MeetingPics from 'Pages/Meeting/Components/Pics/render';
-import { EventStatus, Meeting, Stats, Team, User } from 'Utils/types';
+import { AWSFile, EventStatus, Meeting, Stats, Team, User } from 'Utils/types';
 import MeetingModalAddScoresTable from 'Pages/Meeting/Components/AddScoresTable/render';
 
 import { ReactComponent as ClipIcon } from 'Static/icons/clip.svg';
-import { meetingResult, teamScore } from 'Utils/structUtils';
+import { teamScore } from 'Utils/structUtils';
+import ChooseProtocolModal from 'Pages/Meeting/modals/chooseProtocol';
+import { BasketballProtocols } from 'Utils/enums';
 
 
 type IProps = {
@@ -29,6 +31,11 @@ function MeetingEditModal(props: IProps): JSX.Element {
     const [loadingPhotos, setLoadingPhotos] = useState(false);
     const [loadingRecognition, setLoadingRecognition] = useState(false);
     const [savingStats, setSavingStats] = useState(false);
+
+    // For protocol
+    const [protocolModalVisible, setProtocolModalVisible] = useState(false);
+    const [photo, setPhoto] = useState<AWSFile|null>(null);
+    const [protocol, setProtocol] = useState(BasketballProtocols.fiba);
 
     async function uploadPics(fileData:any):Promise<void> {
         setLoadingPhotos(true);
@@ -68,18 +75,35 @@ function MeetingEditModal(props: IProps): JSX.Element {
         })
     }
 
-    async function recognizeProtocol(fileData:any):Promise<void> {
+    async function startRecognition(fileData:any):Promise<void> {
         setLoadingRecognition(true);
         const formData = new FormData();
         formData.append('meetingProtocolId', String(props.meeting.id));
         formData.append('attach', fileData.file);
         Network.uploadFile(formData)
-            .then(res => res.json())
-            .then(aws => MeetingModel.getStatsFromPhoto(meeting, aws.key))
+            .then(aws => {
+                setPhoto(aws);
+                setProtocolModalVisible(true);
+            });
+    }
+
+    function finishRecognition() {
+        setProtocolModalVisible(false);
+        MeetingModel.getStatsFromPhoto(meeting, protocol, photo.key)
             .then((stats:Stats[]) => setStats(stats))
             .then(() => { message.success('Протокол распознан успешно') })
             .catch(e => { message.error(e) })
             .finally(() => setLoadingRecognition(false));
+    }
+
+    function cancelRecognition() {
+        setProtocolModalVisible(false);
+        Network.deleteFile(photo.key)
+            .then(() => { setPhoto(null); })
+            .finally(() => {
+                message.warn('Распознавание отменено');
+                setLoadingRecognition(false);
+            });
     }
 
     async function saveStats():Promise<void> {
@@ -127,8 +151,16 @@ function MeetingEditModal(props: IProps): JSX.Element {
                         <Upload
                             fileList={[]}
                             showUploadList={false}
-                            customRequest={recognizeProtocol}
-                        ><Button color='blue' text='РАСПОЗНАТЬ ПРОТОКОЛ' type='link' icon={loadingRecognition ? <Spin/> : <ClipIcon/>}/></Upload>
+                            customRequest={startRecognition}
+                        ><Button color='blue' text={loadingRecognition ? 'секундочку...' : 'РАСПОЗНАТЬ ПРОТОКОЛ'} type='link' icon={loadingRecognition ? <Spin/> : <ClipIcon/>}/></Upload>
+                        <ChooseProtocolModal
+                            protocol={protocol}
+                            photo={photo}
+                            onClose={finishRecognition}
+                            onCancel={cancelRecognition}
+                            onChange={p => setProtocol(p)}
+                            visible={protocolModalVisible}
+                        />
                     </div>
                     <div className='meeting__modal_tables'>
                         <span className='meeting__modal_table_score'>{teamScore(stats, meeting.teams[0])}:{teamScore(stats, meeting.teams[1])}</span>
