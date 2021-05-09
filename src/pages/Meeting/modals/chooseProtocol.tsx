@@ -23,6 +23,7 @@ function ChooseProtocolModal(props: IProps): JSX.Element {
             visible={props.visible}
             onCancel={props.onCancel}
             width={900}
+            centered
             footer={[
                 <Button key="back" color='blue' text='Готово' type='filled' onClick={() => props.onClose()}/>,
             ]}

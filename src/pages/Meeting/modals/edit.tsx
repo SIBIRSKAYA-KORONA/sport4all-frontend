@@ -121,6 +121,7 @@ function MeetingEditModal(props: IProps): JSX.Element {
             className='meeting__modal'
             onCancel={() => props.onClose(meeting)}
             width={900}
+            centered
             footer={[
                 <Button key='success' color='blue' type='filled' text='Готово' onClick={() => props.onClose(meeting)}/>,
             ]}
