@@ -17,7 +17,7 @@ function MeetingModalAddScoresTable(props: IProps): JSX.Element {
     return (
         <div className='meeting__modal_table'>
             <div className='meeting__modal_table_team'>
-                <Avatar src={props.team.avatar} className='meeting__modal_table_team_img'>{lettersForAvatar(props.team.name)}</Avatar>
+                <Avatar src={props.team.avatar.url} className='meeting__modal_table_team_img'>{lettersForAvatar(props.team.name)}</Avatar>
                 <span className='meeting__modal_table_team_title'>{props.team.name}</span>
             </div>
             <table className='meeting__modal_table_table'>

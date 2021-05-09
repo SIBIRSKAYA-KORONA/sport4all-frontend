@@ -18,7 +18,7 @@ function TeamScores(props: IProps): JSX.Element {
     return (
         <div className='team-scores'>
             <div className='team-scores__team'>
-                <Link to={PATHS.teams.id(props.team.id)}><Avatar src={props.team.avatar} className='team-scores__team_img'>{lettersForAvatar(props.team.name)}</Avatar></Link>
+                <Link to={PATHS.teams.id(props.team.id)}><Avatar src={props.team.avatar.url} className='team-scores__team_img'>{lettersForAvatar(props.team.name)}</Avatar></Link>
                 <Link to={PATHS.teams.id(props.team.id)} className='team-scores__team_title'>{props.team.name}</Link>
             </div>
             <table className='team-scores__table'>
