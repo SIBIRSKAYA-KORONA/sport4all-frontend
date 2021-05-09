@@ -68,14 +68,16 @@ function MeetingEditModal(props: IProps): JSX.Element {
         })
     }
 
-    function recognizeProtocol(fileData:any):void {
+    async function recognizeProtocol(fileData:any):Promise<void> {
         setLoadingRecognition(true);
-        // const formData = new FormData();
-        // formData.append('meetingId', String(props.meeting.id));
-        // formData.append('attach', fileData.file);
-        // await Network.uploadFile(formData);
-        MeetingModel.getStatsFromPhoto(meeting, 'DCm8ED3ZAip3AqP3i4Ddt2GCqRAKJpG9')
+        const formData = new FormData();
+        formData.append('meetingProtocolId', String(props.meeting.id));
+        formData.append('attach', fileData.file);
+        Network.uploadFile(formData)
+            .then(res => res.json())
+            .then(aws => MeetingModel.getStatsFromPhoto(meeting, aws.key))
             .then((stats:Stats[]) => setStats(stats))
+            .then(() => { message.success('Протокол распознан успешно') })
             .catch(e => { message.error(e) })
             .finally(() => setLoadingRecognition(false));
     }
@@ -122,12 +124,11 @@ function MeetingEditModal(props: IProps): JSX.Element {
                 <section className='meeting__modal_section-bottom'>
                     <div className='meeting__modal_title'>
                         <h3>Результаты спортсменов</h3>
-                        {/*<Upload*/}
-                        {/*    fileList={[]}*/}
-                        {/*    showUploadList={false}*/}
-                        {/*    customRequest={recognizeProtocol}*/}
-                        {/*><Button color='blue' text='РАСПОЗНАТЬ ПРОТОКОЛ' type='link' icon={loadingRecognition ? <Spin/> : <ClipIcon/>}/></Upload>*/}
-                        <Button color='blue' text='РАСПОЗНАТЬ ПРОТОКОЛ' type='link' icon={loadingRecognition ? <Spin/> : <ClipIcon/>} onClick={() => recognizeProtocol(null)}/>
+                        <Upload
+                            fileList={[]}
+                            showUploadList={false}
+                            customRequest={recognizeProtocol}
+                        ><Button color='blue' text='РАСПОЗНАТЬ ПРОТОКОЛ' type='link' icon={loadingRecognition ? <Spin/> : <ClipIcon/>}/></Upload>
                     </div>
                     <div className='meeting__modal_tables'>
                         <span className='meeting__modal_table_score'>{teamScore(stats, meeting.teams[0])}:{teamScore(stats, meeting.teams[1])}</span>
