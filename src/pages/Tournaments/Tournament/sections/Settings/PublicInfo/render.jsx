@@ -28,7 +28,7 @@ function PublicInfoRender(props) {
                     <PublicInfoFormItemsRender/>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" disabled={ props.tournamentData.status !== TournamentStatus.NotStarted }>
                             Сохранить
                         </Button>
                     </Form.Item>
