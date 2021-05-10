@@ -39,6 +39,13 @@ export enum InviteStatus {
     Accepted
 }
 
+export enum TournamentStatus {
+    NotStarted = 1,
+    Registration,
+    Ongoing,
+    Ended
+}
+
 export enum TeamPlayerRoles {
     owner = 'owner',
     player = 'player'
@@ -60,4 +67,10 @@ export enum Notifications {
     tournamentDirectInviteUpdated = 'tournament_direct_invite_updated',
     tournamentIndirectInviteCreated = 'tournament_indirect_invite_created',
     tournamentIndirectInviteUpdated = 'tournament_indirect_invite_updated',
+}
+
+export enum SearchEntities {
+    Team = 'team',
+    Tournament = 'tournament',
+    User = 'user',
 }
