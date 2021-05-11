@@ -67,6 +67,9 @@ export enum Notifications {
     tournamentDirectInviteUpdated = 'tournament_direct_invite_updated',
     tournamentIndirectInviteCreated = 'tournament_indirect_invite_created',
     tournamentIndirectInviteUpdated = 'tournament_indirect_invite_updated',
+
+    skillWasApproved = 'skill_approved'
+
 }
 
 export enum SearchEntities {

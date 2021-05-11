@@ -64,7 +64,7 @@ export default class Network {
             teams: '/invites/teams',
             forTournaments: (tid:number, type:InviteStatus):s => `/invites/tournaments/${tid}?state=${getInviteState(type)}`,
         },
-        search: (entities: SearchEntities[], text: s, limit: number, offset: number) => `/search?entities=${entities.join('|')}&text=${text}&limit${limit}&offset=${offset}`
+        search: (entities: SearchEntities[], text: s, limit: number, offset: number) => `/search?entities=${entities.join('|')}&text=${text}&limit=${limit}&offset=${offset}`
     };
 
     static async fetchGet(path:s):Promise<Response> {
