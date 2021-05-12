@@ -65,7 +65,7 @@ function MeetingEditModal(props: IProps): JSX.Element {
     function changeStats(value:number, player:User, team:Team) {
         value = +value || null;
         setStats(prev => {
-            prev = prev.filter(s => s.playerId !== player.id && s.teamId !== team.id);
+            prev = prev.filter(s => s.playerId !== player.id);
             prev.push({
                 meetingId   :meeting.id,
                 score       :value,
