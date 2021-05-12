@@ -4,6 +4,10 @@
 .button {
   height: 38px;
   padding: 4px 15px;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 600;
@@ -13,25 +17,125 @@
   touch-action: manipulation;
   cursor: pointer;
   border: none;
+  background-color: transparent;
   @include transition(0.3s, ease-in-out);
 
-  &__white {
-    @extend .button;
-    background-color: white;
-    color: $purple;
+  &__icon {
+    width: 15px;
+    object-fit: cover;
+    margin-right: 7px;
+  }
 
-    &:hover {
-      color: $purple-dark;
+  &__text {
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  &_filled {
+    @extend .button;
+
+    &.button_white {
+      background-color: white;
+      color: $purple;
+
+      &:hover {
+        color: $purple-dark;
+      }
+
+      & .button__icon {
+        fill: $purple;
+
+        &:hover {
+          fill: $purple-dark;
+        }
+      }
+    }
+
+    &.button_purple {
+      background: $purple;
+      color: $white;
+
+      &:hover {
+        color: $light-gray;
+      }
+
+      & .button__icon {
+        fill: $white;
+
+        &:hover {
+          fill: $light-gray;
+        }
+      }
+    }
+
+    &.button_blue {
+      background: $blue-light;
+      color: $white;
+
+      &:hover {
+        color: $light-gray;
+      }
+
+      & .button__icon {
+        fill: $white;
+
+        &:hover {
+          fill: $light-gray;
+        }
+      }
     }
   }
 
-  &__purple {
+  // Button link style
+  &_link {
     @extend .button;
-    background: $purple;
-    color: white;
-  }
 
-  &__secondary {
-    @extend .button;
+    &.button_white {
+      color: $white;
+
+      &:hover {
+        color: $blue-light;
+      }
+
+      & .button__icon {
+        fill: $white;
+
+        &:hover {
+          fill: $light-gray;
+        }
+      }
+    }
+
+    &.button_purple {
+      color: $purple;
+
+      &:hover {
+        color: $black;
+      }
+
+      & .button__icon {
+        fill: $purple;
+
+        &:hover {
+          fill: $black;
+        }
+      }
+    }
+
+    &.button_blue {
+      color: $blue-light;
+
+      &:hover {
+        color: $blue;
+      }
+
+      & .button__icon {
+        fill: $blue-light;
+
+        &:hover {
+          fill: $blue;
+        }
+      }
+    }
   }
 }

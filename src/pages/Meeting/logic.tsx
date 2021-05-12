@@ -5,8 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { message } from 'antd';
 
 import UserModel from 'Models/UserModel';
-import { Meeting, Stats, Tournament, User } from 'Utils/types';
-import HttpStatusCode from 'Utils/httpErrors';
+import { Meeting, Stats, Team, Tournament, User } from 'Utils/types';
 import MeetingModel from 'Models/MeetingModel';
 import TournamentModel from 'Models/TournamentModel';
 import { UserType } from 'Store/User/UserState';
@@ -22,21 +21,16 @@ interface IState {
     stats?: Array<Stats>,
     canEdit: boolean,
     loadingMeeting: boolean,
+    tournament?: Tournament,
 }
 
 class MeetingPage extends React.Component<IProps, IState> {
-    constructor(props:IProps) {
-        super(props);
-        this.state = {
-            loadingMeeting: true,
-            canEdit: false,
-        };
+    state:IState = {
+        loadingMeeting: true,
+        canEdit: false,
+    };
 
-        this.handlePointsSave = this.handlePointsSave.bind(this);
-        this.handleTeamsAdd = this.handleTeamsAdd.bind(this);
-        this.changeStatus = this.changeStatus.bind(this);
-        this.parseMeeting = this.parseMeeting.bind(this);
-    }
+
 
     componentDidMount():void {
         this.parseMeeting();
@@ -53,23 +47,28 @@ class MeetingPage extends React.Component<IProps, IState> {
             this.setState(prev => ({
                 ...prev,
                 canEdit: user?.id === tournament.ownerId,
+                tournament: tournament,
             }));
         });
     }
 
-    parseMeeting():void {
-        this.setState(prev => ({ ...prev, loadingMeets:true }) );
-        MeetingModel.getMeeting(this.props.match.params[URL_PARAMS.meeting.id])
-            .then((meeting:Meeting) => {
-                this.setState(prev => ({
-                    ...prev,
-                    meeting: meeting,
-                }), () => { this.checkRights(); });
-            })
-            .catch(e => console.error(e))
-            .finally(() => { this.setState(prev => ({ ...prev, loadingMeeting:false }) ); });
+    parseMeeting(meeting?:Meeting):void {
+        if (meeting) {
+            this.setState(prev => ({ ...prev, meeting:meeting }));
+        } else {
+            this.setState(prev => ({ ...prev, loadingMeeting:true }) );
+            MeetingModel.getMeeting(this.props.match.params[URL_PARAMS.meeting.id])
+                .then((meeting:Meeting) => {
+                    this.setState(prev => ({
+                        ...prev,
+                        meeting: meeting,
+                    }), () => { this.checkRights(); });
+                })
+                .catch(e => console.error(e))
+                .finally(() => { this.setState(prev => ({ ...prev, loadingMeeting:false }) ); });
+        }
         MeetingModel.getStats(this.props.match.params[URL_PARAMS.meeting.id])
-            .then(stats => { this.setState(prev => ({ ...prev, stats:stats as Array<Stats> })); })
+            .then((stats:Stats[]) => { this.saveStats(stats) })
             .catch(e => { if (e !== 404) message.error(e); });
     }
 
@@ -83,26 +82,16 @@ class MeetingPage extends React.Component<IProps, IState> {
             .then(() => { this.parseMeeting(); });
     }
 
-    async changeStatus():Promise<HttpStatusCode | Meeting> {
-        if (!confirm('Изменить статус встречи?')) return;
-        await MeetingModel.changeStatus(this.state.meeting.id, this.state.meeting.status + 1)
-            .then(() => { this.parseMeeting(); })
-            .catch(e => {
-                const error = e as HttpStatusCode;
-                let errorText = 'Ошибка';
-                switch (error) {
-                case HttpStatusCode.FORBIDDEN: errorText = 'У вас нет прав'; break;
-                }
-                message.error(errorText);
-            });
+    saveStats(stats:Stats[]):void {
+        this.setState(prev => ({...prev, stats: stats}));
     }
 
     render(): JSX.Element {
         return (<MeetingPageRender {...this.props} {...this.state}
-            reload={this.parseMeeting}
-            handlePointsSave={this.handlePointsSave}
-            handleTeamsAdd={this.handleTeamsAdd}
-            changeStatus={this.changeStatus}
+            saveStats={this.saveStats.bind(this)}
+            reload={this.parseMeeting.bind(this)}
+            handlePointsSave={this.handlePointsSave.bind(this)}
+            handleTeamsAdd={this.handleTeamsAdd.bind(this)}
         />);
     }
 }

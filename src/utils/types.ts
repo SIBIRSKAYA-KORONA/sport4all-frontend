@@ -1,22 +1,16 @@
 import { InviteStatus, Notifications } from 'Utils/enums';
 
-export interface Team {
-    id: number,
-    name: string,
+export interface Team extends Avatarable {
     about: string | null,
     location: string | null,
     ownerId: number,
     players: Array<User>,
-    avatar: IAvatar,
 }
 
-export interface Tournament {
-    id: number,
-    name: string,
+export interface Tournament extends Avatarable {
     about: string,
     system: string,
     ownerId: number,
-    avatar: IAvatar,
     created: number,
     location: string,
     teams: Array<Team>
@@ -32,9 +26,13 @@ export interface IAvatar {
     url: string
 }
 
-export interface User {
+export interface Avatarable {
     id: number,
     name: string,
+    avatar?: IAvatar,
+}
+
+export interface User extends Avatarable {
     surname: string,
     nickname: string,
     created: number,
@@ -42,7 +40,6 @@ export interface User {
     email?: string,
     about?: string,
     birthday?: string,
-    avatar?: IAvatar
 }
 
 export interface Meeting {
@@ -128,4 +125,16 @@ export interface InviteWithUser extends Invite {
 export interface InviteWithTournament extends Invite {
     tournament: Tournament,
     tournament_id: number
+}
+
+export interface MeetingResult {
+    left: number,
+    right: number,
+}
+
+export interface AWSFile {
+    filename: string,
+    id: number,
+    key: string,
+    url: string,
 }

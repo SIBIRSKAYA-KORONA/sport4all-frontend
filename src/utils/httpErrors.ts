@@ -246,7 +246,7 @@ enum HttpStatusCode {
     URI_TOO_LONG = 414,
 
     /**
-     * The request entity has a media type which the server or resource does not support.
+     * The request entity has a media color which the server or resource does not support.
      * For example, the client uploads an image as image/svg+xml, but the server requires that images use a different format.
      */
     UNSUPPORTED_MEDIA_TYPE = 415,

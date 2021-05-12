@@ -6,6 +6,8 @@ import TournamentModel from 'Models/TournamentModel';
 import {message} from 'antd';
 import {connect} from 'react-redux';
 import {URL_PARAMS} from 'Constants';
+import {addRecentTour} from 'Store/Recent/RecentActions';
+import store from 'Store/store';
 
 
 function TournamentPage(props) {
@@ -30,6 +32,7 @@ function TournamentPage(props) {
             const gotMatches = await TournamentModel.getMeetings(tournamentId);
 
             setTournamentData({...gotTournamentData, teams: gotTeams, matches: gotMatches});
+            store.dispatch(addRecentTour(gotTournamentData));
 
         } catch (e) {
             console.error(e);

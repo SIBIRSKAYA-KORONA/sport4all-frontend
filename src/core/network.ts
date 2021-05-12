@@ -1,4 +1,5 @@
-import { InviteStatus, TeamPlayerRoles } from 'Utils/enums';
+import { BasketballProtocols, InviteStatus, TeamPlayerRoles } from 'Utils/enums';
+import { AWSFile } from 'Utils/types';
 
 type s = string;
 
@@ -40,7 +41,9 @@ export default class Network {
             addTeam: (id:number, tid:number):s => `/meetings/${id}/teams/${tid}`,
             addResultsForTeam: (mid:number, tid:number):s => `/meetings/${mid}/teams/${tid}/stat`,
             stats: (mid:number):s => `/meetings/${mid}/stat`,
-            addResultsForPlayer: (mid:number, tid:number, pid:number):s => `/meetings/${mid}/teams/${tid}/players/${pid}/stat`
+            addResultsForPlayer: (mid:number, tid:number, pid:number):s => `/meetings/${mid}/teams/${tid}/players/${pid}/stat`,
+            playerStats: (mid:number):s => `/meetings/${mid}/players/stats`,
+            recognition: (mid:number, protocol:BasketballProtocols, path:string):s => `/meetings/${mid}/players/stats?protocol=${protocol}&path=${path}`,
         },
         profile: {
             nickname: (nickname:string):s => `/profile/${nickname}`,
@@ -109,12 +112,20 @@ export default class Network {
         });
     }
 
-    static async uploadFile(formData:FormData):Promise<Response> {
+    static async uploadFile(formData:FormData):Promise<AWSFile> {
         return fetch('https://sport4all.tech/api/attachments', {
             method: 'POST',
             body: formData,
             mode: 'cors',
             credentials: 'include'
+        }).then(res => res.json());
+    }
+
+    static async deleteFile(key:string):Promise<Response> {
+        return fetch('https://sport4all.tech/api/attachments/'+key, {
+            method: 'DELETE',
+            mode: 'cors',
+            credentials: 'include',
         });
     }
 }

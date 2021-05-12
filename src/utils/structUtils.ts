@@ -1,4 +1,4 @@
-import { EventStatus, Invite, InviteWithTournament, Stats, Team, Tournament, User } from 'Utils/types';
+import { EventStatus, Invite, InviteWithTournament, MeetingResult, Stats, Team, Tournament, User } from 'Utils/types';
 import { lettersForAvatar } from 'Utils/utils';
 import { InviteStatus } from 'Utils/enums';
 
@@ -8,19 +8,24 @@ export function getStatusShortTitle(status: EventStatus): string {
     case EventStatus.UnknownEvent:      return 'Ошибка';
     case EventStatus.NotStartedEvent:   return 'Создан';
     case EventStatus.RegistrationEvent: return 'Регистрация';
-    case EventStatus.InProgressEvent:   return 'Идёт';
-    case EventStatus.FinishedEvent:     return 'Прошёл';
+    case EventStatus.InProgressEvent:   return 'В процессе';
+    case EventStatus.FinishedEvent:     return 'Завершён';
     }
 }
 
 // Meeting
-export function meetingResult(stats: Array<Stats> | null, teams: Array<Team>): string {
-    if (!stats || !stats.length) return '-';
+export function meetingResult(stats: Array<Stats> | null, teams: Array<Team>): MeetingResult {
+    const result:MeetingResult = { left:0, right:0 };
+    if (!stats || !stats.length) return result;
     const leftStat = stats.find(stat => stat.teamId === teams[0].id && !stat.playerId);
     const rightStat = stats.find(stat => stat.teamId === teams[1].id && !stat.playerId);
-    const leftResult = leftStat ? leftStat.score : 0;
-    const rightResult = rightStat ? rightStat.score : 0;
-    return `${leftResult} - ${rightResult}`;
+    result.left = leftStat ? leftStat.score : 0;
+    result.right = rightStat ? rightStat.score : 0;
+    return result;
+}
+
+export function teamScore(stats: Stats[], team:Team): number {
+    return stats.reduce((total, s) => s.teamId === team.id && s.playerId !== 0 ? total + s.score : total, 0);
 }
 
 type initStats = {

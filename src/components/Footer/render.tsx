@@ -70,7 +70,7 @@ function Footer() {
                             <Input placeholder='Введите ваш email' className='footer__input'/>
                         </Form.Item>
                         <Form.Item className='footer__form__item'>
-                            <Button text='Отправить' type='white' className='full-width'/>
+                            <Button text='Отправить' type='filled' color='white' className='full-width'/>
                         </Form.Item>
                     </Form>
                 </section>

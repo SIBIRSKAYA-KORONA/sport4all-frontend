@@ -1,6 +1,7 @@
 import Network from 'Core/network';
 import HttpStatusCode from 'Utils/httpErrors';
 import {EventStatus, Meeting, Stats} from 'Utils/types';
+import { BasketballProtocols } from 'Utils/enums';
 
 class MeetingModel {
     static async getMeeting(mid: number):Promise<HttpStatusCode | Meeting> {
@@ -46,8 +47,24 @@ class MeetingModel {
             });
     }
 
+    static async addPlayersResultsNew(meeting:Meeting, stats: Stats[]):Promise<HttpStatusCode | Stats[]> {
+        return Network.fetchPost(Network.paths.meetings.playerStats(meeting.id), stats)
+            .then(response => {
+                if (response.status >= HttpStatusCode.BAD_REQUEST) throw response.status;
+                return response.json();
+            });
+    }
+
     static async getStats(mid:number):Promise<HttpStatusCode | Array<Stats>> {
         return Network.fetchGet(Network.paths.meetings.stats(mid))
+            .then(response => {
+                if (response.status >= HttpStatusCode.BAD_REQUEST && response.status !== HttpStatusCode.NOT_FOUND) throw HttpStatusCode[response.status];
+                return response.json();
+            });
+    }
+
+    static async getStatsFromPhoto(meeting:Meeting, protocol:BasketballProtocols, path:string):Promise<HttpStatusCode | Array<Stats>> {
+        return Network.fetchGet(Network.paths.meetings.recognition(meeting.id, protocol, path))
             .then(response => {
                 if (response.status >= HttpStatusCode.BAD_REQUEST && response.status !== HttpStatusCode.NOT_FOUND) throw HttpStatusCode[response.status];
                 return response.json();

@@ -6,12 +6,14 @@ import { connect } from 'react-redux';
 import { Avatar, Col, message, Row, Tabs, Typography } from 'antd';
 const { Title, Paragraph } = Typography;
 
+import store from 'Store/store';
 import { Team } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
 import { URL_PARAMS, PATHS } from 'Constants';
 import { lettersForAvatar } from 'Utils/utils';
 import { UserType } from 'Store/User/UserState';
 import BasePage from 'Components/BasePage/render';
+import { addRecentTeam } from 'Store/Recent/RecentActions';
 import TeamPlayersSection from 'Pages/Teams/Team/Players/render';
 import { TeamSections, TeamSettingsSections } from 'Utils/enums';
 import TeamSettingsSection from 'Pages/Teams/Team/Settings/render';
@@ -37,6 +39,7 @@ const TeamPage = (props: IProps):JSX.Element => {
     React.useEffect(() => { reload() }, [props.match.params[URL_PARAMS.team.id]]);
     React.useEffect(() => {
         setCanEdit(props.user && team && props.user.id === team.ownerId);
+        store.dispatch(addRecentTeam(team));
     }, [props.user, team]);
 
     function redirect(key:TeamSections) {

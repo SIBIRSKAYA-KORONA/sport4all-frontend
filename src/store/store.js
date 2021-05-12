@@ -1,10 +1,12 @@
 import { createStore, combineReducers } from 'redux';
 import userReducer from 'Store/User/UserReducer';
 import notificationsReducer from 'Store/Notifications/NotificationsReducer';
+import recentReducer from 'Store/Recent/RecentReducer';
 
 const reducer = combineReducers({
     user: userReducer,
-    notifications: notificationsReducer
+    notifications: notificationsReducer,
+    recent: recentReducer,
 });
 
 const store = createStore(
