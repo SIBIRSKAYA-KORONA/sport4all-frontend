@@ -28,13 +28,13 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
 
     const [statsPerTeam, setStatsPerTeam] = React.useState<Stats[][]>([]);
     React.useEffect(() => {
-        if (props.meeting?.teams.length !== 2) return;
+        if (props.meeting?.teams.length !== 2 || !props.stats) return;
         const statsPerTeam:Stats[][] = [];
         props.meeting.teams.forEach(t => {
             statsPerTeam.push(props.stats.filter(s => s.teamId === t.id));
         });
         setStatsPerTeam(statsPerTeam);
-    }, [props.stats]);
+    }, [props.stats, props.meeting]);
 
     return (
         <BasePage {...props} loading={props.loadingMeeting}>{props.meeting && <>
