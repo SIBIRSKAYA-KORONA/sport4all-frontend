@@ -130,7 +130,9 @@ function MeetingEditModal(props: IProps): JSX.Element {
                 <div className='meeting__modal_status'>
                     <h3>Состояние встречи</h3>
                     <MeetingSteps current={meeting.status} />
-                    <Button color='blue' text='Следующий этап' type='filled' onClick={changeStatus} />
+                    {meeting.status < EventStatus.FinishedEvent &&
+                        <Button color='blue' text='Следующий этап' type='filled' onClick={changeStatus} />
+                    }
                 </div>
                 <div className='meeting__modal_pics'>
                     <div className='meeting__modal_title'>

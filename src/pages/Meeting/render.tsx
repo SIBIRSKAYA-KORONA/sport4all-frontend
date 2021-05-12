@@ -67,7 +67,7 @@ const MeetingPageRender = (props:IProps):JSX.Element => {
                     </div>
                 </div>
             }
-            {props.meeting.status >= EventStatus.InProgressEvent && props.stats?.length > 0 &&
+            {props.meeting.status >= EventStatus.InProgressEvent && props.stats && props.stats.length > 0 &&
                 <section className='meeting__scores'>
                     {statsPerTeam.map((stats, i) => <TeamScores key={i} team={props.meeting.teams[i]} stats={stats}/>)}
                 </section>
