@@ -160,6 +160,10 @@ const NotificationsPopover = (props: IProps) => {
                 parsedNotification.href = PATHS.tournaments.id(notification.tournament_id);
                 break;
 
+            case Notifications.skillWasApproved:
+                parsedNotification.title = 'Кто-то подтвердил один из ваших навыков';
+                parsedNotification.href = `/profile/${props.user.nickname}/personal/skills`
+                break;
 
             default:
                 parsedNotification.title = 'Неизвестное уведомление';

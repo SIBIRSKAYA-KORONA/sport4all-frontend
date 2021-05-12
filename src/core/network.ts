@@ -1,4 +1,4 @@
-import { BasketballProtocols, InviteStatus, TeamPlayerRoles } from 'Utils/enums';
+import { BasketballProtocols, InviteStatus, TeamPlayerRoles, SearchEntities } from 'Utils/enums';
 import { AWSFile } from 'Utils/types';
 
 type s = string;
@@ -65,7 +65,8 @@ export default class Network {
             tournaments: '/invites/tournaments',
             teams: '/invites/teams',
             forTournaments: (tid:number, type:InviteStatus):s => `/invites/tournaments/${tid}?state=${getInviteState(type)}`,
-        }
+        },
+        search: (entities: SearchEntities[], text: s, limit: number, offset: number) => `/search?entities=${entities.join('|')}&text=${text}&limit=${limit}&offset=${offset}`
     };
 
     static async fetchGet(path:s):Promise<Response> {

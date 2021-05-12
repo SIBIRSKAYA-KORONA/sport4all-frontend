@@ -67,7 +67,7 @@ const ProfilePersonalSkills = (props:IProps):JSX.Element => {
                 {props.canEdit &&
                     <Col span={12} className='skills__buttons'>
                         <PlusCircleOutlined
-                            size={256}
+                            style={{fontSize: "1.5rem"}}
                             onClick={() => setModalVisible(true)}
                         />
                         <AddSkillsModal
@@ -86,7 +86,7 @@ const ProfilePersonalSkills = (props:IProps):JSX.Element => {
                 itemLayout="horizontal"
                 dataSource={skills}
                 renderItem={item => (<SkillListItem userId={props.user.id} reloadSkills={loadSkills} canEdit={props.canEdit} profile={props.profile} skill={item} {...props}/>)}
-                locale={{ emptyText:'Вы не добавили ни одного навыка' }}
+                locale={{ emptyText: props.user.id === props.profile.id ? 'Вы не добавили ни одного навыка' : 'Пользователь ещё не добавил ни одного навыка' }}
             />
         </Space>
     }</div>);

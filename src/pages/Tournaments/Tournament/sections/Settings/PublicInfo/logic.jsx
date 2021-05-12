@@ -3,15 +3,27 @@ import PropTypes from 'prop-types'
 import TournamentModel from 'Models/TournamentModel';
 import PublicInfoRender from 'Pages/Tournaments/Tournament/sections/Settings/PublicInfo/render';
 import {message} from 'antd';
+import {TournamentStatus} from 'Utils/enums';
 
 function PublicInfoLogic(props) {
+
+    const updateTournamentData = async () => {
+        try {
+            const updatedData = await TournamentModel.getTournament(props.tournamentData.id);
+            const gotMatches = await TournamentModel.getMeetings(props.tournamentData.id);
+            props.setTournamentData({...props.tournamentData, ...updatedData, matches: gotMatches});
+        } catch (e) {
+            console.error(e);
+            message.error('Не удалось получить информацию о турнире');
+        }
+    }
+
     const updatePublicInfo = async (newInfo) => {
         const payload = {
             'location': newInfo.location,
             'name': newInfo.name,
             'about': newInfo.about,
             'system': newInfo.systemType,
-            'status': newInfo.status,
             'sport': newInfo.sport,
         }
 
@@ -24,15 +36,29 @@ function PublicInfoLogic(props) {
             return;
         }
 
-        try {
-            const updatedData = await TournamentModel.getTournament(props.tournamentData.id);
-            const gotMatches = await TournamentModel.getMeetings(props.tournamentData.id);
-            props.setTournamentData({...props.tournamentData, ...updatedData, matches: gotMatches});
-        } catch (e) {
-            console.error(e);
-            message.error('Не удалось получить информацию о турнире');
+        await updateTournamentData();
+    }
+
+    const setNextStatus = async() => {
+        if (props.tournamentData.status === TournamentStatus.Ended) {
+            console.log('Can not update tournament status');
+            return;
         }
 
+        const payload = {
+            'status': props.tournamentData.status + 1,
+        }
+
+        try {
+            await TournamentModel.updateTournament(props.tournamentData.id, payload);
+            message.success('Статус турнира обновлён');
+        } catch (e) {
+            console.error(e);
+            message.error('Не удалось обновить статус турнира');
+            return;
+        }
+
+        await updateTournamentData();
     }
 
     const onAvatarChanged = async(fileData) => {
@@ -54,6 +80,7 @@ function PublicInfoLogic(props) {
             tournamentData={props.tournamentData}
             onSubmit={updatePublicInfo}
             onAvatarChanged={onAvatarChanged}
+            setNextStatus={setNextStatus}
         />
     )
 }

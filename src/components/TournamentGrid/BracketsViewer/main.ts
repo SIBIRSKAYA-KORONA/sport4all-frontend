@@ -408,7 +408,11 @@ export class BracketsViewer {
         } else
             this.renderHint(containers.name, participant, originHint, matchLocation);
 
-        containers.result.innerText = `${participant.score || '-'}`;
+        if (participant.id === null) {
+            containers.result.innerText = '-';
+        } else {
+            containers.result.innerText = `${participant.score}`;
+        }
 
         dom.setupWin(containers.participant, containers.result, participant);
         dom.setupLoss(containers.participant, containers.result, participant);

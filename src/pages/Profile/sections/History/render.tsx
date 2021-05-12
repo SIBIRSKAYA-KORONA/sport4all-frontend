@@ -39,9 +39,11 @@ const HistorySubPage = (props:IProps):JSX.Element => {
                     className='row'
                 >
                     <List.Item.Meta
-                        title={<Text>Очков: {stats.score}</Text>}
+                        title={<Text>Заработал очков: {stats.score}</Text>}
                         description={<>
-                            <ClockCircleOutlined/> {parseSeconds(stats.created)} <Link to={PATHS.meetings.id(stats.meetingId)}>Встреча</Link>
+                            <ClockCircleOutlined/>&nbsp;
+                            {parseSeconds(stats.created)}&nbsp;
+                            <Link to={PATHS.meetings.id(stats.meetingId)}>Перейти ко встрече</Link>
                         </>}
                     />
                 </List.Item>

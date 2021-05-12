@@ -29,6 +29,7 @@ function MeetingEditModal(props: IProps): JSX.Element {
     const [stats, setStats] = useState<Stats[]>(props.stats || []);
     const [meeting, setMeeting] = useState(props.meeting);
     const [loadingPhotos, setLoadingPhotos] = useState(false);
+
     const [loadingRecognition, setLoadingRecognition] = useState(false);
     const [savingStats, setSavingStats] = useState(false);
 

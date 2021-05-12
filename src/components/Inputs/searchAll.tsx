@@ -6,9 +6,7 @@ const { Text } = Typography;
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 import { PATHS } from 'Constants';
-import TeamModel from 'Models/TeamModel';
-import ProfileModel from 'Models/ProfileModel';
-import TournamentModel from 'Models/TournamentModel';
+import SearchModel from "Models/SearchModel";
 import { Team, Tournament, User } from 'Utils/types';
 
 
@@ -27,11 +25,7 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
     const [searchText, setSearchText] = React.useState('');
 
     const debouncedSearch = AwesomeDebouncePromise((text:string) => {
-        return Promise.all([
-            TeamModel.searchTeams(text, 3),
-            ProfileModel.searchUsers(text, 3),
-            TournamentModel.searchTournaments(text, 3)
-        ]);
+        return SearchModel.searchAll(text, 3, 0);
     }, 500);
 
     async function handleInputChange(text) {
@@ -41,10 +35,10 @@ function SearchAll(props: RouteComponentProps): JSX.Element {
         }
         setSearching(true);
         return debouncedSearch(text)
-            .then(arr => setResult({
-                teams:arr[0] as Team[],
-                users:arr[1] as User[],
-                tournaments:arr[2] as Tournament[]
+            .then(res => setResult({
+                teams: res['teams'] as Team[],
+                users: res['users'] as User[],
+                tournaments: res['tournaments'] as Tournament[]
             }))
             .finally(() => setSearching(false));
     }
