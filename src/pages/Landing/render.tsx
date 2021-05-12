@@ -53,13 +53,13 @@ const LandingPage = (props:IProps):JSX.Element => {
     }];
     const whom = [{
         title: 'Спортсменам',
-        text: 'Ornare arcu at vel libero faucibus eu aenean. Magna facilisi cras interdum hac neque, nunc, massa amet. Sollicitudin adipiscing quisque quam pharetra dui placerat justo. Magna viverra ut tortor magna gravida cras a integer. Vitae proin sed nisl id imperdiet porta vitae.',
+        text: 'Сервис позволяет спортсменам принимать участие в турнирах в составе спортивных команд, отслеживать свою результативность, оценивать навыки других игроков, искать команды и потенциальных партнеров в выбранном виде спорта',
         button: 'Участвовать',
         authedLink: PATHS.root,
         unAuthedLink: PATHS.signup,
     },{
         title: 'Организаторам',
-        text: 'A mi nunc, fringilla varius ac. Non enim sed volutpat felis porta urna et urna, hendrerit. In integer in turpis nunc viverra risus amet facilisis semper. Ac nisi venenatis tempor tempus, velit molestie. Sit turpis feugiat amet, elementum.',
+        text: 'Сервис дает возможность организаторам проводить турниры, контролировать каждый этап соревнования, вести статистику игроков, следить за турнирами других организаторов, автоматически переносить результаты встреч из протоколов',
         button: 'Создать соревнование',
         authedLink: PATHS.tournaments.create,
         unAuthedLink: PATHS.signup,
@@ -76,8 +76,12 @@ const LandingPage = (props:IProps):JSX.Element => {
             <div className='first__texts'>
                 <div className='first__texts_container'>
                     <h1 className='first__texts_title'>SPORT FOR ALL</h1>
-                    <p className='first__texts_subtext'>Информация о сервисе.Tellus ligula consectetur feugiat nisi, eget adipiscing facilisis nunc elementum. Quam massa mauris facilisi nibh nunc tellus ut. Mauris enim, scelerisque nam sit lobortis tristique. Quam massa mauris facilisi nibh nunc tellus ut.</p>
-                    <Button color='white' type='filled' text='Присоединиться' className='first__texts_button'/>
+                    <p className='first__texts_subtext'>Главная задача нашего сервиса - упростить проведение спортивных мероприятий любительского уровня, сделав при этом процесс максимально прозрачным и удобным для участников и организаторов</p>
+                    { !props.authed &&
+                        <Link to={PATHS.signup}>
+                            <Button color='white' type='filled' text='Присоединиться' className='first__texts_button'/>
+                        </Link>
+                    }
                 </div>
             </div>
         </section>
