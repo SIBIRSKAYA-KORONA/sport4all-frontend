@@ -1,6 +1,6 @@
 import './style.scss';
 import React, { useState } from 'react';
-import { message, Modal, Spin, Upload } from 'antd';
+import { message, Modal, Spin, Upload, Popconfirm } from 'antd';
 
 import Network from 'Core/network';
 import HttpStatusCode from 'Utils/httpErrors';
@@ -49,7 +49,6 @@ function MeetingEditModal(props: IProps): JSX.Element {
             .finally(() => setLoadingPhotos(false));
     }
     async function changeStatus():Promise<void> {
-        if (!confirm('Вы подтверждаете изменение статуса встречи?\nВернуть его обратно будет невозможно')) return;
         await MeetingModel.changeStatus(meeting.id, meeting.status + 1)
             .then(() => { setMeeting(prev => ({ ...prev, status:meeting.status+1 })) })
             .catch(e => {
@@ -132,7 +131,14 @@ function MeetingEditModal(props: IProps): JSX.Element {
                     <h3>Состояние встречи</h3>
                     <MeetingSteps current={meeting.status} />
                     {meeting.status < EventStatus.FinishedEvent &&
-                        <Button color='blue' text='Следующий этап' type='filled' onClick={changeStatus} />
+                    <Popconfirm
+                        title='Вы подтверждаете изменение статуса встречи?
+                        Вернуть его обратно будет невозможно'
+                        okText="Да"
+                        cancelText="Нет"
+                        onConfirm={changeStatus}>
+                        <Button color='blue' text='Следующий этап' type='filled' />
+                    </Popconfirm>
                     }
                 </div>
                 <div className='meeting__modal_pics'>

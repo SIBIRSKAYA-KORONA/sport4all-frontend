@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Button, Col, Divider, Empty, Input, message, Space } from 'antd';
+import { Button, Col, Divider, Empty, Input, message, Space, Popconfirm } from 'antd';
 
 import TeamModel from 'Models/TeamModel';
 import InvitesModel from 'Models/InvitesModel';
@@ -22,7 +22,6 @@ function TeamPlayersSection(props: IProps): JSX.Element {
 
     // Handlers
     async function onPlayerDelete(player:User) {
-        if (!confirm('Уверены, что хотите исключить игрока из команды?')) return;
         TeamModel.removePlayerFromTheTeam(props.team.id, player.id)
             .then(() => props.reload())
             .catch(e => { message.error(e); });
