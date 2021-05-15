@@ -32,7 +32,7 @@ const TeamCreatePage = (props:RouteComponentProps):JSX.Element => {
                 <h1>Создайте свою команду</h1>
                 <Form {...layout} onFinish={handleSubmit}>
                     <Form.Item name='name' label='Название' rules={[{ required: true, }]}>
-                        <Input/>
+                        <Input autoFocus/>
                     </Form.Item>
                     <Form.Item name='about' label='Описание'>
                         <Input.TextArea/>

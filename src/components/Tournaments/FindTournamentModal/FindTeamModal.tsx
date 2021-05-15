@@ -42,6 +42,7 @@ const FindTournamentModal = (props:IProps):JSX.Element => {
             footer={<Button type='primary' onClick={props.close}>Готово</Button>}
         >
             <Input.Search
+                autoFocus
                 loading={isSearching}
                 placeholder={'Введите название турнира'}
                 onChange={e => handleInputChange(e.target.value)}

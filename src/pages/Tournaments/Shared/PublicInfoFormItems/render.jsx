@@ -24,7 +24,7 @@ function PublicInfoFormItemsRender() {
                 name="name"
                 rules={[{required: true, message: 'Введите название турнира'}]}
             >
-                <Input/>
+                <Input autoFocus/>
             </Form.Item>
 
             <Form.Item

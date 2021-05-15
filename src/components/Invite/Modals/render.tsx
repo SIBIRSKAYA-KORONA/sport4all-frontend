@@ -53,6 +53,7 @@ const FindSomethingToInvite = (props:IProps):JSX.Element => {
         >
             <LoadingContainer loading={props.loading}>
                 <Input.Search
+                    autoFocus
                     loading={isSearching}
                     placeholder={'Название или имя'}
                     onChange={e => handleInputChange(e.target.value)}

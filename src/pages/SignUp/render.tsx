@@ -45,7 +45,7 @@ const SignUpPage = (props:RouteComponentProps):JSX.Element => {
                             required: true,
                             message: 'Введите ваш никнейм'
                         }]}>
-                        <Input/>
+                        <Input autoFocus/>
                     </Form.Item>
                     <Form.Item
                         label='Пароль'

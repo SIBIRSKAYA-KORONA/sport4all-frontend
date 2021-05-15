@@ -33,7 +33,7 @@ const LoginPageRender = (props: RouteComponentProps):JSX.Element => {
                         label='Никнейм'
                         name='nickname'
                         rules={[{ message: 'Введите ваш никнейм' }]}>
-                        <Input/>
+                        <Input autoFocus/>
                     </Form.Item>
                     <Form.Item
                         label='Пароль'
