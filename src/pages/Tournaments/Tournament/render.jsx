@@ -9,8 +9,11 @@ import TournamentGridRender from 'Pages/Tournaments/Tournament/sections/Grid/ren
 import TournamentSettingsRender from 'Pages/Tournaments/Tournament/sections/Settings/render';
 import PropTypes from 'prop-types'
 import {PATHS, URL_PARAMS} from 'Constants';
+import PinIcon from 'Static/icons/pin.svg';
 
-const {Title, Paragraph} = Typography;
+import './style.scss'
+
+const {Title} = Typography;
 
 
 function TournamentPageRender(props) {
@@ -33,14 +36,18 @@ function TournamentPageRender(props) {
 
             {props.isLoading ?
                 <Skeleton title={false}/> :
-                <Typography>
-                    <Paragraph>
-                        Место проведения: {props.tournamentData.location}
-                    </Paragraph>
-                    <Paragraph>
-                        {props.tournamentData.about || ''}
-                    </Paragraph>
-                </Typography>
+                <div className={'tournament__info_block'}>
+                    { props.tournamentData.location &&
+                        <div className={'tournament__info_row'}>
+                            <img className={'tournament__info_icon'} src={PinIcon} alt={'Location icon'}/>
+                            <span>{props.tournamentData.location}</span>
+                        </div>
+                    }
+
+                    <div className={'tournament__info_row'}>
+                        <span>{props.tournamentData.about || ''}</span>
+                    </div>
+                </div>
             }
 
             <Tabs
