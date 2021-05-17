@@ -9,7 +9,7 @@ const AntHeader = Layout.Header;
 
 import { PATHS } from 'Constants';
 import { Notification } from 'Utils/types';
-import BearLogo from '/static/images/bear.jpg';
+import Logo from '/static/images/logo.svg';
 import { lettersForAvatar } from 'Utils/utils';
 import SearchAll from 'Components/Inputs/searchAll';
 import NotificationsModel from 'Models/NotificationsModel'
@@ -29,7 +29,7 @@ const Header = (props: IProps) => {
 
             <div className={'header__content'}>
                 <Link to='/' className={'header__link'}>
-                    <Avatar src={BearLogo} className={'header__logo'} size='large'/>
+                    <img src={Logo} className={'header__logo'} alt={'Logo'}/>
                 </Link>
                 <Link to={PATHS.feed} className={'header__link'}>Лента</Link>
 
