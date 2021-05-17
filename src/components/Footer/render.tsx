@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { PATHS } from 'Constants';
 import PinIcon from 'Static/icons/pin.svg';
-import Logo from 'Static/images/logo.svg';
+import Logo from 'Static/images/logo.png';
 import Button from 'Components/Button/render';
 import Input from 'Components/Inputs/input';
 

@@ -9,7 +9,7 @@ const AntHeader = Layout.Header;
 
 import { PATHS } from 'Constants';
 import { Notification } from 'Utils/types';
-import Logo from '/static/images/logo.svg';
+import Logo from '/static/images/logo.png';
 import { lettersForAvatar } from 'Utils/utils';
 import SearchAll from 'Components/Inputs/searchAll';
 import NotificationsModel from 'Models/NotificationsModel'

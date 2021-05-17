@@ -3,7 +3,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { PATHS } from 'Constants';
-import Logo from 'Static/images/logo.svg';
+import Logo from 'Static/images/logo.png';
 
 function FooterSmall(props:RouteComponentProps):JSX.Element {
     return (
