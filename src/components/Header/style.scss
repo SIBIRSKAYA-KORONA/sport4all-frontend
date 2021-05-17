@@ -1,5 +1,6 @@
 @import "../../utils/scss/variables";
 @import "../../utils/scss/mixins";
+@import "../../utils/scss/extends";
 
 .header {
   height: 54px;
@@ -16,8 +17,7 @@
     flex-direction: row;
     align-items: center;
     height: 100%;
-    width: 960px;
-    margin: auto;
+    @extend %container;
     justify-content: space-between;
   }
 
