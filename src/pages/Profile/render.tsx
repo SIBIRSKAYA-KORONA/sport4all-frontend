@@ -74,9 +74,9 @@ const ProfilePage = (props:IProps):JSX.Element => {
     return (<BasePage {...props} loading={loading}>{profile && <>
         <Row>
             <Col flex='100px'>
-                <Avatar size='large' src={profile.avatar?.url}>{lettersForUserAvatar(profile)}</Avatar>
+                <Avatar size={100} src={profile.avatar?.url}>{lettersForUserAvatar(profile)}</Avatar>
             </Col>
-            <Col flex='auto'>
+            <Col flex='auto' style={{marginLeft:20}}>
                 <Title className='profile__name'>{profile.name} {profile.surname}</Title>
                 <Tag className='profile__nickname'>@{profile.nickname}</Tag>
                 <Paragraph className='profile__about'>{profile.about}</Paragraph>
