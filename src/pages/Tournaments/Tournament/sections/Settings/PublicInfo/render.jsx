@@ -1,7 +1,9 @@
 import * as React from 'react';
-import {Avatar, Button, Form, Row, Select, Upload} from 'antd';
+import {Avatar, Button, Col, Divider, Form, Row, Steps, Upload} from 'antd';
 import PublicInfoFormItemsRender from 'Pages/Tournaments/Shared/PublicInfoFormItems/render';
 import PropTypes from 'prop-types'
+import {TournamentStatus} from 'Utils/enums';
+import './style.scss'
 
 const layout = {
     labelCol: {span: 10},
@@ -10,46 +12,56 @@ const layout = {
 
 function PublicInfoRender(props) {
     return (
-        <Row>
+        <Row justify={'space-between'}>
+            <Col>
+                <Form
+                    {...layout}
+                    onFinish={props.onSubmit}
+                    initialValues={{
+                        name: props.tournamentData.name,
+                        about: props.tournamentData.about,
+                        systemType: props.tournamentData.system,
+                        location: props.tournamentData.location,
+                        sport: props.tournamentData.sport
+                    }}
+                >
+                    <PublicInfoFormItemsRender/>
+
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit" disabled={ props.tournamentData.status !== TournamentStatus.NotStarted }>
+                            Сохранить
+                        </Button>
+                    </Form.Item>
+                </Form>
+
+                <Divider/>
+
+                <Col>
+                    <Steps direction="vertical" current={props.tournamentData.status - 1}>
+                        <Steps.Step title={'Не начался'}/>
+                        <Steps.Step title={'Регистрация'}/>
+                        <Steps.Step title={'Идёт'}/>
+                        <Steps.Step title={'Завершился'}/>
+                    </Steps>
+                    <Button
+                        type={'primary'}
+                        onClick={props.setNextStatus}
+                        disabled={props.tournamentData.status === TournamentStatus.Ended}
+                    >
+                        Следующий этап
+                    </Button>
+                </Col>
+            </Col>
+
+
             <Upload
+                className={ 'public_info__avatar_upload' }
                 listType="picture-card"
                 showUploadList={false}
                 customRequest={props.onAvatarChanged}
             >
                 <Avatar style={{ width: '100%', height: '100%' }} src={props.tournamentData.avatar.url}/>
             </Upload>
-
-            <Form
-                {...layout}
-                onFinish={props.onSubmit}
-                initialValues={{
-                    name: props.tournamentData.name,
-                    about: props.tournamentData.about,
-                    systemType: props.tournamentData.system,
-                    location: props.tournamentData.location,
-                    status: props.tournamentData.status,
-                }}
-            >
-                <PublicInfoFormItemsRender/>
-
-                <Form.Item
-                    label="Статус"
-                    name="status"
-                >
-                    <Select>
-                        <Select.Option value={1}>{PublicInfoRender.statuses[1]}</Select.Option>
-                        <Select.Option value={2}>{PublicInfoRender.statuses[2]}</Select.Option>
-                        <Select.Option value={3}>{PublicInfoRender.statuses[3]}</Select.Option>
-                        <Select.Option value={4}>{PublicInfoRender.statuses[4]}</Select.Option>
-                    </Select>
-                </Form.Item>
-
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Сохранить
-                    </Button>
-                </Form.Item>
-            </Form>
         </Row>
     )
 }
@@ -57,14 +69,9 @@ function PublicInfoRender(props) {
 PublicInfoRender.propTypes = {
     tournamentData: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    onAvatarChanged: PropTypes.func.isRequired
+    onAvatarChanged: PropTypes.func.isRequired,
+    setNextStatus: PropTypes.func.isRequired,
 }
 
-PublicInfoRender.statuses = {
-    1: 'Не начался',
-    2: 'Регистрация',
-    3: 'Идёт',
-    4: 'Завершился',
-}
 
 export default PublicInfoRender;

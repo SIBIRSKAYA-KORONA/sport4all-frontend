@@ -8,6 +8,7 @@ import { Meeting } from 'Utils/types';
 import BasePage from 'Components/BasePage/render';
 import TournamentModel from 'Models/TournamentModel';
 import MeetingsList from 'Components/Meeting/List/render';
+import { URL_PARAMS } from 'Constants';
 
 
 function TournamentMeetingsListPage(props:RouteComponentProps): JSX.Element {
@@ -16,7 +17,7 @@ function TournamentMeetingsListPage(props:RouteComponentProps): JSX.Element {
 
     React.useEffect(() => {
         const load = () => {
-            TournamentModel.getMeetings(props.match.params['tournamentId'])
+            TournamentModel.getMeetings(props.match.params[URL_PARAMS.tournament.id])
                 .then(meetings => setMeetings(meetings))
                 .finally(() => setLoading(false));
         };

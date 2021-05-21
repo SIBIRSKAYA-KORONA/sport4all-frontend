@@ -1,4 +1,4 @@
-import Network from '../core/network';
+import Network from 'Core/network';
 import {
     BadRequestError,
     ForbiddenError,
@@ -11,7 +11,7 @@ import HttpStatusCode from 'Utils/httpErrors';
 
 class TournamentModel {
     static async createTournament(tournamentData) {
-        return Network.fetchPost(Network.paths.tournaments, tournamentData)
+        return Network.fetchPost(Network.paths.tournaments.create, tournamentData)
             .then(res => {
                 switch (res.status) {
                 case 200: return res.json();
@@ -32,7 +32,7 @@ class TournamentModel {
      * @return {Promise<Object | IError>}
      */
     static async getTournament(tournamentId) {
-        return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}`)
+        return Network.fetchGet(Network.paths.tournaments.id(tournamentId))
             .then(res => {
                 switch (res.status) {
                 case 200: return res.json();
@@ -53,7 +53,7 @@ class TournamentModel {
      * @return {Promise<Object | IError>}
      */
     static async updateTournament(tournamentId, newData) {
-        return Network.fetchPut(Network.paths.tournaments + `/${tournamentId}`, newData)
+        return Network.fetchPut(Network.paths.tournaments.id(tournamentId), newData)
             .then(res => {
                 switch (res.status) {
                 case 200: return;
@@ -76,7 +76,7 @@ class TournamentModel {
      * @return {Promise<Array<Meeting>>}
      */
     static async getMeetings(tournamentId) {
-        return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}/meetings`)
+        return Network.fetchGet(Network.paths.tournaments.meetings(tournamentId))
             .then(res => {
                 if (res.status >= 400) {
                     console.error(HttpStatusCode[res.status]);
@@ -97,7 +97,7 @@ class TournamentModel {
      * @return {Promise<Object | IError>}
      */
     static async getTeams(tournamentId) {
-        return Network.fetchGet(Network.paths.tournaments + `/${tournamentId}/teams`)
+        return Network.fetchGet(Network.paths.tournaments.teams(tournamentId))
             .then(res => {
                 switch (res.status) {
                 case 200: return res.json();
@@ -119,7 +119,7 @@ class TournamentModel {
      * @return {Promise<Object | IError>}
      */
     static async addTeam(tournamentId, teamId) {
-        return Network.fetchPut(Network.paths.tournaments + `/${tournamentId}/teams/${teamId}`, {})
+        return Network.fetchPut(Network.paths.tournaments.team(tournamentId, teamId), {})
             .then(res => {
                 switch (res.status) {
                 case 200: return;
@@ -144,7 +144,7 @@ class TournamentModel {
      * @return {Promise<Object | IError>}
      */
     static async removeTeam(tournamentId, teamId) {
-        return Network.fetchDelete(Network.paths.tournaments + `/${tournamentId}/teams/${teamId}`, {})
+        return Network.fetchDelete(Network.paths.tournaments.team(tournamentId, teamId), {})
             .then(res => {
                 switch (res.status) {
                 case 200: return;
@@ -168,7 +168,7 @@ class TournamentModel {
      * @return {Promise<Object | IError>}
      */
     static async getTournaments(userId) {
-        return Network.fetchGet(Network.paths.tournaments + `?userId=${userId}`)
+        return Network.fetchGet(Network.paths.tournaments.forUser(userId))
             .then(res => {
                 switch (res.status) {
                 case 200: return res.json();
@@ -185,6 +185,14 @@ class TournamentModel {
 
     static async loadFeed(offset) {
         return Network.fetchGet(Network.paths.tournamentsFeed(offset))
+            .then(res => {
+                if (res.status >= 400) throw res.status;
+                return res.json();
+            });
+    }
+
+    static async searchTournaments(namePart, limit) {
+        return Network.fetchGet(Network.paths.tournaments.search(namePart, limit))
             .then(res => {
                 if (res.status >= 400) throw res.status;
                 return res.json();

@@ -4,7 +4,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { Form, Input, Button, message } from 'antd';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import UserModel from 'Models/UserModel';
 import BasePage from 'Components/BasePage/render';
 import HttpStatusCode from 'Utils/httpErrors';
@@ -15,7 +15,7 @@ const LoginPageRender = (props: RouteComponentProps):JSX.Element => {
         if (!values.password || !values.nickname) return;
         UserModel.getLogin(values)
             .then(() => UserModel.getProfile())
-            .then(() => this.props.history.push('/'))
+            .then(() => this.props.history.push(PATHS.root))
             .catch(e => {
                 switch (e) {
                 case HttpStatusCode.PRECONDITION_FAILED: message.error('Неправильный пароль'); break;
@@ -33,7 +33,7 @@ const LoginPageRender = (props: RouteComponentProps):JSX.Element => {
                         label='Никнейм'
                         name='nickname'
                         rules={[{ message: 'Введите ваш никнейм' }]}>
-                        <Input/>
+                        <Input autoFocus/>
                     </Form.Item>
                     <Form.Item
                         label='Пароль'
@@ -46,7 +46,7 @@ const LoginPageRender = (props: RouteComponentProps):JSX.Element => {
                     </Form.Item>
                 </Form>
                 <Button type='link'>
-                    <Link to={CONST.PATHS.signup}>Или зарегистрируйтесь</Link>
+                    <Link to={PATHS.signup}>Или зарегистрируйтесь</Link>
                 </Button>
             </div>
         </BasePage>

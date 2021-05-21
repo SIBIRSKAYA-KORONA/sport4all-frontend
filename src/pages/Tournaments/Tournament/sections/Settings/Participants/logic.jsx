@@ -20,9 +20,9 @@ function ParticipantsLogic(props) {
         }
     }
 
-    const addTeam = async (teamId) => {
+    const addTeam = async (team) => {
         try {
-            await TournamentModel.addTeam(props.tournamentData.id, teamId);
+            await TournamentModel.addTeam(props.tournamentData.id, team.id);
         } catch (e) {
             console.error(e);
             message.error('Не удалось добавить команду');
@@ -30,12 +30,12 @@ function ParticipantsLogic(props) {
         }
 
         await updateTeams();
-        setSearchResults(searchResults.filter((team)=>team.id !== teamId))
+        setSearchResults(searchResults.filter((team)=>team.id !== team.id))
     }
 
-    const deleteTeam = async (teamId) => {
+    const deleteTeam = async (team) => {
         try {
-            await TournamentModel.removeTeam(props.tournamentData.id, teamId);
+            await TournamentModel.removeTeam(props.tournamentData.id, team.id);
         } catch (e) {
             console.error(e);
             message.error('Не удалось убрать команду');
@@ -54,7 +54,7 @@ function ParticipantsLogic(props) {
         try {
             // TODO: remove limit, add pagination or something idk
             const limit = 100;
-            const gotTeams = await TeamModel.instance.searchTeams(teamName, limit);
+            const gotTeams = await TeamModel.searchTeams(teamName, limit);
             const currentTeamIds = props.tournamentData.teams.map((team) => team.id);
             const teamsForAdding = [];
             for (const team of gotTeams) {
@@ -74,7 +74,8 @@ function ParticipantsLogic(props) {
 
     return (
         <ParticipantsRender
-            teams={props.tournamentData.teams}
+            {...props}
+            tournament={props.tournamentData}
             isSearching={isSearching}
             searchResults={searchResults}
             onTeamAdd={addTeam}

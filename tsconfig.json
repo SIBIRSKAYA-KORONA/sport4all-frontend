@@ -14,6 +14,7 @@
     "outDir": "./dist/",
     "sourceMap": true,
     "jsx": "react",
+    "esModuleInterop": true,
     "paths": {
       "Components/*": ["src/components/*"],
       "Pages/*": ["src/pages/*"],

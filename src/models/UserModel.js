@@ -1,6 +1,7 @@
 import store from 'Store/store';
-import Network from '../core/network';
+import Network from 'Core/network';
 import { loginUser, logoutUser, setUser } from 'Store/User/UserActions';
+import {resetRecent} from 'Store/Recent/RecentActions';
 
 class UserModel {
     static async signUp(user) {
@@ -55,6 +56,7 @@ class UserModel {
                 if (response.status > 499) throw new Error('Server error');
                 if (response.status > 400) throw new Error(response.status);
                 store.dispatch(logoutUser());
+                store.dispatch(resetRecent());
             },
             error => { throw new Error(error); }
         );
@@ -68,6 +70,7 @@ class UserModel {
             })
             .catch(e => {
                 store.dispatch(logoutUser());
+                store.dispatch(resetRecent());
                 throw e;
             });
     }

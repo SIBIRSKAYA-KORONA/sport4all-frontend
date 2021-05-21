@@ -2,7 +2,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import './BracketsViewer/style.scss';
 import {BracketsViewer} from 'Components/TournamentGrid/BracketsViewer/main.ts';
-import CONST from 'Constants';
+import {EventStatus} from 'Utils/types';
+import { CONST } from 'Constants';
 
 class TournamentGrid extends React.Component {
     static get systems() {
@@ -21,35 +22,54 @@ class TournamentGrid extends React.Component {
         return translator;
     }
 
-    constructor(props) {
-        super(props);
-        this.system = TournamentGrid.systemsTranslation[this.props.system];
-        this.participants = this.props.participants.map(
-            (participant) => ({
-                id: participant.id,
-                name: participant.name
-            })
-        );
-        this.matches = TournamentGrid.parseMatches(this.props.matches, this.props.system);
-        this.participantOnClickHandler = this.props.participantOnClick;
+    componentDidMount() {
+        this.fillGridContainer();
     }
 
-    componentDidMount() {
-        if (!this.system) {
-            console.error(`Unknown tournament system "${this.props.system}". Unable to render grid`);
+    componentDidUpdate() {
+        this.clearGridContainer();
+        this.fillGridContainer();
+    }
+
+    componentWillUnmount() {
+        this.clearGridContainer();
+    }
+
+    render() {
+        return <div ref={el => this.el = el}/>
+    }
+
+    clearGridContainer() {
+        this.el.className = '';
+        this.el.innerHTML = '';
+    }
+
+    fillGridContainer() {
+        const system = TournamentGrid.systemsTranslation[this.props.system];
+        if (!system) {
+            console.error(`Unknown tournament system '${this.props.system}'. Unable to render grid`);
             return;
         }
 
+
         try {
+            const participants = this.props.participants.map(
+                (participant) => ({
+                    id: participant.id,
+                    name: participant.name
+                })
+            );
+            const matches = TournamentGrid.parseMatches(this.props.matches, this.props.system);
+
             (new BracketsViewer()).render(
                 {
-                    participants: this.participants,
-                    matches: this.matches,
+                    participants: participants,
+                    matches: matches,
                     stages: [{
                         id: 0,
                         name: '',
                         number: 0,
-                        type: this.system,
+                        type: system,
                         settings: {}
                     }],
                 },
@@ -59,31 +79,26 @@ class TournamentGrid extends React.Component {
                     showSlotsOrigin: true,
                     showLowerBracketSlotsOrigin: true,
                     highlightParticipantOnHover: true,
-                    participantOnClick: this.participantOnClickHandler,
+                    participantOnClick: this.props.participantOnClick,
                 });
         } catch (e) {
             console.log('WARNING: Could not render grid');
+            console.error(e);
         }
     }
 
-    componentWillUnmount() {
-        this.el.className = '';
-        this.el.innerHTML = '';
-    }
-
-    render() {
-        return <div ref={el => this.el = el}/>
-    }
 
     static parseMatches(matches, system) {
+        const matchesCopy = JSON.parse(JSON.stringify(matches));
+
         switch (system) {
         case CONST.TOURNAMENTS.systems.roundRobin:
-            return this.parseMatchesAsRoundRobin(matches);
+            return this.parseMatchesAsRoundRobin(matchesCopy);
         case CONST.TOURNAMENTS.systems.doubleElimination:
             console.error(`Unsupported tournament system "${system}". Unable to render grid`)
             return [];
         case CONST.TOURNAMENTS.systems.singleElimination:
-            return this.parseMatchesAsSingleElimination(matches);
+            return this.parseMatchesAsSingleElimination(matchesCopy);
         default:
             console.error(`Unknown tournament system "${system}". Unable to render grid`);
             return [];
@@ -95,22 +110,16 @@ class TournamentGrid extends React.Component {
             return [];
         }
 
-        const matchesCopy = [...matches];
         const matchesLastNumbers = {};
-        const parsedMatches = matchesCopy.map((match)=>{
+        const parsedMatches = matches.map((match) => {
             if (!(match.round in matchesLastNumbers)) {
                 matchesLastNumbers[match.round] = 0;
             }
 
-            return {
-                id: match.id,
-                number: matchesLastNumbers[match.round]++,
-                stage_id: 0,
-                group_id: match.group,
-                round_id: match.round,
-                opponent1: {id: match?.teams?.[0]?.id || null},
-                opponent2: {id: match?.teams?.[1]?.id || null},
-            };
+            const parsedMatch = this.parseMatch(match);
+            parsedMatch.number = matchesLastNumbers[match.round]++;
+
+            return parsedMatch;
         });
 
         return parsedMatches;
@@ -122,15 +131,14 @@ class TournamentGrid extends React.Component {
             return [];
         }
 
-        const matchesCopy = [...matches];
-        const matchesById = matchesCopy.reduce((map, match) => {
+        const matchesById = matches.reduce((map, match) => {
             map[match.id] = match;
             return map
         }, {})
 
         // building matches tree
         let matchesTree;
-        for (const match of matchesCopy) {
+        for (const match of matches) {
             const nextMatch = matchesById[match.nextMeetingID];
             if (!nextMatch) {
                 matchesTree = match;
@@ -158,15 +166,10 @@ class TournamentGrid extends React.Component {
                 currentNumber = 1;
             }
 
-            parsedMatches.push({
-                id: match.id,
-                number: currentNumber,
-                stage_id: 0,
-                group_id: match.group,
-                round_id: match.round,
-                opponent1: {id: match?.teams?.[0]?.id || null},
-                opponent2: {id: match?.teams?.[1]?.id || null},
-            });
+            const parsedMatch = this.parseMatch(match);
+            parsedMatch.number = currentNumber;
+
+            parsedMatches.push(parsedMatch);
 
             const previousMatches = match?.previousMatches || [];
             matchesQueue.push(...previousMatches);
@@ -177,6 +180,38 @@ class TournamentGrid extends React.Component {
         return parsedMatches;
     }
 
+
+    static parseMatch(rawMatch) {
+        const parsedMatch = {
+            id: rawMatch.id,
+            stage_id: 0,
+            group_id: rawMatch.group,
+            round_id: rawMatch.round,
+            opponent1: {id: rawMatch?.teams?.[0]?.id || null, score: 0},
+            opponent2: {id: rawMatch?.teams?.[1]?.id || null, score: 0},
+        }
+
+        for (const stat of (rawMatch.stats || [])) {
+            if (stat.teamId === parsedMatch.opponent1.id) {
+                parsedMatch.opponent1.score += stat.score;
+            } else {
+                parsedMatch.opponent2.score += stat.score;
+            }
+        }
+
+        if (rawMatch.status === EventStatus.FinishedEvent) {
+            if (parsedMatch.opponent1.score > parsedMatch.opponent2.score) {
+                parsedMatch.opponent1.result = 'win';
+                parsedMatch.opponent2.result = 'loss';
+            }
+            if (parsedMatch.opponent1.score < parsedMatch.opponent2.score) {
+                parsedMatch.opponent1.result = 'loss';
+                parsedMatch.opponent2.result = 'win';
+            }
+        }
+
+        return parsedMatch;
+    }
 }
 
 TournamentGrid.propTypes = {
@@ -193,6 +228,7 @@ TournamentGrid.propTypes = {
     matches: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.number.isRequired,
+            status: PropTypes.number.isRequired,
             group: PropTypes.number.isRequired,
             round: PropTypes.number.isRequired,
             teams: PropTypes.array,

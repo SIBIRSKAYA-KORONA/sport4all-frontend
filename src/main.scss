@@ -1,12 +1,18 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,700');
 @import '~antd/dist/antd.css';
+@import "../node_modules/@glidejs/glide/src/assets/sass/glide.core";
+@import "./utils/scss/variables";
 
 * {
   box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-body {
-  margin: 0;
+a, area, button, [role='button'], input:not([type='range']), label, select, summary, textarea {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
 }
 
 #application {
@@ -37,4 +43,44 @@ body {
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 0px 8px;
   }
+}
+
+h2 {
+  color: $purple;
+  font-weight: 700;
+  font-size: 27px;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
+h3 {
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
+h4 {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+h5 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+// hiding arrows on input number
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

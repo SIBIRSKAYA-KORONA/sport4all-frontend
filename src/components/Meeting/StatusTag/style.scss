@@ -1,0 +1,41 @@
+@import '../../../utils/scss/variables';
+
+.status-tag {
+  display: inline-block;
+  height: auto;
+  margin: 0;
+  padding: 5px 12px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  color: $white;
+  list-style: none;
+  white-space: nowrap;
+  border-radius: 2px;
+
+  &_0 {
+    @extend .status-tag;
+    background-color: darkred;
+  }
+
+  &_1 {
+    @extend .status-tag;
+    background-color: lightgray;
+  }
+
+  &_2 {
+    @extend .status-tag;
+    background-color: $blue-light;
+  }
+
+  &_3 {
+    @extend .status-tag;
+    background-color: $green;
+  }
+
+  &_4 {
+    @extend .status-tag;
+    background-color: $orange;
+  }
+}

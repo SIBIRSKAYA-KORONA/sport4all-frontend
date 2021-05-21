@@ -1,3 +1,6 @@
+@import '../../utils/scss/extends';
+@import '../../utils/scss/mixins';
+
 .meeting {
   &__section {
     width: 100%;
@@ -6,18 +9,134 @@
       width: 100%;
       display: flex;
       flex-flow: column;
-      justify-content: center;
+      justify-content: stretch;
       align-items: center;
     }
   }
 
-  &__result {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  &__header {
+    @extend %block;
+    @include gradient_purple(1);
+    position: relative;
+    width: 100%;
+    height: 250px;
+
+    &_bg {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+
+      &_overlay {
+        top: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        @include gradient_purple(0.8);
+      }
+    }
+
+    &_status {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+
+    &_tournament {
+      position: absolute;
+      top: 27px;
+      text-align: center;
+      transform: translateX(-50%);
+      left: 50%;
+      width: 30%;
+      margin: auto;
+      color: white;
+      font-size: 18px;
+      text-transform: uppercase;
+      font-weight: 600;
+      line-height: 20px;
+      cursor: pointer;
+      @include transition(0.3s, ease-in-out);
+
+      &:hover {
+        color: $blue-light;
+      }
+    }
+
+    &_edit {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 24px;
+      height: 24px;
+      fill: $subtext;
+      cursor: pointer;
+      @include transition(0.3s, ease-in-out);
+
+      &:hover {
+        fill: $white;
+      }
+    }
+
+    &_container {
+      width: 100%;
+      position: absolute;
+      bottom: 39px;
+      display: flex;
+      flex-flow: row;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+
+    &_score {
+      width: 10%;
+      font-size: 32px;
+      font-weight: 500;
+      color: white;
+    }
   }
 
   &__title {
     text-align: center;
+  }
+
+  &__score {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__scores {
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+  }
+
+  // Pictures section
+  &__pics {
+    margin-top: 20px;
+    @extend %block;
+    width: 100%;
+    padding: 20px;
+
+    &_title {
+      @extend %h3_bold;
+    }
+
+    &_pic {
+      height: 100px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    & .glide {
+      padding: 20px;
+      position: relative;
+    }
+
+    & .glide__slides {
+      margin-bottom: 0;
+    }
   }
 }

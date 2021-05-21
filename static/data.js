@@ -1,5 +1,5 @@
 import {CONST} from 'Utils/constants';
-import ForkIcon from 'Static/icons/fork.svg';
+import ForkIcon from 'Static/icons/pin.svg';
 import IssueIcon from 'Static/icons/issue.svg';
 import JSIcon from 'Static/icons/js.svg';
 import TSIcon from 'Static/icons/ts.svg';

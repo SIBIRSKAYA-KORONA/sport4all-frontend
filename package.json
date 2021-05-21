@@ -20,7 +20,9 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@glidejs/glide": "^3.4.1",
     "antd": "^4.13.1",
+    "awesome-debounce-promise": "^2.1.0",
     "i18next": "^19.9.2",
     "i18next-browser-languagedetector": "^6.0.1",
     "node-static": "^0.7.11",
@@ -35,6 +37,7 @@
     "@babel/plugin-transform-runtime": "^7.10.5",
     "@babel/preset-env": "^7.10.3",
     "@babel/preset-react": "^7.10.1",
+    "@svgr/webpack": "^5.5.0",
     "@types/history": "^4.7.8",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.2",
@@ -60,6 +63,7 @@
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.18",
     "typescript": "^4.2.3",
+    "url-loader": "^4.1.1",
     "webpack": "^5.24.4",
     "webpack-cli": "^4.5.0"
   }

@@ -1,48 +1,39 @@
 import './style.scss';
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {Link, RouteComponentProps} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
-import {Layout, Input, Button, Avatar, Badge} from 'antd';
-import {BellOutlined} from '@ant-design/icons/lib';
-
-import CONST from 'Constants';
-import logo from '/static/images/logo.svg'
-import { getPageName, lettersForAvatar } from 'Utils/utils';
-import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
-
+import { BellOutlined } from '@ant-design/icons/lib';
+import { Layout, Button, Avatar, Badge } from 'antd';
 const AntHeader = Layout.Header;
 
-
-interface IProps extends RouteComponentProps {
-    isAuthenticated: UserAuthenticatedType,
-    user: UserType,
-}
-import {Notification} from "Utils/types";
-import NotificationsPopover from "Components/NotificationsPopover/render";
+import { PATHS } from 'Constants';
+import { Notification } from 'Utils/types';
+import Logo from '/static/images/logo.png';
+import { lettersForAvatar } from 'Utils/utils';
+import SearchAll from 'Components/Inputs/searchAll';
 import NotificationsModel from 'Models/NotificationsModel'
+import { UserAuthenticatedType, UserType } from 'Store/User/UserState';
+import NotificationsPopover from 'Components/NotificationsPopover/render';
 
 
 interface IProps extends RouteComponentProps {
     isAuthenticated: UserAuthenticatedType;
     user: UserType;
     notifications: Notification[];
-    history: RouteComponentProps['history'];
 }
 
 const Header = (props: IProps) => {
-    const pageName = getPageName();
-
     return (
         <AntHeader className='header'>
 
             <div className={'header__content'}>
                 <Link to='/' className={'header__link'}>
-                    <img src={logo} className={'header__logo'} alt={'Logo'}/>
+                    <img src={Logo} className={'header__logo'} alt={'Logo'}/>
                 </Link>
-                <Link to={CONST.PATHS.feed} className={'header__link'}>Лента</Link>
+                <Link to={PATHS.feed} className={'header__link'}>Лента</Link>
 
-                <Input.Search disabled className={'header__search'}/>
+                <SearchAll {...props}/>
 
                 <div className={'header__side_content'}>
                     {props.isAuthenticated !== null && props.isAuthenticated && props.user
@@ -57,8 +48,8 @@ const Header = (props: IProps) => {
                                     </Badge>
                                 </div>
                             </NotificationsPopover>
-                            <Link to={CONST.PATHS.profile.nickname(props.user.nickname)}>
-                                <Avatar size='large'>
+                            <Link to={PATHS.profile.nickname(props.user.nickname)}>
+                                <Avatar size='large' src={props.user.avatar?.url}>
                                     {lettersForAvatar(props.user?.name ? props.user?.name + props.user?.surname : props.user?.nickname)}
                                 </Avatar>
                             </Link>

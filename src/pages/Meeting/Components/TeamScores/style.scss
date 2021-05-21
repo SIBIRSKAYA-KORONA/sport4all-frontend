@@ -1,0 +1,79 @@
+@import '../../../../utils/scss/variables';
+@import '../../../../utils/scss/extends';
+
+.team-scores {
+  width: 100%;
+  padding: 20px;
+  margin-right: 20px;
+  background-color: white;
+  margin-top: 20px;
+  @extend %block;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &__team {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    margin-bottom: 12px;
+
+    &_img {
+      @extend %team_avatar;
+      margin-right: 5px;
+    }
+
+    &_title {
+      @extend %team_title;
+      @extend %text_cut;
+      margin: 0;
+    }
+  }
+
+  &__table {
+    width: 100%;
+
+    & thead {
+      &::after {
+        height: 1em;
+        display: table-row;
+        content: '';
+      }
+
+      & th {
+        font-weight: 400;
+        color: #AFAFAF;
+
+        &:first-child {
+          width: 95%;
+        }
+
+        &:last-child {
+          min-width: 5%;
+        }
+      }
+    }
+
+    & tbody {
+
+    }
+  }
+
+  &__player {
+    padding: 10px 0;
+
+    &_img {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      margin-right: 15px;
+    }
+
+    &_name {
+      font-weight: 500;
+      font-size: 12px;
+      @extend %text_cut;
+    }
+  }
+}

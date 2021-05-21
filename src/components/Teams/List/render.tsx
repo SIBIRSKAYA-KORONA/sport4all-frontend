@@ -1,35 +1,65 @@
 import './style.scss';
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
-import { Avatar, List } from 'antd';
+import { Button, List } from 'antd';
+import { MinusOutlined } from '@ant-design/icons';
 
-import CONST from 'Constants';
 import { Team } from 'Utils/types';
-import { lettersForAvatar } from 'Utils/utils';
+import { teamMeta } from 'Components/Invite/List/metas';
+import { IProps, TeamListItemAction, TeamListItemActions } from 'Components/Teams/List/interface';
 
-
-interface IProps extends RouteComponentProps {
-    teams: [Team?]
-}
 
 const TeamList = (props:IProps):JSX.Element => {
-    return (
-        <List
+    const [loadings, setLoadings] = React.useState({});
+
+    async function onClick(key:string, handler:() => Promise<void>) {
+        setLoadings(prev => ({ ...prev, [key]:true }));
+        handler().finally(() => setLoadings(prev => ({ ...prev, [key]:false })));
+    }
+
+    const buttons = {
+        [TeamListItemActions.delete]: {
+            key:        'delete',
+            title:      'Удалить',
+            icon:       <MinusOutlined/>,
+            otherProps: { danger:true },
+            afterClick: null
+        },
+    };
+
+    function getActionCreator(action:TeamListItemAction) {
+        const d = buttons[action.type];
+        return function actionCreator(team:Team) {
+            const dd = { ...d, key:d.key+team.id };
+            return <Button
+                {...dd.otherProps}
+                loading={loadings[dd.key]}
+                key={dd.key}
+                icon={dd.icon}
+                onClick={() => onClick(dd.key, action.handler.bind(null, team))}
+            >{dd.title}</Button>
+        }
+    }
+
+    const actionCreators = props.actions
+        ? props.actions.map(action => getActionCreator(action))
+        : [];
+
+    return (props.hideEmpty && !props.loading && props.teams?.length === 0
+        ? <></>
+        : <List
+            loading={props.loading}
             style={{ margin: 10 }}
             itemLayout="horizontal"
             dataSource={props.teams}
+            locale={{ emptyText:'Нет команд' }}
             renderItem={team => (
                 <List.Item
                     style={{ paddingLeft: 10 }}
                     className={'row'}
-                    onClick={() => { props.history.push(CONST.PATHS.teams.id(team.id)) }}
+                    actions={actionCreators.map(ac => ac(team))}
                 >
-                    <List.Item.Meta
-                        avatar={<Avatar src={team.avatar.url}>{lettersForAvatar(team.name)}</Avatar>}
-                        title={team.name}
-                        description={team.about}
-                    />
+                    <List.Item.Meta {...teamMeta(team)}/>
                 </List.Item>
             )}
         />

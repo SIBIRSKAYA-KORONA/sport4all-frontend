@@ -1,8 +1,22 @@
 import * as React from 'react';
-import {Form, Input, Select} from 'antd';
-import CONST from 'Constants';
+
+import {Form, Input, Select, message} from 'antd';
+
+import { CONST } from 'Constants';
+import SportModel from 'Models/SportModel';
+
 
 function PublicInfoFormItemsRender() {
+    const [sports, setSports] = React.useState([]);
+    React.useEffect(() => {
+        function load() {
+            SportModel.loadSports()
+                .then(sports => setSports(sports))
+                .catch(e => message.error(e));
+        }
+        load();
+    }, []);
+
     return (
         <>
             <Form.Item
@@ -10,7 +24,7 @@ function PublicInfoFormItemsRender() {
                 name="name"
                 rules={[{required: true, message: 'Введите название турнира'}]}
             >
-                <Input/>
+                <Input autoFocus/>
             </Form.Item>
 
             <Form.Item
@@ -23,6 +37,7 @@ function PublicInfoFormItemsRender() {
             <Form.Item
                 label="Система турнира"
                 name="systemType"
+                rules={[{required: true, message: 'Выберите систему турнира'}]}
             >
                 <Select>
                     <Select.Option value={CONST.TOURNAMENTS.systems.roundRobin}>Круговая</Select.Option>
@@ -31,6 +46,14 @@ function PublicInfoFormItemsRender() {
                 </Select>
             </Form.Item>
 
+            <Form.Item
+                label="Вид спорта"
+                name="sport"
+            >
+                <Select>
+                    {sports.map(sport => <Select.Option key={sport.name} value={sport.name}>{sport.name}</Select.Option>)}
+                </Select>
+            </Form.Item>
 
             <Form.Item
                 label="Место проведения"

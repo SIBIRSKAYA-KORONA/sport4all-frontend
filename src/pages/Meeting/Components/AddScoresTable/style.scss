@@ -1,0 +1,99 @@
+@import '../../../../utils/scss/variables';
+@import '../../../../utils/scss/extends';
+
+.meeting__modal_table {
+  width: 48%;
+  display: flex;
+  flex-flow: column;
+  justify-content: stretch;
+  align-items: center;
+  margin-right: 20px;
+  background-color: white;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &s {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+  }
+
+  &_score {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &_team {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+
+    &_img {
+      @extend %team_avatar;
+      margin-right: 5px;
+    }
+
+    &_title {
+      @extend %team_title;
+      @extend %text_cut;
+      margin: 0;
+    }
+  }
+
+  &_table {
+    width: 100%;
+
+    & thead {
+      &::after {
+        height: 1em;
+        display: table-row;
+        content: '';
+      }
+
+      & th {
+        font-weight: 400;
+        color: $black;
+
+        &:first-child {
+          color: #AFAFAF;
+          width: 95%;
+        }
+
+        &:last-child {
+          min-width: 5%;
+        }
+      }
+    }
+  }
+
+  &__player {
+    padding: 10px 0;
+
+    &_img {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      margin-right: 15px;
+    }
+
+    &_name {
+      font-weight: 500;
+      font-size: 12px;
+      @extend %text_cut;
+    }
+  }
+
+  &__input {
+    @extend %input;
+    border: 0.5px solid grey;
+    color: $purple;
+    width: 65px;
+    text-align: right;
+  }
+}

@@ -2,9 +2,12 @@ import './style.scss';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 
+import { PATHS } from 'Constants';
+import { Team } from 'Utils/types';
 import TeamModel from 'Models/TeamModel';
+import { ProfileSections } from 'Utils/enums';
 import BasePage from 'Components/BasePage/render';
 
 
@@ -12,9 +15,12 @@ const TeamCreatePage = (props:RouteComponentProps):JSX.Element => {
     const handleSubmit = (values) => {
         if (!values.name) return;
         // todo: handle 409 error
-        TeamModel.instance.createTeam(values)
-            .then(() => { props.history.push('/profile'); })
-            .catch(e => { console.error(e); })
+        TeamModel.createTeam(values)
+            .then((team:Team) => props.history.push(PATHS.teams.id(team.id)))
+            .catch(e => {
+                message.error(e);
+                props.history.push(PATHS.profile.section(ProfileSections.Teams));
+            });
     }
     const layout = {
         labelCol: { span: 8 },
@@ -26,7 +32,7 @@ const TeamCreatePage = (props:RouteComponentProps):JSX.Element => {
                 <h1>Создайте свою команду</h1>
                 <Form {...layout} onFinish={handleSubmit}>
                     <Form.Item name='name' label='Название' rules={[{ required: true, }]}>
-                        <Input/>
+                        <Input autoFocus/>
                     </Form.Item>
                     <Form.Item name='about' label='Описание'>
                         <Input.TextArea/>

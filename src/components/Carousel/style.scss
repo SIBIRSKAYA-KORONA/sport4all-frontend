@@ -1,0 +1,20 @@
+.glide {
+  & .glide__arrows {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 35%;
+    transform: translateY(50%);
+    display: flex;
+    justify-content: space-between;
+
+    & .glide__arrow {
+      width: 25px;
+      cursor: pointer;
+    }
+
+    & .glide__arrow--right {
+      transform: rotate(180deg);
+    }
+  }
+}

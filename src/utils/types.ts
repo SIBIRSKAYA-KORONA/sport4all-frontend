@@ -1,25 +1,22 @@
-export interface Team {
-    id: number,
-    name: string,
+import { InviteStatus, Notifications } from 'Utils/enums';
+
+export interface Team extends Avatarable {
     about: string | null,
     location: string | null,
     ownerId: number,
     players: Array<User>,
-    avatar: IAvatar,
 }
 
-export interface Tournament {
-    id: number,
-    name: string,
+export interface Tournament extends Avatarable {
     about: string,
     system: string,
     ownerId: number,
-    avatar: IAvatar,
     created: number,
     location: string,
     teams: Array<Team>
     status: EventStatus,
     meetings: Array<Meeting>,
+    sport: string // Sport.name
 }
 
 export interface IAvatar {
@@ -29,16 +26,20 @@ export interface IAvatar {
     url: string
 }
 
-export interface User {
+export interface Avatarable {
     id: number,
     name: string,
+    avatar?: IAvatar,
+}
+
+export interface User extends Avatarable {
     surname: string,
     nickname: string,
     created: number,
     height: number,
     email?: string,
     about?: string,
-    birthday?: string
+    birthday?: string,
 }
 
 export interface Meeting {
@@ -81,11 +82,19 @@ export interface Stats {
     score: number,
     meetingId: number,
     teamId: number,
-    playerId?: number
+    playerId?: number,
+    created?: number
+}
+
+export interface Sport {
+    id: number,
+    name: string,
+    about: string,
+    avatar: string
 }
 
 export interface Notification {
-    type: 'added_to_team' | 'tournament_started' | 'tournament_finished'| 'meeting_started' | 'meeting_finished',
+    type: Notifications,
     createAt: number,
     source_uid: number,
     target_uid: number,
@@ -93,5 +102,40 @@ export interface Notification {
     meeting_id: number,
     team_id: number,
     isRead: boolean,
-
+    invite_state: InviteStatus
 }
+
+export interface Invite {
+    id: number,
+    invited_id: number,
+    assigned_id: number,
+    team_id: number,
+    state: InviteStatus,
+    type: 'direct' | 'indirect'
+}
+
+export interface InviteWithTeam extends Invite {
+    team: Team
+}
+
+export interface InviteWithUser extends Invite {
+    user: User
+}
+
+export interface InviteWithTournament extends Invite {
+    tournament: Tournament,
+    tournament_id: number
+}
+
+export interface MeetingResult {
+    left: number,
+    right: number,
+}
+
+export interface AWSFile {
+    filename: string,
+    id: number,
+    key: string,
+    url: string,
+}
+

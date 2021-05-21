@@ -28,6 +28,9 @@ http.createServer(function(req, res) {
         } else if (req.url.includes('.svg')) {
             path = `dist${req.url}`;
             type = 'image/svg+xml';
+        } else if (req.url.includes('.jpg') || req.url.includes('jpeg')) {
+            path = `dist${req.url}`;
+            type = 'image/jpeg';
         } else {
             path = 'dist/index.html';
             type = 'text/html';

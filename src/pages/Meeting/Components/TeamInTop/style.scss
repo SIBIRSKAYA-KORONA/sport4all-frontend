@@ -1,0 +1,21 @@
+.meeting__header_team {
+  width: 25%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  color: white;
+
+  &_img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 17px;
+  }
+
+  & p {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+  }
+}

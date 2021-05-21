@@ -5,7 +5,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 import { Spin } from 'antd';
 
-import CONST from 'Constants';
+import { PATHS } from 'Constants';
 import UserModel from 'Models/UserModel';
 import { loginUser, logoutUser } from 'Store/User/UserActions';
 
@@ -29,7 +29,7 @@ class AuthedRoute extends React.Component {
             ? <Spin/>
             : (this.props.isAuthenticated && mustBeLogged === 'in') || (!this.props.isAuthenticated && mustBeLogged === 'out')
                 ? <Component {...props} />
-                : <Redirect to={{ pathname: mustBeLogged === 'in' ? CONST.PATHS.login : CONST.PATHS.profile.base, state: { from: this.props.location } }} />
+                : <Redirect to={{ pathname: mustBeLogged === 'in' ? PATHS.login : PATHS.profile.base, state: { from: this.props.location } }} />
         }/>
     }
 }

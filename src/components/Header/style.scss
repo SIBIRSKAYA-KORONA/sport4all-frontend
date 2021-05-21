@@ -1,4 +1,6 @@
-@import "../../utils/variables";
+@import "../../utils/scss/variables";
+@import "../../utils/scss/mixins";
+@import "../../utils/scss/extends";
 
 .header {
   height: 54px;
@@ -6,18 +8,17 @@
   background-color: white;
   padding: 0;
 
+  &__logo {
+    height: 63%;
+  }
+
   &__content {
     display: flex;
     flex-direction: row;
     align-items: center;
     height: 100%;
-    width: 960px;
-    margin: auto;
+    @extend %container;
     justify-content: space-between;
-  }
-
-  &__logo {
-    height: 70%;
   }
 
   &__search {

@@ -13,6 +13,10 @@ export function lettersForAvatar(name?:string): string {
     if (arr.length >= 2) return arr[0][0] + arr[1][0];
 }
 
-export function formatDate(date: Date):string {
-    return `${date.getDate()}, ${date.getUTCFullYear()}`;
+export function dateWithSlashes(date: Date):string {
+    return date.toLocaleDateString('en-GB');
+}
+
+export function parseSeconds(secs:number):string {
+    return dateWithSlashes(new Date(secs*1000));
 }

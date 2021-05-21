@@ -1,4 +1,5 @@
-@import "../../utils/variables";
+@import "../../utils/scss/variables";
+@import "../../utils/scss/mixins";
 
 .notifications_popover {
   &__item {

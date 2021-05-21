@@ -9,8 +9,7 @@ class SkillsModel {
                 if (res.status >= 400) throw res.status;
                 return res.json();
             })
-            .then(skills => Array.isArray(skills) ? skills : [])
-            .catch(e => console.error(e));
+            .then(skills => Array.isArray(skills) ? skills : []);
     }
 
     static async createSkill(pid:number, skillName:string): Promise<HttpStatusCode|Skill[]> {
@@ -18,18 +17,15 @@ class SkillsModel {
             .then(res => {
                 if (res.status >= 400) throw res.status;
                 return res.json();
-            })
-            .catch(e => console.error(e));
+            });
     }
 
     // same as adding one to yourself
-    static async approveSkill(pid:number, skillId:number): Promise<HttpStatusCode | Skill[]> {
+    static async approveSkill(pid:number, skillId:number): Promise<HttpStatusCode | void> {
         return Network.fetchPost(Network.paths.skills.approve(skillId, pid), {})
             .then(res => {
                 if (res.status >= 400) throw res.status;
-                return;
-            })
-            .catch(e => console.error(e));
+            });
     }
 }
 
