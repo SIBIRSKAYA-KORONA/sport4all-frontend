@@ -90,7 +90,10 @@ function MeetingEditModal(props: IProps): JSX.Element {
     function finishRecognition() {
         setProtocolModalVisible(false);
         MeetingModel.getStatsFromPhoto(meeting, protocol, photo.key)
-            .then((stats:Stats[]) => setStats(stats))
+            .then((stats:Stats[]) => {
+                setStats(stats);
+                if (stats.length === 0) throw 'Протокол не распознан';
+            })
             .then(() => { message.success('Протокол распознан успешно') })
             .catch(e => { message.error(e) })
             .finally(() => setLoadingRecognition(false));
