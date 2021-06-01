@@ -25,6 +25,7 @@
     "awesome-debounce-promise": "^2.1.0",
     "i18next": "^19.9.2",
     "i18next-browser-languagedetector": "^6.0.1",
+    "is-mobile": "^3.0.0",
     "node-static": "^0.7.11",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
