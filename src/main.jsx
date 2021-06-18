@@ -4,6 +4,8 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
+import isMobile from 'is-mobile';
+
 import store from 'Store/store';
 import UserModel from 'Models/UserModel';
 import FeedPage from 'Pages/Feed/render';
@@ -23,6 +25,8 @@ import TournamentPage from 'Pages/Tournaments/Tournament/logic';
 import TournamentCreatePage from 'Pages/Tournaments/Create/logic';
 import TournamentMeetingsListPage from 'Pages/Tournaments/MeetingsList/render';
 import { ProfileSections, ProfilePersonalSections, TeamSettingsSections, TournamentSettingsSection } from 'Utils/enums';
+
+import MobilePlaceholder from 'Pages/MobilePlaceholder/render';
 
 
 // PREPARE APP
@@ -52,13 +56,13 @@ UserModel.getProfile().catch(() => {
     console.log('Could not get profile. User probably is not authenticated');
 });
 
-
-
-
 render(
     <Provider store={store}>
         <BrowserRouter>
             <Switch>
+                { isMobile() && <Route path='*' component={MobilePlaceholder}/> }
+
+
                 <Route exact path={PATHS.root} component={LandingPage}/>
                 <Route exact path={PATHS.feed} component={FeedPage}/>
 
@@ -70,6 +74,7 @@ render(
                 <Route exact path={PATHS.teams.settings.config} render={props => (
                     <Redirect to={PATHS.teams.settings.section(+props.match.params[URL_PARAMS.team.id], TeamSettingsSections.Info)} />
                 )}/>
+
                 <Route exact path={PATHS.teams.__config} component={TeamPage}/>
 
                 {/* Tournaments */}
